@@ -6,7 +6,7 @@
 
 <meta charset="UTF-8">
 
-<meta
+<meta 
 name="viewport"
 content="width=device-width, initial-scale=1.0">
 
@@ -28,7 +28,6 @@ href="../assets/branding/favicon.svg">
 
 <style>
 
-
 .hero{
 
 text-align:center;
@@ -40,13 +39,13 @@ padding:50px 0;
 
 .unit{
 
-padding:20px;
-
 background:var(--surface);
 
 border:1px solid var(--border);
 
 border-radius:20px;
+
+padding:20px;
 
 margin-bottom:15px;
 
@@ -62,6 +61,14 @@ color:var(--text-muted);
 }
 
 
+.empty{
+
+text-align:center;
+
+padding:40px;
+
+}
+
 </style>
 
 
@@ -69,9 +76,9 @@ color:var(--text-muted);
 
 
 
+
+
 <body>
-
-
 
 <header class="container">
 
@@ -81,7 +88,6 @@ color:var(--text-muted);
 
 <a href="../" class="logo">
 
-
 <img
 src="../assets/branding/logo.svg"
 height="32"
@@ -90,7 +96,6 @@ style="vertical-align:middle;">
 
 Pharmora
 
-
 </a>
 
 
@@ -98,14 +103,11 @@ Pharmora
 <div class="nav-links">
 
 
-<a href="./">
-Learn
-</a>
+<a href="./">Learn</a>
 
+<a href="../teach/">Teach</a>
 
-<a href="../community/">
-Community
-</a>
+<a href="../community/">Community</a>
 
 
 </div>
@@ -121,6 +123,7 @@ Community
 
 
 
+
 <main>
 
 
@@ -130,10 +133,9 @@ Community
 
 <div class="badge">
 
-📚 Subject Workspace
+📚 Learning Workspace
 
 </div>
-
 
 
 <h1 id="subject-title">
@@ -143,15 +145,17 @@ Loading...
 </h1>
 
 
-
 <p id="subject-desc">
 
-Preparing resources...
+Loading subject information...
 
 </p>
 
 
+
 </section>
+
+
 
 
 
@@ -164,7 +168,7 @@ Preparing resources...
 
 <h2 class="section-title">
 
-Learning Resources
+Resources
 
 </h2>
 
@@ -173,11 +177,12 @@ Learning Resources
 <div class="grid">
 
 
+
 <div class="card">
 
 <h2>📝 Notes</h2>
 
-<p>Study materials</p>
+<p>Coming soon</p>
 
 </div>
 
@@ -187,27 +192,29 @@ Learning Resources
 
 <h2>🖥 PPT</h2>
 
-<p>Presentations</p>
+<p>Coming soon</p>
 
 </div>
 
 
 
+
 <div class="card">
 
-<h2>❓ Questions</h2>
+<h2>❓ MCQ</h2>
 
-<p>MCQs and exams</p>
+<p>Coming soon</p>
 
 </div>
 
 
 
+
 <div class="card">
 
-<h2>👨‍🏫 Teaching</h2>
+<h2>👨‍🏫 Teacher Material</h2>
 
-<p>Teacher resources</p>
+<p>Coming soon</p>
 
 </div>
 
@@ -237,6 +244,7 @@ Syllabus Units
 </h2>
 
 
+
 <div id="unit-list">
 
 
@@ -249,7 +257,55 @@ Syllabus Units
 
 
 
+
+
+
+
+<section class="container section">
+
+
+<div class="card empty">
+
+
+<h2>
+
+🌱 Help Build This Subject
+
+</h2>
+
+
+<p>
+
+Share notes, explanations, MCQs or teaching resources.
+
+</p>
+
+
+<br>
+
+
+<a 
+href="../community/"
+class="btn btn-primary">
+
+Contribute Material
+
+</a>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
 </main>
+
 
 
 
@@ -269,21 +325,29 @@ window.location.search
 );
 
 
+
 const id =
-params.get(
-"id"
-);
+params.get("id");
 
 
 
 const file =
 
 "../data/subjects/"
+
 +
+
 id
+
 +
+
 ".json";
 
+
+
+
+
+try{
 
 
 const response =
@@ -303,14 +367,16 @@ data.subject;
 
 
 
+
 document.getElementById(
 "subject-title"
 ).innerHTML =
 
 subject.code+
-" - "+
-subject.name;
 
+" - "+
+
+subject.name;
 
 
 
@@ -328,11 +394,12 @@ subject.description;
 
 
 
-
 const unitBox =
 document.getElementById(
 "unit-list"
 );
+
+
 
 
 
@@ -353,13 +420,11 @@ Unit ${unit.unit}
 </h2>
 
 
-
 <h3>
 
 ${unit.title}
 
 </h3>
-
 
 
 <div class="topic">
@@ -371,9 +436,7 @@ ${unit.topics.join("<br>")}
 </div>
 
 
-
 </div>
-
 
 `;
 
@@ -383,7 +446,37 @@ ${unit.topics.join("<br>")}
 
 
 
+
 }
+
+
+
+catch(error){
+
+
+
+document.getElementById(
+"subject-title"
+).innerHTML =
+
+"Subject Coming Soon";
+
+
+
+document.getElementById(
+"subject-desc"
+).innerHTML =
+
+"Community contributors can help create this subject.";
+
+
+
+}
+
+
+
+}
+
 
 
 
@@ -391,6 +484,9 @@ loadSubject();
 
 
 </script>
+
+
+
 
 
 
