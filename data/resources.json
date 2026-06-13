@@ -1,0 +1,109 @@
+{
+  "resources": [
+
+    {
+
+      "id": "sample-note-001",
+
+      "title": "Introduction to Pharmora Resources",
+
+      "description": "Example resource structure showing how learning materials will be organized.",
+
+
+      "course": "B.Pharm",
+
+      "curriculum": "PCI",
+
+      "semester": 1,
+
+
+      "subject": "Pharmaceutics I",
+
+
+      "topic": "Introduction to Pharmacy",
+
+
+      "resource_type": "Notes",
+
+
+      "format": "PDF",
+
+
+      "uploaded_by": "Pharmora Team",
+
+
+      "verification": {
+
+        "status": "Verified",
+
+        "reviewed_by": "Moderator"
+
+      },
+
+
+      "tags": [
+
+        "pharmaceutics",
+
+        "basics",
+
+        "bpharm"
+
+      ],
+
+
+      "stats": {
+
+        "views": 0,
+
+        "downloads": 0,
+
+        "likes": 0
+
+      },
+
+
+      "created": "2026-01-01"
+
+    }
+
+  ],
+
+
+
+  "resource_types": [
+
+
+    "Notes",
+
+    "Presentation",
+
+    "Question Paper",
+
+    "MCQ",
+
+    "Practical File",
+
+    "Video",
+
+    "Teacher Material",
+
+    "Article"
+
+  ],
+
+
+
+  "verification_status": [
+
+
+    "Pending Review",
+
+    "Verified",
+
+    "Needs Improvement"
+
+
+  ]
+
+}
