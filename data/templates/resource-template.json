@@ -1,0 +1,177 @@
+{
+  "resource": {
+
+
+    "id": "RESOURCE_ID",
+
+
+    "title": "Resource Title",
+
+
+    "description": "Short description of this learning resource.",
+
+
+
+    "classification": {
+
+
+      "course": "B.Pharm",
+
+
+      "curriculum": "PCI",
+
+
+      "semester": 0,
+
+
+      "subject_code": "SUBJECT_CODE",
+
+
+      "subject": "Subject Name",
+
+
+      "unit": 0,
+
+
+      "topic": "Topic Name"
+
+
+    },
+
+
+
+
+
+
+    "type": "Notes",
+
+
+    "allowed_types": [
+
+
+      "Notes",
+
+
+      "Presentation",
+
+
+      "Question Paper",
+
+
+      "MCQ",
+
+
+      "Practical File",
+
+
+      "Teacher Material",
+
+
+      "Article"
+
+
+    ],
+
+
+
+
+
+
+
+
+    "file": {
+
+
+      "name": "",
+
+
+      "format": "",
+
+
+      "url": "",
+
+
+      "size": ""
+
+
+    },
+
+
+
+
+
+
+
+
+    "contribution": {
+
+
+      "uploaded_by": "",
+
+
+      "role": "",
+
+
+      "date": "",
+
+
+      "license": ""
+
+
+    },
+
+
+
+
+
+
+
+
+    "verification": {
+
+
+      "status": "Pending Review",
+
+
+      "reviewed_by": "",
+
+
+      "review_date": ""
+
+
+    },
+
+
+
+
+
+
+
+
+    "engagement": {
+
+
+      "views": 0,
+
+
+      "downloads": 0,
+
+
+      "likes": 0
+
+
+    },
+
+
+
+
+
+
+
+
+    "tags": []
+
+
+  }
+
+}
