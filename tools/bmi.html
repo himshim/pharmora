@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+BMI Calculator | Pharmora
+</title>
+
+
+<link rel="icon" href="../assets/branding/favicon.svg">
+
+
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+
+
+<style>
+
+
+.calculator{
+
+max-width:600px;
+
+margin:auto;
+
+}
+
+
+
+input{
+
+width:100%;
+
+padding:15px;
+
+margin-bottom:15px;
+
+border-radius:15px;
+
+background:var(--surface);
+
+color:var(--text);
+
+border:1px solid var(--border);
+
+}
+
+
+
+.result{
+
+font-size:1.8rem;
+
+margin-top:20px;
+
+}
+
+
+</style>
+
+
+</head>
+
+
+
+
+
+<body>
+
+
+
+
+<header class="container">
+
+
+<nav class="navbar">
+
+
+<a href="../" class="logo">
+
+⚕ Pharmora
+
+</a>
+
+
+</nav>
+
+
+</header>
+
+
+
+
+
+
+
+
+<main>
+
+
+
+
+<section class="container section">
+
+
+
+<div class="calculator card">
+
+
+
+
+<div class="badge">
+
+📏 Health Tool
+
+</div>
+
+
+
+
+
+<h1>
+
+BMI Calculator
+
+</h1>
+
+
+
+
+
+<p>
+
+Calculate Body Mass Index
+
+</p>
+
+
+
+
+
+
+<input
+
+type="number"
+
+id="weight"
+
+placeholder="Weight (kg)">
+
+
+
+
+
+
+
+<input
+
+type="number"
+
+id="height"
+
+placeholder="Height (cm)">
+
+
+
+
+
+
+
+
+<button
+
+class="btn btn-primary"
+
+onclick="calculateBMI()">
+
+
+
+Calculate BMI
+
+
+
+</button>
+
+
+
+
+
+
+
+
+<div
+
+id="result"
+
+class="result">
+
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+</main>
+
+
+
+
+
+
+
+
+<script>
+
+
+
+
+function calculateBMI(){
+
+
+
+let weight =
+
+document.getElementById(
+"weight"
+).value;
+
+
+
+
+
+let height =
+
+document.getElementById(
+"height"
+).value / 100;
+
+
+
+
+
+
+let bmi =
+
+weight /
+
+(height * height);
+
+
+
+
+
+
+let status="";
+
+
+
+
+if(bmi < 18.5){
+
+status="Underweight";
+
+}
+
+
+
+else if(bmi < 25){
+
+status="Normal";
+
+}
+
+
+
+else if(bmi < 30){
+
+status="Overweight";
+
+}
+
+
+
+else{
+
+status="Obese";
+
+}
+
+
+
+
+
+
+
+
+document.getElementById(
+"result"
+).innerHTML =
+
+
+
+bmi ?
+
+"BMI: "+
+
+bmi.toFixed(2)
+
++
+
+"<br>"+
+
+status
+
+
+
+:
+
+"Enter values";
+
+
+
+
+}
+
+
+
+
+</script>
+
+
+
+
+
+</body>
+
+</html>
