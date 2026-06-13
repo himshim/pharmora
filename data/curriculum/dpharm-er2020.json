@@ -1,0 +1,209 @@
+{
+  "curriculum": {
+
+    "id": "dpharm-er2020",
+
+    "course": "D.Pharm",
+
+    "authority": "Pharmacy Council of India",
+
+    "regulation": "Education Regulations 2020",
+
+    "duration": "2 Years",
+
+    "structure": "Year Based",
+
+
+    "years": [
+
+
+      {
+        "year": 1,
+
+        "subjects": [
+
+
+          {
+            "code": "ER20-11T",
+            "name": "Pharmaceutics",
+            "type": "Theory"
+          },
+
+
+          {
+            "code": "ER20-12T",
+            "name": "Pharmaceutical Chemistry",
+            "type": "Theory"
+          },
+
+
+          {
+            "code": "ER20-13T",
+            "name": "Pharmacognosy",
+            "type": "Theory"
+          },
+
+
+          {
+            "code": "ER20-14T",
+            "name": "Human Anatomy and Physiology",
+            "type": "Theory"
+          },
+
+
+          {
+            "code": "ER20-15T",
+            "name": "Social Pharmacy",
+            "type": "Theory"
+          },
+
+
+          {
+            "code": "ER20-16P",
+            "name": "Pharmaceutics Practical",
+            "type": "Practical"
+          },
+
+
+          {
+            "code": "ER20-17P",
+            "name": "Pharmaceutical Chemistry Practical",
+            "type": "Practical"
+          },
+
+
+          {
+            "code": "ER20-18P",
+            "name": "Pharmacognosy Practical",
+            "type": "Practical"
+          },
+
+
+          {
+            "code": "ER20-19P",
+            "name": "Human Anatomy and Physiology Practical",
+            "type": "Practical"
+          },
+
+
+          {
+            "code": "ER20-110P",
+            "name": "Social Pharmacy Practical",
+            "type": "Practical"
+          }
+
+        ]
+
+      },
+
+
+
+
+
+      {
+
+        "year": 2,
+
+        "subjects": [
+
+
+
+          {
+            "code": "ER20-21T",
+            "name": "Pharmacology",
+            "type": "Theory"
+          },
+
+
+
+          {
+            "code": "ER20-22T",
+            "name": "Community Pharmacy and Management",
+            "type": "Theory"
+          },
+
+
+
+          {
+            "code": "ER20-23T",
+            "name": "Biochemistry and Clinical Pathology",
+            "type": "Theory"
+          },
+
+
+
+          {
+            "code": "ER20-24T",
+            "name": "Pharmacotherapeutics",
+            "type": "Theory"
+          },
+
+
+
+          {
+            "code": "ER20-25T",
+            "name": "Hospital and Clinical Pharmacy",
+            "type": "Theory"
+          },
+
+
+
+          {
+            "code": "ER20-26T",
+            "name": "Pharmacy Law and Ethics",
+            "type": "Theory"
+          },
+
+
+
+          {
+            "code": "ER20-27P",
+            "name": "Pharmacology Practical",
+            "type": "Practical"
+          },
+
+
+
+          {
+            "code": "ER20-28P",
+            "name": "Community Pharmacy and Management Practical",
+            "type": "Practical"
+          },
+
+
+
+          {
+            "code": "ER20-29P",
+            "name": "Biochemistry and Clinical Pathology Practical",
+            "type": "Practical"
+          },
+
+
+
+          {
+            "code": "ER20-210P",
+            "name": "Pharmacotherapeutics Practical",
+            "type": "Practical"
+          },
+
+
+
+          {
+            "code": "ER20-211P",
+            "name": "Hospital and Clinical Pharmacy Practical",
+            "type": "Practical"
+          }
+
+
+
+        ]
+
+      }
+
+
+
+    ]
+
+  }
+
+}
