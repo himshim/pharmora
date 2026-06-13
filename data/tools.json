@@ -1,0 +1,168 @@
+{
+  "tools": {
+
+
+    "calculators": [
+
+
+      {
+
+        "id": "dose-calculator",
+
+        "name": "Dose Calculator",
+
+        "description": "Calculate and understand medication dosage calculations.",
+
+
+        "category": "Pharmaceutical Calculation",
+
+
+        "status": "planned",
+
+
+        "inputs": [
+
+          "dose",
+
+          "weight",
+
+          "frequency"
+
+        ]
+
+
+      },
+
+
+
+      {
+
+        "id": "dilution-calculator",
+
+
+        "name": "Dilution Calculator",
+
+
+        "description": "Calculate solution dilution values.",
+
+
+        "category": "Pharmaceutics",
+
+
+        "status": "planned",
+
+
+        "inputs": [
+
+          "initial concentration",
+
+          "final concentration",
+
+          "volume"
+
+        ]
+
+      },
+
+
+
+
+      {
+
+        "id": "concentration-calculator",
+
+
+        "name": "Concentration Calculator",
+
+
+        "description": "Convert and calculate pharmaceutical concentrations.",
+
+
+        "category": "Analysis",
+
+
+        "status": "planned"
+
+      }
+
+
+    ],
+
+
+
+
+
+
+
+    "references": [
+
+
+
+      {
+
+        "id": "abbreviations",
+
+        "name": "Prescription Abbreviations",
+
+
+        "description": "Common pharmacy and prescription abbreviations."
+
+      },
+
+
+
+
+      {
+
+        "id": "drug-classification",
+
+
+        "name": "Drug Classification",
+
+
+        "description": "Organized drug classes and categories."
+
+      },
+
+
+
+
+      {
+
+        "id": "formula-sheet",
+
+
+        "name": "Pharmaceutical Formula Sheet",
+
+
+        "description": "Important formulas used in pharmacy calculations."
+
+      }
+
+
+    ],
+
+
+
+
+
+
+    "principles": [
+
+
+      "Open Source",
+
+      "Educational",
+
+      "Transparent",
+
+      "Community Improved"
+
+
+    ]
+
+
+
+  }
+
+}
