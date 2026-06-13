@@ -1,0 +1,343 @@
+/*
+ Pharmora Components
+ Reusable UI elements
+*/
+
+
+/* CONTAINER */
+
+.container {
+
+    width: min(1200px, 90%);
+
+    margin: auto;
+
+}
+
+
+
+/* NAVBAR */
+
+.navbar {
+
+    height: 75px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+}
+
+
+.logo {
+
+    font-size: 1.7rem;
+
+    font-weight: 900;
+
+
+    background:
+    linear-gradient(
+        90deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+
+    -webkit-background-clip: text;
+
+    color: transparent;
+
+}
+
+
+
+.nav-links {
+
+    display: flex;
+
+    gap: 28px;
+
+
+    color: var(--text-soft);
+
+}
+
+
+
+/* BADGE */
+
+.badge {
+
+    display: inline-flex;
+
+    padding: 8px 16px;
+
+
+    border-radius: 50px;
+
+
+    background: var(--surface);
+
+
+    border:
+
+    1px solid var(--border);
+
+
+    color: var(--primary);
+
+
+    font-size: .9rem;
+
+}
+
+
+
+/* BUTTONS */
+
+
+.btn {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+
+    padding: 14px 24px;
+
+
+    border-radius: 50px;
+
+
+    border: none;
+
+
+    font-weight: 700;
+
+
+    transition: var(--transition);
+
+}
+
+
+
+.btn-primary {
+
+    background:
+
+    linear-gradient(
+
+        90deg,
+
+        var(--primary),
+
+        var(--secondary)
+
+    );
+
+
+    color: #020617;
+
+}
+
+
+
+.btn:hover {
+
+    transform: translateY(-3px);
+
+}
+
+
+
+/* CARDS */
+
+
+.card {
+
+    background:
+
+    rgba(15,23,42,0.8);
+
+
+    border:
+
+    1px solid var(--border);
+
+
+    border-radius:
+
+    var(--radius-large);
+
+
+    padding: 28px;
+
+
+    transition:
+
+    var(--transition);
+
+}
+
+
+
+.card:hover {
+
+    transform:
+
+    translateY(-6px);
+
+
+    border-color:
+
+    var(--primary);
+
+}
+
+
+
+.card p {
+
+    margin-top: 10px;
+
+
+    color:
+
+    var(--text-muted);
+
+}
+
+
+
+/* GRID */
+
+
+.grid {
+
+
+    display: grid;
+
+
+    grid-template-columns:
+
+    repeat(
+
+        auto-fit,
+
+        minmax(230px,1fr)
+
+    );
+
+
+    gap: 22px;
+
+}
+
+
+
+/* SEARCH */
+
+
+.search-box {
+
+    width: 100%;
+
+    max-width: 700px;
+
+
+    margin: 30px auto;
+
+}
+
+
+
+.search-box input {
+
+
+    width:100%;
+
+
+    padding:
+
+    18px 24px;
+
+
+    border-radius:
+
+    50px;
+
+
+    border:
+
+    1px solid var(--border);
+
+
+    outline:none;
+
+
+    background:
+
+    white;
+
+
+    font-size:
+
+    1rem;
+
+}
+
+
+
+/* PAGE SECTION */
+
+
+.section {
+
+    padding:
+
+    70px 0;
+
+}
+
+
+
+.section-title {
+
+    font-size:
+
+    2rem;
+
+
+    margin-bottom:
+
+    25px;
+
+}
+
+
+
+/* GLASS PANEL */
+
+
+.glass {
+
+    background:
+
+    rgba(15,23,42,.65);
+
+
+    backdrop-filter:
+
+    blur(18px);
+
+
+    border:
+
+    1px solid var(--border);
+
+}
