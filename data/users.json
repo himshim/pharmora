@@ -1,0 +1,211 @@
+{
+  "users": [
+
+
+    {
+
+      "id": "user-001",
+
+
+      "name": "Pharmora Member",
+
+
+      "role": "Student",
+
+
+      "profile": {
+
+
+        "course": "B.Pharm",
+
+
+        "curriculum": "PCI",
+
+
+        "semester": 1
+
+
+      },
+
+
+
+      "contributions": {
+
+
+        "resources_uploaded": 0,
+
+
+        "answers_given": 0,
+
+
+        "reviews": 0
+
+
+      },
+
+
+
+      "reputation": {
+
+
+        "points": 0,
+
+
+        "badges": [
+
+          "Early Member"
+
+        ]
+
+
+      }
+
+    },
+
+
+
+
+
+
+
+    {
+
+      "id": "teacher-001",
+
+
+      "name": "Verified Educator",
+
+
+      "role": "Teacher",
+
+
+
+      "verification": {
+
+
+        "status": "verified",
+
+
+        "verified_by": "Pharmora Team"
+
+
+      },
+
+
+
+      "contributions": {
+
+
+        "lectures": 0,
+
+
+        "resources_uploaded": 0,
+
+
+        "students_helped": 0
+
+
+      },
+
+
+
+      "badges": [
+
+        "Educator"
+
+      ]
+
+    }
+
+  ],
+
+
+
+
+
+
+  "roles": [
+
+
+    {
+
+      "name": "Student",
+
+
+      "permissions": [
+
+        "learn",
+
+        "ask_questions",
+
+        "save_resources"
+
+      ]
+
+    },
+
+
+
+
+
+    {
+
+      "name": "Teacher",
+
+
+      "permissions": [
+
+        "upload_resources",
+
+        "answer_questions",
+
+        "review_content"
+
+      ]
+
+    },
+
+
+
+
+
+    {
+
+      "name": "Contributor",
+
+
+      "permissions": [
+
+        "suggest_changes",
+
+        "improve_content"
+
+      ]
+
+    },
+
+
+
+
+
+    {
+
+      "name": "Admin",
+
+
+      "permissions": [
+
+        "manage_users",
+
+        "approve_content",
+
+        "moderate"
+
+      ]
+
+    }
+
+
+  ]
+
+}
