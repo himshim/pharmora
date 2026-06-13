@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Subject | Pharmora
+</title>
+
+
+<link 
+rel="icon"
+href="../assets/branding/favicon.svg">
+
+
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/responsive.css">
+
+
+<style>
+
+
+.hero{
+
+text-align:center;
+
+padding:50px 0;
+
+}
+
+
+.resource{
+
+padding:20px;
+
+background:var(--surface);
+
+border:1px solid var(--border);
+
+border-radius:20px;
+
+margin-bottom:12px;
+
+}
+
+
+</style>
+
+
+</head>
+
+
+
+
+
+<body>
+
+
+
+
+
+
+<header class="container">
+
+
+<nav class="navbar">
+
+
+<a href="../" class="logo">
+
+
+<img
+src="../assets/branding/logo.svg"
+height="32"
+style="vertical-align:middle;">
+
+
+Pharmora
+
+
+</a>
+
+
+<div class="nav-links">
+
+
+<a href="./">
+
+Learn
+
+</a>
+
+
+<a href="../community/">
+
+Community
+
+</a>
+
+
+</div>
+
+
+
+</nav>
+
+
+</header>
+
+
+
+
+
+
+
+
+
+<main>
+
+
+
+
+
+<section class="container hero">
+
+
+<div class="badge">
+
+📚 Subject Workspace
+
+</div>
+
+
+
+
+<h1 id="subject-title">
+
+Loading Subject...
+
+</h1>
+
+
+
+
+<p>
+
+Notes, discussions and teaching resources.
+
+</p>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Learning Resources
+
+</h2>
+
+
+
+
+<div class="grid">
+
+
+
+<div class="card">
+
+
+<h2>
+
+📝 Notes
+
+</h2>
+
+
+<p>
+
+Topic explanations and study material.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+🖥 Presentations
+
+</h2>
+
+
+<p>
+
+Lecture slides and classroom resources.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+❓ Questions
+
+</h2>
+
+
+<p>
+
+MCQs and exam preparation.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+👨‍🏫 Teacher Tips
+
+</h2>
+
+
+<p>
+
+Teaching strategies and explanations.
+
+</p>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Units
+
+</h2>
+
+
+
+<div class="resource">
+
+Unit I
+
+</div>
+
+
+<div class="resource">
+
+Unit II
+
+</div>
+
+
+<div class="resource">
+
+Unit III
+
+</div>
+
+
+<div class="resource">
+
+Unit IV
+
+</div>
+
+
+<div class="resource">
+
+Unit V
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+</main>
+
+
+
+
+
+
+<script>
+
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+
+const subject =
+params.get(
+"name"
+);
+
+
+
+if(subject){
+
+
+document.getElementById(
+"subject-title"
+).innerHTML =
+subject;
+
+
+}
+
+
+
+</script>
+
+
+
+
+</body>
+
+</html>
