@@ -1,0 +1,8 @@
+User-agent: *
+
+Allow: /
+
+
+Sitemap:
+
+https://himshim.github.io/pharmora/sitemap.xml
