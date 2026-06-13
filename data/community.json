@@ -1,0 +1,165 @@
+{
+  "community": {
+
+
+    "questions": [
+
+
+      {
+
+        "id": "question-001",
+
+
+        "title": "Example Pharmora Discussion",
+
+
+        "question": "How can pharmacy concepts be explained more effectively?",
+
+
+        "category": "General Pharmacy",
+
+
+        "related": {
+
+          "course": "B.Pharm",
+
+          "subject": "Pharmaceutics",
+
+          "topic": "Learning Methods"
+
+        },
+
+
+        "asked_by": {
+
+          "name": "Pharmora User",
+
+          "role": "Student"
+
+        },
+
+
+        "answers": [
+
+
+          {
+
+            "id": "answer-001",
+
+            "answer": "Concepts can be improved using diagrams, examples, practical applications and discussion.",
+
+
+            "answered_by": {
+
+              "name": "Pharmora Contributor",
+
+              "role": "Teacher"
+
+            },
+
+
+            "verified": true,
+
+
+            "votes": 0
+
+          }
+
+
+        ],
+
+
+
+        "tags": [
+
+          "learning",
+
+          "discussion",
+
+          "pharmacy"
+
+        ],
+
+
+        "status": "open",
+
+
+        "created": "2026-01-01"
+
+      }
+
+
+    ],
+
+
+
+
+
+    "categories": [
+
+
+      "Doubts",
+
+      "Subject Discussion",
+
+      "Exam Preparation",
+
+      "Teaching Methods",
+
+      "Research",
+
+      "Career Guidance",
+
+      "Suggestions"
+
+
+    ],
+
+
+
+
+
+
+    "reputation": {
+
+
+      "actions": [
+
+
+        {
+
+          "name": "Answer Accepted",
+
+          "points": 10
+
+        },
+
+
+        {
+
+          "name": "Resource Contribution",
+
+          "points": 20
+
+        },
+
+
+        {
+
+          "name": "Verified Resource",
+
+          "points": 50
+
+        }
+
+
+      ]
+
+
+    }
+
+
+
+  }
+
+}
