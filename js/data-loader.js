@@ -503,7 +503,7 @@ area.innerHTML += `
 
 <div 
 class="card"
-onclick="location.href='../learn/subject.html?name=${encodeURIComponent(subject.name)}'">
+onclick="location.href='../learn/subject.html?id=${subject.code}'">
 
 
 
