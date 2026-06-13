@@ -138,3 +138,34 @@ document.addEventListener(
     }
 
 );
+
+/* =========================
+
+ MOBILE NAVIGATION
+
+========================= */
+
+
+function toggleMenu(){
+
+
+const menu =
+
+document.querySelector(
+".mobile-menu"
+);
+
+
+
+if(menu){
+
+
+menu.classList.toggle(
+"active"
+);
+
+
+}
+
+
+}
