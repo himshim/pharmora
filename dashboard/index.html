@@ -10,9 +10,15 @@
 name="viewport"
 content="width=device-width, initial-scale=1.0">
 
+
 <title>
 Dashboard | Pharmora
 </title>
+
+
+<link 
+rel="icon"
+href="../assets/branding/favicon.svg">
 
 
 <link rel="stylesheet" href="../css/variables.css">
@@ -34,8 +40,6 @@ min-height:100vh;
 
 
 
-/* SIDEBAR */
-
 
 .sidebar{
 
@@ -43,14 +47,9 @@ width:260px;
 
 padding:25px;
 
-background:
+background:rgba(15,23,42,.85);
 
-rgba(15,23,42,.85);
-
-
-border-right:
-
-1px solid var(--border);
+border-right:1px solid var(--border);
 
 }
 
@@ -82,7 +81,6 @@ color:transparent;
 
 
 
-
 .menu a{
 
 display:block;
@@ -93,10 +91,9 @@ border-radius:15px;
 
 margin-bottom:8px;
 
+color:var(--text-soft);
 
-color:
-
-var(--text-soft);
+text-decoration:none;
 
 }
 
@@ -104,23 +101,14 @@ var(--text-soft);
 
 .menu a:hover{
 
-background:
+background:var(--surface-light);
 
-var(--surface-light);
-
-
-color:
-
-var(--text);
+color:var(--text);
 
 }
 
 
 
-
-
-
-/* CONTENT */
 
 
 .content{
@@ -130,6 +118,8 @@ flex:1;
 padding:30px;
 
 }
+
+
 
 
 
@@ -144,6 +134,7 @@ align-items:center;
 gap:20px;
 
 }
+
 
 
 
@@ -170,21 +161,14 @@ border:none;
 
 
 
+
 .user{
 
-padding:
+padding:12px 18px;
 
-12px 18px;
+border-radius:30px;
 
-
-border-radius:
-
-30px;
-
-
-background:
-
-var(--surface);
+background:var(--surface);
 
 }
 
@@ -192,23 +176,13 @@ var(--surface);
 
 
 
-
 .hero-card{
 
-margin:
+margin:35px 0;
 
-35px 0;
+padding:35px;
 
-
-padding:
-
-35px;
-
-
-border-radius:
-
-var(--radius-large);
-
+border-radius:var(--radius-large);
 
 background:
 
@@ -223,14 +197,20 @@ linear-gradient(
 
 
 
-.quick{
+.card{
 
-margin-top:
-
-30px;
+cursor:pointer;
 
 }
 
+
+
+
+.quick{
+
+margin-top:30px;
+
+}
 
 
 
@@ -241,29 +221,27 @@ display:flex;
 
 justify-content:space-between;
 
-padding:
+padding:18px;
 
-18px;
+margin-bottom:12px;
 
+border-radius:18px;
 
-margin-bottom:
+background:var(--surface);
 
-12px;
+border:1px solid var(--border);
 
+cursor:pointer;
 
-border-radius:
+transition:var(--transition);
 
-18px;
-
-
-background:
-
-var(--surface);
+}
 
 
-border:
 
-1px solid var(--border);
+.resource:hover{
+
+border-color:var(--primary);
 
 }
 
@@ -280,6 +258,8 @@ display:none;
 
 
 
+
+
 @media(max-width:800px){
 
 
@@ -290,16 +270,12 @@ display:none;
 }
 
 
+
 .content{
 
-padding:
+padding:18px;
 
-18px;
-
-
-padding-bottom:
-
-80px;
+padding-bottom:80px;
 
 }
 
@@ -317,11 +293,10 @@ display:block;
 
 display:inline-block;
 
-margin-top:
-
-15px;
+margin-top:15px;
 
 }
+
 
 
 
@@ -339,15 +314,9 @@ right:0;
 
 height:65px;
 
-background:
+background:var(--background);
 
-var(--background);
-
-
-border-top:
-
-1px solid var(--border);
-
+border-top:1px solid var(--border);
 
 align-items:center;
 
@@ -355,6 +324,14 @@ justify-content:space-around;
 
 }
 
+
+.mobile-nav a{
+
+text-decoration:none;
+
+font-size:1.5rem;
+
+}
 
 
 }
@@ -370,7 +347,10 @@ justify-content:space-around;
 
 
 
+
+
 <body>
+
 
 
 
@@ -385,6 +365,12 @@ justify-content:space-around;
 
 
 
+
+
+<a href="../"
+style="text-decoration:none;">
+
+
 <div class="brand">
 
 ⚕ Pharmora
@@ -392,42 +378,34 @@ justify-content:space-around;
 </div>
 
 
+</a>
+
+
+
+
+
 
 <div class="menu">
 
 
-<a href="../dashboard/">
-🏠 Dashboard
-</a>
+<a href="../dashboard/">🏠 Dashboard</a>
 
+<a href="../learn/">📚 Learn</a>
 
-<a href="../learn/">
-📚 Learn
-</a>
+<a href="../teach/">👨‍🏫 Teach</a>
 
+<a href="../tools/">🧪 Tools</a>
 
-<a href="../teach/">
-👨‍🏫 Teach
-</a>
+<a href="../library/">📖 Library</a>
 
+<a href="../community/">💬 Community</a>
 
-<a href="../tools/">
-🧪 Tools
-</a>
-
-
-<a href="../community/">
-💬 Community
-</a>
-
-
-<a href="../profile/">
-👤 Profile
-</a>
+<a href="../contribute/">🌱 Contribute</a>
 
 
 
 </div>
+
 
 
 
@@ -446,7 +424,6 @@ justify-content:space-around;
 
 
 
-
 <div class="top">
 
 
@@ -454,14 +431,12 @@ justify-content:space-around;
 <div class="search">
 
 
-<input
+<input placeholder="Search Pharmora (coming soon)">
 
-placeholder="Search Pharmora knowledge..."
-
->
 
 
 </div>
+
 
 
 
@@ -474,6 +449,7 @@ placeholder="Search Pharmora knowledge..."
 
 
 </div>
+
 
 
 
@@ -511,13 +487,18 @@ open pharmacy knowledge.
 
 
 
+
 <div class="grid">
 
 
 
 
 
-<div class="card">
+
+<div 
+class="card"
+onclick="location.href='../learn/'">
+
 
 
 <h2>
@@ -527,11 +508,13 @@ open pharmacy knowledge.
 </h2>
 
 
+
 <p>
 
-Resume your pharmacy journey.
+Resume your pharmacy curriculum.
 
 </p>
+
 
 
 </div>
@@ -542,7 +525,12 @@ Resume your pharmacy journey.
 
 
 
-<div class="card">
+
+
+<div
+class="card"
+onclick="location.href='../teach/'">
+
 
 
 <h2>
@@ -552,11 +540,13 @@ Resume your pharmacy journey.
 </h2>
 
 
+
 <p>
 
-Manage lectures and resources.
+Access teaching resources.
 
 </p>
+
 
 
 </div>
@@ -568,7 +558,11 @@ Manage lectures and resources.
 
 
 
-<div class="card">
+
+<div
+class="card"
+onclick="location.href='../community/'">
+
 
 
 <h2>
@@ -578,11 +572,13 @@ Manage lectures and resources.
 </h2>
 
 
+
 <p>
 
-Answer doubts and connect.
+Learn with the community.
 
 </p>
+
 
 
 </div>
@@ -593,7 +589,13 @@ Answer doubts and connect.
 
 
 
-<div class="card">
+
+
+
+<div
+class="card"
+onclick="location.href='../tools/'">
+
 
 
 <h2>
@@ -603,6 +605,7 @@ Answer doubts and connect.
 </h2>
 
 
+
 <p>
 
 Calculators and references.
@@ -610,14 +613,18 @@ Calculators and references.
 </p>
 
 
+
+</div>
+
+
+
+
+
+
 </div>
 
 
 
-
-
-
-</div>
 
 
 
@@ -641,33 +648,61 @@ Calculators and references.
 
 
 
-<div class="resource">
 
-Pharmacology Notes
+
+
+<div
+class="resource"
+onclick="location.href='../library/'">
+
+
+Pharmacy Notes Collection
+
 
 <span>Open</span>
+
 
 </div>
 
 
 
-<div class="resource">
 
-Tablet Manufacturing PPT
+
+
+
+<div
+class="resource"
+onclick="location.href='../tools/'">
+
+
+Drug Reference Tools
+
 
 <span>Open</span>
+
 
 </div>
 
 
 
-<div class="resource">
 
-Drug Classification Discussion
+
+
+
+
+<div
+class="resource"
+onclick="location.href='../community/'">
+
+
+Community Discussions
+
 
 <span>View</span>
 
+
 </div>
+
 
 
 
@@ -685,7 +720,9 @@ Drug Classification Discussion
 
 
 
+
 </div>
+
 
 
 
@@ -697,18 +734,20 @@ Drug Classification Discussion
 <div class="mobile-nav">
 
 
-<div>🏠</div>
+<a href="../dashboard/">🏠</a>
 
-<div>📚</div>
+<a href="../learn/">📚</a>
 
-<div>➕</div>
+<a href="../contribute/">➕</a>
 
-<div>💬</div>
+<a href="../community/">💬</a>
 
-<div>👤</div>
+<a href="../library/">📖</a>
 
 
 </div>
+
+
 
 
 
