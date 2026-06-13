@@ -1,0 +1,117 @@
+{
+  "course": {
+
+    "id": "pharmd",
+
+    "name": "Doctor of Pharmacy",
+
+    "short_name": "Pharm.D",
+
+    "duration": "6 Years",
+
+    "description": "Professional pharmacy doctoral program focused on clinical pharmacy, patient care, therapeutics and hospital pharmacy practice.",
+
+
+    "curriculums": [
+
+      {
+
+        "id": "pharmd-regulation",
+
+        "name": "Pharm.D Regulation Curriculum",
+
+        "authority": "Pharmacy Council of India",
+
+        "status": "active",
+
+        "structure": "Year Based",
+
+        "duration": "5 Academic Years + Internship"
+
+      }
+
+    ],
+
+
+
+    "years": [
+
+      {
+
+        "year": 1,
+
+        "name": "First Professional Year"
+
+      },
+
+
+      {
+
+        "year": 2,
+
+        "name": "Second Professional Year"
+
+      },
+
+
+      {
+
+        "year": 3,
+
+        "name": "Third Professional Year"
+
+      },
+
+
+      {
+
+        "year": 4,
+
+        "name": "Fourth Professional Year"
+
+      },
+
+
+      {
+
+        "year": 5,
+
+        "name": "Fifth Professional Year"
+
+      },
+
+
+      {
+
+        "year": 6,
+
+        "name": "Internship"
+
+      }
+
+    ],
+
+
+
+    "major_subject_areas": [
+
+      "Clinical Pharmacy",
+
+      "Pharmacotherapeutics",
+
+      "Hospital Pharmacy",
+
+      "Clinical Research",
+
+      "Pharmacoepidemiology",
+
+      "Pharmacoeconomics",
+
+      "Patient Care",
+
+      "Community Pharmacy"
+
+    ]
+
+  }
+}
