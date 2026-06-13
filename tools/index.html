@@ -10,13 +10,15 @@
 name="viewport"
 content="width=device-width, initial-scale=1.0">
 
+
 <title>
 Tools | Pharmora
 </title>
 
-<link 
-rel="icon"
-href="../assets/branding/favicon.svg">
+
+<link rel="icon" href="../assets/branding/favicon.svg">
+
+
 <link rel="stylesheet" href="../css/variables.css">
 <link rel="stylesheet" href="../css/base.css">
 <link rel="stylesheet" href="../css/components.css">
@@ -48,6 +50,8 @@ font-size:3.8rem;
 position:relative;
 
 overflow:hidden;
+
+cursor:pointer;
 
 }
 
@@ -101,6 +105,8 @@ margin-bottom:12px;
 
 transition:var(--transition);
 
+cursor:pointer;
+
 }
 
 
@@ -122,6 +128,7 @@ transform:translateX(5px);
 
 
 
+
 <body>
 
 
@@ -137,7 +144,7 @@ transform:translateX(5px);
 <a href="../" class="logo">
 
 
-<img 
+<img
 src="../assets/branding/logo.svg"
 height="32"
 style="vertical-align:middle;">
@@ -151,7 +158,9 @@ Pharmora
 
 
 
-<div 
+
+
+<div
 class="menu-toggle"
 onclick="toggleMenu()">
 
@@ -166,42 +175,25 @@ onclick="toggleMenu()">
 <div class="nav-links">
 
 
-<a href="../learn/">
-Learn
-</a>
+<a href="../learn/">Learn</a>
 
+<a href="../teach/">Teach</a>
 
-<a href="../teach/">
-Teach
-</a>
+<a href="../tools/">Tools</a>
 
+<a href="../community/">Community</a>
 
-<a href="../tools/">
-Tools
-</a>
+<a href="../library/">Library</a>
 
-
-<a href="../community/">
-Community
-</a>
-
-
-<a href="../library/">
-Library
-</a>
-
-
-<a href="../auth/login.html">
-Login
-</a>
+<a href="../auth/login.html">Login</a>
 
 
 </div>
 
 
 
-
 </nav>
+
 
 
 
@@ -210,38 +202,20 @@ Login
 <div class="mobile-menu">
 
 
-<a href="../learn/">
-📚 Learn
-</a>
+<a href="../learn/">📚 Learn</a>
 
+<a href="../teach/">👨‍🏫 Teach</a>
 
-<a href="../teach/">
-👨‍🏫 Teach
-</a>
+<a href="../tools/">🧪 Tools</a>
 
+<a href="../community/">🌐 Community</a>
 
-<a href="../tools/">
-🧪 Tools
-</a>
+<a href="../library/">📖 Library</a>
 
-
-<a href="../community/">
-🌐 Community
-</a>
-
-
-<a href="../library/">
-📖 Library
-</a>
-
-
-<a href="../auth/login.html">
-👤 Login
-</a>
+<a href="../auth/login.html">👤 Login</a>
 
 
 </div>
-
 
 
 
@@ -249,38 +223,6 @@ Login
 
 
 
-<div class="nav-links">
-
-
-<a href="../learn/">
-
-Learn
-
-</a>
-
-
-<a href="../teach/">
-
-Teach
-
-</a>
-
-
-<a href="../community/">
-
-Community
-
-</a>
-
-
-</div>
-
-
-
-</nav>
-
-
-</header>
 
 
 
@@ -294,8 +236,9 @@ Community
 
 
 
-<section class="container hero">
 
+
+<section class="container hero">
 
 
 
@@ -308,11 +251,13 @@ Community
 
 
 
+
 <h1>
 
 Smart Pharmacy
 
 <br>
+
 
 
 <span style="
@@ -336,11 +281,10 @@ Utilities
 
 
 
+
 <p>
 
-Simple, fast and open tools
-for pharmacy students,
-teachers and professionals.
+Fast, simple and open pharmacy utilities for learning and teaching.
 
 </p>
 
@@ -348,13 +292,36 @@ teachers and professionals.
 
 
 
-<div class="search-box">
 
 
-<input placeholder="Search calculators, formulas, references...">
+<div
+class="search-box"
+style="margin-top:30px;">
+
+
+
+<input
+placeholder="Search calculators, formulas, subjects..."
+oninput="pharmoraSearch(this.value)">
+
 
 
 </div>
+
+
+
+
+
+
+<div
+id="search-results"
+class="grid"
+style="margin-top:30px;">
+
+
+</div>
+
+
 
 
 
@@ -385,8 +352,8 @@ Calculators
 
 
 
-<div class="grid">
 
+<div class="grid">
 
 
 
@@ -404,13 +371,12 @@ Calculators
 
 <p>
 
-Calculate and verify dosage values.
+Medication dose calculation assistant.
 
 </p>
 
 
 </div>
-
 
 
 
@@ -430,7 +396,7 @@ Calculate and verify dosage values.
 
 <p>
 
-Prepare solutions and concentrations.
+Calculate dilution and preparation values.
 
 </p>
 
@@ -449,15 +415,14 @@ Prepare solutions and concentrations.
 
 <h2>
 
-⚗ Concentration
+⚗ Concentration Calculator
 
 </h2>
 
 
 <p>
 
-Molarity, percentage strength
-and conversions.
+Percentage strength, molarity and conversions.
 
 </p>
 
@@ -476,14 +441,14 @@ and conversions.
 
 <h2>
 
-📏 BMI Calculator
+📏 Health Calculations
 
 </h2>
 
 
 <p>
 
-Basic healthcare calculations.
+Common healthcare calculation tools.
 
 </p>
 
@@ -517,7 +482,7 @@ Basic healthcare calculations.
 
 <h2 class="section-title">
 
-References
+Reference Library
 
 </h2>
 
@@ -532,14 +497,11 @@ References
 Prescription Abbreviations
 
 
-<span>
-
-→
-
-</span>
+<span>→</span>
 
 
 </div>
+
 
 
 
@@ -552,14 +514,11 @@ Prescription Abbreviations
 Drug Classification
 
 
-<span>
-
-→
-
-</span>
+<span>→</span>
 
 
 </div>
+
 
 
 
@@ -569,17 +528,15 @@ Drug Classification
 <div class="reference">
 
 
-Pharmacy Formula Sheet
+Pharmaceutical Formula Sheet
 
 
-<span>
-
-→
-
-</span>
+<span>→</span>
 
 
 </div>
+
+
 
 
 
@@ -592,11 +549,7 @@ Pharmacy Formula Sheet
 Laboratory Calculations
 
 
-<span>
-
-→
-
-</span>
+<span>→</span>
 
 
 </div>
@@ -607,7 +560,6 @@ Laboratory Calculations
 
 
 </section>
-
 
 
 
@@ -620,14 +572,13 @@ Laboratory Calculations
 <section class="container section">
 
 
-
 <div class="card">
 
 
 
 <h2>
 
-🌱 Open Tool Development
+🌱 Improve Pharmora Tools
 
 </h2>
 
@@ -635,11 +586,23 @@ Laboratory Calculations
 
 <p>
 
-Pharmora tools are designed to be
-community improved, transparent
-and freely accessible.
+Suggest formulas, calculators and pharmacy utilities.
 
 </p>
+
+
+
+<br>
+
+
+
+<a
+href="../contribute/"
+class="btn btn-primary">
+
+Contribute Tool
+
+</a>
 
 
 
@@ -648,9 +611,7 @@ and freely accessible.
 
 
 
-
 </section>
-
 
 
 
@@ -664,10 +625,14 @@ and freely accessible.
 
 
 
+
+<script src="../js/search.js"></script>
+
 <script src="../js/app.js"></script>
 
 
 
 </body>
+
 
 </html>
