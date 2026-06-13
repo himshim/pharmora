@@ -1,0 +1,466 @@
+{
+  "curriculum": {
+    "id": "bpharm-pci-cbcs",
+    "course": "B.Pharm",
+    "authority": "Pharmacy Council of India",
+    "regulation": "PCI CBCS",
+    "duration": "4 Years",
+    "total_semesters": 8,
+
+    "semesters": [
+
+      {
+        "semester": 1,
+        "subjects": [
+
+          {
+            "code": "BP101T",
+            "name": "Human Anatomy and Physiology I",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP102T",
+            "name": "Pharmaceutical Analysis I",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP103T",
+            "name": "Pharmaceutics I",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP104T",
+            "name": "Pharmaceutical Inorganic Chemistry",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP105T",
+            "name": "Communication Skills",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP106",
+            "name": "Remedial Biology / Remedial Mathematics",
+            "type": "Remedial"
+          },
+
+          {
+            "code": "BP107P",
+            "name": "Human Anatomy and Physiology I Practical",
+            "type": "Practical"
+          },
+
+          {
+            "code": "BP108P",
+            "name": "Pharmaceutical Analysis I Practical",
+            "type": "Practical"
+          },
+
+          {
+            "code": "BP109P",
+            "name": "Pharmaceutics I Practical",
+            "type": "Practical"
+          },
+
+          {
+            "code": "BP110P",
+            "name": "Pharmaceutical Inorganic Chemistry Practical",
+            "type": "Practical"
+          }
+
+        ]
+      },
+
+
+      {
+        "semester": 2,
+        "subjects": [
+
+          {
+            "code": "BP201T",
+            "name": "Human Anatomy and Physiology II",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP202T",
+            "name": "Pharmaceutical Organic Chemistry I",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP203T",
+            "name": "Biochemistry",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP204T",
+            "name": "Pathophysiology",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP205T",
+            "name": "Computer Applications in Pharmacy",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP206T",
+            "name": "Environmental Sciences",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP207P",
+            "name": "Human Anatomy and Physiology II Practical",
+            "type": "Practical"
+          },
+
+          {
+            "code": "BP208P",
+            "name": "Pharmaceutical Organic Chemistry I Practical",
+            "type": "Practical"
+          },
+
+          {
+            "code": "BP209P",
+            "name": "Biochemistry Practical",
+            "type": "Practical"
+          },
+
+          {
+            "code": "BP210P",
+            "name": "Computer Applications in Pharmacy Practical",
+            "type": "Practical"
+          }
+
+        ]
+      },
+
+
+      {
+        "semester": 3,
+        "subjects": [
+
+          {
+            "code": "BP301T",
+            "name": "Pharmaceutical Organic Chemistry II",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP302T",
+            "name": "Physical Pharmaceutics I",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP303T",
+            "name": "Pharmaceutical Microbiology",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP304T",
+            "name": "Pharmaceutical Engineering",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP305P",
+            "name": "Pharmaceutical Organic Chemistry II Practical",
+            "type": "Practical"
+          },
+
+          {
+            "code": "BP306P",
+            "name": "Physical Pharmaceutics I Practical",
+            "type": "Practical"
+          },
+
+          {
+            "code": "BP307P",
+            "name": "Pharmaceutical Microbiology Practical",
+            "type": "Practical"
+          },
+
+          {
+            "code": "BP308P",
+            "name": "Pharmaceutical Engineering Practical",
+            "type": "Practical"
+          }
+
+        ]
+      },
+
+
+      {
+        "semester": 4,
+        "subjects": [
+
+          {
+            "code": "BP401T",
+            "name": "Pharmaceutical Organic Chemistry III",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP402T",
+            "name": "Medicinal Chemistry I",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP403T",
+            "name": "Physical Pharmaceutics II",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP404T",
+            "name": "Pharmacology I",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP405T",
+            "name": "Pharmacognosy I",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP406P",
+            "name": "Medicinal Chemistry I Practical",
+            "type": "Practical"
+          },
+
+          {
+            "code": "BP407P",
+            "name": "Physical Pharmaceutics II Practical",
+            "type": "Practical"
+          },
+
+          {
+            "code": "BP408P",
+            "name": "Pharmacology I Practical",
+            "type": "Practical"
+          },
+
+          {
+            "code": "BP409P",
+            "name": "Pharmacognosy I Practical",
+            "type": "Practical"
+          }
+
+        ]
+      },
+
+      {
+        "semester": 5,
+        "subjects": [
+
+          {
+            "code": "BP501T",
+            "name": "Medicinal Chemistry II",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP502T",
+            "name": "Industrial Pharmacy I",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP503T",
+            "name": "Pharmacology II",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP504T",
+            "name": "Pharmacognosy and Phytochemistry II",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP505T",
+            "name": "Pharmaceutical Jurisprudence",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP506P",
+            "name": "Industrial Pharmacy I Practical",
+            "type": "Practical"
+          },
+
+          {
+            "code": "BP507P",
+            "name": "Pharmacology II Practical",
+            "type": "Practical"
+          },
+
+          {
+            "code": "BP508P",
+            "name": "Pharmacognosy and Phytochemistry II Practical",
+            "type": "Practical"
+          }
+
+        ]
+      },
+
+
+
+      {
+        "semester": 6,
+        "subjects": [
+
+          {
+            "code": "BP601T",
+            "name": "Medicinal Chemistry III",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP602T",
+            "name": "Pharmacology III",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP603T",
+            "name": "Herbal Drug Technology",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP604T",
+            "name": "Biopharmaceutics and Pharmacokinetics",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP605T",
+            "name": "Pharmaceutical Biotechnology",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP606T",
+            "name": "Quality Assurance",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP607P",
+            "name": "Medicinal Chemistry III Practical",
+            "type": "Practical"
+          },
+
+          {
+            "code": "BP608P",
+            "name": "Pharmacology III Practical",
+            "type": "Practical"
+          },
+
+          {
+            "code": "BP609P",
+            "name": "Herbal Drug Technology Practical",
+            "type": "Practical"
+          }
+
+        ]
+      },
+
+
+
+      {
+        "semester": 7,
+        "subjects": [
+
+          {
+            "code": "BP701T",
+            "name": "Instrumental Methods of Analysis",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP702T",
+            "name": "Industrial Pharmacy II",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP703T",
+            "name": "Pharmacy Practice",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP704T",
+            "name": "Novel Drug Delivery System",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP705P",
+            "name": "Instrumental Methods of Analysis Practical",
+            "type": "Practical"
+          },
+
+          {
+            "code": "BP706PS",
+            "name": "Practice School",
+            "type": "Training"
+          }
+
+        ]
+      },
+
+
+
+      {
+        "semester": 8,
+        "subjects": [
+
+          {
+            "code": "BP801T",
+            "name": "Biostatistics and Research Methodology",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP802T",
+            "name": "Social and Preventive Pharmacy",
+            "type": "Theory"
+          },
+
+          {
+            "code": "BP803ET-BP811ET",
+            "name": "Pharma Electives",
+            "type": "Elective"
+          },
+
+          {
+            "code": "BP812PW",
+            "name": "Project Work",
+            "type": "Project"
+          }
+
+        ]
+      }
+
+
+    ]
+
+  }
+
+}
