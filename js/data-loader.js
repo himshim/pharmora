@@ -466,6 +466,9 @@ activeCurriculum
 
 
 
+
+
+
 area.innerHTML = `
 
 
@@ -487,6 +490,10 @@ onclick="showCurriculum()">
 
 
 
+
+
+
+
 subjects.forEach(subject=>{
 
 
@@ -494,7 +501,10 @@ subjects.forEach(subject=>{
 area.innerHTML += `
 
 
-<div class="card">
+<div 
+class="card"
+onclick="location.href='../learn/subject.html?name=${encodeURIComponent(subject.name)}'">
+
 
 
 <h2>
@@ -502,6 +512,7 @@ area.innerHTML += `
 ${subject.code}
 
 </h2>
+
 
 
 
@@ -514,6 +525,7 @@ ${subject.name}
 ${subject.type}
 
 </p>
+
 
 
 </div>
