@@ -1,0 +1,43 @@
+{
+  "name": "Pharmora - Open Pharmacy Learning Network",
+
+  "short_name": "Pharmora",
+
+  "description": "The future of pharmacy learning — open, collaborative, and accessible.",
+
+
+  "start_url": "./",
+
+  "scope": "./",
+
+
+  "display": "standalone",
+
+
+  "background_color": "#020617",
+
+
+  "theme_color": "#22d3ee",
+
+
+  "orientation": "portrait-primary",
+
+
+
+  "icons": [
+
+
+    {
+
+      "src": "assets/branding/logo.svg",
+
+      "sizes": "512x512",
+
+      "type": "image/svg+xml"
+
+    }
+
+
+  ]
+
+}
