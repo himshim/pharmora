@@ -1,0 +1,81 @@
+{
+  "course": {
+
+    "id": "dpharm",
+
+    "name": "Diploma in Pharmacy",
+
+    "short_name": "D.Pharm",
+
+    "duration": "2 Years",
+
+    "description": "Diploma level pharmacy program focused on fundamental pharmaceutical sciences, pharmacy practice, healthcare and professional training.",
+
+
+    "curriculums": [
+
+      {
+
+        "id": "er-2020",
+
+        "name": "Education Regulation 2020",
+
+        "authority": "Pharmacy Council of India",
+
+        "status": "active",
+
+        "structure": "Year Based",
+
+        "duration": "2 Academic Years + Practical Training"
+
+      }
+
+    ],
+
+
+
+    "years": [
+
+      {
+
+        "year": 1,
+
+        "name": "First Year D.Pharm"
+
+      },
+
+
+      {
+
+        "year": 2,
+
+        "name": "Second Year D.Pharm"
+
+      }
+
+    ],
+
+
+
+    "major_subject_areas": [
+
+      "Pharmaceutics",
+
+      "Pharmaceutical Chemistry",
+
+      "Pharmacognosy",
+
+      "Human Anatomy and Physiology",
+
+      "Social Pharmacy",
+
+      "Pharmacology",
+
+      "Community Pharmacy",
+
+      "Hospital Pharmacy"
+
+    ]
+
+  }
+}
