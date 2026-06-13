@@ -16,8 +16,7 @@ Subject | Pharmora
 </title>
 
 
-<link 
-rel="icon"
+<link rel="icon"
 href="../assets/branding/favicon.svg">
 
 
@@ -39,7 +38,7 @@ padding:50px 0;
 }
 
 
-.resource{
+.unit{
 
 padding:20px;
 
@@ -49,7 +48,16 @@ border:1px solid var(--border);
 
 border-radius:20px;
 
-margin-bottom:12px;
+margin-bottom:15px;
+
+}
+
+
+.topic{
+
+margin-top:10px;
+
+color:var(--text-muted);
 
 }
 
@@ -61,12 +69,7 @@ margin-bottom:12px;
 
 
 
-
-
 <body>
-
-
-
 
 
 
@@ -91,25 +94,21 @@ Pharmora
 </a>
 
 
+
 <div class="nav-links">
 
 
 <a href="./">
-
 Learn
-
 </a>
 
 
 <a href="../community/">
-
 Community
-
 </a>
 
 
 </div>
-
 
 
 </nav>
@@ -122,12 +121,7 @@ Community
 
 
 
-
-
-
 <main>
-
-
 
 
 
@@ -142,28 +136,22 @@ Community
 
 
 
-
 <h1 id="subject-title">
 
-Loading Subject...
+Loading...
 
 </h1>
 
 
 
+<p id="subject-desc">
 
-<p>
-
-Notes, discussions and teaching resources.
+Preparing resources...
 
 </p>
 
 
-
 </section>
-
-
-
 
 
 
@@ -182,112 +170,54 @@ Learning Resources
 
 
 
-
 <div class="grid">
 
 
-
 <div class="card">
 
+<h2>📝 Notes</h2>
 
-<h2>
-
-📝 Notes
-
-</h2>
-
-
-<p>
-
-Topic explanations and study material.
-
-</p>
-
+<p>Study materials</p>
 
 </div>
-
-
-
 
 
 
 <div class="card">
 
+<h2>🖥 PPT</h2>
 
-<h2>
-
-🖥 Presentations
-
-</h2>
-
-
-<p>
-
-Lecture slides and classroom resources.
-
-</p>
-
+<p>Presentations</p>
 
 </div>
-
-
-
 
 
 
 <div class="card">
 
+<h2>❓ Questions</h2>
 
-<h2>
-
-❓ Questions
-
-</h2>
-
-
-<p>
-
-MCQs and exam preparation.
-
-</p>
-
+<p>MCQs and exams</p>
 
 </div>
-
-
-
-
 
 
 
 <div class="card">
 
+<h2>👨‍🏫 Teaching</h2>
 
-<h2>
-
-👨‍🏫 Teacher Tips
-
-</h2>
-
-
-<p>
-
-Teaching strategies and explanations.
-
-</p>
-
+<p>Teacher resources</p>
 
 </div>
 
 
 
-
-
 </div>
+
 
 
 </section>
-
 
 
 
@@ -302,51 +232,19 @@ Teaching strategies and explanations.
 
 <h2 class="section-title">
 
-Units
+Syllabus Units
 
 </h2>
 
 
+<div id="unit-list">
 
-<div class="resource">
-
-Unit I
-
-</div>
-
-
-<div class="resource">
-
-Unit II
-
-</div>
-
-
-<div class="resource">
-
-Unit III
-
-</div>
-
-
-<div class="resource">
-
-Unit IV
-
-</div>
-
-
-<div class="resource">
-
-Unit V
 
 </div>
 
 
 
 </section>
-
-
 
 
 
@@ -361,37 +259,125 @@ Unit V
 <script>
 
 
-const params =
-new URLSearchParams(
-window.location.search
-);
+async function loadSubject(){
+
+
+
+const file =
+
+"../data/subjects/pharmaceutics-1.json";
+
+
+
+const response =
+await fetch(file);
+
+
+
+const data =
+await response.json();
+
 
 
 const subject =
-params.get(
-"name"
-);
+data.subject;
 
 
 
-if(subject){
 
 
 document.getElementById(
 "subject-title"
 ).innerHTML =
-subject;
+
+subject.code+
+" - "+
+subject.name;
+
+
+
+
+
+
+document.getElementById(
+"subject-desc"
+).innerHTML =
+
+subject.description;
+
+
+
+
+
+
+
+
+const unitBox =
+document.getElementById(
+"unit-list"
+);
+
+
+
+subject.units.forEach(unit=>{
+
+
+
+unitBox.innerHTML += `
+
+
+<div class="unit">
+
+
+<h2>
+
+Unit ${unit.unit}
+
+</h2>
+
+
+
+<h3>
+
+${unit.title}
+
+</h3>
+
+
+
+<div class="topic">
+
+
+${unit.topics.join("<br>")}
+
+
+</div>
+
+
+
+</div>
+
+
+`;
+
+
+
+});
+
 
 
 }
 
 
 
+loadSubject();
+
+
 </script>
 
 
 
-
 </body>
+
 
 </html>
