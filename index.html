@@ -2,40 +2,40 @@
 
 <html lang="en">
 
-
 <head>
-
 
 <meta charset="UTF-8">
 
-
-<meta
+<meta 
 name="viewport"
-content="width=device-width, initial-scale=1.0"
->
+content="width=device-width, initial-scale=1.0">
+
+
+<meta 
+name="description"
+content="Pharmora - The future of pharmacy learning. Open, collaborative and accessible pharmacy education platform.">
 
 
 <title>
-
 Pharmora | Open Pharmacy Learning Network
-
 </title>
 
+
+<link 
+rel="icon"
+href="assets/branding/favicon.svg">
 
 
 <!-- CSS -->
 
 <link rel="stylesheet" href="css/variables.css">
-
 <link rel="stylesheet" href="css/base.css">
-
 <link rel="stylesheet" href="css/components.css">
-
 <link rel="stylesheet" href="css/responsive.css">
 
 
-
 </head>
+
 
 
 
@@ -44,7 +44,8 @@ Pharmora | Open Pharmacy Learning Network
 
 
 
-<!-- NAVBAR -->
+
+<!-- NAVIGATION -->
 
 
 <header class="container">
@@ -53,27 +54,57 @@ Pharmora | Open Pharmacy Learning Network
 <nav class="navbar">
 
 
-<div class="logo">
 
-⚕ Pharmora
+<a href="./" class="logo">
 
-</div>
+<img 
+src="assets/branding/logo.svg"
+height="32"
+style="vertical-align:middle;">
+
+Pharmora
+
+</a>
+
+
 
 
 
 <div class="nav-links">
 
-<a href="learn/">Learn</a>
 
-<a href="teach/">Teach</a>
+<a href="learn/">
+Learn
+</a>
 
-<a href="tools/">Tools</a>
 
-<a href="community/">Community</a>
+<a href="teach/">
+Teach
+</a>
 
-<a href="auth/login.html">Login</a>
+
+<a href="tools/">
+Tools
+</a>
+
+
+<a href="community/">
+Community
+</a>
+
+
+<a href="library/">
+Library
+</a>
+
+
+<a href="auth/login.html">
+Login
+</a>
+
 
 </div>
+
 
 
 
@@ -88,11 +119,14 @@ Pharmora | Open Pharmacy Learning Network
 
 
 
-<!-- HERO -->
-
 
 <main>
 
+
+
+
+
+<!-- HERO -->
 
 
 <section class="section">
@@ -100,6 +134,8 @@ Pharmora | Open Pharmacy Learning Network
 
 <div class="container"
 style="text-align:center;">
+
+
 
 
 
@@ -112,6 +148,8 @@ style="text-align:center;">
 
 
 
+
+
 <h1 style="
 font-size:4.5rem;
 margin-top:30px;
@@ -120,7 +158,9 @@ margin-top:30px;
 
 The future of
 
+
 <br>
+
 
 
 <span style="
@@ -133,12 +173,15 @@ var(--secondary)
 color:transparent;
 ">
 
+
 pharmacy learning
+
 
 </span>
 
 
 </h1>
+
 
 
 
@@ -150,11 +193,14 @@ margin:25px auto;
 font-size:1.2rem;
 ">
 
-Open, collaborative, and accessible platform
-connecting pharmacy students, teachers,
-researchers and professionals.
+
+Open, collaborative, and accessible
+platform connecting pharmacy students,
+teachers, researchers and professionals.
+
 
 </p>
+
 
 
 
@@ -165,12 +211,9 @@ researchers and professionals.
 
 <input
 
-placeholder=
-"Search notes, drugs, lectures, questions..."
+placeholder="Search notes, drugs, lectures, questions..."
 
-oninput="
-pharmoraSearch(this.value)
-"
+oninput="pharmoraSearch(this.value)"
 
 >
 
@@ -181,13 +224,36 @@ pharmoraSearch(this.value)
 
 
 
+
+
+
 <a 
 href="auth/register.html"
 class="btn btn-primary">
 
-Explore Pharmora
+
+Join Pharmora
+
 
 </a>
+
+
+
+&nbsp;
+
+
+
+<a 
+href="dashboard/"
+class="btn">
+
+
+Preview Dashboard
+
+
+</a>
+
+
 
 
 
@@ -203,7 +269,8 @@ Explore Pharmora
 
 
 
-<!-- MAIN FEATURES -->
+
+<!-- ECOSYSTEM -->
 
 
 <section class="section">
@@ -212,13 +279,26 @@ Explore Pharmora
 <div class="container">
 
 
+
+<h2 class="section-title">
+
+Explore Pharmora
+
+</h2>
+
+
+
+
+
 <div class="grid">
 
 
 
 
 
-<div class="card">
+
+
+<a href="learn/" class="card">
 
 
 <h2>
@@ -230,20 +310,24 @@ Explore Pharmora
 
 <p>
 
-Access B.Pharm, D.Pharm and pharmacy
-resources organized by curriculum.
+B.Pharm, D.Pharm, M.Pharm resources
+organized by syllabus and curriculum.
 
 </p>
 
 
-</div>
+</a>
 
 
 
 
 
 
-<div class="card">
+
+
+
+<a href="teach/" class="card">
+
 
 
 <h2>
@@ -253,22 +337,28 @@ resources organized by curriculum.
 </h2>
 
 
+
 <p>
 
-Lecture materials, course files,
-presentations and teaching methods.
+Lecture materials, PPTs,
+course files and teaching methods.
 
 </p>
 
 
-</div>
+
+</a>
 
 
 
 
 
 
-<div class="card">
+
+
+
+<a href="tools/" class="card">
+
 
 
 <h2>
@@ -278,15 +368,17 @@ presentations and teaching methods.
 </h2>
 
 
+
 <p>
 
-Useful pharmacy calculators,
-references and academic utilities.
+Calculators, formulas,
+drug references and utilities.
 
 </p>
 
 
-</div>
+
+</a>
 
 
 
@@ -294,36 +386,48 @@ references and academic utilities.
 
 
 
-<div class="card">
+
+
+<a href="community/" class="card">
+
 
 
 <h2>
 
-🌐 Community
+🌐 Connect
 
 </h2>
 
 
+
 <p>
 
-Discuss doubts, share resources
-and build pharmacy knowledge together.
+Ask doubts, discuss topics
+and contribute knowledge.
 
 </p>
 
 
+
+</a>
+
+
+
+
+
+
+
+
+
 </div>
 
-
-
-
-</div>
 
 
 </div>
 
 
 </section>
+
 
 
 
@@ -341,6 +445,7 @@ and build pharmacy knowledge together.
 <div class="container">
 
 
+
 <h2 class="section-title">
 
 📚 Curriculum Ready
@@ -350,58 +455,103 @@ and build pharmacy knowledge together.
 
 
 
+
+
 <div class="grid">
 
 
 
+
+
+
 <div class="card">
 
-<h2>B.Pharm</h2>
+
+<h2>
+
+B.Pharm
+
+</h2>
+
 
 <p>
 
 PCI syllabus, NEP curriculum
-and university variations.
+and future academic revisions.
 
 </p>
 
+
 </div>
+
+
+
+
 
 
 
 
 <div class="card">
 
-<h2>D.Pharm</h2>
+
+<h2>
+
+D.Pharm
+
+</h2>
+
+
 
 <p>
 
-Year wise resources,
-practicals and exam support.
+Year-wise resources,
+practicals and examination support.
 
 </p>
 
+
+
 </div>
+
+
+
+
+
+
 
 
 
 <div class="card">
 
-<h2>Future Ready</h2>
+
+
+<h2>
+
+Future Proof
+
+</h2>
+
+
 
 <p>
 
-Designed for new syllabus updates
-and community contributions.
+Designed for syllabus changes,
+universities and community updates.
 
 </p>
 
-</div>
-
-
 
 
 </div>
+
+
+
+
+
+
+
+</div>
+
 
 
 
@@ -409,6 +559,77 @@ and community contributions.
 
 
 </section>
+
+
+
+
+
+
+
+
+
+<!-- LIBRARY -->
+
+
+<section class="section">
+
+
+<div class="container">
+
+
+
+<div class="card">
+
+
+
+<h2>
+
+📚 Pharmora Library
+
+</h2>
+
+
+
+<p>
+
+
+Verified pharmacy knowledge base
+containing articles, drug information,
+references and collections.
+
+
+</p>
+
+
+
+<br>
+
+
+
+<a 
+href="library/"
+class="btn btn-primary">
+
+
+Explore Library
+
+
+</a>
+
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+</section>
+
+
 
 
 
@@ -427,7 +648,9 @@ and community contributions.
 <div class="container">
 
 
+
 <div class="card">
+
 
 
 <h2>
@@ -438,22 +661,30 @@ and community contributions.
 
 
 
+
 <p>
 
-A collaborative space for educators to
-share lecture notes, PPTs, academic
-templates, tricks and teaching strategies.
+Share lectures, academic templates,
+teaching tricks and improve pharmacy
+education collaboratively.
+
 
 </p>
+
 
 
 
 <br>
 
 
-<a class="btn btn-primary">
+
+<a 
+href="teach/"
+class="btn btn-primary">
+
 
 Explore Teaching Resources
+
 
 </a>
 
@@ -462,10 +693,12 @@ Explore Teaching Resources
 </div>
 
 
+
 </div>
 
 
 </section>
+
 
 
 
@@ -487,6 +720,7 @@ Explore Teaching Resources
 <div class="card">
 
 
+
 <h2>
 
 🚀 Built Openly
@@ -495,17 +729,21 @@ Explore Teaching Resources
 
 
 
+
 <p>
 
-Pharmora is a community powered
-open pharmacy learning ecosystem
-built with transparency and collaboration.
+
+Pharmora is a transparent,
+community powered open pharmacy
+learning ecosystem built for everyone.
+
 
 </p>
 
 
 
 </div>
+
 
 
 </div>
@@ -526,21 +764,50 @@ built with transparency and collaboration.
 
 
 
+
+
+
 <footer class="section">
 
 
-<div class="container"
+<div 
+class="container"
 style="text-align:center;">
 
 
-⚕ Pharmora
+
+<img
+src="assets/branding/logo.svg"
+height="45">
 
 
 <br><br>
 
 
+
+<strong>
+
+Pharmora
+
+</strong>
+
+
+
+<br><br>
+
+
+
 The future of pharmacy learning —
 open, collaborative, and accessible.
+
+
+
+<br><br>
+
+
+
+🌱 Built by the pharmacy community
+
 
 
 
@@ -555,6 +822,7 @@ open, collaborative, and accessible.
 
 
 <script src="js/app.js"></script>
+
 
 
 
