@@ -1,0 +1,67 @@
+{
+  "course": {
+    "id": "bpharm",
+
+    "name": "Bachelor of Pharmacy",
+
+    "short_name": "B.Pharm",
+
+    "duration": "4 Years",
+
+    "description": "Undergraduate pharmacy program covering pharmaceutical sciences, healthcare, research and industry knowledge.",
+
+    "curriculums": [
+
+      {
+
+        "id": "pci-2016",
+
+        "name": "PCI Regulation Curriculum",
+
+        "authority": "Pharmacy Council of India",
+
+        "status": "active",
+
+        "structure": "Semester Based",
+
+        "total_semesters": 8
+
+      },
+
+
+      {
+
+        "id": "nep",
+
+        "name": "NEP Based Curriculum",
+
+        "authority": "National Education Policy Framework",
+
+        "status": "new",
+
+        "structure": "Flexible Learning Framework"
+
+      }
+
+    ],
+
+
+    "major_subject_areas": [
+
+      "Pharmaceutics",
+
+      "Pharmaceutical Chemistry",
+
+      "Pharmacology",
+
+      "Pharmacognosy",
+
+      "Pharmaceutical Analysis",
+
+      "Pharmacy Practice"
+
+    ]
+
+
+  }
+}
