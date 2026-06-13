@@ -1,5 +1,6 @@
 /*
- Pharmora Global Search Engine
+ Pharmora Universal Search Engine
+ Works on GitHub Pages, custom domains, Netlify, Vercel
 */
 
 
@@ -9,38 +10,47 @@ let pharmoraIndex=[];
 
 
 
-/* Detect correct path */
+/* Find project root automatically */
 
 
-function dataPath(){
+function rootPath(){
 
 
-let path =
-window.location.pathname;
+let scripts =
+document.getElementsByTagName(
+"script"
+);
 
+
+
+for(let script of scripts){
 
 
 if(
-path.includes("/learn/") ||
-path.includes("/teach/") ||
-path.includes("/tools/") ||
-path.includes("/community/") ||
-path.includes("/library/")
+script.src.includes(
+"search.js"
+)
 ){
 
-return "../data/";
 
-}
-
-
-
-return "data/";
-
+return script.src
+.replace(
+"js/search.js",
+""
+);
 
 
 }
 
 
+}
+
+
+
+return "./";
+
+
+}
 
 
 
@@ -48,7 +58,9 @@ return "data/";
 
 
 
-/* Build Index */
+
+
+/* Build Search Index */
 
 
 async function buildSearchIndex(){
@@ -60,7 +72,9 @@ pharmoraIndex=[];
 
 
 const base =
-dataPath();
+rootPath();
+
+
 
 
 
@@ -86,6 +100,8 @@ const courses=[
 
 
 
+
+
 for(const course of courses){
 
 
@@ -98,8 +114,11 @@ let response =
 await fetch(
 
 base+
-"courses/"+
+
+"data/courses/"+
+
 course+
+
 ".json"
 
 );
@@ -112,35 +131,41 @@ await response.json();
 
 
 
+
+
+
 pharmoraIndex.push({
 
 
+
 title:
+
 data.course.name,
 
 
+
 type:
+
 "Course",
 
 
+
 description:
+
 data.course.description,
 
 
+
 link:
-"learn/"
+
+base+"learn/"
+
 
 
 });
 
 
 
-}
-
-
-
-catch(e){}
-
 
 
 }
@@ -148,12 +173,37 @@ catch(e){}
 
 
 
+catch(e){
+
+
+
+console.log(
+
+"Course missing:",
+
+course
+
+);
+
+
+
+}
+
+
+
+
+}
 
 
 
 
 
-/* B.Pharm Subjects */
+
+
+
+
+
+/* Curriculum Subjects */
 
 
 try{
@@ -164,7 +214,8 @@ let response =
 await fetch(
 
 base+
-"curriculum/bpharm-pci.json"
+
+"data/curriculum/bpharm-pci.json"
 
 );
 
@@ -176,49 +227,71 @@ await response.json();
 
 
 
+
+
 data.curriculum.semesters.forEach(
+
 semester=>{
 
 
 
 semester.subjects.forEach(
+
 subject=>{
+
+
 
 
 
 pharmoraIndex.push({
 
 
+
 title:
+
 subject.name,
 
 
+
 type:
+
 "Subject",
+
 
 
 description:
 
 subject.code+
+
 " | Semester "+
+
 semester.semester,
+
 
 
 link:
 
+base+
+
 "learn/subject.html?id="+
+
 subject.code
 
 
 
+
+});
+
+
+
+
+
 });
 
 
 
 });
 
-
-});
 
 
 
@@ -227,7 +300,21 @@ subject.code
 
 
 
-catch(e){}
+catch(e){
+
+
+
+console.log(
+
+"Curriculum unavailable"
+
+);
+
+
+
+}
+
+
 
 
 
@@ -256,7 +343,9 @@ pharmoraIndex.length
 
 
 
-/* Search */
+
+
+/* Search Function */
 
 
 function pharmoraSearch(query){
@@ -265,8 +354,12 @@ function pharmoraSearch(query){
 
 const resultBox =
 document.getElementById(
+
 "search-results"
+
 );
+
+
 
 
 
@@ -279,10 +372,12 @@ return;
 
 
 
+
 if(query.length < 2){
 
 
 resultBox.innerHTML="";
+
 
 return;
 
@@ -294,32 +389,42 @@ return;
 
 
 
+
+
+query =
+query.toLowerCase();
+
+
+
+
+
+
+
 const results =
 
-pharmoraIndex.filter(item=>{
+pharmoraIndex.filter(
 
+item=>
 
-return (
 
 item.title
 .toLowerCase()
-.includes(
-query.toLowerCase()
-)
+.includes(query)
 
 
 ||
 
+
 item.description
 .toLowerCase()
-.includes(
-query.toLowerCase()
-)
+.includes(query)
+
+
 
 );
 
 
-});
+
 
 
 
@@ -328,6 +433,8 @@ query.toLowerCase()
 
 
 resultBox.innerHTML="";
+
+
 
 
 
@@ -349,10 +456,14 @@ No results found
 `;
 
 
+
 return;
 
 
 }
+
+
+
 
 
 
@@ -367,8 +478,10 @@ results.forEach(item=>{
 resultBox.innerHTML += `
 
 
-<div 
+<div
+
 class="card"
+
 onclick="location.href='${item.link}'">
 
 
@@ -377,6 +490,7 @@ onclick="location.href='${item.link}'">
 ${item.title}
 
 </h2>
+
 
 
 <p>
@@ -397,11 +511,17 @@ ${item.description}
 
 
 
+
 });
 
 
 
+
 }
+
+
+
+
 
 
 
