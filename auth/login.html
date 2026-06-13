@@ -8,23 +8,24 @@
 
 <meta 
 name="viewport" 
-content="width=device-width, initial-scale=1.0"
->
+content="width=device-width, initial-scale=1.0">
+
 
 <title>
 Login | Pharmora
 </title>
 
 
-<!-- CSS -->
+<link 
+rel="icon"
+href="../assets/branding/favicon.svg">
+
 
 <link rel="stylesheet" href="../css/variables.css">
-
 <link rel="stylesheet" href="../css/base.css">
-
 <link rel="stylesheet" href="../css/components.css">
-
 <link rel="stylesheet" href="../css/responsive.css">
+
 
 
 <style>
@@ -46,6 +47,7 @@ padding:20px;
 
 
 
+
 .auth-box{
 
 width:100%;
@@ -53,6 +55,7 @@ width:100%;
 max-width:430px;
 
 }
+
 
 
 
@@ -84,28 +87,18 @@ color:transparent;
 
 
 
+
 .auth-card{
 
 padding:35px;
 
-border-radius:
+border-radius:var(--radius-large);
 
-var(--radius-large);
+background:rgba(15,23,42,.85);
 
+border:1px solid var(--border);
 
-background:
-
-rgba(15,23,42,.85);
-
-
-border:
-
-1px solid var(--border);
-
-
-box-shadow:
-
-var(--shadow);
+box-shadow:var(--shadow);
 
 }
 
@@ -122,11 +115,12 @@ margin-bottom:12px;
 
 
 
+
 .auth-card p{
 
 text-align:center;
 
-margin-bottom:30px;
+margin-bottom:25px;
 
 }
 
@@ -138,6 +132,7 @@ margin-bottom:30px;
 margin-bottom:18px;
 
 }
+
 
 
 
@@ -153,34 +148,20 @@ color:var(--text-soft);
 
 
 
-.input-group input{
 
+.input-group input{
 
 width:100%;
 
-
 padding:15px;
 
+border-radius:15px;
 
-border-radius:
+border:1px solid var(--border);
 
-15px;
+background:var(--surface);
 
-
-border:
-
-1px solid var(--border);
-
-
-background:
-
-var(--surface);
-
-
-color:
-
-var(--text);
-
+color:var(--text);
 
 outline:none;
 
@@ -199,9 +180,8 @@ font-size:.9rem;
 
 margin-top:20px;
 
-color:var(--primary);
-
 }
+
 
 
 
@@ -219,25 +199,32 @@ gap:12px;
 
 
 
+
 .role{
 
 padding:15px;
 
 border-radius:15px;
 
-background:
-
-var(--surface);
-
+background:var(--surface);
 
 text-align:center;
 
+border:1px solid var(--border);
 
-border:
-
-1px solid var(--border);
+transition:var(--transition);
 
 }
+
+
+
+
+.role:hover{
+
+border-color:var(--primary);
+
+}
+
 
 
 
@@ -249,7 +236,10 @@ text-align:center;
 
 font-size:.9rem;
 
+color:var(--text-muted);
+
 }
+
 
 
 </style>
@@ -260,15 +250,31 @@ font-size:.9rem;
 
 
 
+
+
+
+
 <body>
+
+
+
+
 
 
 
 <div class="auth-page">
 
 
+
 <div class="auth-box">
 
+
+
+
+
+
+<a href="../"
+style="text-decoration:none;">
 
 
 <div class="auth-logo">
@@ -278,10 +284,17 @@ font-size:.9rem;
 </div>
 
 
+</a>
+
+
+
+
 
 
 
 <div class="auth-card">
+
+
 
 
 
@@ -293,11 +306,32 @@ Welcome Back
 
 
 
+
+
 <p>
 
 Continue your open pharmacy learning journey
 
 </p>
+
+
+
+
+
+
+<div
+class="badge"
+style="display:block;text-align:center;margin-bottom:25px;">
+
+
+Prototype Access
+
+
+</div>
+
+
+
+
 
 
 
@@ -312,16 +346,19 @@ Email
 </label>
 
 
+
 <input
 
 type="email"
 
-placeholder="your@email.com"
+placeholder="your@email.com">
 
->
 
 
 </div>
+
+
+
 
 
 
@@ -331,6 +368,7 @@ placeholder="your@email.com"
 <div class="input-group">
 
 
+
 <label>
 
 Password
@@ -338,13 +376,13 @@ Password
 </label>
 
 
+
 <input
 
 type="password"
 
-placeholder="••••••••"
+placeholder="••••••••">
 
->
 
 
 </div>
@@ -354,13 +392,26 @@ placeholder="••••••••"
 
 
 
-<a href="../dashboard/"
+
+
+
+
+<a
+
+href="onboarding.html"
+
 class="btn btn-primary"
+
 style="width:100%;">
 
-Continue
+
+Continue Demo
+
 
 </a>
+
+
+
 
 
 
@@ -370,11 +421,13 @@ Continue
 <div class="auth-links">
 
 
+
 <a>
 
 Forgot password?
 
 </a>
+
 
 
 <a href="register.html">
@@ -384,7 +437,12 @@ Create account
 </a>
 
 
+
 </div>
+
+
+
+
 
 
 
@@ -394,20 +452,25 @@ Create account
 <div class="role-box">
 
 
-<div class="role">
-
-🎓 Student
-
-</div>
-
 
 <div class="role">
 
-👨‍🏫 Teacher
+🎓 Learner
 
 </div>
 
 
+
+
+<div class="role">
+
+🌱 Contributor
+
+</div>
+
+
+
+
 </div>
 
 
@@ -415,7 +478,13 @@ Create account
 
 
 
+
+
 </div>
+
+
+
+
 
 
 
@@ -423,10 +492,12 @@ Create account
 <div class="footer-text">
 
 
-The future of pharmacy learning —
+The future of pharmacy learning
+
 <br>
 
-open, collaborative, accessible.
+
+open • collaborative • accessible
 
 
 </div>
@@ -435,10 +506,16 @@ open, collaborative, accessible.
 
 
 
-</div>
 
 
 </div>
+
+
+
+</div>
+
+
+
 
 
 
