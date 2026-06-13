@@ -1,0 +1,10 @@
+Contact: https://himshim.github.io/pharmora/
+
+Preferred-Languages: en
+
+Canonical: https://himshim.github.io/pharmora/.well-known/security.txt
+
+
+Policy:
+
+Please responsibly report security or content issues related to Pharmora.
