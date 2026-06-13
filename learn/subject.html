@@ -263,9 +263,26 @@ async function loadSubject(){
 
 
 
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+
+const id =
+params.get(
+"id"
+);
+
+
+
 const file =
 
-"../data/subjects/pharmaceutics-1.json";
+"../data/subjects/"
++
+id
++
+".json";
 
 
 
