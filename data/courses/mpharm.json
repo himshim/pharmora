@@ -1,0 +1,125 @@
+{
+  "course": {
+
+    "id": "mpharm",
+
+    "name": "Master of Pharmacy",
+
+    "short_name": "M.Pharm",
+
+    "duration": "2 Years",
+
+    "description": "Postgraduate pharmacy program focused on advanced pharmaceutical sciences, specialization, research methodology and dissertation work.",
+
+
+    "curriculums": [
+
+      {
+
+        "id": "pci-pg",
+
+        "name": "PCI Postgraduate Curriculum",
+
+        "authority": "Pharmacy Council of India",
+
+        "status": "active",
+
+        "structure": "Semester Based",
+
+        "total_semesters": 4
+
+      }
+
+    ],
+
+
+
+    "specializations": [
+
+
+      {
+
+        "id": "pharmaceutics",
+
+        "name": "Pharmaceutics"
+
+      },
+
+
+      {
+
+        "id": "pharmaceutical-chemistry",
+
+        "name": "Pharmaceutical Chemistry"
+
+      },
+
+
+      {
+
+        "id": "pharmacology",
+
+        "name": "Pharmacology"
+
+      },
+
+
+      {
+
+        "id": "pharmacognosy",
+
+        "name": "Pharmacognosy"
+
+      },
+
+
+      {
+
+        "id": "pharmaceutical-analysis",
+
+        "name": "Pharmaceutical Analysis"
+
+      },
+
+
+      {
+
+        "id": "pharmacy-practice",
+
+        "name": "Pharmacy Practice"
+
+      },
+
+
+      {
+
+        "id": "quality-assurance",
+
+        "name": "Quality Assurance"
+
+      }
+
+
+    ],
+
+
+
+    "major_areas": [
+
+      "Advanced Theory",
+
+      "Research Methodology",
+
+      "Journal Review",
+
+      "Experimental Work",
+
+      "Dissertation",
+
+      "Seminars"
+
+    ]
+
+
+  }
+}
