@@ -17,6 +17,8 @@ Learn | Pharmora
 <link 
 rel="icon"
 href="../assets/branding/favicon.svg">
+
+
 <link rel="stylesheet" href="../css/variables.css">
 <link rel="stylesheet" href="../css/base.css">
 <link rel="stylesheet" href="../css/components.css">
@@ -26,59 +28,20 @@ href="../assets/branding/favicon.svg">
 <style>
 
 
-.header{
-
-padding:
-
-25px 0;
-
-}
-
-
-
 .hero{
 
 text-align:center;
 
-padding:
-
-50px 0;
+padding:50px 0;
 
 }
-
 
 
 .hero h1{
 
-font-size:
-
-3.5rem;
+font-size:3.5rem;
 
 }
-
-
-
-.course{
-
-cursor:pointer;
-
-}
-
-
-
-.path{
-
-margin-top:15px;
-
-font-size:.9rem;
-
-color:
-
-var(--text-muted);
-
-}
-
-
 
 
 .subject{
@@ -93,24 +56,13 @@ padding:20px;
 
 margin-bottom:12px;
 
+background:var(--surface);
 
-background:
+border:1px solid var(--border);
 
-var(--surface);
+border-radius:20px;
 
-
-border:
-
-1px solid var(--border);
-
-
-border-radius:
-
-20px;
-
-transition:
-
-var(--transition);
+transition:var(--transition);
 
 }
 
@@ -118,16 +70,11 @@ var(--transition);
 
 .subject:hover{
 
-border-color:
+border-color:var(--primary);
 
-var(--primary);
-
-transform:
-
-translateX(5px);
+transform:translateX(5px);
 
 }
-
 
 
 
@@ -138,9 +85,14 @@ translateX(5px);
 
 
 
+
 <body>
 
 
+
+
+
+<!-- NAVBAR -->
 
 
 <header class="container">
@@ -166,6 +118,7 @@ Pharmora
 
 
 
+
 <div 
 class="menu-toggle"
 onclick="toggleMenu()">
@@ -173,6 +126,7 @@ onclick="toggleMenu()">
 ☰
 
 </div>
+
 
 
 
@@ -212,8 +166,6 @@ Login
 
 
 </div>
-
-
 
 
 </nav>
@@ -259,30 +211,10 @@ Login
 
 
 
-
 </header>
 
 
 
-<div class="nav-links">
-
-
-<a href="../dashboard/">
-
-Dashboard
-
-</a>
-
-
-
-</div>
-
-
-
-</div>
-
-
-</header>
 
 
 
@@ -300,13 +232,11 @@ Dashboard
 
 
 
-
 <div class="badge">
 
 🎓 Pharmora Learn
 
 </div>
-
 
 
 
@@ -332,10 +262,7 @@ Your Way
 </span>
 
 
-
 </h1>
-
-
 
 
 
@@ -345,7 +272,6 @@ Resources organized by course,
 curriculum, semester and subject.
 
 </p>
-
 
 
 
@@ -359,7 +285,6 @@ curriculum, semester and subject.
 
 
 
-
 </section>
 
 
@@ -371,8 +296,6 @@ curriculum, semester and subject.
 
 
 <section class="container section">
-
-
 
 
 <h2 class="section-title">
@@ -383,111 +306,11 @@ Choose Course
 
 
 
-
-<div class="grid">
-
-
-
-<div class="card course">
-
-
-<h2>
-
-💊 B.Pharm
-
-</h2>
-
-
-<p>
-
-PCI regulation, NEP curriculum,
-semester wise resources.
-
-</p>
-
+<div 
+class="grid"
+id="course-list">
 
 </div>
-
-
-
-
-
-
-<div class="card course">
-
-
-<h2>
-
-⚕ D.Pharm
-
-</h2>
-
-
-<p>
-
-Year wise subjects, practicals
-and exam materials.
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-<div class="card course">
-
-
-<h2>
-
-🔬 M.Pharm
-
-</h2>
-
-
-<p>
-
-Advanced pharmacy studies
-and research resources.
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="card course">
-
-
-<h2>
-
-🏥 Pharm.D
-
-</h2>
-
-
-<p>
-
-Clinical pharmacy learning
-and references.
-
-</p>
-
-
-</div>
-
-
-
-</div>
-
 
 
 
@@ -501,8 +324,8 @@ and references.
 
 
 
-<section class="container section">
 
+<section class="container section">
 
 
 <h2 class="section-title">
@@ -521,16 +344,11 @@ Curriculum
 <div class="card">
 
 <h2>
-
 PCI Regulation
-
 </h2>
 
-
 <p>
-
 Existing pharmacy syllabus structure.
-
 </p>
 
 </div>
@@ -542,18 +360,12 @@ Existing pharmacy syllabus structure.
 <div class="card">
 
 <h2>
-
 NEP Curriculum
-
 </h2>
 
-
 <p>
-
 Updated flexible learning structure.
-
 </p>
-
 
 </div>
 
@@ -564,26 +376,19 @@ Updated flexible learning structure.
 <div class="card">
 
 <h2>
-
 University Based
-
 </h2>
 
-
 <p>
-
 Institution specific variations.
-
 </p>
 
-
 </div>
 
 
 
 
 </div>
-
 
 
 
@@ -601,14 +406,11 @@ Institution specific variations.
 <section class="container section">
 
 
-
-
 <h2 class="section-title">
 
 Popular Subjects
 
 </h2>
-
 
 
 
@@ -634,7 +436,6 @@ Pharmaceutics
 
 
 
-
 <div class="subject">
 
 Pharmaceutical Chemistry
@@ -646,7 +447,6 @@ Pharmaceutical Chemistry
 
 
 
-
 <div class="subject">
 
 Pharmacognosy
@@ -654,7 +454,6 @@ Pharmacognosy
 <span>→</span>
 
 </div>
-
 
 
 
@@ -671,7 +470,23 @@ Pharmacognosy
 
 
 
+
+
+<script src="../js/data-loader.js"></script>
+
 <script src="../js/app.js"></script>
+
+
+<script>
+
+
+renderCourses(
+"course-list"
+);
+
+
+</script>
+
 
 
 
