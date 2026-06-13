@@ -1,0 +1,36 @@
+/* TEAM */
+
+Project:
+Pharmora
+
+Description:
+Open Pharmacy Learning Network
+
+Purpose:
+Making pharmacy education more accessible,
+collaborative and community driven.
+
+
+/* TECHNOLOGY */
+
+HTML5
+CSS3
+JavaScript
+Progressive Web App
+
+
+/* THANKS */
+
+Students
+Educators
+Open knowledge contributors
+
+
+/* SITE */
+
+Language:
+English
+
+Standards:
+Responsive Web
+PWA Ready
