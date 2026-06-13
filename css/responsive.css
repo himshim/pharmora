@@ -1,0 +1,134 @@
+/*
+ Pharmora Responsive System
+ Mobile first adjustments
+*/
+
+
+/* TABLETS */
+
+
+@media (max-width: 900px) {
+
+
+    .nav-links {
+
+        display: none;
+
+    }
+
+
+    .section {
+
+        padding:
+
+        45px 0;
+
+    }
+
+
+}
+
+
+
+
+/* MOBILE */
+
+
+@media (max-width: 600px) {
+
+
+    .container {
+
+
+        width: 92%;
+
+
+    }
+
+
+
+    .navbar {
+
+
+        height: 65px;
+
+
+    }
+
+
+
+    .logo {
+
+
+        font-size:
+
+        1.4rem;
+
+
+    }
+
+
+
+    h1 {
+
+
+        font-size:
+
+        2.5rem !important;
+
+
+    }
+
+
+
+    .grid {
+
+
+        grid-template-columns:
+
+        1fr;
+
+
+    }
+
+
+
+    .card {
+
+
+        padding:
+
+        22px;
+
+
+        border-radius:
+
+        24px;
+
+
+    }
+
+
+
+    .search-box input {
+
+
+        padding:
+
+        15px 20px;
+
+
+    }
+
+
+
+    .btn {
+
+
+        width:100%;
+
+
+    }
+
+
+}
