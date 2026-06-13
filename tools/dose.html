@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Dose Calculator | Pharmora
+</title>
+
+
+<link rel="icon" href="../assets/branding/favicon.svg">
+
+
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/responsive.css">
+
+
+<style>
+
+
+.calculator{
+
+max-width:600px;
+
+margin:auto;
+
+}
+
+
+input{
+
+width:100%;
+
+padding:15px;
+
+margin-bottom:15px;
+
+border-radius:15px;
+
+border:1px solid var(--border);
+
+background:var(--surface);
+
+color:var(--text);
+
+}
+
+
+.result{
+
+font-size:2rem;
+
+margin-top:20px;
+
+}
+
+
+
+</style>
+
+</head>
+
+
+
+
+
+
+<body>
+
+
+
+
+
+
+<header class="container">
+
+
+<nav class="navbar">
+
+
+<a href="./" class="logo">
+
+
+⚕ Pharmora
+
+
+</a>
+
+
+
+<div class="nav-links">
+
+
+<a href="../learn/">Learn</a>
+
+<a href="./">Tools</a>
+
+
+</div>
+
+
+
+</nav>
+
+
+</header>
+
+
+
+
+
+
+
+
+
+<main>
+
+
+
+
+
+
+<section class="container section">
+
+
+<div class="calculator card">
+
+
+
+<div class="badge">
+
+💊 Calculator
+
+</div>
+
+
+
+
+<h1>
+
+Dose Calculator
+
+</h1>
+
+
+
+
+<p>
+
+Educational dose calculation tool.
+
+</p>
+
+
+
+
+
+
+<input
+
+type="number"
+
+id="weight"
+
+placeholder="Patient weight (kg)">
+
+
+
+
+
+
+<input
+
+type="number"
+
+id="dose"
+
+placeholder="Dose (mg/kg)">
+
+
+
+
+
+
+<button
+
+class="btn btn-primary"
+
+onclick="calculateDose()">
+
+
+
+Calculate
+
+
+
+</button>
+
+
+
+
+
+
+<div
+
+class="result"
+
+id="result">
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+</main>
+
+
+
+
+
+
+
+
+
+<script>
+
+
+
+function calculateDose(){
+
+
+
+const weight =
+document.getElementById(
+"weight"
+).value;
+
+
+
+const dose =
+document.getElementById(
+"dose"
+).value;
+
+
+
+
+
+const total =
+weight*dose;
+
+
+
+
+
+document.getElementById(
+"result"
+).innerHTML =
+
+
+total ?
+
+total+" mg"
+
+:
+
+"Enter values";
+
+
+
+
+}
+
+
+
+</script>
+
+
+
+
+
+
+
+</body>
+
+
+</html>
