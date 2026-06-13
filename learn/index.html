@@ -239,11 +239,18 @@ curriculum, semester and subject.
 <div class="search-box">
 
 
-<input placeholder="Search courses, subjects, topics...">
+<input 
+placeholder="Search courses, subjects, topics..."
+oninput="pharmoraSearch(this.value)">
 
 
 </div>
 
+<div 
+id="search-results"
+class="grid">
+
+</div>
 
 
 </section>
@@ -399,6 +406,8 @@ Popular Subjects
 
 
 <script src="../js/data-loader.js"></script>
+
+<script src="../js/search.js"></script>
 
 <script src="../js/app.js"></script>
 
