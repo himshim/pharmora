@@ -14,6 +14,7 @@ content="width=device-width, initial-scale=1.0">
 Learn | Pharmora
 </title>
 
+
 <link 
 rel="icon"
 href="../assets/branding/favicon.svg">
@@ -26,7 +27,6 @@ href="../assets/branding/favicon.svg">
 
 
 <style>
-
 
 .hero{
 
@@ -45,12 +45,6 @@ font-size:3.5rem;
 
 
 .subject{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
 
 padding:20px;
 
@@ -77,7 +71,6 @@ transform:translateX(5px);
 }
 
 
-
 </style>
 
 </head>
@@ -91,10 +84,6 @@ transform:translateX(5px);
 
 
 
-
-<!-- NAVBAR -->
-
-
 <header class="container">
 
 
@@ -104,7 +93,7 @@ transform:translateX(5px);
 <a href="../" class="logo">
 
 
-<img 
+<img
 src="../assets/branding/logo.svg"
 height="32"
 style="vertical-align:middle;">
@@ -135,37 +124,21 @@ onclick="toggleMenu()">
 <div class="nav-links">
 
 
-<a href="../learn/">
-Learn
-</a>
+<a href="../learn/">Learn</a>
 
+<a href="../teach/">Teach</a>
 
-<a href="../teach/">
-Teach
-</a>
+<a href="../tools/">Tools</a>
 
+<a href="../community/">Community</a>
 
-<a href="../tools/">
-Tools
-</a>
+<a href="../library/">Library</a>
 
-
-<a href="../community/">
-Community
-</a>
-
-
-<a href="../library/">
-Library
-</a>
-
-
-<a href="../auth/login.html">
-Login
-</a>
+<a href="../auth/login.html">Login</a>
 
 
 </div>
+
 
 
 </nav>
@@ -177,42 +150,25 @@ Login
 <div class="mobile-menu">
 
 
-<a href="../learn/">
-📚 Learn
-</a>
+<a href="../learn/">📚 Learn</a>
 
+<a href="../teach/">👨‍🏫 Teach</a>
 
-<a href="../teach/">
-👨‍🏫 Teach
-</a>
+<a href="../tools/">🧪 Tools</a>
 
+<a href="../community/">🌐 Community</a>
 
-<a href="../tools/">
-🧪 Tools
-</a>
+<a href="../library/">📖 Library</a>
 
-
-<a href="../community/">
-🌐 Community
-</a>
-
-
-<a href="../library/">
-📖 Library
-</a>
-
-
-<a href="../auth/login.html">
-👤 Login
-</a>
+<a href="../auth/login.html">👤 Login</a>
 
 
 </div>
 
 
 
-</header>
 
+</header>
 
 
 
@@ -228,8 +184,8 @@ Login
 
 
 
-<section class="container hero">
 
+<section class="container hero">
 
 
 <div class="badge">
@@ -237,6 +193,7 @@ Login
 🎓 Pharmora Learn
 
 </div>
+
 
 
 
@@ -257,12 +214,15 @@ var(--secondary)
 color:transparent;
 ">
 
+
 Your Way
+
 
 </span>
 
 
 </h1>
+
 
 
 
@@ -275,10 +235,11 @@ curriculum, semester and subject.
 
 
 
+
 <div class="search-box">
 
 
-<input placeholder="Search topics, notes, subjects...">
+<input placeholder="Search courses, subjects, topics...">
 
 
 </div>
@@ -306,16 +267,16 @@ Choose Course
 
 
 
-<div 
+<div
 class="grid"
 id="course-list">
+
 
 </div>
 
 
 
 </section>
-
 
 
 
@@ -330,61 +291,35 @@ id="course-list">
 
 <h2 class="section-title">
 
-Curriculum
+Curriculum Explorer
 
 </h2>
 
 
 
-
-<div class="grid">
-
+<div
+class="grid"
+id="curriculum-view">
 
 
 <div class="card">
 
-<h2>
-PCI Regulation
-</h2>
-
-<p>
-Existing pharmacy syllabus structure.
-</p>
-
-</div>
-
-
-
-
-
-<div class="card">
 
 <h2>
-NEP Curriculum
+
+Select a course
+
 </h2>
 
-<p>
-Updated flexible learning structure.
-</p>
-
-</div>
-
-
-
-
-
-<div class="card">
-
-<h2>
-University Based
-</h2>
 
 <p>
-Institution specific variations.
+
+Choose B.Pharm, D.Pharm or another course above.
+
 </p>
 
-</div>
 
+</div>
 
 
 
@@ -393,7 +328,6 @@ Institution specific variations.
 
 
 </section>
-
 
 
 
@@ -416,9 +350,15 @@ Popular Subjects
 
 <div class="subject">
 
-Pharmacology
+💊 Pharmacology
 
-<span>→</span>
+</div>
+
+
+
+<div class="subject">
+
+⚗ Pharmaceutics
 
 </div>
 
@@ -427,9 +367,7 @@ Pharmacology
 
 <div class="subject">
 
-Pharmaceutics
-
-<span>→</span>
+🧬 Pharmaceutical Chemistry
 
 </div>
 
@@ -438,27 +376,14 @@ Pharmaceutics
 
 <div class="subject">
 
-Pharmaceutical Chemistry
-
-<span>→</span>
+🌿 Pharmacognosy
 
 </div>
-
-
-
-
-<div class="subject">
-
-Pharmacognosy
-
-<span>→</span>
-
-</div>
-
 
 
 
 </section>
+
 
 
 
@@ -472,9 +397,12 @@ Pharmacognosy
 
 
 
+
 <script src="../js/data-loader.js"></script>
 
 <script src="../js/app.js"></script>
+
+
 
 
 <script>
@@ -490,6 +418,8 @@ renderCourses(
 
 
 
+
 </body>
+
 
 </html>
