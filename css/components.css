@@ -341,3 +341,86 @@
     1px solid var(--border);
 
 }
+/* =========================
+   MOBILE MENU
+========================= */
+
+
+.menu-toggle{
+
+display:none;
+
+font-size:1.8rem;
+
+cursor:pointer;
+
+}
+
+
+
+.mobile-menu{
+
+display:none;
+
+}
+
+
+
+.mobile-menu.active{
+
+
+display:flex;
+
+
+flex-direction:column;
+
+
+gap:15px;
+
+
+padding:20px;
+
+
+margin-top:10px;
+
+
+border-radius:
+
+var(--radius-medium);
+
+
+background:
+
+rgba(15,23,42,.95);
+
+
+border:
+
+1px solid var(--border);
+
+
+}
+
+
+
+.mobile-menu a{
+
+
+color:
+
+var(--text-soft);
+
+
+}
+
+
+
+.mobile-menu a:hover{
+
+
+color:
+
+var(--primary);
+
+
+}
