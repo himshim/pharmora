@@ -15,9 +15,10 @@ content="width=device-width, initial-scale=1.0">
 Library | Pharmora
 </title>
 
-<link 
-rel="icon"
-href="../assets/branding/favicon.svg">
+
+<link rel="icon" href="../assets/branding/favicon.svg">
+
+
 <link rel="stylesheet" href="../css/variables.css">
 <link rel="stylesheet" href="../css/base.css">
 <link rel="stylesheet" href="../css/components.css">
@@ -66,6 +67,8 @@ margin-bottom:12px;
 
 transition:var(--transition);
 
+cursor:pointer;
+
 }
 
 
@@ -77,6 +80,7 @@ border-color:var(--primary);
 transform:translateX(5px);
 
 }
+
 
 
 
@@ -129,7 +133,9 @@ opacity:.2;
 
 
 
+
 <body>
+
 
 
 
@@ -141,10 +147,11 @@ opacity:.2;
 <nav class="navbar">
 
 
+
 <a href="../" class="logo">
 
 
-<img 
+<img
 src="../assets/branding/logo.svg"
 height="32"
 style="vertical-align:middle;">
@@ -158,7 +165,9 @@ Pharmora
 
 
 
-<div 
+
+
+<div
 class="menu-toggle"
 onclick="toggleMenu()">
 
@@ -170,37 +179,23 @@ onclick="toggleMenu()">
 
 
 
+
+
+
 <div class="nav-links">
 
 
-<a href="../learn/">
-Learn
-</a>
+<a href="../learn/">Learn</a>
 
+<a href="../teach/">Teach</a>
 
-<a href="../teach/">
-Teach
-</a>
+<a href="../tools/">Tools</a>
 
+<a href="../community/">Community</a>
 
-<a href="../tools/">
-Tools
-</a>
+<a href="../library/">Library</a>
 
-
-<a href="../community/">
-Community
-</a>
-
-
-<a href="../library/">
-Library
-</a>
-
-
-<a href="../auth/login.html">
-Login
-</a>
+<a href="../auth/login.html">Login</a>
 
 
 </div>
@@ -208,7 +203,10 @@ Login
 
 
 
+
 </nav>
+
+
 
 
 
@@ -217,79 +215,22 @@ Login
 <div class="mobile-menu">
 
 
-<a href="../learn/">
-📚 Learn
-</a>
+<a href="../learn/">📚 Learn</a>
 
+<a href="../teach/">👨‍🏫 Teach</a>
 
-<a href="../teach/">
-👨‍🏫 Teach
-</a>
+<a href="../tools/">🧪 Tools</a>
 
+<a href="../community/">🌐 Community</a>
 
-<a href="../tools/">
-🧪 Tools
-</a>
+<a href="../library/">📖 Library</a>
 
-
-<a href="../community/">
-🌐 Community
-</a>
-
-
-<a href="../library/">
-📖 Library
-</a>
-
-
-<a href="../auth/login.html">
-👤 Login
-</a>
+<a href="../auth/login.html">👤 Login</a>
 
 
 </div>
 
 
-
-
-</header>
-
-
-
-
-<div class="nav-links">
-
-
-<a href="../learn/">
-
-Learn
-
-</a>
-
-
-
-<a href="../community/">
-
-Community
-
-</a>
-
-
-
-<a href="../dashboard/">
-
-Dashboard
-
-</a>
-
-
-
-</div>
-
-
-
-
-</nav>
 
 
 </header>
@@ -314,8 +255,6 @@ Dashboard
 
 
 
-
-
 <div class="badge">
 
 📚 Pharmora Library
@@ -326,12 +265,13 @@ Dashboard
 
 
 
-<h1>
 
+<h1>
 
 Open Pharmacy
 
 <br>
+
 
 
 <span style="
@@ -344,10 +284,11 @@ var(--secondary)
 color:transparent;
 ">
 
+
 Knowledge Base
 
-</span>
 
+</span>
 
 
 
@@ -358,12 +299,15 @@ Knowledge Base
 
 
 
+
 <p>
 
-Organized, verified and community-built
-pharmacy knowledge resources.
+Organized educational resources created by
+students, teachers and pharmacy contributors.
 
 </p>
+
+
 
 
 
@@ -372,7 +316,8 @@ pharmacy knowledge resources.
 <div class="search-box">
 
 
-<input placeholder="Search drugs, topics, articles...">
+<input placeholder="Search library (coming soon)">
+
 
 
 </div>
@@ -382,6 +327,10 @@ pharmacy knowledge resources.
 
 
 </section>
+
+
+
+
 
 
 
@@ -395,13 +344,13 @@ pharmacy knowledge resources.
 
 
 
-
-
 <h2 class="section-title">
 
 Explore Library
 
 </h2>
+
+
 
 
 
@@ -414,41 +363,13 @@ Explore Library
 
 
 
+
 <div class="card collection">
 
 
 <h2>
 
-💊 Drug Database
-
-</h2>
-
-
-<p>
-
-Drug classes, mechanisms,
-uses and important information.
-
-</p>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="card collection">
-
-
-
-<h2>
-
-📄 Articles
+📝 Study Notes
 
 </h2>
 
@@ -456,42 +377,9 @@ uses and important information.
 
 <p>
 
-Pharmacy concepts,
-academic explanations
-and references.
+Subject-wise pharmacy notes and explanations.
 
 </p>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="card collection">
-
-
-
-<h2>
-
-⭐ Collections
-
-</h2>
-
-
-
-<p>
-
-Curated pharmacy learning
-paths and resources.
-
-</p>
-
 
 
 </div>
@@ -509,7 +397,7 @@ paths and resources.
 
 <h2>
 
-🔖 Bookmarks
+🖥 Presentations
 
 </h2>
 
@@ -517,14 +405,72 @@ paths and resources.
 
 <p>
 
-Save and organize
-important materials.
+Lecture slides and classroom teaching materials.
 
 </p>
 
 
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="card collection">
+
+
+<h2>
+
+❓ Question Bank
+
+</h2>
+
+
+
+<p>
+
+MCQs, previous papers and examination resources.
+
+</p>
+
 
 </div>
+
+
+
+
+
+
+
+
+
+
+<div class="card collection">
+
+
+<h2>
+
+🧪 Practical Files
+
+</h2>
+
+
+
+<p>
+
+Laboratory manuals, experiments and records.
+
+</p>
+
+
+</div>
+
+
 
 
 
@@ -537,6 +483,9 @@ important materials.
 
 
 </section>
+
+
+
 
 
 
@@ -562,30 +511,13 @@ Featured Knowledge
 
 
 
-<div class="entry">
-
-
-NSAIDs Classification
-
-
-<span>
-
-→
-
-</span>
-
-
-</div>
-
-
-
 
 
 
 <div class="entry">
 
 
-Tablet Manufacturing Process
+B.Pharm Semester Resources
 
 
 <span>
@@ -603,10 +535,11 @@ Tablet Manufacturing Process
 
 
 
+
 <div class="entry">
 
 
-Pharmacokinetic Parameters
+Pharmacology Notes Collection
 
 
 <span>
@@ -624,10 +557,34 @@ Pharmacokinetic Parameters
 
 
 
+
 <div class="entry">
 
 
-Prescription Abbreviations
+Pharmaceutics Practical Resources
+
+
+<span>
+
+→
+
+</span>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="entry">
+
+
+Teacher Shared Materials
 
 
 <span>
@@ -645,6 +602,10 @@ Prescription Abbreviations
 
 
 </section>
+
+
+
+
 
 
 
@@ -664,21 +625,45 @@ Prescription Abbreviations
 
 
 
+
 <h2>
 
-🌱 Community Verified Knowledge
+🌱 Open Pharmacy Library
 
 </h2>
 
 
 
+
+
 <p>
 
-Pharmora Library grows through
-student, teacher and professional
-collaboration with review and improvement.
+Pharmora Library grows through responsible
+sharing, review and improvement of pharmacy
+learning resources.
 
 </p>
+
+
+
+
+
+
+<br>
+
+
+
+
+
+<a
+href="../contribute/"
+class="btn btn-primary">
+
+
+Add Resource
+
+
+</a>
 
 
 
@@ -697,7 +682,10 @@ collaboration with review and improvement.
 
 
 
+
 </main>
+
+
 
 
 
