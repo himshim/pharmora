@@ -1,47 +1,56 @@
 /*
- Pharmora Data System
+ Pharmora Dynamic Data System
 */
+
+
+let activeCurriculum=null;
+
+
 
 
 async function loadJSON(path){
 
 
-    try{
+try{
 
 
-        const response =
-        await fetch(path);
+const response =
+await fetch(path);
 
 
-        if(!response.ok){
+if(!response.ok){
 
-            throw new Error(
-                "Data unavailable"
-            );
-
-        }
-
-
-        return await response.json();
-
-
-    }
-
-
-    catch(error){
-
-
-        console.error(
-            "Pharmora:",
-            error
-        );
-
-
-        return null;
-
-    }
+throw new Error(
+"Unable to load data"
+);
 
 }
+
+
+return await response.json();
+
+
+}
+
+
+
+catch(error){
+
+
+console.error(
+"Pharmora Data:",
+error
+);
+
+
+return null;
+
+
+}
+
+
+}
+
 
 
 
@@ -54,44 +63,46 @@ async function loadJSON(path){
 async function loadCourses(){
 
 
-    const files = [
+const files=[
 
-        "../data/courses/bpharm.json",
+"../data/courses/bpharm.json",
 
-        "../data/courses/dpharm.json",
+"../data/courses/dpharm.json",
 
-        "../data/courses/mpharm.json",
+"../data/courses/mpharm.json",
 
-        "../data/courses/pharmd.json"
+"../data/courses/pharmd.json"
 
-    ];
-
-
-
-    let courses=[];
+];
 
 
 
-    for(const file of files){
-
-
-        const data =
-        await loadJSON(file);
-
-
-        if(data){
-
-            courses.push(
-                data.course
-            );
-
-        }
-
-    }
+let courses=[];
 
 
 
-    return courses;
+for(const file of files){
+
+
+let data =
+await loadJSON(file);
+
+
+
+if(data){
+
+courses.push(
+data.course
+);
+
+}
+
+
+}
+
+
+
+return courses;
 
 
 }
@@ -102,63 +113,77 @@ async function loadCourses(){
 
 
 
-/* SHOW COURSES */
+
+
+/* SHOW COURSE CARDS */
 
 
 async function renderCourses(id){
 
 
-    const box =
-    document.getElementById(id);
 
-
-    if(!box) return;
-
+const box =
+document.getElementById(id);
 
 
 
-    const courses =
-    await loadCourses();
+if(!box){
+
+return;
+
+}
 
 
-    box.innerHTML="";
+
+const courses =
+await loadCourses();
 
 
 
-    courses.forEach(course=>{
+box.innerHTML="";
 
 
-        box.innerHTML += `
-
-        <div 
-        class="card course"
-        onclick="openCourse('${course.id}')">
 
 
-        <h2>
-
-        ${course.short_name}
-
-        </h2>
+courses.forEach(course=>{
 
 
-        <p>
 
-        ${course.description}
-
-        </p>
+box.innerHTML += `
 
 
-        </div>
+<div
+class="card course"
+onclick="openCourse('${course.id}')">
 
-        `;
+
+<h2>
+
+${course.short_name}
+
+</h2>
 
 
-    });
+<p>
+
+${course.description}
+
+</p>
+
+
+</div>
+
+
+`;
+
+
+
+});
 
 
 
 }
+
 
 
 
@@ -174,47 +199,71 @@ async function openCourse(course){
 
 
 
-    let file=null;
-
-
-
-    if(course==="bpharm"){
-
-        file="../data/curriculum/bpharm-pci.json";
-
-    }
-
-
-
-    if(course==="dpharm"){
-
-        file="../data/curriculum/dpharm-er2020.json";
-
-    }
+let file=null;
 
 
 
 
-    const data =
-    await loadJSON(file);
+if(course==="bpharm"){
+
+
+file=
+"../data/curriculum/bpharm-pci.json";
+
+
+}
 
 
 
-    if(!data){
 
-        alert(
-        "Curriculum coming soon"
-        );
-
-        return;
-
-    }
+if(course==="dpharm"){
 
 
+file=
+"../data/curriculum/dpharm-er2020.json";
 
-    showCurriculum(
-        data.curriculum
-    );
+
+}
+
+
+
+
+if(!file){
+
+
+alert(
+"Curriculum coming soon"
+);
+
+
+return;
+
+
+}
+
+
+
+
+
+const data =
+await loadJSON(file);
+
+
+
+if(!data){
+
+return;
+
+}
+
+
+
+activeCurriculum =
+data.curriculum;
+
+
+
+showCurriculum();
 
 
 }
@@ -226,10 +275,13 @@ async function openCourse(course){
 
 
 
-/* DISPLAY CURRICULUM */
 
 
-function showCurriculum(data){
+
+/* DISPLAY SEMESTERS / YEARS */
+
+
+function showCurriculum(){
 
 
 
@@ -240,7 +292,11 @@ document.getElementById(
 
 
 
-if(!area) return;
+if(!area){
+
+return;
+
+}
 
 
 
@@ -250,16 +306,22 @@ area.innerHTML="";
 
 
 
-if(data.semesters){
+
+
+if(activeCurriculum.semesters){
 
 
 
-data.semesters.forEach(sem=>{
+activeCurriculum.semesters.forEach((sem,index)=>{
+
 
 
 area.innerHTML += `
 
-<div class="card">
+
+<div
+class="card"
+onclick="showSubjects('semester',${index})">
 
 
 <h2>
@@ -269,10 +331,11 @@ Semester ${sem.semester}
 </h2>
 
 
+
 <p>
 
 ${sem.subjects.length}
-Subjects Available
+Subjects
 
 </p>
 
@@ -287,22 +350,31 @@ Subjects Available
 });
 
 
+
 }
 
 
 
 
 
-if(data.years){
 
 
 
-data.years.forEach(year=>{
+
+if(activeCurriculum.years){
+
+
+
+activeCurriculum.years.forEach((year,index)=>{
+
 
 
 area.innerHTML += `
 
-<div class="card">
+
+<div
+class="card"
+onclick="showSubjects('year',${index})">
 
 
 <h2>
@@ -312,10 +384,11 @@ Year ${year.year}
 </h2>
 
 
+
 <p>
 
 ${year.subjects.length}
-Subjects Available
+Subjects
 
 </p>
 
@@ -330,7 +403,127 @@ Subjects Available
 });
 
 
+
 }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+/* SHOW SUBJECTS */
+
+
+function showSubjects(type,index){
+
+
+
+const area =
+document.getElementById(
+"curriculum-view"
+);
+
+
+
+let subjects=[];
+
+
+
+if(type==="semester"){
+
+
+subjects =
+activeCurriculum
+.semesters[index]
+.subjects;
+
+
+}
+
+
+
+
+if(type==="year"){
+
+
+subjects =
+activeCurriculum
+.years[index]
+.subjects;
+
+
+}
+
+
+
+
+area.innerHTML = `
+
+
+<div
+class="card"
+onclick="showCurriculum()">
+
+
+← Back
+
+
+</div>
+
+
+`;
+
+
+
+
+
+
+subjects.forEach(subject=>{
+
+
+
+area.innerHTML += `
+
+
+<div class="card">
+
+
+<h2>
+
+${subject.code}
+
+</h2>
+
+
+
+<p>
+
+${subject.name}
+
+<br>
+
+${subject.type}
+
+</p>
+
+
+</div>
+
+
+`;
+
+
+
+});
 
 
 
