@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta 
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Concentration Calculator | Pharmora
+</title>
+
+
+<link rel="icon" href="../assets/branding/favicon.svg">
+
+
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+
+
+<style>
+
+
+.calculator{
+
+max-width:600px;
+
+margin:auto;
+
+}
+
+
+
+input{
+
+width:100%;
+
+padding:15px;
+
+margin-bottom:15px;
+
+border-radius:15px;
+
+background:var(--surface);
+
+color:var(--text);
+
+border:1px solid var(--border);
+
+}
+
+
+
+.result{
+
+font-size:1.8rem;
+
+margin-top:20px;
+
+}
+
+
+
+</style>
+
+
+</head>
+
+
+
+
+
+
+<body>
+
+
+
+
+
+<header class="container">
+
+
+<nav class="navbar">
+
+
+<a href="../" class="logo">
+
+⚕ Pharmora
+
+</a>
+
+
+</nav>
+
+
+</header>
+
+
+
+
+
+
+
+
+<main>
+
+
+
+
+
+<section class="container section">
+
+
+
+<div class="calculator card">
+
+
+
+<div class="badge">
+
+⚗ Calculator
+
+</div>
+
+
+
+
+<h1>
+
+Concentration Calculator
+
+</h1>
+
+
+
+
+<p>
+
+Calculate percentage strength (% w/v)
+
+</p>
+
+
+
+
+
+
+<input
+
+type="number"
+
+id="amount"
+
+placeholder="Amount of solute (grams)">
+
+
+
+
+
+
+<input
+
+type="number"
+
+id="volume"
+
+placeholder="Final volume (mL)">
+
+
+
+
+
+
+
+
+<button
+
+class="btn btn-primary"
+
+onclick="calculateConcentration()">
+
+
+
+Calculate
+
+
+
+</button>
+
+
+
+
+
+
+
+
+<div
+
+id="result"
+
+class="result">
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
+</main>
+
+
+
+
+
+
+
+
+<script>
+
+
+
+function calculateConcentration(){
+
+
+
+let amount =
+
+document.getElementById(
+"amount"
+).value;
+
+
+
+
+let volume =
+
+document.getElementById(
+"volume"
+).value;
+
+
+
+
+
+let percent =
+
+(amount / volume) * 100;
+
+
+
+
+
+
+document.getElementById(
+"result"
+).innerHTML =
+
+
+
+percent ?
+
+"Strength: "+
+
+percent.toFixed(2)
+
++" % w/v"
+
+
+
+:
+
+"Enter values";
+
+
+
+
+}
+
+
+
+</script>
+
+
+
+
+
+</body>
+
+</html>
