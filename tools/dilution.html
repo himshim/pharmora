@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Dilution Calculator | Pharmora
+</title>
+
+
+<link rel="icon" href="../assets/branding/favicon.svg">
+
+
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+
+
+<style>
+
+.calculator{
+
+max-width:600px;
+
+margin:auto;
+
+}
+
+
+input{
+
+width:100%;
+
+padding:15px;
+
+margin-bottom:15px;
+
+border-radius:15px;
+
+background:var(--surface);
+
+color:var(--text);
+
+border:1px solid var(--border);
+
+}
+
+
+.result{
+
+font-size:1.8rem;
+
+margin-top:20px;
+
+}
+
+</style>
+
+
+</head>
+
+
+
+<body>
+
+
+<header class="container">
+
+<nav class="navbar">
+
+<a href="../" class="logo">
+
+⚕ Pharmora
+
+</a>
+
+</nav>
+
+</header>
+
+
+
+
+
+<main>
+
+
+
+<section class="container section">
+
+
+<div class="calculator card">
+
+
+<div class="badge">
+
+🧪 Calculator
+
+</div>
+
+
+<h1>
+
+Dilution Calculator
+
+</h1>
+
+
+
+<p>
+
+Based on:
+
+C₁ × V₁ = C₂ × V₂
+
+</p>
+
+
+
+
+
+<input 
+type="number"
+id="c1"
+placeholder="Initial concentration (C1)">
+
+
+
+<input 
+type="number"
+id="v1"
+placeholder="Initial volume (V1)">
+
+
+
+<input 
+type="number"
+id="c2"
+placeholder="Final concentration (C2)">
+
+
+
+
+
+
+<button 
+class="btn btn-primary"
+onclick="calculateDilution()">
+
+
+Calculate Final Volume
+
+
+</button>
+
+
+
+
+
+<div 
+id="result"
+class="result">
+
+
+</div>
+
+
+
+</div>
+
+
+
+</section>
+
+
+</main>
+
+
+
+
+
+<script>
+
+
+function calculateDilution(){
+
+
+let c1 =
+document.getElementById("c1").value;
+
+
+let v1 =
+document.getElementById("v1").value;
+
+
+let c2 =
+document.getElementById("c2").value;
+
+
+
+let v2 =
+(c1*v1)/c2;
+
+
+
+
+document.getElementById("result").innerHTML =
+
+v2 ?
+
+"Final Volume: "+v2+" units"
+
+:
+
+"Enter values";
+
+
+}
+
+
+</script>
+
+
+
+</body>
+
+</html>
