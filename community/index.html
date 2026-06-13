@@ -10,17 +10,20 @@
 name="viewport"
 content="width=device-width, initial-scale=1.0">
 
+
 <title>
 Community | Pharmora
 </title>
 
-<link 
-rel="icon"
-href="../assets/branding/favicon.svg">
+
+<link rel="icon" href="../assets/branding/favicon.svg">
+
+
 <link rel="stylesheet" href="../css/variables.css">
 <link rel="stylesheet" href="../css/base.css">
 <link rel="stylesheet" href="../css/components.css">
 <link rel="stylesheet" href="../css/responsive.css">
+
 
 
 <style>
@@ -44,6 +47,8 @@ font-size:3.8rem;
 
 
 
+
+
 .question{
 
 padding:22px;
@@ -62,6 +67,7 @@ transition:var(--transition);
 
 
 
+
 .question:hover{
 
 border-color:var(--primary);
@@ -69,6 +75,8 @@ border-color:var(--primary);
 transform:translateY(-4px);
 
 }
+
+
 
 
 
@@ -81,6 +89,8 @@ color:var(--text-muted);
 font-size:.9rem;
 
 }
+
+
 
 
 
@@ -104,6 +114,8 @@ font-size:.8rem;
 
 
 
+
+
 .contributor{
 
 display:flex;
@@ -122,6 +134,16 @@ border:1px solid var(--border);
 
 margin-bottom:12px;
 
+transition:var(--transition);
+
+}
+
+
+
+.contributor:hover{
+
+border-color:var(--primary);
+
 }
 
 
@@ -133,7 +155,13 @@ margin-bottom:12px;
 
 
 
+
+
+
+
+
 <body>
+
 
 
 
@@ -145,10 +173,11 @@ margin-bottom:12px;
 <nav class="navbar">
 
 
+
 <a href="../" class="logo">
 
 
-<img 
+<img
 src="../assets/branding/logo.svg"
 height="32"
 style="vertical-align:middle;">
@@ -162,7 +191,9 @@ Pharmora
 
 
 
-<div 
+
+
+<div
 class="menu-toggle"
 onclick="toggleMenu()">
 
@@ -174,37 +205,22 @@ onclick="toggleMenu()">
 
 
 
+
+
 <div class="nav-links">
 
 
-<a href="../learn/">
-Learn
-</a>
+<a href="../learn/">Learn</a>
 
+<a href="../teach/">Teach</a>
 
-<a href="../teach/">
-Teach
-</a>
+<a href="../tools/">Tools</a>
 
+<a href="../community/">Community</a>
 
-<a href="../tools/">
-Tools
-</a>
+<a href="../library/">Library</a>
 
-
-<a href="../community/">
-Community
-</a>
-
-
-<a href="../library/">
-Library
-</a>
-
-
-<a href="../auth/login.html">
-Login
-</a>
+<a href="../auth/login.html">Login</a>
 
 
 </div>
@@ -213,6 +229,8 @@ Login
 
 
 </nav>
+
+
 
 
 
@@ -221,34 +239,17 @@ Login
 <div class="mobile-menu">
 
 
-<a href="../learn/">
-📚 Learn
-</a>
+<a href="../learn/">📚 Learn</a>
 
+<a href="../teach/">👨‍🏫 Teach</a>
 
-<a href="../teach/">
-👨‍🏫 Teach
-</a>
+<a href="../tools/">🧪 Tools</a>
 
+<a href="../community/">🌐 Community</a>
 
-<a href="../tools/">
-🧪 Tools
-</a>
+<a href="../library/">📖 Library</a>
 
-
-<a href="../community/">
-🌐 Community
-</a>
-
-
-<a href="../library/">
-📖 Library
-</a>
-
-
-<a href="../auth/login.html">
-👤 Login
-</a>
+<a href="../auth/login.html">👤 Login</a>
 
 
 </div>
@@ -259,27 +260,10 @@ Login
 </header>
 
 
-<div class="nav-links">
-
-<a href="../learn/">
-Learn
-</a>
-
-<a href="../teach/">
-Teach
-</a>
-
-<a href="../dashboard/">
-Dashboard
-</a>
-
-</div>
 
 
-</nav>
 
 
-</header>
 
 
 
@@ -292,7 +276,11 @@ Dashboard
 
 
 
+
+
 <section class="container hero">
+
+
 
 
 
@@ -304,11 +292,17 @@ Dashboard
 
 
 
+
+
+
+
 <h1>
+
 
 Learn Together
 
 <br>
+
 
 
 <span style="
@@ -321,36 +315,89 @@ var(--secondary)
 color:transparent;
 ">
 
+
 Grow Together
 
+
 </span>
+
 
 
 </h1>
 
 
 
+
+
+
+
 <p>
+
 
 Ask questions, discuss concepts,
 share resources and improve pharmacy
 education collaboratively.
 
+
 </p>
 
 
 
-<div class="search-box">
 
 
-<input placeholder="Search discussions and doubts...">
+<br>
+
+
+
+<a
+href="../contribute/"
+class="btn btn-primary">
+
+
+Start Contributing
+
+
+</a>
+
+
+
+
+
+
+<div
+class="search-box"
+style="margin-top:30px;">
+
+
+
+<input
+placeholder="Search discussions, subjects, resources..."
+oninput="pharmoraSearch(this.value)">
+
 
 
 </div>
 
 
 
+
+
+<div
+id="search-results"
+class="grid"
+style="margin-top:30px;">
+
+
+</div>
+
+
+
+
+
+
 </section>
+
+
 
 
 
@@ -374,26 +421,32 @@ Discussion Spaces
 
 
 
+
+
 <div class="grid">
+
+
 
 
 
 
 <div class="card">
 
+
 <h2>
 
-❓ Doubts
+❓ Ask Doubts
 
 </h2>
 
 
+
 <p>
 
-Ask pharmacy related questions
-and get community help.
+Ask pharmacy related questions and learn with the community.
 
 </p>
+
 
 </div>
 
@@ -401,7 +454,11 @@ and get community help.
 
 
 
+
+
+
 <div class="card">
+
 
 <h2>
 
@@ -410,12 +467,13 @@ and get community help.
 </h2>
 
 
+
 <p>
 
-Responses reviewed by educators
-and experienced contributors.
+Responses reviewed by educators and contributors.
 
 </p>
+
 
 </div>
 
@@ -423,21 +481,26 @@ and experienced contributors.
 
 
 
+
+
+
 <div class="card">
+
 
 <h2>
 
-📚 Resource Sharing
+📚 Knowledge Sharing
 
 </h2>
 
 
+
 <p>
 
-Suggest notes, lectures,
-references and improvements.
+Share notes, explanations, references and improvements.
 
 </p>
+
 
 </div>
 
@@ -445,7 +508,11 @@ references and improvements.
 
 
 
+
+
+
 <div class="card">
+
 
 <h2>
 
@@ -454,19 +521,22 @@ references and improvements.
 </h2>
 
 
+
 <p>
 
-Recognizing people building
-open pharmacy knowledge.
+Recognizing people building open pharmacy education.
 
 </p>
 
-</div>
-
-
 
 </div>
 
+
+
+
+
+
+</div>
 
 
 
@@ -482,14 +552,18 @@ open pharmacy knowledge.
 
 
 
+
 <section class="container section">
+
 
 
 <h2 class="section-title">
 
-Trending Questions
+Community Discussions
 
 </h2>
+
+
 
 
 
@@ -497,11 +571,13 @@ Trending Questions
 <div class="question">
 
 
+
 <h3>
 
 Difference between bactericidal and bacteriostatic antibiotics?
 
 </h3>
+
 
 
 <div class="tag">
@@ -514,12 +590,15 @@ Pharmacology
 
 <div class="question-info">
 
-12 answers • Teacher verified
+Teacher verification planned
 
 </div>
 
 
+
 </div>
+
+
 
 
 
@@ -527,6 +606,7 @@ Pharmacology
 
 
 <div class="question">
+
 
 
 <h3>
@@ -536,9 +616,10 @@ How to remember autonomic nervous system drugs?
 </h3>
 
 
+
 <div class="tag">
 
-Study Tricks
+Study Methods
 
 </div>
 
@@ -546,12 +627,15 @@ Study Tricks
 
 <div class="question-info">
 
-8 answers • Community discussion
+Community learning
 
 </div>
 
 
+
 </div>
+
+
 
 
 
@@ -562,6 +646,7 @@ Study Tricks
 <div class="question">
 
 
+
 <h3>
 
 Best method to explain tablet compression defects?
@@ -569,9 +654,10 @@ Best method to explain tablet compression defects?
 </h3>
 
 
+
 <div class="tag">
 
-Teaching
+Teacher Corner
 
 </div>
 
@@ -579,17 +665,23 @@ Teaching
 
 <div class="question-info">
 
-Teacher Corner
+Teaching discussion
 
 </div>
 
 
+
 </div>
+
+
 
 
 
 
 </section>
+
+
+
 
 
 
@@ -602,6 +694,7 @@ Teacher Corner
 <section class="container section">
 
 
+
 <h2 class="section-title">
 
 Community Contributors
@@ -611,21 +704,24 @@ Community Contributors
 
 
 
+
+
 <div class="contributor">
 
 
 <span>
 
-👨‍🏫 Verified Educators
+👨‍🏫 Educators
 
 </span>
 
 
 <span>
 
-Helping students
+Share expertise
 
 </span>
+
 
 
 </div>
@@ -634,29 +730,63 @@ Helping students
 
 
 
+
+
+
 <div class="contributor">
 
 
 <span>
 
-🌱 Open Contributors
+🌱 Contributors
 
 </span>
 
 
 <span>
 
-Building Pharmora
+Improve Pharmora
 
 </span>
 
 
+
 </div>
+
+
+
+
+
+
+
+
+<div class="contributor">
+
+
+<span>
+
+🎓 Students
+
+</span>
+
+
+<span>
+
+Learn and discuss
+
+</span>
+
+
+
+</div>
+
+
 
 
 
 
 </section>
+
 
 
 
@@ -669,7 +799,14 @@ Building Pharmora
 
 
 
+
+
+
+<script src="../js/search.js"></script>
+
 <script src="../js/app.js"></script>
+
+
 
 
 
