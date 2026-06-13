@@ -1,0 +1,138 @@
+{
+  "subject": {
+
+    "code": "SUBJECT_CODE",
+
+    "name": "Subject Name",
+
+    "course": "Course Name",
+
+    "curriculum": "Curriculum Name",
+
+    "semester": 0,
+
+
+    "description":
+
+    "Short subject introduction and learning objectives.",
+
+
+
+    "units": [
+
+
+      {
+
+        "unit": 1,
+
+        "title": "Unit Title",
+
+        "topics": [
+
+          "Topic 1",
+
+          "Topic 2",
+
+          "Topic 3"
+
+        ]
+
+      },
+
+
+      {
+
+        "unit": 2,
+
+        "title": "Unit Title",
+
+        "topics": []
+
+      },
+
+
+      {
+
+        "unit": 3,
+
+        "title": "Unit Title",
+
+        "topics": []
+
+      },
+
+
+      {
+
+        "unit": 4,
+
+        "title": "Unit Title",
+
+        "topics": []
+
+      },
+
+
+      {
+
+        "unit": 5,
+
+        "title": "Unit Title",
+
+        "topics": []
+
+      }
+
+
+    ],
+
+
+
+
+
+
+    "resources": {
+
+
+      "notes": [],
+
+
+      "presentations": [],
+
+
+      "questions": [],
+
+
+      "videos": [],
+
+
+      "teacher_materials": []
+
+
+    },
+
+
+
+
+
+
+
+    "metadata": {
+
+
+      "verified": false,
+
+
+      "contributors": [],
+
+
+      "last_updated": ""
+
+
+    }
+
+
+
+  }
+
+}
