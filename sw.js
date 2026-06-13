@@ -14,6 +14,8 @@ const FILES=[
 
 "./index.html",
 
+"./offline.html",
+
 "./css/variables.css",
 
 "./css/base.css",
@@ -33,18 +35,34 @@ const FILES=[
 
 
 self.addEventListener(
-"install",
+"fetch",
 event=>{
 
 
-event.waitUntil(
+event.respondWith(
 
 
-caches.open(CACHE_NAME)
+caches.match(event.request)
 
-.then(cache=>{
 
-return cache.addAll(FILES);
+.then(response=>{
+
+
+return response ||
+
+
+fetch(event.request)
+
+.catch(()=>{
+
+
+return caches.match(
+"./offline.html"
+);
+
+
+});
+
 
 })
 
