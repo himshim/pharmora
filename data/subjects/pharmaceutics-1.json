@@ -1,0 +1,122 @@
+{
+  "subject": {
+
+    "code": "BP103T",
+
+    "name": "Pharmaceutics I",
+
+    "course": "B.Pharm",
+
+    "semester": 1,
+
+
+    "description":
+
+    "Introduction to the profession of pharmacy, dosage forms, pharmaceutical calculations and basic pharmaceutical preparations.",
+
+
+    "units": [
+
+
+      {
+        "unit": 1,
+
+        "title": "Historical Background and Introduction",
+
+        "topics": [
+
+          "History of Pharmacy",
+
+          "Pharmacy Profession",
+
+          "Pharmacopoeias",
+
+          "Introduction to dosage forms"
+
+        ]
+
+      },
+
+
+
+      {
+        "unit": 2,
+
+        "title": "Pharmaceutical Calculations",
+
+        "topics": [
+
+          "Weights and measures",
+
+          "Percentage calculations",
+
+          "Isotonic solutions"
+
+        ]
+
+      },
+
+
+
+      {
+        "unit": 3,
+
+        "title": "Powders and Liquid Dosage Forms",
+
+        "topics": [
+
+          "Powders",
+
+          "Solutions",
+
+          "Syrups",
+
+          "Elixirs"
+
+        ]
+
+      },
+
+
+
+      {
+        "unit": 4,
+
+        "title": "Semisolid Dosage Forms",
+
+        "topics": [
+
+          "Ointments",
+
+          "Creams",
+
+          "Gels"
+
+        ]
+
+      },
+
+
+
+      {
+        "unit": 5,
+
+        "title": "Suppositories and Pharmaceutical Incompatibilities",
+
+        "topics": [
+
+          "Suppositories",
+
+          "Types of incompatibilities",
+
+          "Handling methods"
+
+        ]
+
+      }
+
+
+    ]
+
+  }
+}
