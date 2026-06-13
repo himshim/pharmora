@@ -1,8 +1,5 @@
 /*
- Pharmora Data Loader
-
- Connects static JSON data
- with the user interface
+ Pharmora Data System
 */
 
 
@@ -16,19 +13,16 @@ async function loadJSON(path){
         await fetch(path);
 
 
-
         if(!response.ok){
 
             throw new Error(
-                "Unable to load data"
+                "Data unavailable"
             );
 
         }
 
 
-
         return await response.json();
-
 
 
     }
@@ -38,16 +32,14 @@ async function loadJSON(path){
 
 
         console.error(
-            "Pharmora Data Error:",
+            "Pharmora:",
             error
         );
 
 
         return null;
 
-
     }
-
 
 }
 
@@ -56,15 +48,13 @@ async function loadJSON(path){
 
 
 
-/*
- Load course information
-*/
+/* LOAD COURSES */
 
 
 async function loadCourses(){
 
 
-    const courses = [
+    const files = [
 
         "../data/courses/bpharm.json",
 
@@ -78,33 +68,30 @@ async function loadCourses(){
 
 
 
-    let output = [];
+    let courses=[];
 
 
 
-    for(const item of courses){
-
+    for(const file of files){
 
 
         const data =
-        await loadJSON(item);
-
+        await loadJSON(file);
 
 
         if(data){
 
-            output.push(
+            courses.push(
                 data.course
             );
 
         }
 
-
     }
 
 
 
-    return output;
+    return courses;
 
 
 }
@@ -114,26 +101,19 @@ async function loadCourses(){
 
 
 
-/*
- Render course cards automatically
-*/
+
+/* SHOW COURSES */
 
 
-async function renderCourses(containerId){
+async function renderCourses(id){
 
 
-    const container =
-    document.getElementById(
-        containerId
-    );
+    const box =
+    document.getElementById(id);
 
 
+    if(!box) return;
 
-    if(!container){
-
-        return;
-
-    }
 
 
 
@@ -141,23 +121,18 @@ async function renderCourses(containerId){
     await loadCourses();
 
 
-
-
-
-    container.innerHTML = "";
-
-
+    box.innerHTML="";
 
 
 
     courses.forEach(course=>{
 
 
+        box.innerHTML += `
 
-        container.innerHTML += `
-
-
-        <div class="card">
+        <div 
+        class="card course"
+        onclick="openCourse('${course.id}')">
 
 
         <h2>
@@ -174,14 +149,189 @@ async function renderCourses(containerId){
         </p>
 
 
-
         </div>
-
 
         `;
 
 
     });
+
+
+
+}
+
+
+
+
+
+
+
+
+/* OPEN COURSE */
+
+
+async function openCourse(course){
+
+
+
+    let file=null;
+
+
+
+    if(course==="bpharm"){
+
+        file="../data/curriculum/bpharm-pci.json";
+
+    }
+
+
+
+    if(course==="dpharm"){
+
+        file="../data/curriculum/dpharm-er2020.json";
+
+    }
+
+
+
+
+    const data =
+    await loadJSON(file);
+
+
+
+    if(!data){
+
+        alert(
+        "Curriculum coming soon"
+        );
+
+        return;
+
+    }
+
+
+
+    showCurriculum(
+        data.curriculum
+    );
+
+
+}
+
+
+
+
+
+
+
+
+/* DISPLAY CURRICULUM */
+
+
+function showCurriculum(data){
+
+
+
+const area =
+document.getElementById(
+"curriculum-view"
+);
+
+
+
+if(!area) return;
+
+
+
+area.innerHTML="";
+
+
+
+
+
+if(data.semesters){
+
+
+
+data.semesters.forEach(sem=>{
+
+
+area.innerHTML += `
+
+<div class="card">
+
+
+<h2>
+
+Semester ${sem.semester}
+
+</h2>
+
+
+<p>
+
+${sem.subjects.length}
+Subjects Available
+
+</p>
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+}
+
+
+
+
+
+if(data.years){
+
+
+
+data.years.forEach(year=>{
+
+
+area.innerHTML += `
+
+<div class="card">
+
+
+<h2>
+
+Year ${year.year}
+
+</h2>
+
+
+<p>
+
+${year.subjects.length}
+Subjects Available
+
+</p>
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+}
+
 
 
 }
