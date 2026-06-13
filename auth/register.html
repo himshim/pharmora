@@ -8,18 +8,24 @@
 
 <meta 
 name="viewport" 
-content="width=device-width, initial-scale=1.0"
->
+content="width=device-width, initial-scale=1.0">
+
 
 <title>
 Join Pharmora
 </title>
 
 
+<link 
+rel="icon"
+href="../assets/branding/favicon.svg">
+
+
 <link rel="stylesheet" href="../css/variables.css">
 <link rel="stylesheet" href="../css/base.css">
 <link rel="stylesheet" href="../css/components.css">
 <link rel="stylesheet" href="../css/responsive.css">
+
 
 
 <style>
@@ -41,6 +47,7 @@ padding:20px;
 
 
 
+
 .register-box{
 
 width:100%;
@@ -48,6 +55,7 @@ width:100%;
 max-width:500px;
 
 }
+
 
 
 
@@ -61,7 +69,6 @@ font-weight:900;
 
 margin-bottom:20px;
 
-
 background:
 
 linear-gradient(
@@ -69,7 +76,6 @@ linear-gradient(
 var(--primary),
 var(--secondary)
 );
-
 
 -webkit-background-clip:text;
 
@@ -82,29 +88,19 @@ color:transparent;
 
 .form-card{
 
-background:
+background:rgba(15,23,42,.85);
 
-rgba(15,23,42,.85);
+border:1px solid var(--border);
 
-
-border:
-
-1px solid var(--border);
-
-
-border-radius:
-
-var(--radius-large);
-
+border-radius:var(--radius-large);
 
 padding:35px;
 
-
-box-shadow:
-
-var(--shadow);
+box-shadow:var(--shadow);
 
 }
+
+
 
 
 
@@ -117,13 +113,13 @@ text-align:center;
 
 
 
+
 .form-card p{
 
-margin:
-
-12px 0 30px;
+margin:12px 0 25px;
 
 }
+
 
 
 
@@ -135,17 +131,18 @@ margin-bottom:18px;
 
 
 
+
 .field label{
 
 display:block;
 
 margin-bottom:8px;
 
-color:
-
-var(--text-soft);
+color:var(--text-soft);
 
 }
+
+
 
 
 
@@ -157,19 +154,11 @@ padding:15px;
 
 border-radius:15px;
 
-border:
+border:1px solid var(--border);
 
-1px solid var(--border);
+background:var(--surface);
 
-
-background:
-
-var(--surface);
-
-
-color:
-
-var(--text);
+color:var(--text);
 
 outline:none;
 
@@ -178,21 +167,20 @@ outline:none;
 
 
 
+
 .roles{
 
 display:grid;
 
-grid-template-columns:
-
-repeat(2,1fr);
+grid-template-columns:repeat(2,1fr);
 
 gap:12px;
 
-margin:
-
-20px 0;
+margin:20px 0;
 
 }
+
+
 
 
 
@@ -202,38 +190,30 @@ padding:18px;
 
 border-radius:18px;
 
-background:
+background:var(--surface);
 
-var(--surface);
-
-
-border:
-
-1px solid var(--border);
-
+border:1px solid var(--border);
 
 text-align:center;
 
-transition:
+transition:var(--transition);
 
-var(--transition);
+cursor:pointer;
 
 }
+
+
 
 
 
 .role-card:hover{
 
-border-color:
+border-color:var(--primary);
 
-var(--primary);
-
-
-transform:
-
-translateY(-3px);
+transform:translateY(-3px);
 
 }
+
 
 
 
@@ -249,9 +229,7 @@ margin-top:20px;
 
 .login-text a{
 
-color:
-
-var(--primary);
+color:var(--primary);
 
 }
 
@@ -265,7 +243,15 @@ var(--primary);
 
 
 
+
+
+
+
+
 <body>
+
+
+
 
 
 
@@ -273,8 +259,18 @@ var(--primary);
 
 
 
+
 <div class="register-box">
 
+
+
+
+
+
+
+<a 
+href="../"
+style="text-decoration:none;">
 
 
 <div class="brand">
@@ -284,11 +280,20 @@ var(--primary);
 </div>
 
 
+</a>
+
+
+
+
+
 
 
 
 
 <div class="form-card">
+
+
+
 
 
 
@@ -300,11 +305,32 @@ Create Account
 
 
 
+
+
 <p>
 
 Join the open pharmacy knowledge community
 
 </p>
+
+
+
+
+
+
+<div
+class="badge"
+style="display:block;text-align:center;margin-bottom:25px;">
+
+
+Prototype Registration
+
+
+</div>
+
+
+
+
 
 
 
@@ -320,10 +346,15 @@ Name
 </label>
 
 
+
 <input placeholder="Your name">
 
 
 </div>
+
+
+
+
 
 
 
@@ -339,13 +370,12 @@ Email
 </label>
 
 
+
 <input
 
 type="email"
 
-placeholder="your@email.com"
-
->
+placeholder="your@email.com">
 
 
 </div>
@@ -354,7 +384,13 @@ placeholder="your@email.com"
 
 
 
+
+
+
+
+
 <div class="field">
+
 
 
 <label>
@@ -364,13 +400,13 @@ Password
 </label>
 
 
+
 <input
 
 type="password"
 
-placeholder="Create password"
+placeholder="Create password">
 
->
 
 
 </div>
@@ -379,16 +415,29 @@ placeholder="Create password"
 
 
 
+
+
+
+
+
 <p>
 
-I am joining as
+Choose your role
 
 </p>
 
 
 
 
+
+
+
+
 <div class="roles">
+
+
+
+
 
 
 <div class="role-card">
@@ -403,15 +452,23 @@ Student
 
 
 
+
+
+
+
 <div class="role-card">
 
 👨‍🏫
 
 <br>
 
-Teacher
+Educator
 
 </div>
+
+
+
+
 
 
 
@@ -427,6 +484,11 @@ Professional
 
 
 
+
+
+
+
+
 <div class="role-card">
 
 🌱
@@ -438,20 +500,39 @@ Contributor
 </div>
 
 
+
+
+
+
 </div>
 
 
 
 
 
-<a 
+
+
+
+
+<a
+
 href="onboarding.html"
+
 class="btn btn-primary"
+
 style="width:100%;">
+
+
 
 Join Pharmora
 
+
+
 </a>
+
+
+
+
 
 
 
@@ -460,7 +541,9 @@ Join Pharmora
 <div class="login-text">
 
 
+
 Already a member?
+
 
 <a href="login.html">
 
@@ -469,27 +552,38 @@ Login
 </a>
 
 
-</div>
-
-
-
-
-
-
-</div>
 
 
 </div>
 
 
 
+
+
+
 </div>
+
+
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
 
 
 
 
 
 <script src="../js/app.js"></script>
+
 
 
 
