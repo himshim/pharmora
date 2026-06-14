@@ -29,6 +29,12 @@
     "url":"/library/"
   },
 
+{
+"title":"Events",
+"icon":"📅",
+"url":"/events/"
+},
+
   {
     "title":"Login",
     "icon":"👤",
