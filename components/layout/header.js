@@ -199,9 +199,13 @@ ${mobileLinks}
 
 <div class="notice-track">
 
-<div id="notice-text">
+<div class="notice-track">
+
+<span id="notice-text">
 
 Loading updates...
+
+</span>
 
 </div>
 
