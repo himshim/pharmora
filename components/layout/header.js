@@ -16,6 +16,7 @@ return;
 
 
 
+
 const base =
 location.pathname.split("/").length > 2
 ?
@@ -32,6 +33,7 @@ await fetch(
 base+"config/site.json"
 )
 .then(r=>r.json());
+
 
 
 
@@ -54,9 +56,7 @@ let mobileLinks="";
 
 
 
-
 nav.forEach(item=>{
-
 
 
 let url =
@@ -79,15 +79,15 @@ ${item.title}
 
 
 
-
-
 mobileLinks += `
 
 
 <a href="${url}">
 
+
 ${item.icon}
 ${item.title}
+
 
 </a>
 
@@ -108,9 +108,7 @@ ${item.title}
 root.innerHTML = `
 
 
-
 <header class="container">
-
 
 
 <nav class="navbar">
@@ -133,7 +131,6 @@ height="32"
 style="vertical-align:middle;">
 
 
-
 ${site.name}
 
 
@@ -146,17 +143,12 @@ ${site.name}
 
 
 
-
 <div
-
 class="menu-toggle"
-
 onclick="toggleMenu()">
 
 
-
 ☰
-
 
 
 </div>
@@ -176,12 +168,18 @@ ${desktopLinks}
 
 
 
-<a href="${base}auth/login.html">
 
-Login
+<button
 
-</a>
+class="notification-btn"
 
+onclick="toggleNotifications()">
+
+
+🔔
+
+
+</button>
 
 
 
@@ -200,32 +198,44 @@ Login
 
 
 
-
-
 <div class="mobile-menu">
-
-
 
 
 ${mobileLinks}
 
 
 
+<div
 
-<a href="${base}auth/login.html">
+class="mobile-notice"
+
+onclick="toggleNotifications()">
 
 
-👤 Login
+🔔 Updates
 
 
-</a>
-
+</div>
 
 
 
 
 </div>
 
+
+
+
+
+
+
+
+<div id="notification-panel">
+
+
+Loading...
+
+
+</div>
 
 
 
@@ -239,8 +249,162 @@ ${mobileLinks}
 
 
 
+loadNotifications();
+
+
 
 }
+
+
+
+
+
+
+async function loadNotifications(){
+
+
+
+const panel =
+document.getElementById(
+"notification-panel"
+);
+
+
+
+if(!panel){
+
+return;
+
+}
+
+
+
+try{
+
+
+const notices =
+await fetch(
+"/config/notices.json"
+)
+.then(r=>r.json());
+
+
+
+
+if(notices.length===0){
+
+
+panel.innerHTML = `
+
+<p>No updates</p>
+
+`;
+
+
+return;
+
+}
+
+
+
+
+
+
+panel.innerHTML =
+notices.map(item=>`
+
+
+<div class="notice-item">
+
+
+
+<strong>
+
+${item.title}
+
+</strong>
+
+
+
+
+<p>
+
+${item.message}
+
+</p>
+
+
+
+
+<small>
+
+${item.date}
+
+</small>
+
+
+
+</div>
+
+
+`).join("");
+
+
+
+}
+
+
+catch(e){
+
+
+
+panel.innerHTML = `
+
+<p>No notices available</p>
+
+`;
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function toggleNotifications(){
+
+
+
+const panel =
+document.getElementById(
+"notification-panel"
+);
+
+
+
+if(panel){
+
+
+panel.classList.toggle("show");
+
+
+}
+
+
+
+}
+
+
+
+
 
 
 
