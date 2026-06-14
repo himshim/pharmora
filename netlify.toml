@@ -1,4 +1,7 @@
-# Netlify configuration
+# =========================
+# Netlify Configuration
+# Development Stage
+# =========================
 
 
 [build]
@@ -7,7 +10,10 @@ publish = "."
 
 
 
-# Single page fallback / future dynamic routes
+# =========================
+# ROUTING
+# =========================
+
 
 [[redirects]]
 
@@ -19,7 +25,12 @@ status = 200
 
 
 
-# Security headers
+
+
+# =========================
+# SECURITY HEADERS
+# =========================
+
 
 [[headers]]
 
@@ -35,16 +46,30 @@ Referrer-Policy = "strict-origin-when-cross-origin"
 
 
 
-# Cache static assets
+
+
+# =========================
+# HTML
+# Always refresh pages
+# =========================
+
 
 [[headers]]
 
-for = "/assets/*"
+for = "/*.html"
 
 [headers.values]
 
-Cache-Control = "public, max-age=31536000, immutable"
+Cache-Control = "no-cache"
 
+
+
+
+
+# =========================
+# CSS
+# Development mode
+# =========================
 
 
 [[headers]]
@@ -53,8 +78,16 @@ for = "/css/*"
 
 [headers.values]
 
-Cache-Control = "public, max-age=31536000, immutable"
+Cache-Control = "no-cache"
 
+
+
+
+
+# =========================
+# JavaScript
+# Development mode
+# =========================
 
 
 [[headers]]
@@ -63,4 +96,59 @@ for = "/js/*"
 
 [headers.values]
 
-Cache-Control = "public, max-age=31536000, immutable"
+Cache-Control = "no-cache"
+
+
+
+[[headers]]
+
+for = "/components/*"
+
+[headers.values]
+
+Cache-Control = "no-cache"
+
+
+
+
+
+# =========================
+# Dynamic JSON data
+# =========================
+
+
+[[headers]]
+
+for = "/config/*"
+
+[headers.values]
+
+Cache-Control = "no-cache"
+
+
+
+[[headers]]
+
+for = "/data/*"
+
+[headers.values]
+
+Cache-Control = "no-cache"
+
+
+
+
+
+# =========================
+# Static assets
+# Cache allowed
+# =========================
+
+
+[[headers]]
+
+for = "/assets/*"
+
+[headers.values]
+
+Cache-Control = "public, max-age=86400"
