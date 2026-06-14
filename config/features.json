@@ -1,0 +1,43 @@
+[
+  {
+    "title": "Learn",
+    "icon": "🎓",
+    "description": "Course based pharmacy learning resources.",
+    "url": "/learn/"
+  },
+
+  {
+    "title": "Teach",
+    "icon": "👨‍🏫",
+    "description": "Teaching materials and academic resources.",
+    "url": "/teach/"
+  },
+
+  {
+    "title": "Tools",
+    "icon": "🧪",
+    "description": "Calculators, references and utilities.",
+    "url": "/tools/"
+  },
+
+  {
+    "title": "Community",
+    "icon": "🌐",
+    "description": "Ask questions and discuss pharmacy topics.",
+    "url": "/community/"
+  },
+
+  {
+    "title": "Library",
+    "icon": "📚",
+    "description": "Verified pharmacy knowledge resources.",
+    "url": "/library/"
+  },
+
+  {
+    "title": "Events",
+    "icon": "📅",
+    "description": "Workshops, seminars and conferences.",
+    "url": "/events/"
+  }
+]
