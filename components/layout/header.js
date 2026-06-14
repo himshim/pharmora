@@ -1,3 +1,8 @@
+/*
+ Global Header Component
+*/
+
+
 async function loadHeader(){
 
 
@@ -20,6 +25,8 @@ location.pathname.split("/").length > 2
 
 
 
+
+
 const site =
 await fetch(
 base+"config/site.json"
@@ -37,37 +44,56 @@ base+"config/navigation.json"
 
 
 
-let links="";
 
-let mobile="";
+
+let desktopLinks="";
+
+let mobileLinks="";
+
+
+
 
 
 
 nav.forEach(item=>{
 
 
-links += `
 
-<a href="${base}${item.url.replace("/","")}">
+let url =
+base + item.url.replace("/","");
+
+
+
+desktopLinks += `
+
+
+<a href="${url}">
 
 ${item.title}
 
 </a>
 
+
 `;
 
 
 
-mobile += `
 
-<a href="${base}${item.url.replace("/","")}">
+
+
+mobileLinks += `
+
+
+<a href="${url}">
 
 ${item.icon}
 ${item.title}
 
 </a>
 
+
 `;
+
 
 
 });
@@ -77,16 +103,25 @@ ${item.title}
 
 
 
+
+
 root.innerHTML = `
+
 
 
 <header class="container">
 
 
+
 <nav class="navbar">
 
 
+
+
+
+
 <a href="${base}" class="logo">
+
 
 
 <img
@@ -98,10 +133,15 @@ height="32"
 style="vertical-align:middle;">
 
 
+
 ${site.name}
 
 
+
 </a>
+
+
+
 
 
 
@@ -113,9 +153,15 @@ class="menu-toggle"
 
 onclick="toggleMenu()">
 
+
+
 ☰
 
+
+
 </div>
+
+
 
 
 
@@ -125,10 +171,23 @@ onclick="toggleMenu()">
 <div class="nav-links">
 
 
-${links}
+
+${desktopLinks}
+
+
+
+<a href="${base}auth/login.html">
+
+Login
+
+</a>
+
+
 
 
 </div>
+
+
 
 
 
@@ -139,13 +198,36 @@ ${links}
 
 
 
+
+
+
+
 <div class="mobile-menu">
 
 
-${mobile}
+
+
+${mobileLinks}
+
+
+
+
+<a href="${base}auth/login.html">
+
+
+👤 Login
+
+
+</a>
+
+
+
 
 
 </div>
+
+
+
 
 
 
@@ -154,6 +236,7 @@ ${mobile}
 
 
 `;
+
 
 
 
