@@ -1,0 +1,17 @@
+[
+  {
+    "id": "notice_001",
+    "title": "Platform Updated",
+    "message": "New improvements and features added.",
+    "type": "update",
+    "date": "2026-06-14"
+  },
+
+  {
+    "id": "notice_002",
+    "title": "Contributions Open",
+    "message": "Students and educators can submit resources.",
+    "type": "info",
+    "date": "2026-06-14"
+  }
+]
