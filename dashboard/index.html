@@ -12,7 +12,9 @@ content="width=device-width, initial-scale=1.0">
 
 
 <title>
-Dashboard | Pharmora
+
+Dashboard
+
 </title>
 
 
@@ -22,8 +24,11 @@ href="../assets/branding/favicon.svg">
 
 
 <link rel="stylesheet" href="../css/variables.css">
+
 <link rel="stylesheet" href="../css/base.css">
+
 <link rel="stylesheet" href="../css/components.css">
+
 <link rel="stylesheet" href="../css/responsive.css">
 
 
@@ -55,6 +60,7 @@ border-right:1px solid var(--border);
 
 
 
+
 .brand{
 
 font-size:1.8rem;
@@ -81,6 +87,8 @@ color:transparent;
 
 
 
+
+
 .menu a{
 
 display:block;
@@ -96,6 +104,7 @@ color:var(--text-soft);
 text-decoration:none;
 
 }
+
 
 
 
@@ -118,7 +127,6 @@ flex:1;
 padding:30px;
 
 }
-
 
 
 
@@ -161,7 +169,6 @@ border:none;
 
 
 
-
 .user{
 
 padding:12px 18px;
@@ -171,7 +178,6 @@ border-radius:30px;
 background:var(--surface);
 
 }
-
 
 
 
@@ -239,6 +245,7 @@ transition:var(--transition);
 
 
 
+
 .resource:hover{
 
 border-color:var(--primary);
@@ -248,13 +255,11 @@ border-color:var(--primary);
 
 
 
-
 .mobile-nav{
 
 display:none;
 
 }
-
 
 
 
@@ -281,11 +286,13 @@ padding-bottom:80px;
 
 
 
+
 .top{
 
 display:block;
 
 }
+
 
 
 
@@ -325,6 +332,7 @@ justify-content:space-around;
 }
 
 
+
 .mobile-nav a{
 
 text-decoration:none;
@@ -332,6 +340,7 @@ text-decoration:none;
 font-size:1.5rem;
 
 }
+
 
 
 }
@@ -349,7 +358,10 @@ font-size:1.5rem;
 
 
 
+
 <body>
+
+
 
 
 
@@ -361,7 +373,12 @@ font-size:1.5rem;
 
 
 
+
+
 <aside class="sidebar">
+
+
+
 
 
 
@@ -371,14 +388,22 @@ font-size:1.5rem;
 style="text-decoration:none;">
 
 
-<div class="brand">
 
-⚕ Pharmora
+<div 
+class="brand"
+id="dashboard-brand">
+
+Platform
 
 </div>
 
 
+
+
 </a>
+
+
+
 
 
 
@@ -409,7 +434,11 @@ style="text-decoration:none;">
 
 
 
+
 </aside>
+
+
+
 
 
 
@@ -424,18 +453,33 @@ style="text-decoration:none;">
 
 
 
+
+
+
 <div class="top">
+
+
 
 
 
 <div class="search">
 
 
-<input placeholder="Search Pharmora (coming soon)">
+
+<input 
+
+placeholder="Search knowledge..."
+
+oninput="pharmoraSearch(this.value)"
+
+>
 
 
 
 </div>
+
+
+
 
 
 
@@ -448,7 +492,30 @@ style="text-decoration:none;">
 
 
 
+
+
 </div>
+
+
+
+
+
+
+
+
+<div
+
+id="search-results"
+
+class="grid"
+
+style="margin-top:25px;">
+
+
+</div>
+
+
+
 
 
 
@@ -461,6 +528,8 @@ style="text-decoration:none;">
 
 
 
+
+
 <h1>
 
 Welcome back 👋
@@ -469,16 +538,19 @@ Welcome back 👋
 
 
 
+
 <p>
 
-Continue learning, teaching and building
-open pharmacy knowledge.
+Continue learning, teaching and building knowledge.
 
 </p>
 
 
 
+
 </div>
+
+
 
 
 
@@ -495,9 +567,15 @@ open pharmacy knowledge.
 
 
 
-<div 
+
+
+<div
+
 class="card"
+
 onclick="location.href='../learn/'">
+
+
 
 
 
@@ -509,11 +587,13 @@ onclick="location.href='../learn/'">
 
 
 
+
 <p>
 
-Resume your pharmacy curriculum.
+Resume your curriculum.
 
 </p>
+
 
 
 
@@ -527,9 +607,15 @@ Resume your pharmacy curriculum.
 
 
 
+
+
 <div
+
 class="card"
+
 onclick="location.href='../teach/'">
+
+
 
 
 
@@ -541,11 +627,13 @@ onclick="location.href='../teach/'">
 
 
 
+
 <p>
 
 Access teaching resources.
 
 </p>
+
 
 
 
@@ -559,9 +647,16 @@ Access teaching resources.
 
 
 
+
+
+
 <div
+
 class="card"
+
 onclick="location.href='../community/'">
+
+
 
 
 
@@ -573,6 +668,7 @@ onclick="location.href='../community/'">
 
 
 
+
 <p>
 
 Learn with the community.
@@ -581,7 +677,9 @@ Learn with the community.
 
 
 
+
 </div>
+
 
 
 
@@ -593,8 +691,12 @@ Learn with the community.
 
 
 <div
+
 class="card"
+
 onclick="location.href='../tools/'">
+
+
 
 
 
@@ -606,6 +708,7 @@ onclick="location.href='../tools/'">
 
 
 
+
 <p>
 
 Calculators and references.
@@ -614,16 +717,17 @@ Calculators and references.
 
 
 
-</div>
-
-
-
-
-
 
 </div>
 
 
+
+
+
+
+
+
+</div>
 
 
 
@@ -637,12 +741,14 @@ Calculators and references.
 
 
 
+
+
+
 <h2>
 
 🔥 Latest Resources
 
 </h2>
-
 
 <br>
 
@@ -651,15 +757,25 @@ Calculators and references.
 
 
 
+
+
 <div
+
 class="resource"
+
 onclick="location.href='../library/'">
 
 
-Pharmacy Notes Collection
+
+Knowledge Resources
 
 
-<span>Open</span>
+<span>
+
+Open
+
+</span>
+
 
 
 </div>
@@ -670,15 +786,25 @@ Pharmacy Notes Collection
 
 
 
+
+
 <div
+
 class="resource"
+
 onclick="location.href='../tools/'">
 
 
-Drug Reference Tools
+
+Reference Tools
 
 
-<span>Open</span>
+<span>
+
+Open
+
+</span>
+
 
 
 </div>
@@ -690,18 +816,30 @@ Drug Reference Tools
 
 
 
+
+
 <div
+
 class="resource"
+
 onclick="location.href='../community/'">
+
 
 
 Community Discussions
 
 
-<span>View</span>
+<span>
+
+View
+
+</span>
+
 
 
 </div>
+
+
 
 
 
@@ -715,7 +853,10 @@ Community Discussions
 
 
 
+
 </main>
+
+
 
 
 
@@ -734,6 +875,7 @@ Community Discussions
 <div class="mobile-nav">
 
 
+
 <a href="../dashboard/">🏠</a>
 
 <a href="../learn/">📚</a>
@@ -745,6 +887,7 @@ Community Discussions
 <a href="../library/">📖</a>
 
 
+
 </div>
 
 
@@ -754,7 +897,37 @@ Community Discussions
 
 
 
+
+<script>
+
+
+fetch("../config/site.json")
+
+.then(r=>r.json())
+
+.then(site=>{
+
+
+document.getElementById("dashboard-brand").innerHTML =
+
+"⚕ " + site.name;
+
+
+});
+
+
+</script>
+
+
+
+
+
+<script src="../js/search.js"></script>
+
 <script src="../js/app.js"></script>
+
+
+
 
 
 

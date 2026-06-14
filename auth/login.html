@@ -12,7 +12,9 @@ content="width=device-width, initial-scale=1.0">
 
 
 <title>
-Login | Pharmora
+
+Login
+
 </title>
 
 
@@ -22,8 +24,11 @@ href="../assets/branding/favicon.svg">
 
 
 <link rel="stylesheet" href="../css/variables.css">
+
 <link rel="stylesheet" href="../css/base.css">
+
 <link rel="stylesheet" href="../css/components.css">
+
 <link rel="stylesheet" href="../css/responsive.css">
 
 
@@ -44,7 +49,6 @@ justify-content:center;
 padding:20px;
 
 }
-
 
 
 
@@ -105,6 +109,7 @@ box-shadow:var(--shadow);
 
 
 
+
 .auth-card h1{
 
 text-align:center;
@@ -127,11 +132,13 @@ margin-bottom:25px;
 
 
 
+
 .input-group{
 
 margin-bottom:18px;
 
 }
+
 
 
 
@@ -145,6 +152,7 @@ margin-bottom:8px;
 color:var(--text-soft);
 
 }
+
 
 
 
@@ -170,6 +178,7 @@ outline:none;
 
 
 
+
 .auth-links{
 
 display:flex;
@@ -185,6 +194,7 @@ margin-top:20px;
 
 
 
+
 .role-box{
 
 margin-top:25px;
@@ -196,6 +206,7 @@ grid-template-columns:1fr 1fr;
 gap:12px;
 
 }
+
 
 
 
@@ -224,6 +235,7 @@ transition:var(--transition);
 border-color:var(--primary);
 
 }
+
 
 
 
@@ -262,7 +274,10 @@ color:var(--text-muted);
 
 
 
+
 <div class="auth-page">
+
+
 
 
 
@@ -273,15 +288,22 @@ color:var(--text-muted);
 
 
 
+
+
 <a href="../"
 style="text-decoration:none;">
 
 
-<div class="auth-logo">
 
-⚕ Pharmora
+<div 
+class="auth-logo"
+id="auth-brand">
+
+⚕ Platform
 
 </div>
+
+
 
 
 </a>
@@ -292,7 +314,12 @@ style="text-decoration:none;">
 
 
 
+
+
+
 <div class="auth-card">
+
+
 
 
 
@@ -308,9 +335,11 @@ Welcome Back
 
 
 
+
+
 <p>
 
-Continue your open pharmacy learning journey
+Continue your learning journey
 
 </p>
 
@@ -319,16 +348,11 @@ Continue your open pharmacy learning journey
 
 
 
-<div
-class="badge"
-style="display:block;text-align:center;margin-bottom:25px;">
 
 
-Prototype Access
 
 
-</div>
-
+<form id="login-form">
 
 
 
@@ -337,6 +361,7 @@ Prototype Access
 
 
 <div class="input-group">
+
 
 
 <label>
@@ -347,11 +372,17 @@ Email
 
 
 
+
+
 <input
+
+id="email"
 
 type="email"
 
 placeholder="your@email.com">
+
+
 
 
 
@@ -365,7 +396,12 @@ placeholder="your@email.com">
 
 
 
+
+
+
 <div class="input-group">
+
+
 
 
 
@@ -377,7 +413,11 @@ Password
 
 
 
+
+
 <input
+
+id="password"
 
 type="password"
 
@@ -385,7 +425,11 @@ placeholder="••••••••">
 
 
 
+
+
 </div>
+
+
 
 
 
@@ -405,10 +449,20 @@ class="btn btn-primary"
 style="width:100%;">
 
 
-Continue Demo
+
+Continue
+
 
 
 </a>
+
+
+
+
+
+
+
+</form>
 
 
 
@@ -422,6 +476,9 @@ Continue Demo
 
 
 
+
+
+
 <a>
 
 Forgot password?
@@ -430,16 +487,23 @@ Forgot password?
 
 
 
+
+
+
 <a href="register.html">
 
+
 Create account
+
 
 </a>
 
 
 
-</div>
 
+
+
+</div>
 
 
 
@@ -453,23 +517,28 @@ Create account
 
 
 
+
+
+
 <div class="role">
+
 
 🎓 Learner
 
+
 </div>
+
+
+
 
 
 
 
 <div class="role">
 
+
 🌱 Contributor
 
-</div>
-
-
-
 
 </div>
 
@@ -479,8 +548,19 @@ Create account
 
 
 
+</div>
+
+
+
+
+
+
+
 
 </div>
+
+
+
 
 
 
@@ -492,12 +572,24 @@ Create account
 <div class="footer-text">
 
 
-The future of pharmacy learning
 
-<br>
+Open • Collaborative • Accessible
 
 
-open • collaborative • accessible
+
+</div>
+
+
+
+
+
+
+
+
+
+</div>
+
+
 
 
 </div>
@@ -508,12 +600,28 @@ open • collaborative • accessible
 
 
 
-</div>
 
 
 
-</div>
+<script>
 
+
+fetch("../config/site.json")
+
+.then(r=>r.json())
+
+.then(site=>{
+
+
+document.getElementById("auth-brand").innerHTML =
+
+"⚕ " + site.name;
+
+
+});
+
+
+</script>
 
 
 
@@ -522,6 +630,9 @@ open • collaborative • accessible
 
 
 <script src="../js/app.js"></script>
+
+
+
 
 
 

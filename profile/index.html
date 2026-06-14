@@ -10,17 +10,27 @@
 name="viewport"
 content="width=device-width, initial-scale=1.0">
 
+
 <title>
-Profile | Pharmora
+
+Profile
+
 </title>
+
 
 <link 
 rel="icon"
 href="../assets/branding/favicon.svg">
+
+
 <link rel="stylesheet" href="../css/variables.css">
+
 <link rel="stylesheet" href="../css/base.css">
+
 <link rel="stylesheet" href="../css/components.css">
+
 <link rel="stylesheet" href="../css/responsive.css">
+
 
 
 <style>
@@ -33,6 +43,8 @@ padding:60px 0;
 text-align:center;
 
 }
+
+
 
 
 
@@ -54,6 +66,7 @@ justify-content:center;
 
 font-size:3rem;
 
+
 background:
 
 linear-gradient(
@@ -66,6 +79,9 @@ var(--secondary)
 
 
 
+
+
+
 .profile-header h1{
 
 margin-top:20px;
@@ -73,6 +89,8 @@ margin-top:20px;
 font-size:3rem;
 
 }
+
+
 
 
 
@@ -94,6 +112,9 @@ margin-top:20px;
 
 
 
+
+
+
 .small-badge{
 
 padding:8px 14px;
@@ -111,11 +132,18 @@ color:var(--primary);
 
 
 
+
+
+
 .stat{
 
 text-align:center;
 
 }
+
+
+
+
 
 
 
@@ -149,158 +177,19 @@ justify-content:space-between;
 
 
 
+
+
+
 <body>
 
 
 
 
 
-<header class="container">
 
 
-<nav class="navbar">
+<div id="site-header"></div>
 
-
-<a href="../" class="logo">
-
-
-<img 
-src="../assets/branding/logo.svg"
-height="32"
-style="vertical-align:middle;">
-
-
-Pharmora
-
-
-</a>
-
-
-
-
-<div 
-class="menu-toggle"
-onclick="toggleMenu()">
-
-☰
-
-</div>
-
-
-
-
-
-<div class="nav-links">
-
-
-<a href="../learn/">
-Learn
-</a>
-
-
-<a href="../teach/">
-Teach
-</a>
-
-
-<a href="../tools/">
-Tools
-</a>
-
-
-<a href="../community/">
-Community
-</a>
-
-
-<a href="../library/">
-Library
-</a>
-
-
-<a href="../auth/login.html">
-Login
-</a>
-
-
-</div>
-
-
-
-
-</nav>
-
-
-
-
-
-<div class="mobile-menu">
-
-
-<a href="../learn/">
-📚 Learn
-</a>
-
-
-<a href="../teach/">
-👨‍🏫 Teach
-</a>
-
-
-<a href="../tools/">
-🧪 Tools
-</a>
-
-
-<a href="../community/">
-🌐 Community
-</a>
-
-
-<a href="../library/">
-📖 Library
-</a>
-
-
-<a href="../auth/login.html">
-👤 Login
-</a>
-
-
-</div>
-
-
-
-
-</header>
-
-
-
-<div class="nav-links">
-
-
-<a href="../dashboard/">
-
-Dashboard
-
-</a>
-
-
-<a href="../community/">
-
-Community
-
-</a>
-
-
-</div>
-
-
-
-</nav>
-
-
-</header>
 
 
 
@@ -318,7 +207,13 @@ Community
 
 
 
+
+
+
 <section class="container profile-header">
+
+
+
 
 
 
@@ -334,9 +229,12 @@ Community
 
 
 
-<h1>
 
-Pharmora Member
+
+
+<h1 id="profile-name">
+
+Member
 
 </h1>
 
@@ -344,10 +242,14 @@ Pharmora Member
 
 
 
-<p>
 
-Learning, teaching and contributing
-to open pharmacy knowledge.
+
+
+<p id="profile-bio">
+
+
+Learning, teaching and contributing knowledge.
+
 
 </p>
 
@@ -356,7 +258,17 @@ to open pharmacy knowledge.
 
 
 
+
+
+
+
+
 <div class="badges">
+
+
+
+
+
 
 
 
@@ -370,6 +282,10 @@ to open pharmacy knowledge.
 
 
 
+
+
+
+
 <div class="small-badge">
 
 🌱 Contributor
@@ -379,9 +295,13 @@ to open pharmacy knowledge.
 
 
 
+
+
+
+
 <div class="small-badge">
 
-✓ Verified Educator
+✓ Verified
 
 </div>
 
@@ -389,7 +309,13 @@ to open pharmacy knowledge.
 
 
 
+
+
+
 </div>
+
+
+
 
 
 
@@ -405,7 +331,14 @@ to open pharmacy knowledge.
 
 
 
+
+
+
+
 <section class="container section">
+
+
+
 
 
 
@@ -419,7 +352,15 @@ Contribution Impact
 
 
 
+
+
+
+
 <div class="grid">
+
+
+
+
 
 
 
@@ -429,11 +370,13 @@ Contribution Impact
 <div class="card stat">
 
 
-<h2>
 
-24
+<h2 id="resource-count">
+
+0
 
 </h2>
+
 
 
 <p>
@@ -443,7 +386,11 @@ Resources Shared
 </p>
 
 
+
 </div>
+
+
+
 
 
 
@@ -454,18 +401,21 @@ Resources Shared
 <div class="card stat">
 
 
+
 <h2>
 
-150+
+0
 
 </h2>
+
 
 
 <p>
 
-Students Helped
+People Helped
 
 </p>
+
 
 
 </div>
@@ -477,14 +427,20 @@ Students Helped
 
 
 
+
+
 <div class="card stat">
+
+
 
 
 <h2>
 
-35
+0
 
 </h2>
+
+
 
 
 <p>
@@ -494,7 +450,11 @@ Answers Given
 </p>
 
 
+
+
 </div>
+
+
 
 
 
@@ -506,11 +466,17 @@ Answers Given
 <div class="card stat">
 
 
+
+
+
 <h2>
 
-5
+0
 
 </h2>
+
+
+
 
 
 <p>
@@ -520,13 +486,23 @@ Badges Earned
 </p>
 
 
+
+
+
 </div>
 
 
 
 
 
+
+
+
+
 </div>
+
+
+
 
 
 
@@ -541,7 +517,14 @@ Badges Earned
 
 
 
+
+
+
+
 <section class="container section">
+
+
+
 
 
 
@@ -555,23 +538,36 @@ Learning Path
 
 
 
+
+
+
+
 <div class="card">
 
 
 
-<h2>
 
-B.Pharm • NEP Curriculum
+
+
+<h2 id="profile-course">
+
+Course not selected
 
 </h2>
 
 
 
-<p>
 
-Pharmacology • Pharmaceutics • Chemistry
+
+
+<p id="profile-interest">
+
+Complete onboarding to personalize.
 
 </p>
+
+
+
 
 
 
@@ -581,7 +577,15 @@ Pharmacology • Pharmaceutics • Chemistry
 
 
 
+
+
+
 </section>
+
+
+
+
+
 
 
 
@@ -596,6 +600,9 @@ Pharmacology • Pharmaceutics • Chemistry
 
 
 
+
+
+
 <h2 class="section-title">
 
 Recent Activity
@@ -606,17 +613,28 @@ Recent Activity
 
 
 
+
+
+
+
+<div id="activity-list">
+
+
+
+
+
+
+
 <div class="activity">
 
-
-Uploaded Pharmacology Notes
-
+No recent activity
 
 <span>
 
-📚
+🌱
 
 </span>
+
 
 
 </div>
@@ -625,39 +643,12 @@ Uploaded Pharmacology Notes
 
 
 
-<div class="activity">
 
-
-Answered Community Question
-
-
-<span>
-
-💬
-
-</span>
 
 
 </div>
 
 
-
-
-
-<div class="activity">
-
-
-Shared Teaching Method
-
-
-<span>
-
-👨‍🏫
-
-</span>
-
-
-</div>
 
 
 
@@ -672,65 +663,45 @@ Shared Teaching Method
 
 
 
+
+
 </main>
 
 
 
 
-<footer class="footer">
-
-
-<div class="footer-brand">
-
-⚕ Pharmora
-
-</div>
-
-
-
-<div class="footer-links">
-
-
-<a href="../about/">
-About
-</a>
-
-
-<a href="../learn/">
-Learn
-</a>
-
-
-<a href="../tools/">
-Tools
-</a>
-
-
-<a href="../contribute/">
-Contribute
-</a>
-
-
-</div>
 
 
 
 
-<div class="footer-text">
-
-© 2026 Pharmora
-
-<br>
-
-Open Pharmacy Learning Network
 
 
-</div>
+
+<div id="site-footer"></div>
 
 
-</footer>
+
+
+
+
+
+
+
+<script src="../components/layout/header.js"></script>
+
+<script src="../components/layout/footer.js"></script>
+
+
+
+
+
 
 <script src="../js/app.js"></script>
+
+
+
+
+
 
 
 

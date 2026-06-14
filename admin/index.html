@@ -10,15 +10,24 @@
 name="viewport"
 content="width=device-width, initial-scale=1.0">
 
+
 <title>
-Admin | Pharmora
+
+Admin
+
 </title>
 
 
+
 <link rel="stylesheet" href="../css/variables.css">
+
 <link rel="stylesheet" href="../css/base.css">
+
 <link rel="stylesheet" href="../css/components.css">
+
 <link rel="stylesheet" href="../css/responsive.css">
+
+
 
 
 <style>
@@ -35,21 +44,19 @@ min-height:100vh;
 
 
 
+
 .sidebar{
 
 width:260px;
 
 padding:25px;
 
-background:
+background:rgba(15,23,42,.85);
 
-rgba(15,23,42,.85);
-
-border-right:
-
-1px solid var(--border);
+border-right:1px solid var(--border);
 
 }
+
 
 
 
@@ -80,6 +87,8 @@ color:transparent;
 
 
 
+
+
 .menu div{
 
 padding:15px;
@@ -90,7 +99,11 @@ margin-bottom:8px;
 
 color:var(--text-soft);
 
+cursor:pointer;
+
 }
+
+
 
 
 
@@ -103,6 +116,8 @@ background:var(--surface-light);
 
 
 
+
+
 .content{
 
 flex:1;
@@ -110,6 +125,7 @@ flex:1;
 padding:30px;
 
 }
+
 
 
 
@@ -130,7 +146,12 @@ display:flex;
 
 justify-content:space-between;
 
+cursor:pointer;
+
 }
+
+
+
 
 
 
@@ -139,6 +160,9 @@ justify-content:space-between;
 color:var(--primary);
 
 }
+
+
+
 
 
 
@@ -156,8 +180,6 @@ display:block;
 
 width:100%;
 
-height:auto;
-
 }
 
 
@@ -174,7 +196,12 @@ height:auto;
 
 
 
+
+
+
 <body>
+
+
 
 
 
@@ -193,11 +220,25 @@ height:auto;
 
 
 
-<div class="brand">
 
-⚕ Pharmora
+
+
+
+<div 
+class="brand"
+
+id="admin-brand">
+
+
+⚕ Platform
+
 
 </div>
+
+
+
+
+
 
 
 
@@ -206,48 +247,107 @@ height:auto;
 <div class="menu">
 
 
-<div>
+
+
+
+<div data-permission="analytics">
 
 📊 Overview
 
 </div>
 
 
-<div>
+
+
+
+
+<div data-permission="resources">
 
 📚 Resource Review
 
 </div>
 
 
-<div>
-
-👨‍🏫 Teacher Verification
-
-</div>
 
 
-<div>
 
-⚠ Reports
+
+
+<div data-permission="verification">
+
+👨‍🏫 Verification
 
 </div>
 
 
-<div>
+
+
+
+
+
+
+<div data-permission="forum">
+
+💬 Forum Moderation
+
+</div>
+
+
+
+
+
+
+
+
+<div data-permission="events">
+
+📅 Events
+
+</div>
+
+
+
+
+
+
+
+
+<div data-permission="users">
 
 👥 Users
 
 </div>
 
 
+
+
+
+
+
+
+<div data-permission="settings">
+
+⚙ Settings
+
 </div>
 
 
 
 
 
+
+</div>
+
+
+
+
+
+
+
 </aside>
+
+
+
 
 
 
@@ -265,6 +365,8 @@ height:auto;
 
 
 
+
+
 <h1>
 
 Admin Console
@@ -273,11 +375,18 @@ Admin Console
 
 
 
+
+
+
 <p>
 
-Maintain quality of the open pharmacy ecosystem.
+Manage content, users and platform quality.
 
 </p>
+
+
+
+
 
 
 
@@ -291,7 +400,15 @@ Maintain quality of the open pharmacy ecosystem.
 
 
 
+
+
+
+
 <div class="grid">
+
+
+
+
 
 
 
@@ -300,11 +417,13 @@ Maintain quality of the open pharmacy ecosystem.
 <div class="card">
 
 
-<h2>
 
-42
+<h2 id="pending-resources">
+
+0
 
 </h2>
+
 
 
 <p>
@@ -315,7 +434,11 @@ Pending Resources
 
 
 
+
 </div>
+
+
+
 
 
 
@@ -326,18 +449,25 @@ Pending Resources
 <div class="card">
 
 
-<h2>
 
-12
+
+<h2 id="verification-count">
+
+0
 
 </h2>
+
+
+
 
 
 <p>
 
-Teacher Requests
+Verification Requests
 
 </p>
+
+
 
 
 </div>
@@ -349,14 +479,23 @@ Teacher Requests
 
 
 
+
+
+
 <div class="card">
 
 
-<h2>
 
-5
+
+
+<h2 id="reports-count">
+
+0
 
 </h2>
+
+
+
 
 
 <p>
@@ -366,22 +505,33 @@ Reports
 </p>
 
 
-</div>
-
-
-
-
-
 
 
 
 </div>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
 
 
 
 
 
 </section>
+
+
+
 
 
 
@@ -395,11 +545,19 @@ Reports
 
 
 
+
+
+
+
 <h2>
 
 Pending Actions
 
 </h2>
+
+
+
+
 
 
 
@@ -410,19 +568,37 @@ Pending Actions
 
 
 
+
+
+
+
+<div id="admin-actions">
+
+
+
+
+
+
+
 <div class="panel">
 
 
 
-Pharmacology Notes Upload
+
+
+No pending actions
+
+
 
 
 
 <span class="status">
 
-Review
+✓
 
 </span>
+
+
 
 
 
@@ -433,42 +609,6 @@ Review
 
 
 
-
-<div class="panel">
-
-
-Teacher Verification Request
-
-
-
-<span class="status">
-
-Verify
-
-</span>
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="panel">
-
-
-Community Report
-
-
-
-<span class="status">
-
-Check
-
-</span>
 
 
 </div>
@@ -486,6 +626,9 @@ Check
 
 
 
+
+
+
 </main>
 
 
@@ -493,41 +636,6 @@ Check
 
 
 
-</div>
-
-
-<footer class="footer">
-
-
-<div class="footer-brand">
-
-⚕ Pharmora
-
-</div>
-
-
-
-<div class="footer-links">
-
-
-<a href="../about/">
-About
-</a>
-
-
-<a href="../learn/">
-Learn
-</a>
-
-
-<a href="../tools/">
-Tools
-</a>
-
-
-<a href="../contribute/">
-Contribute
-</a>
 
 
 </div>
@@ -535,23 +643,44 @@ Contribute
 
 
 
-<div class="footer-text">
-
-© 2026 Pharmora
-
-<br>
-
-Open Pharmacy Learning Network
 
 
-</div>
 
 
-</footer>
+
+
+<script>
+
+
+fetch("../config/site.json")
+
+.then(r=>r.json())
+
+.then(site=>{
+
+
+document.getElementById("admin-brand").innerHTML =
+
+"⚕ " + site.name;
+
+
+});
+
+
+</script>
+
+
+
+
+
+
 
 
 
 <script src="../js/app.js"></script>
+
+
+
 
 
 

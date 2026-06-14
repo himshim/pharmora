@@ -12,17 +12,25 @@ content="width=device-width, initial-scale=1.0">
 
 
 <title>
-Library | Pharmora
+
+Library
+
 </title>
 
 
-<link rel="icon" href="../assets/branding/favicon.svg">
+<link 
+rel="icon" 
+href="../assets/branding/favicon.svg">
 
 
 <link rel="stylesheet" href="../css/variables.css">
+
 <link rel="stylesheet" href="../css/base.css">
+
 <link rel="stylesheet" href="../css/components.css">
+
 <link rel="stylesheet" href="../css/responsive.css">
+
 
 
 <style>
@@ -73,6 +81,7 @@ cursor:pointer;
 
 
 
+
 .entry:hover{
 
 border-color:var(--primary);
@@ -91,6 +100,8 @@ position:relative;
 overflow:hidden;
 
 }
+
+
 
 
 
@@ -134,6 +145,8 @@ opacity:.2;
 
 
 
+
+
 <body>
 
 
@@ -141,100 +154,7 @@ opacity:.2;
 
 
 
-<header class="container">
-
-
-<nav class="navbar">
-
-
-
-<a href="../" class="logo">
-
-
-<img
-src="../assets/branding/logo.svg"
-height="32"
-style="vertical-align:middle;">
-
-
-Pharmora
-
-
-</a>
-
-
-
-
-
-
-<div
-class="menu-toggle"
-onclick="toggleMenu()">
-
-☰
-
-</div>
-
-
-
-
-
-
-
-
-<div class="nav-links">
-
-
-<a href="../learn/">Learn</a>
-
-<a href="../teach/">Teach</a>
-
-<a href="../tools/">Tools</a>
-
-<a href="../community/">Community</a>
-
-<a href="../library/">Library</a>
-
-<a href="../auth/login.html">Login</a>
-
-
-</div>
-
-
-
-
-
-</nav>
-
-
-
-
-
-
-
-<div class="mobile-menu">
-
-
-<a href="../learn/">📚 Learn</a>
-
-<a href="../teach/">👨‍🏫 Teach</a>
-
-<a href="../tools/">🧪 Tools</a>
-
-<a href="../community/">🌐 Community</a>
-
-<a href="../library/">📖 Library</a>
-
-<a href="../auth/login.html">👤 Login</a>
-
-
-</div>
-
-
-
-
-</header>
-
+<div id="site-header"></div>
 
 
 
@@ -251,13 +171,19 @@ onclick="toggleMenu()">
 
 
 
+
+
+
 <section class="container hero">
+
+
+
 
 
 
 <div class="badge">
 
-📚 Pharmora Library
+📚 Library
 
 </div>
 
@@ -266,11 +192,17 @@ onclick="toggleMenu()">
 
 
 
+
+
 <h1>
+
 
 Open Pharmacy
 
+
 <br>
+
+
 
 
 
@@ -285,10 +217,13 @@ color:transparent;
 ">
 
 
+
 Knowledge Base
 
 
+
 </span>
+
 
 
 
@@ -300,12 +235,15 @@ Knowledge Base
 
 
 
+
 <p>
 
 Organized educational resources created by
-students, teachers and pharmacy contributors.
+students, teachers and contributors.
 
 </p>
+
+
 
 
 
@@ -316,11 +254,39 @@ students, teachers and pharmacy contributors.
 <div class="search-box">
 
 
-<input placeholder="Search library (coming soon)">
+
+<input 
+
+placeholder="Search notes, subjects, resources..."
+
+oninput="pharmoraSearch(this.value)"
+
+>
 
 
 
 </div>
+
+
+
+
+
+
+
+<div
+
+id="search-results"
+
+class="grid"
+
+style="margin-top:30px;">
+
+
+
+</div>
+
+
+
 
 
 
@@ -340,7 +306,12 @@ students, teachers and pharmacy contributors.
 
 
 
+
+
 <section class="container section">
+
+
+
 
 
 
@@ -356,6 +327,9 @@ Explore Library
 
 
 
+
+
+
 <div class="grid">
 
 
@@ -364,7 +338,10 @@ Explore Library
 
 
 
+
+
 <div class="card collection">
+
 
 
 <h2>
@@ -375,11 +352,13 @@ Explore Library
 
 
 
+
 <p>
 
-Subject-wise pharmacy notes and explanations.
+Subject-wise notes and explanations.
 
 </p>
+
 
 
 </div>
@@ -392,7 +371,9 @@ Subject-wise pharmacy notes and explanations.
 
 
 
+
 <div class="card collection">
+
 
 
 <h2>
@@ -403,11 +384,13 @@ Subject-wise pharmacy notes and explanations.
 
 
 
+
 <p>
 
 Lecture slides and classroom teaching materials.
 
 </p>
+
 
 
 </div>
@@ -421,7 +404,11 @@ Lecture slides and classroom teaching materials.
 
 
 
+
+
+
 <div class="card collection">
+
 
 
 <h2>
@@ -432,6 +419,7 @@ Lecture slides and classroom teaching materials.
 
 
 
+
 <p>
 
 MCQs, previous papers and examination resources.
@@ -439,7 +427,11 @@ MCQs, previous papers and examination resources.
 </p>
 
 
+
 </div>
+
+
+
 
 
 
@@ -453,11 +445,13 @@ MCQs, previous papers and examination resources.
 <div class="card collection">
 
 
+
 <h2>
 
 🧪 Practical Files
 
 </h2>
+
 
 
 
@@ -468,16 +462,21 @@ Laboratory manuals, experiments and records.
 </p>
 
 
+
+</div>
+
+
+
+
+
+
+
+
+
+
 </div>
 
 
-
-
-
-
-
-
-</div>
 
 
 
@@ -497,7 +496,12 @@ Laboratory manuals, experiments and records.
 
 
 
+
+
 <section class="container section">
+
+
+
 
 
 
@@ -514,17 +518,23 @@ Featured Knowledge
 
 
 
+
+
+
 <div class="entry">
+
 
 
 B.Pharm Semester Resources
 
 
+
 <span>
 
 →
 
 </span>
+
 
 
 </div>
@@ -536,17 +546,23 @@ B.Pharm Semester Resources
 
 
 
+
+
+
 <div class="entry">
+
 
 
 Pharmacology Notes Collection
 
 
+
 <span>
 
 →
 
 </span>
+
 
 
 </div>
@@ -558,12 +574,17 @@ Pharmacology Notes Collection
 
 
 
+
+
+
 <div class="entry">
+
 
 
 Pharmaceutics Practical Resources
 
 
+
 <span>
 
 →
@@ -571,7 +592,11 @@ Pharmaceutics Practical Resources
 </span>
 
 
+
 </div>
+
+
+
 
 
 
@@ -584,7 +609,9 @@ Pharmaceutics Practical Resources
 <div class="entry">
 
 
+
 Teacher Shared Materials
+
 
 
 <span>
@@ -594,7 +621,10 @@ Teacher Shared Materials
 </span>
 
 
+
 </div>
+
+
 
 
 
@@ -602,6 +632,8 @@ Teacher Shared Materials
 
 
 </section>
+
+
 
 
 
@@ -620,7 +652,11 @@ Teacher Shared Materials
 
 
 
+
+
+
 <div class="card">
+
 
 
 
@@ -628,7 +664,7 @@ Teacher Shared Materials
 
 <h2>
 
-🌱 Open Pharmacy Library
+🌱 Open Knowledge Library
 
 </h2>
 
@@ -636,13 +672,17 @@ Teacher Shared Materials
 
 
 
+
+
 <p>
 
-Pharmora Library grows through responsible
-sharing, review and improvement of pharmacy
-learning resources.
+The library grows through responsible sharing,
+review and improvement of learning resources.
 
 </p>
+
+
+
 
 
 
@@ -655,12 +695,19 @@ learning resources.
 
 
 
+
+
+
 <a
+
 href="../contribute/"
+
 class="btn btn-primary">
 
 
+
 Add Resource
+
 
 
 </a>
@@ -669,7 +716,11 @@ Add Resource
 
 
 
+
+
 </div>
+
+
 
 
 
@@ -683,66 +734,39 @@ Add Resource
 
 
 
+
 </main>
 
 
 
-<footer class="footer">
-
-
-<div class="footer-brand">
-
-⚕ Pharmora
-
-</div>
-
-
-
-<div class="footer-links">
-
-
-<a href="../about/">
-About
-</a>
-
-
-<a href="../learn/">
-Learn
-</a>
-
-
-<a href="../tools/">
-Tools
-</a>
-
-
-<a href="../contribute/">
-Contribute
-</a>
-
-
-</div>
 
 
 
 
-<div class="footer-text">
 
-© 2026 Pharmora
-
-<br>
-
-Open Pharmacy Learning Network
+<div id="site-footer"></div>
 
 
-</div>
 
 
-</footer>
 
 
+
+
+
+<script src="../components/layout/header.js"></script>
+
+<script src="../components/layout/footer.js"></script>
+
+
+<script src="../js/search.js"></script>
 
 <script src="../js/app.js"></script>
+
+
+
+
+
 
 
 

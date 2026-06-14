@@ -12,7 +12,9 @@ content="width=device-width, initial-scale=1.0">
 
 
 <title>
-Join Pharmora
+
+Register
+
 </title>
 
 
@@ -22,8 +24,11 @@ href="../assets/branding/favicon.svg">
 
 
 <link rel="stylesheet" href="../css/variables.css">
+
 <link rel="stylesheet" href="../css/base.css">
+
 <link rel="stylesheet" href="../css/components.css">
+
 <link rel="stylesheet" href="../css/responsive.css">
 
 
@@ -48,6 +53,7 @@ padding:20px;
 
 
 
+
 .register-box{
 
 width:100%;
@@ -55,6 +61,7 @@ width:100%;
 max-width:500px;
 
 }
+
 
 
 
@@ -69,6 +76,7 @@ font-weight:900;
 
 margin-bottom:20px;
 
+
 background:
 
 linear-gradient(
@@ -77,11 +85,14 @@ var(--primary),
 var(--secondary)
 );
 
+
 -webkit-background-clip:text;
 
 color:transparent;
 
 }
+
+
 
 
 
@@ -104,12 +115,15 @@ box-shadow:var(--shadow);
 
 
 
+
+
 .form-card h1,
 .form-card p{
 
 text-align:center;
 
 }
+
 
 
 
@@ -123,11 +137,13 @@ margin:12px 0 25px;
 
 
 
+
 .field{
 
 margin-bottom:18px;
 
 }
+
 
 
 
@@ -141,6 +157,7 @@ margin-bottom:8px;
 color:var(--text-soft);
 
 }
+
 
 
 
@@ -168,6 +185,7 @@ outline:none;
 
 
 
+
 .roles{
 
 display:grid;
@@ -179,6 +197,8 @@ gap:12px;
 margin:20px 0;
 
 }
+
+
 
 
 
@@ -206,6 +226,8 @@ cursor:pointer;
 
 
 
+
+
 .role-card:hover{
 
 border-color:var(--primary);
@@ -213,6 +235,8 @@ border-color:var(--primary);
 transform:translateY(-3px);
 
 }
+
+
 
 
 
@@ -227,11 +251,13 @@ margin-top:20px;
 
 
 
+
 .login-text a{
 
 color:var(--primary);
 
 }
+
 
 
 
@@ -255,7 +281,13 @@ color:var(--primary);
 
 
 
+
+
+
 <div class="register-page">
+
+
+
 
 
 
@@ -268,19 +300,40 @@ color:var(--primary);
 
 
 
+
+
 <a 
+
 href="../"
+
 style="text-decoration:none;">
 
 
-<div class="brand">
 
-⚕ Pharmora
+
+
+<div 
+
+class="brand"
+
+id="auth-brand">
+
+
+
+⚕ Platform
+
+
 
 </div>
 
 
+
+
+
 </a>
+
+
+
 
 
 
@@ -297,6 +350,9 @@ style="text-decoration:none;">
 
 
 
+
+
+
 <h1>
 
 Create Account
@@ -307,9 +363,12 @@ Create Account
 
 
 
+
+
+
 <p>
 
-Join the open pharmacy knowledge community
+Join the knowledge community
 
 </p>
 
@@ -318,17 +377,11 @@ Join the open pharmacy knowledge community
 
 
 
-<div
-class="badge"
-style="display:block;text-align:center;margin-bottom:25px;">
 
 
-Prototype Registration
 
 
-</div>
-
-
+<form id="register-form">
 
 
 
@@ -337,6 +390,8 @@ Prototype Registration
 
 
 <div class="field">
+
+
 
 
 <label>
@@ -347,7 +402,17 @@ Name
 
 
 
-<input placeholder="Your name">
+
+
+
+<input 
+
+id="name"
+
+placeholder="Your name">
+
+
+
 
 
 </div>
@@ -361,6 +426,9 @@ Name
 
 
 <div class="field">
+
+
+
 
 
 <label>
@@ -371,11 +439,20 @@ Email
 
 
 
+
+
+
+
 <input
+
+id="email"
 
 type="email"
 
 placeholder="your@email.com">
+
+
+
 
 
 </div>
@@ -389,7 +466,11 @@ placeholder="your@email.com">
 
 
 
+
 <div class="field">
+
+
+
 
 
 
@@ -401,7 +482,13 @@ Password
 
 
 
+
+
+
+
 <input
+
+id="password"
 
 type="password"
 
@@ -409,8 +496,10 @@ placeholder="Create password">
 
 
 
-</div>
 
+
+
+</div>
 
 
 
@@ -433,6 +522,9 @@ Choose your role
 
 
 
+
+
+
 <div class="roles">
 
 
@@ -440,7 +532,14 @@ Choose your role
 
 
 
-<div class="role-card">
+
+<div 
+
+class="role-card"
+
+data-role="student">
+
+
 
 🎓
 
@@ -448,6 +547,8 @@ Choose your role
 
 Student
 
+
+
 </div>
 
 
@@ -456,7 +557,15 @@ Student
 
 
 
-<div class="role-card">
+
+
+<div 
+
+class="role-card"
+
+data-role="educator">
+
+
 
 👨‍🏫
 
@@ -464,6 +573,8 @@ Student
 
 Educator
 
+
+
 </div>
 
 
@@ -472,7 +583,16 @@ Educator
 
 
 
-<div class="role-card">
+
+
+
+<div 
+
+class="role-card"
+
+data-role="professional">
+
+
 
 💊
 
@@ -480,6 +600,8 @@ Educator
 
 Professional
 
+
+
 </div>
 
 
@@ -489,7 +611,16 @@ Professional
 
 
 
-<div class="role-card">
+
+
+
+<div 
+
+class="role-card"
+
+data-role="contributor">
+
+
 
 🌱
 
@@ -497,7 +628,12 @@ Professional
 
 Contributor
 
+
+
 </div>
+
+
+
 
 
 
@@ -524,11 +660,19 @@ style="width:100%;">
 
 
 
-Join Pharmora
+Create Account
 
 
 
 </a>
+
+
+
+
+
+
+
+</form>
 
 
 
@@ -542,18 +686,38 @@ Join Pharmora
 
 
 
+
+
 Already a member?
+
+
 
 
 <a href="login.html">
 
+
+
 Login
+
+
 
 </a>
 
 
 
 
+
+
+
+</div>
+
+
+
+
+
+
+
+
 </div>
 
 
@@ -567,13 +731,36 @@ Login
 
 
 
-</div>
-
-
-
 
 </div>
 
+
+
+
+
+
+
+
+
+<script>
+
+
+fetch("../config/site.json")
+
+.then(r=>r.json())
+
+.then(site=>{
+
+
+document.getElementById("auth-brand").innerHTML =
+
+"⚕ " + site.name;
+
+
+});
+
+
+</script>
 
 
 
@@ -583,6 +770,9 @@ Login
 
 
 <script src="../js/app.js"></script>
+
+
+
 
 
 

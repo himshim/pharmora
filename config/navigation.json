@@ -1,0 +1,37 @@
+[
+  {
+    "title":"Learn",
+    "icon":"📚",
+    "url":"/learn/"
+  },
+
+  {
+    "title":"Teach",
+    "icon":"👨‍🏫",
+    "url":"/teach/"
+  },
+
+  {
+    "title":"Tools",
+    "icon":"🧪",
+    "url":"/tools/"
+  },
+
+  {
+    "title":"Community",
+    "icon":"🌐",
+    "url":"/community/"
+  },
+
+  {
+    "title":"Library",
+    "icon":"📖",
+    "url":"/library/"
+  },
+
+  {
+    "title":"Login",
+    "icon":"👤",
+    "url":"/auth/login.html"
+  }
+]

@@ -12,17 +12,25 @@ content="width=device-width, initial-scale=1.0">
 
 
 <title>
-Contribute | Pharmora
+
+Contribute
+
 </title>
 
 
-<link rel="icon" href="../assets/branding/favicon.svg">
+<link 
+rel="icon" 
+href="../assets/branding/favicon.svg">
 
 
 <link rel="stylesheet" href="../css/variables.css">
+
 <link rel="stylesheet" href="../css/base.css">
+
 <link rel="stylesheet" href="../css/components.css">
+
 <link rel="stylesheet" href="../css/responsive.css">
+
 
 
 <style>
@@ -38,6 +46,7 @@ padding:60px 0;
 
 
 
+
 .form-box{
 
 max-width:700px;
@@ -45,6 +54,7 @@ max-width:700px;
 margin:auto;
 
 }
+
 
 
 
@@ -83,6 +93,7 @@ min-height:130px;
 
 
 
+
 .info{
 
 padding:20px;
@@ -111,6 +122,7 @@ margin-bottom:12px;
 
 
 
+
 <body>
 
 
@@ -119,111 +131,8 @@ margin-bottom:12px;
 
 
 
-<header class="container">
 
-
-
-<nav class="navbar">
-
-
-
-
-
-<a href="../" class="logo">
-
-
-
-<img
-src="../assets/branding/logo.svg"
-height="32"
-style="vertical-align:middle;">
-
-
-
-Pharmora
-
-
-
-</a>
-
-
-
-
-
-
-<div
-class="menu-toggle"
-onclick="toggleMenu()">
-
-
-☰
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="nav-links">
-
-
-
-<a href="../learn/">Learn</a>
-
-<a href="../teach/">Teach</a>
-
-<a href="../tools/">Tools</a>
-
-<a href="../community/">Community</a>
-
-<a href="../library/">Library</a>
-
-<a href="../auth/login.html">Login</a>
-
-
-
-</div>
-
-
-
-
-
-</nav>
-
-
-
-
-
-
-<div class="mobile-menu">
-
-
-
-<a href="../learn/">📚 Learn</a>
-
-<a href="../teach/">👨‍🏫 Teach</a>
-
-<a href="../tools/">🧪 Tools</a>
-
-<a href="../community/">🌐 Community</a>
-
-<a href="../library/">📖 Library</a>
-
-
-
-</div>
-
-
-
-
-
-
-</header>
-
+<div id="site-header"></div>
 
 
 
@@ -248,6 +157,9 @@ onclick="toggleMenu()">
 
 
 
+
+
+
 <div class="badge">
 
 🌱 Open Contribution
@@ -258,9 +170,11 @@ onclick="toggleMenu()">
 
 
 
+
+
 <h1>
 
-Build Pharmacy Knowledge Together
+Build Knowledge Together
 
 </h1>
 
@@ -268,11 +182,16 @@ Build Pharmacy Knowledge Together
 
 
 
+
+
 <p>
 
-Share educational resources and help create an open pharmacy learning ecosystem.
+Share educational resources and help create an open learning ecosystem.
 
 </p>
+
+
+
 
 
 
@@ -289,11 +208,19 @@ Share educational resources and help create an open pharmacy learning ecosystem.
 
 
 
+
+
+
 <section class="container section">
 
 
 
+
+
+
 <div class="card form-box">
+
+
 
 
 
@@ -310,6 +237,8 @@ Submit Resource
 
 
 
+
+
 <br>
 
 
@@ -317,7 +246,9 @@ Submit Resource
 
 
 
-<input placeholder="Resource title">
+
+
+<form id="contribution-form">
 
 
 
@@ -326,7 +257,26 @@ Submit Resource
 
 
 
-<select>
+<input 
+
+id="resource-title"
+
+placeholder="Resource title">
+
+
+
+
+
+
+
+
+
+
+
+<select id="resource-course">
+
+
+
 
 
 <option>
@@ -337,13 +287,46 @@ Select Course
 
 
 
-<option>B.Pharm</option>
 
-<option>D.Pharm</option>
 
-<option>M.Pharm</option>
+<option>
 
-<option>Pharm.D</option>
+B.Pharm
+
+</option>
+
+
+
+
+
+<option>
+
+D.Pharm
+
+</option>
+
+
+
+
+
+<option>
+
+M.Pharm
+
+</option>
+
+
+
+
+
+<option>
+
+Pharm.D
+
+</option>
+
+
+
 
 
 
@@ -357,7 +340,10 @@ Select Course
 
 
 
-<select>
+<select id="resource-type">
+
+
+
 
 
 
@@ -370,17 +356,67 @@ Contribution Type
 
 
 
-<option>Study Notes</option>
 
-<option>Presentation</option>
 
-<option>Question Bank</option>
 
-<option>Practical File</option>
+<option>
 
-<option>Teaching Material</option>
+Study Notes
 
-<option>Tool Suggestion</option>
+</option>
+
+
+
+
+
+<option>
+
+Presentation
+
+</option>
+
+
+
+
+
+<option>
+
+Question Bank
+
+</option>
+
+
+
+
+
+<option>
+
+Practical File
+
+</option>
+
+
+
+
+
+<option>
+
+Teaching Material
+
+</option>
+
+
+
+
+
+<option>
+
+Tool Suggestion
+
+</option>
+
+
+
 
 
 
@@ -394,7 +430,12 @@ Contribution Type
 
 
 
-<select>
+
+<select id="contributor-role">
+
+
+
+
 
 
 <option>
@@ -405,11 +446,39 @@ Contributor Role
 
 
 
-<option>Student</option>
 
-<option>Educator</option>
 
-<option>Professional</option>
+
+<option>
+
+Student
+
+</option>
+
+
+
+
+
+
+<option>
+
+Educator
+
+</option>
+
+
+
+
+
+
+<option>
+
+Professional
+
+</option>
+
+
+
 
 
 
@@ -422,7 +491,24 @@ Contributor Role
 
 
 
-<textarea placeholder="Describe your contribution..."></textarea>
+
+<input
+
+id="resource-file"
+
+type="file">
+
+
+
+
+
+
+
+<textarea 
+
+id="resource-description"
+
+placeholder="Describe your contribution..."></textarea>
 
 
 
@@ -432,13 +518,30 @@ Contributor Role
 
 
 
-<button class="btn btn-primary">
+
+<button 
+
+type="button"
+
+class="btn btn-primary">
+
 
 
 Submit Contribution
 
 
+
 </button>
+
+
+
+
+
+
+
+
+</form>
+
 
 
 
@@ -451,7 +554,14 @@ Submit Contribution
 
 
 
+
+
 </section>
+
+
+
+
+
 
 
 
@@ -465,11 +575,18 @@ Submit Contribution
 
 
 
+
+
+
 <h2 class="section-title">
 
 Contribution Process
 
 </h2>
+
+
+
+
 
 
 
@@ -482,7 +599,10 @@ Contribution Process
 
 
 
+
+
 <div class="card">
+
 
 
 <h2>
@@ -493,11 +613,13 @@ Contribution Process
 
 
 
+
 <p>
 
-Share pharmacy learning resources.
+Share learning resources.
 
 </p>
+
 
 
 
@@ -509,7 +631,12 @@ Share pharmacy learning resources.
 
 
 
+
+
+
 <div class="card">
+
+
 
 
 <h2>
@@ -520,15 +647,22 @@ Share pharmacy learning resources.
 
 
 
+
+
 <p>
 
-Community verification improves quality.
+Moderation improves quality and accuracy.
 
 </p>
 
 
 
+
+
 </div>
+
+
+
 
 
 
@@ -540,6 +674,9 @@ Community verification improves quality.
 <div class="card">
 
 
+
+
+
 <h2>
 
 🌍 Publish
@@ -548,22 +685,31 @@ Community verification improves quality.
 
 
 
+
+
 <p>
 
-Help learners everywhere access knowledge.
+Approved content becomes available.
 
 </p>
 
 
 
-</div>
-
-
-
-
 
 
 </div>
+
+
+
+
+
+
+
+
+
+</div>
+
+
 
 
 
@@ -571,6 +717,7 @@ Help learners everywhere access knowledge.
 
 
 </section>
+
 
 
 
@@ -585,61 +732,31 @@ Help learners everywhere access knowledge.
 
 
 
-<footer class="footer">
-
-
-<div class="footer-brand">
-
-⚕ Pharmora
-
-</div>
-
-
-
-<div class="footer-links">
-
-
-<a href="../about/">
-About
-</a>
-
-
-<a href="../learn/">
-Learn
-</a>
-
-
-<a href="../tools/">
-Tools
-</a>
-
-
-<a href="../contribute/">
-Contribute
-</a>
-
-
-</div>
 
 
 
 
-<div class="footer-text">
-
-© 2026 Pharmora
-
-<br>
-
-Open Pharmacy Learning Network
+<div id="site-footer"></div>
 
 
-</div>
 
 
-</footer>
+
+
+
+
+
+<script src="../components/layout/header.js"></script>
+
+<script src="../components/layout/footer.js"></script>
+
 
 
 <script src="../js/app.js"></script>
+
+
+
+
 
 
 

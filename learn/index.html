@@ -10,8 +10,11 @@
 name="viewport"
 content="width=device-width, initial-scale=1.0">
 
+
 <title>
-Learn | Pharmora
+
+Learn
+
 </title>
 
 
@@ -21,12 +24,19 @@ href="../assets/branding/favicon.svg">
 
 
 <link rel="stylesheet" href="../css/variables.css">
+
 <link rel="stylesheet" href="../css/base.css">
+
 <link rel="stylesheet" href="../css/components.css">
+
 <link rel="stylesheet" href="../css/responsive.css">
 
 
+
+
+
 <style>
+
 
 .hero{
 
@@ -37,11 +47,14 @@ padding:50px 0;
 }
 
 
+
 .hero h1{
 
 font-size:3.5rem;
 
 }
+
+
 
 
 .subject{
@@ -62,6 +75,7 @@ transition:var(--transition);
 
 
 
+
 .subject:hover{
 
 border-color:var(--primary);
@@ -71,9 +85,12 @@ transform:translateX(5px);
 }
 
 
+
 </style>
 
+
 </head>
+
 
 
 
@@ -84,92 +101,8 @@ transform:translateX(5px);
 
 
 
-<header class="container">
 
-
-<nav class="navbar">
-
-
-<a href="../" class="logo">
-
-
-<img
-src="../assets/branding/logo.svg"
-height="32"
-style="vertical-align:middle;">
-
-
-Pharmora
-
-
-</a>
-
-
-
-
-
-<div 
-class="menu-toggle"
-onclick="toggleMenu()">
-
-☰
-
-</div>
-
-
-
-
-
-
-<div class="nav-links">
-
-
-<a href="../learn/">Learn</a>
-
-<a href="../teach/">Teach</a>
-
-<a href="../tools/">Tools</a>
-
-<a href="../community/">Community</a>
-
-<a href="../library/">Library</a>
-
-<a href="../auth/login.html">Login</a>
-
-
-</div>
-
-
-
-</nav>
-
-
-
-
-
-<div class="mobile-menu">
-
-
-<a href="../learn/">📚 Learn</a>
-
-<a href="../teach/">👨‍🏫 Teach</a>
-
-<a href="../tools/">🧪 Tools</a>
-
-<a href="../community/">🌐 Community</a>
-
-<a href="../library/">📖 Library</a>
-
-<a href="../auth/login.html">👤 Login</a>
-
-
-</div>
-
-
-
-
-</header>
-
+<div id="site-header"></div>
 
 
 
@@ -185,23 +118,33 @@ onclick="toggleMenu()">
 
 
 
+
+
 <section class="container hero">
+
+
+
 
 
 <div class="badge">
 
-🎓 Pharmora Learn
+🎓 Learn
 
 </div>
 
 
 
 
+
 <h1>
+
 
 Learn Pharmacy
 
+
 <br>
+
+
 
 
 <span style="
@@ -221,7 +164,9 @@ Your Way
 </span>
 
 
+
 </h1>
+
 
 
 
@@ -236,22 +181,40 @@ curriculum, semester and subject.
 
 
 
+
+
 <div class="search-box">
 
 
 <input 
+
 placeholder="Search courses, subjects, topics..."
-oninput="pharmoraSearch(this.value)">
+
+oninput="pharmoraSearch(this.value)"
+
+>
 
 
 </div>
+
+
+
+
+
 
 <div 
+
 id="search-results"
+
 class="grid"
+
 style="margin-top:30px;">
 
+
 </div>
+
+
+
 
 
 </section>
@@ -264,7 +227,10 @@ style="margin-top:30px;">
 
 
 
+
+
 <section class="container section">
+
 
 
 <h2 class="section-title">
@@ -275,12 +241,16 @@ Choose Course
 
 
 
+
 <div
+
 class="grid"
+
 id="course-list">
 
 
 </div>
+
 
 
 
@@ -295,6 +265,8 @@ id="course-list">
 
 
 <section class="container section">
+
+
 
 
 <h2 class="section-title">
@@ -305,12 +277,21 @@ Curriculum Explorer
 
 
 
+
+
+
 <div
+
 class="grid"
+
 id="curriculum-view">
 
 
+
+
+
 <div class="card">
+
 
 
 <h2>
@@ -320,18 +301,24 @@ Select a course
 </h2>
 
 
+
 <p>
 
-Choose B.Pharm, D.Pharm or another course above.
+Choose a course above to explore curriculum.
 
 </p>
 
 
+
+</div>
+
+
+
+
+
 </div>
 
 
-
-</div>
 
 
 
@@ -345,7 +332,9 @@ Choose B.Pharm, D.Pharm or another course above.
 
 
 
+
 <section class="container section">
+
 
 
 <h2 class="section-title">
@@ -353,6 +342,8 @@ Choose B.Pharm, D.Pharm or another course above.
 Popular Subjects
 
 </h2>
+
+
 
 
 
@@ -364,11 +355,14 @@ Popular Subjects
 
 
 
+
+
 <div class="subject">
 
 ⚗ Pharmaceutics
 
 </div>
+
 
 
 
@@ -382,6 +376,7 @@ Popular Subjects
 
 
 
+
 <div class="subject">
 
 🌿 Pharmacognosy
@@ -390,7 +385,10 @@ Popular Subjects
 
 
 
+
+
 </section>
+
 
 
 
@@ -402,58 +400,23 @@ Popular Subjects
 
 
 
-<footer class="footer">
-
-
-<div class="footer-brand">
-
-⚕ Pharmora
-
-</div>
 
 
 
-<div class="footer-links">
-
-
-<a href="../about/">
-About
-</a>
-
-
-<a href="../learn/">
-Learn
-</a>
-
-
-<a href="../tools/">
-Tools
-</a>
-
-
-<a href="../contribute/">
-Contribute
-</a>
-
-
-</div>
+<div id="site-footer"></div>
 
 
 
 
-<div class="footer-text">
-
-© 2026 Pharmora
-
-<br>
-
-Open Pharmacy Learning Network
 
 
-</div>
 
 
-</footer>
+
+<script src="../components/layout/header.js"></script>
+
+<script src="../components/layout/footer.js"></script>
+
 
 
 
@@ -462,6 +425,8 @@ Open Pharmacy Learning Network
 <script src="../js/search.js"></script>
 
 <script src="../js/app.js"></script>
+
+
 
 
 
@@ -475,6 +440,7 @@ renderCourses(
 
 
 </script>
+
 
 
 

@@ -12,7 +12,9 @@ content="width=device-width, initial-scale=1.0">
 
 
 <title>
-Setup Pharmora Profile
+
+Profile Setup
+
 </title>
 
 
@@ -22,9 +24,13 @@ href="../assets/branding/favicon.svg">
 
 
 <link rel="stylesheet" href="../css/variables.css">
+
 <link rel="stylesheet" href="../css/base.css">
+
 <link rel="stylesheet" href="../css/components.css">
+
 <link rel="stylesheet" href="../css/responsive.css">
+
 
 
 <style>
@@ -46,6 +52,7 @@ padding:25px;
 
 
 
+
 .box{
 
 width:100%;
@@ -53,6 +60,7 @@ width:100%;
 max-width:650px;
 
 }
+
 
 
 
@@ -87,6 +95,8 @@ color:transparent;
 
 
 
+
+
 .panel{
 
 background:rgba(15,23,42,.85);
@@ -104,12 +114,17 @@ box-shadow:var(--shadow);
 
 
 
+
+
+
 .panel h1,
 .panel p{
 
 text-align:center;
 
 }
+
+
 
 
 
@@ -123,11 +138,15 @@ margin:15px 0 30px;
 
 
 
+
+
 .block{
 
 margin-bottom:30px;
 
 }
+
+
 
 
 
@@ -142,6 +161,9 @@ margin-bottom:15px;
 
 
 
+
+
+
 .options{
 
 display:grid;
@@ -151,6 +173,9 @@ grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
 gap:12px;
 
 }
+
+
+
 
 
 
@@ -178,6 +203,9 @@ cursor:pointer;
 
 
 
+
+
+
 .option:hover,
 .option.active{
 
@@ -199,7 +227,14 @@ transform:translateY(-4px);
 
 
 
+
+
+
 <body>
+
+
+
+
 
 
 
@@ -210,6 +245,9 @@ transform:translateY(-4px);
 
 
 
+
+
+
 <div class="box">
 
 
@@ -217,19 +255,44 @@ transform:translateY(-4px);
 
 
 
+
+
+
 <a
+
 href="../"
+
 style="text-decoration:none;">
 
 
-<div class="logo-text">
 
-⚕ Pharmora
+
+
+
+<div 
+
+class="logo-text"
+
+id="auth-brand">
+
+
+
+⚕ Platform
+
+
 
 </div>
 
 
+
+
+
+
 </a>
+
+
+
+
 
 
 
@@ -245,9 +308,12 @@ style="text-decoration:none;">
 
 
 
+
+
+
 <h1>
 
-Personalize Pharmora
+Personalize Experience
 
 </h1>
 
@@ -255,9 +321,12 @@ Personalize Pharmora
 
 
 
+
+
+
 <p>
 
-Build your pharmacy learning workspace
+Build your learning workspace
 
 </p>
 
@@ -270,7 +339,16 @@ Build your pharmacy learning workspace
 
 
 
-<div class="block">
+
+
+<div 
+
+class="block"
+
+data-field="role">
+
+
+
 
 
 
@@ -283,47 +361,82 @@ I am a
 
 
 
+
+
+
 <div class="options">
 
 
 
-<div class="option">
+
+
+
+
+<div 
+
+class="option"
+
+data-value="student">
+
 
 🎓 Student
 
+
 </div>
 
 
 
-<div class="option">
+
+
+
+
+<div 
+
+class="option"
+
+data-value="educator">
+
 
 👨‍🏫 Educator
 
+
 </div>
 
 
 
 
-<div class="option">
+
+
+
+
+<div 
+
+class="option"
+
+data-value="professional">
+
 
 💊 Professional
 
+
 </div>
 
 
 
 
-<div class="option">
+
+
+
+
+<div 
+
+class="option"
+
+data-value="contributor">
+
 
 🌱 Contributor
 
-</div>
-
-
-
-
-</div>
-
 
 </div>
 
@@ -333,10 +446,31 @@ I am a
 
 
 
+</div>
 
 
 
-<div class="block">
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div 
+
+class="block"
+
+data-field="course">
+
+
+
 
 
 
@@ -349,12 +483,19 @@ Select Course
 
 
 
+
+
+
+
 <div class="options">
 
 
 
 
-<div class="option">
+
+
+
+<div class="option" data-value="bpharm">
 
 B.Pharm
 
@@ -362,7 +503,10 @@ B.Pharm
 
 
 
-<div class="option">
+
+
+
+<div class="option" data-value="dpharm">
 
 D.Pharm
 
@@ -371,7 +515,10 @@ D.Pharm
 
 
 
-<div class="option">
+
+
+
+<div class="option" data-value="mpharm">
 
 M.Pharm
 
@@ -380,7 +527,10 @@ M.Pharm
 
 
 
-<div class="option">
+
+
+
+<div class="option" data-value="pharmd">
 
 Pharm.D
 
@@ -390,13 +540,13 @@ Pharm.D
 
 
 
-</div>
 
 
 </div>
 
 
 
+</div>
 
 
 
@@ -405,7 +555,19 @@ Pharm.D
 
 
 
-<div class="block">
+
+
+
+
+<div 
+
+class="block"
+
+data-field="curriculum">
+
+
+
+
 
 
 
@@ -418,12 +580,19 @@ Curriculum
 
 
 
+
+
+
+
 <div class="options">
 
 
 
 
-<div class="option">
+
+
+
+<div class="option" data-value="pci">
 
 PCI Regulation
 
@@ -432,7 +601,10 @@ PCI Regulation
 
 
 
-<div class="option">
+
+
+
+<div class="option" data-value="nep">
 
 NEP Curriculum
 
@@ -441,7 +613,10 @@ NEP Curriculum
 
 
 
-<div class="option">
+
+
+
+<div class="option" data-value="university">
 
 University Based
 
@@ -451,20 +626,35 @@ University Based
 
 
 
-</div>
 
 
 </div>
 
 
 
+</div>
 
 
 
 
 
 
-<div class="block">
+
+
+
+
+
+
+
+
+<div 
+
+class="block"
+
+data-field="interest">
+
+
+
 
 
 
@@ -477,7 +667,14 @@ Interests
 
 
 
+
+
+
+
 <div class="options">
+
+
+
 
 
 
@@ -492,6 +689,9 @@ Interests
 
 
 
+
+
+
 <div class="option">
 
 🧪 Chemistry
@@ -501,11 +701,17 @@ Interests
 
 
 
+
+
+
 <div class="option">
 
 🏭 Pharmaceutics
 
 </div>
+
+
+
 
 
 
@@ -520,10 +726,17 @@ Interests
 
 
 
-</div>
 
 
 </div>
+
+
+
+</div>
+
+
+
+
 
 
 
@@ -544,7 +757,7 @@ style="width:100%;">
 
 
 
-Enter Pharmora
+Enter Platform
 
 
 
@@ -557,15 +770,25 @@ Enter Pharmora
 
 
 
+
+
+</div>
+
+
+
+
+
 </div>
 
 
 
+
+
 </div>
 
 
 
-</div>
+
 
 
 
@@ -577,29 +800,56 @@ Enter Pharmora
 <script>
 
 
+fetch("../config/site.json")
+
+.then(r=>r.json())
+
+.then(site=>{
+
+
+document.getElementById("auth-brand").innerHTML =
+
+"⚕ " + site.name;
+
+
+});
+
+
+
+
+
+
+
 document
+
 .querySelectorAll(".option")
+
 .forEach(item=>{
+
 
 
 item.onclick=()=>{
 
 
-let group =
-item.parentElement;
+
+let group=item.parentElement;
+
 
 
 group
+
 .querySelectorAll(".option")
-.forEach(
-x=>x.classList.remove("active")
-);
+
+.forEach(x=>x.classList.remove("active"));
+
 
 
 item.classList.add("active");
 
 
+
 };
+
 
 
 });
@@ -611,7 +861,14 @@ item.classList.add("active");
 
 
 
+
+
+
+
 <script src="../js/app.js"></script>
+
+
+
 
 
 
