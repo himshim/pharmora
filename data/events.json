@@ -1,0 +1,36 @@
+[
+  {
+    "id": "event_001",
+
+    "title": "Pharmacy Research Workshop",
+
+    "type": "Workshop",
+
+    "mode": "Online",
+
+    "date": "2026-07-10",
+
+    "organizer": "Pharmacy Community",
+
+    "description": "Interactive workshop for pharmacy students and researchers.",
+
+    "audience": [
+      "Student",
+      "Teacher",
+      "Professional"
+    ],
+
+    "tags": [
+      "Research",
+      "Pharmacy"
+    ],
+
+    "registration": {
+      "required": true,
+      "fee": "Free",
+      "link": ""
+    },
+
+    "status": "upcoming"
+  }
+]
