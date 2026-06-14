@@ -48,10 +48,10 @@ base+"config/navigation.json"
 
 
 
+
 let desktopLinks="";
 
 let mobileLinks="";
-
 
 
 
@@ -63,37 +63,23 @@ let url =
 base + item.url.replace("/","");
 
 
-
 desktopLinks += `
 
-
 <a href="${url}">
-
 ${item.title}
-
 </a>
 
-
 `;
-
 
 
 
 mobileLinks += `
 
-
 <a href="${url}">
-
-
-${item.icon}
-${item.title}
-
-
+${item.icon} ${item.title}
 </a>
 
-
 `;
-
 
 
 });
@@ -105,10 +91,16 @@ ${item.title}
 
 
 
+
 root.innerHTML = `
 
 
+
 <header class="container">
+
+
+
+
 
 
 <nav class="navbar">
@@ -143,16 +135,13 @@ ${site.name}
 
 
 
-<div
+<div 
 class="menu-toggle"
 onclick="toggleMenu()">
 
-
 ☰
 
-
 </div>
-
 
 
 
@@ -163,24 +152,7 @@ onclick="toggleMenu()">
 <div class="nav-links">
 
 
-
 ${desktopLinks}
-
-
-
-
-<button
-
-class="notification-btn"
-
-onclick="toggleNotifications()">
-
-
-🔔
-
-
-</button>
-
 
 
 </div>
@@ -198,28 +170,14 @@ onclick="toggleNotifications()">
 
 
 
+
+
 <div class="mobile-menu">
 
 
 ${mobileLinks}
 
 
-
-<div
-
-class="mobile-notice"
-
-onclick="toggleNotifications()">
-
-
-🔔 Updates
-
-
-</div>
-
-
-
-
 </div>
 
 
@@ -228,14 +186,32 @@ onclick="toggleNotifications()">
 
 
 
+<div class="notice-bar">
 
-<div id="notification-panel">
+
+<span>
+
+🔔 Latest Updates
+
+</span>
 
 
-Loading...
+
+<div class="notice-track">
+
+<div id="notice-text">
+
+Loading updates...
+
+</div>
+
+</div>
+
 
 
 </div>
+
+
 
 
 
@@ -249,7 +225,8 @@ Loading...
 
 
 
-loadNotifications();
+
+loadNoticeTicker();
 
 
 
@@ -260,18 +237,21 @@ loadNotifications();
 
 
 
-async function loadNotifications(){
 
 
 
-const panel =
+
+async function loadNoticeTicker(){
+
+
+const notice =
 document.getElementById(
-"notification-panel"
+"notice-text"
 );
 
 
 
-if(!panel){
+if(!notice){
 
 return;
 
@@ -279,10 +259,12 @@ return;
 
 
 
+
+
 try{
 
 
-const notices =
+const data =
 await fetch(
 "/config/notices.json"
 )
@@ -291,81 +273,15 @@ await fetch(
 
 
 
-if(notices.length===0){
 
+notice.innerHTML =
 
-panel.innerHTML = `
+data.map(item=>
 
-<p>No updates</p>
+`${item.title} : ${item.message}`
 
-`;
+).join(" &nbsp;&nbsp; • &nbsp;&nbsp; ");
 
-
-return;
-
-}
-
-
-
-
-
-
-panel.innerHTML =
-notices.map(item=>`
-
-
-<div class="notice-item">
-
-
-
-<strong>
-
-${item.title}
-
-</strong>
-
-
-
-
-<p>
-
-${item.message}
-
-</p>
-
-
-
-
-<small>
-
-${item.date}
-
-</small>
-
-
-
-</div>
-
-
-`).join("");
-
-
-
-}
-
-
-catch(e){
-
-
-
-panel.innerHTML = `
-
-<p>No notices available</p>
-
-`;
-
-
-}
 
 
 
@@ -373,27 +289,14 @@ panel.innerHTML = `
 
 
 
+catch(error){
 
 
 
+notice.innerHTML =
 
+"No current updates";
 
-
-function toggleNotifications(){
-
-
-
-const panel =
-document.getElementById(
-"notification-panel"
-);
-
-
-
-if(panel){
-
-
-panel.classList.toggle("show");
 
 
 }
