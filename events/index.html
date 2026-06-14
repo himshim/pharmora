@@ -1,43 +1,174 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta 
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Events
+</title>
+
+
+<link 
+rel="icon"
+href="../assets/branding/favicon.svg">
+
+
+<link rel="stylesheet" href="../css/variables.css">
+
+<link rel="stylesheet" href="../css/base.css">
+
+<link rel="stylesheet" href="../css/components.css">
+
+<link rel="stylesheet" href="../css/responsive.css">
+
+
+<style>
+
+
+.hero{
+
+text-align:center;
+
+padding:70px 0;
+
+}
+
+
+
+.hero h1{
+
+font-size:3.5rem;
+
+}
+
+
+
+.event-info{
+
+display:flex;
+
+justify-content:space-between;
+
+margin-top:20px;
+
+color:var(--text-muted);
+
+}
+
+
+
+</style>
+
+
+</head>
+
+
+
+<body>
+
+
+
 <div id="site-header"></div>
+
+
+
 
 
 <main>
 
 
-<section class="container section">
+
+<section class="container hero">
+
+
+<div class="badge">
+
+📅 Events
+
+</div>
 
 
 <h1>
-Events
+
+Learn Beyond Classroom
+
 </h1>
 
 
+
 <p>
-Workshops, seminars and conferences
+
+Discover pharmacy conferences, workshops,
+seminars and professional opportunities.
+
 </p>
+
+
+
+</section>
+
+
+
+
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Upcoming Events
+
+</h2>
+
 
 
 <div
 class="grid"
 id="events-list">
+
+
 </div>
 
 
+
 </section>
+
+
+
+
 
 
 </main>
 
 
 
+
+
 <div id="site-footer"></div>
+
+
+
+
+
 
 
 <script src="../components/layout/header.js"></script>
 
 <script src="../components/layout/footer.js"></script>
 
+
 <script src="../js/services/events.service.js"></script>
+
+
 
 
 <script>
@@ -47,3 +178,15 @@ renderEvents(
 );
 
 </script>
+
+
+
+
+<script src="../js/app.js"></script>
+
+
+
+</body>
+
+
+</html>
