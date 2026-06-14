@@ -1,105 +1,29 @@
 /*
  Pharmora Service Worker
- Offline Learning Support
+ Development Mode
+ Network First Strategy
 */
 
 
 const CACHE_NAME =
-"pharmora-v2";
+"pharmora-dev-v3";
 
 
 
-const FILES_TO_CACHE = [
-
-
-"./",
-
-"./index.html",
-
-
-/* Core */
-
-"./offline.html",
-
-"./manifest.json",
-
-
-/* Styles */
-
-"./css/variables.css",
-
-"./css/base.css",
-
-"./css/components.css",
-
-"./css/responsive.css",
-
-
-/* Scripts */
-
-"./js/app.js",
-
-"./js/data-loader.js",
-
-
-/* Pages */
-
-"./learn/",
-
-"./teach/",
-
-"./tools/",
-
-"./library/",
-
-"./community/",
-
-"./contribute/",
-
-
-/* Branding */
-
-"./assets/branding/logo.svg",
-
-"./assets/branding/favicon.svg"
-
-
-];
+const OFFLINE_PAGE =
+"/offline.html";
 
 
 
 
 
 
-
-
-/* Install */
+/* INSTALL */
 
 
 self.addEventListener(
 "install",
 event=>{
-
-
-event.waitUntil(
-
-
-caches.open(
-CACHE_NAME
-)
-
-.then(cache=>{
-
-
-return cache.addAll(
-FILES_TO_CACHE
-);
-
-
-})
-
-
-);
 
 
 self.skipWaiting();
@@ -115,9 +39,7 @@ self.skipWaiting();
 
 
 
-
-
-/* Activate */
+/* ACTIVATE */
 
 
 self.addEventListener(
@@ -129,22 +51,17 @@ event.waitUntil(
 
 
 caches.keys()
-.then(keys=>{
+
+.then(cacheNames=>{
 
 
 return Promise.all(
 
 
-keys.map(key=>{
+cacheNames.map(cache=>{
 
 
-if(key!==CACHE_NAME){
-
-
-return caches.delete(key);
-
-
-}
+return caches.delete(cache);
 
 
 })
@@ -157,6 +74,7 @@ return caches.delete(key);
 
 
 );
+
 
 
 self.clients.claim();
@@ -174,7 +92,8 @@ self.clients.claim();
 
 
 
-/* Fetch */
+
+/* FETCH */
 
 
 self.addEventListener(
@@ -186,24 +105,31 @@ event.respondWith(
 
 
 
-caches.match(
-event.request
-)
+fetch(event.request)
+
 
 .then(response=>{
 
 
-return response ||
+return response;
 
 
-fetch(event.request)
+})
+
+
 
 .catch(()=>{
 
 
-return caches.match(
-"./offline.html"
-);
+return caches.match(event.request)
+
+
+.then(cached=>{
+
+
+return cached ||
+
+caches.match(OFFLINE_PAGE);
 
 
 });
@@ -216,6 +142,4 @@ return caches.match(
 );
 
 
-}
-
-);
+});
