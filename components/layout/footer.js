@@ -1,13 +1,23 @@
+/*
+ Global Footer Component
+*/
+
+
 async function loadFooter(){
+
 
 
 const root =
 document.getElementById("site-footer");
 
 
+
 if(!root){
+
 return;
+
 }
+
 
 
 
@@ -17,6 +27,9 @@ location.pathname.split("/").length > 2
 "../"
 :
 "";
+
+
+
 
 
 
@@ -30,27 +43,109 @@ base+"config/site.json"
 
 
 
+
+
+
+
 root.innerHTML = `
 
 
-<footer class="container section">
+
+<footer class="footer">
 
 
-<div class="card">
 
 
-<h2>
+
+<div class="footer-brand">
+
+
+⚕ ${site.name}
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="footer-links">
+
+
+
+
+
+<a href="${base}about/">
+
+About
+
+</a>
+
+
+
+
+
+
+<a href="${base}learn/">
+
+Learn
+
+</a>
+
+
+
+
+
+
+<a href="${base}tools/">
+
+Tools
+
+</a>
+
+
+
+
+
+
+
+<a href="${base}contribute/">
+
+Contribute
+
+</a>
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="footer-text">
+
+
+
+
+
+© ${new Date().getFullYear()}
 
 ${site.name}
 
-</h2>
 
-
-<p>
-
-${site.tagline}
-
-</p>
 
 
 
@@ -58,26 +153,32 @@ ${site.tagline}
 
 
 
-<p>
 
-© ${new Date().getFullYear()}
-${site.name}
+${site.tagline}
 
-</p>
+
+
 
 
 
 </div>
 
 
+
+
+
+
 </footer>
+
 
 
 `;
 
 
 
+
 }
+
 
 
 
