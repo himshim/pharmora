@@ -3,9 +3,7 @@
  Open Pharmacy Learning Network
 */
 
-
 console.log("⚕ Pharmora Initialized");
-
 
 /* =========================
 
@@ -13,16 +11,10 @@ console.log("⚕ Pharmora Initialized");
 
 ========================= */
 
+function getBasePath() {
+  let path = location.pathname;
 
-function getBasePath(){
-
-
-let path =
-location.pathname;
-
-
-
-/*
+  /*
 Folder pages:
 learn/
 admin/
@@ -30,80 +22,28 @@ dashboard/
 etc.
 */
 
+  if (path.endsWith("/") && path !== "/") {
+    return "../";
+  }
 
-if(
-path.endsWith("/")
-&&
-path !== "/"
-){
-
-return "../";
-
-}
-
-
-
-
-/*
+  /*
 Files inside folders:
 auth/login.html
 library/view.html
 */
 
+  let depth = path.split("/").filter(Boolean).length;
 
-let depth =
+  if (depth > 1) {
+    return "../";
+  }
 
-path
-.split("/")
-.filter(Boolean)
-.length;
-
-
-
-
-if(depth>1){
-
-return "../";
-
+  return "./";
 }
 
-
-
-return "./";
-
-
-
+function appPath(path) {
+  return getBasePath() + path.replace(/^\/+/, "");
 }
-
-
-
-
-
-
-
-
-function appPath(path){
-
-
-
-return (
-
-getBasePath()
-
-+
-
-path.replace(
-/^\/+/,
-""
-)
-
-);
-
-
-
-}
-
-
 
 /* =========================
 
@@ -111,83 +51,23 @@ path.replace(
 
 ========================= */
 
+function loadTheme() {
+  const savedTheme = localStorage.getItem("pharmora-theme");
 
-function loadTheme(){
-
-
-    const savedTheme =
-
-    localStorage.getItem(
-        "pharmora-theme"
-    );
-
-
-
-    if(savedTheme){
-
-
-        document.documentElement
-        .setAttribute(
-            "data-theme",
-            savedTheme
-        );
-
-
-    }
-
-
+  if (savedTheme) {
+    document.documentElement.setAttribute("data-theme", savedTheme);
+  }
 }
 
+function toggleTheme() {
+  const current = document.documentElement.getAttribute("data-theme");
 
+  const next = current === "light" ? "dark" : "light";
 
+  document.documentElement.setAttribute("data-theme", next);
 
-function toggleTheme(){
-
-
-
-    const current =
-
-    document.documentElement
-    .getAttribute(
-        "data-theme"
-    );
-
-
-
-
-    const next =
-
-    current==="light"
-
-    ?
-
-    "dark"
-
-    :
-
-    "light";
-
-
-
-
-    document.documentElement
-    .setAttribute(
-        "data-theme",
-        next
-    );
-
-
-
-
-    localStorage.setItem(
-        "pharmora-theme",
-        next
-    );
-
-
+  localStorage.setItem("pharmora-theme", next);
 }
-
-
 
 /* =========================
 
@@ -195,39 +75,17 @@ function toggleTheme(){
 
 ========================= */
 
+function toggleMenu() {
+  const menu = document.querySelector(".mobile-menu");
 
-function toggleMenu(){
-
-
-
-    const menu =
-
-    document.querySelector(
-        ".mobile-menu"
-    );
-
-
-
-    if(menu){
-
-
-        menu.classList.toggle(
-            "active"
-        );
-
-
-    }
-
-
+  if (menu) {
+    menu.classList.toggle("active");
+  }
 }
-
-
-
 
 /* =========================
 
- SIMPLE TOAST SYSTEM
- (used later)
+ PHARMORA TOAST SYSTEM
 
 ========================= */
 
@@ -239,38 +97,33 @@ type="info"
 
 
 
-    let toast =
-    document.createElement(
-        "div"
-    );
-
-
-
-    toast.className =
-    "toast " + type;
-
-
-
-    toast.textContent =
-    message;
+let container =
+document.getElementById(
+"toast-container"
+);
 
 
 
 
-    document.body.appendChild(
-        toast
-    );
+if(!container){
 
 
 
+container =
+document.createElement(
+"div"
+);
 
-    setTimeout(()=>{
 
 
-        toast.remove();
+container.id =
+"toast-container";
 
 
-    },3000);
+
+document.body.appendChild(
+container
+);
 
 
 
@@ -280,36 +133,101 @@ type="info"
 
 
 
+
+
+let toast =
+document.createElement(
+"div"
+);
+
+
+
+
+toast.className =
+
+"toast toast-" + type;
+
+
+
+
+
+toast.innerText =
+message;
+
+
+
+
+
+
+container.appendChild(
+toast
+);
+
+
+
+
+
+
+setTimeout(()=>{
+
+
+toast.classList.add(
+"show"
+);
+
+
+},50);
+
+
+
+
+
+
+
+
+setTimeout(()=>{
+
+
+
+toast.classList.remove(
+"show"
+);
+
+
+
+
+setTimeout(()=>{
+
+
+toast.remove();
+
+
+},300);
+
+
+
+
+},3000);
+
+
+
+
+}
 /* =========================
 
  APP INIT
 
 ========================= */
 
-
 document.addEventListener(
+  "DOMContentLoaded",
 
-"DOMContentLoaded",
-
-()=>{
-
-
+  () => {
     loadTheme();
 
-
-
-    console.log(
-        "Interface Ready"
-    );
-
-
-}
-
+    console.log("Interface Ready");
+  },
 );
-
-
-
-
 
 /* =========================
 
@@ -317,17 +235,7 @@ document.addEventListener(
 
 ========================= */
 
-
-if(
-    "serviceWorker" in navigator
-){
-
-
-    navigator.serviceWorker
-    .register(
-        appPath("sw.js")
-    )
-    .catch(()=>{});
-
-
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register(appPath("sw.js")).catch(() => {});
 }
+

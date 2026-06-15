@@ -231,7 +231,7 @@ file=
 if(!file){
 
 
-alert(
+showToast(
 "Curriculum coming soon"
 );
 

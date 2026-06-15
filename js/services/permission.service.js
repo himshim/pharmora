@@ -356,7 +356,7 @@ if(!allowed){
 
 
 
-alert(
+showToast(
 
 "You do not have permission"
 

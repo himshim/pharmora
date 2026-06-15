@@ -376,6 +376,8 @@ placeholder="Description / notes / explanation">
 
 <button
 
+id="submit-btn"
+
 type="button"
 
 onclick="submitContribution()"
@@ -562,21 +564,6 @@ Available for everyone.
 
 
 
-const hierarchy=[
-
-"courses",
-
-"curriculums",
-
-"semesters",
-
-"subjects",
-
-"units"
-
-];
-
-
 
 
 
@@ -602,10 +589,9 @@ box.innerHTML = `
 
 
 <h3>
-
 Academic Classification
-
 </h3>
+
 
 
 <select id="select-course"
@@ -665,6 +651,9 @@ Select Unit / Chapter (optional)
 </select>
 
 
+
+
+
 <br><br>
 
 
@@ -693,11 +682,86 @@ loadChildOptions(
 }
 
 
+
+
+
+
+
+
+
 async function loadChildOptions(type){
 
 
 
+let reset={
+
+curriculums:[
+"select-curriculum",
+"select-semester",
+"select-subject",
+"select-unit"
+],
+
+semesters:[
+"select-semester",
+"select-subject",
+"select-unit"
+],
+
+subjects:[
+"select-subject",
+"select-unit"
+],
+
+units:[
+"select-unit"
+]
+
+};
+
+
+
+
+
+
+
+(reset[type] || [])
+
+.forEach(id=>{
+
+
+
+let el =
+document.getElementById(
+id
+);
+
+
+
+if(el){
+
+
+el.innerHTML=
+
+"<option value=''>Select</option>";
+
+
+}
+
+
+
+});
+
+
+
+
+
+
+
+
+
 let map={
+
 
 courses:"select-course",
 
@@ -709,13 +773,21 @@ subjects:"select-subject",
 
 units:"select-unit"
 
+
 };
 
 
 
 
+
+
+
+
 let records =
-await getRecords(type);
+await getRecords(
+type
+);
+
 
 
 
@@ -725,17 +797,28 @@ await getRecords(type);
 if(type==="curriculums"){
 
 
+
 let course =
 document.getElementById(
 "select-course"
 ).value;
 
 
+
 records =
-records.filter(x=>x.course===course);
+records.filter(
+
+x=>x.course===course
+
+);
+
 
 
 }
+
+
+
+
 
 
 
@@ -744,17 +827,27 @@ records.filter(x=>x.course===course);
 if(type==="semesters"){
 
 
+
 let curriculum =
 document.getElementById(
 "select-curriculum"
 ).value;
 
 
+
 records =
-records.filter(x=>x.curriculum===curriculum);
+records.filter(
+
+x=>x.curriculum===curriculum
+
+);
+
 
 
 }
+
+
+
 
 
 
@@ -763,17 +856,26 @@ records.filter(x=>x.curriculum===curriculum);
 if(type==="subjects"){
 
 
+
 let semester =
 document.getElementById(
 "select-semester"
 ).value;
 
 
+
 records =
-records.filter(x=>x.semester===semester);
+records.filter(
+
+x=>x.semester===semester
+
+);
+
 
 
 }
+
+
 
 
 
@@ -783,17 +885,25 @@ records.filter(x=>x.semester===semester);
 if(type==="units"){
 
 
+
 let subject =
 document.getElementById(
 "select-subject"
 ).value;
 
 
+
 records =
-records.filter(x=>x.subject===subject);
+records.filter(
+
+x=>x.subject===subject
+
+);
+
 
 
 }
+
 
 
 
@@ -810,15 +920,15 @@ map[type]
 
 
 
-select.innerHTML =
+select.innerHTML = `
 
-`
 <option value="">
-
 Select
-
 </option>
+
 `;
+
+
 
 
 
@@ -827,7 +937,9 @@ Select
 records.forEach(item=>{
 
 
+
 select.innerHTML += `
+
 
 <option value="${item.id}">
 
@@ -837,13 +949,17 @@ item.name ||
 
 item.title ||
 
-item.code
+item.code ||
+
+"Unnamed"
 
 }
 
 </option>
 
+
 `;
+
 
 
 });
@@ -863,7 +979,28 @@ item.code
 
 
 
+function unlockSubmit(){
 
+
+
+let btn =
+document.getElementById(
+"submit-btn"
+);
+
+
+
+btn.disabled=false;
+
+
+
+btn.innerHTML=
+
+"Submit Contribution";
+
+
+
+}
 
 
 
@@ -874,6 +1011,26 @@ item.code
 
 
 async function submitContribution(){
+
+
+
+
+
+
+let submitBtn =
+document.getElementById(
+"submit-btn"
+);
+
+
+
+
+submitBtn.disabled=true;
+
+
+submitBtn.innerHTML=
+
+"Submitting...";
 
 
 
@@ -901,9 +1058,11 @@ showToast(
 
 
 
+unlockSubmit();
+
+
 
 location.href=
-
 "../auth/login.html";
 
 
@@ -922,18 +1081,12 @@ return;
 
 
 
+
 let title =
-
-document
-
-.getElementById(
-
+document.getElementById(
 "resource-title"
-
 )
-
 .value
-
 .trim();
 
 
@@ -943,17 +1096,10 @@ document
 
 
 let description =
-
-document
-
-.getElementById(
-
+document.getElementById(
 "resource-description"
-
 )
-
 .value
-
 .trim();
 
 
@@ -963,19 +1109,11 @@ document
 
 
 
-
 let link =
-
-document
-
-.getElementById(
-
+document.getElementById(
 "resource-link"
-
 )
-
 .value
-
 .trim();
 
 
@@ -986,12 +1124,10 @@ document
 
 
 let fileInput =
-
 document.getElementById(
-
 "resource-file"
-
 );
+
 
 
 
@@ -1003,14 +1139,20 @@ document.getElementById(
 if(!title){
 
 
+
 showToast(
-
-"Enter title"
-
+"Enter title",
+"error"
 );
 
 
+
+unlockSubmit();
+
+
+
 return;
+
 
 
 }
@@ -1032,14 +1174,11 @@ let uploaded=null;
 
 
 
-if(
-
-fileInput.files.length>0
-
-){
+if(fileInput.files.length>0){
 
 
 
+try{
 
 
 uploaded =
@@ -1052,9 +1191,32 @@ fileInput.files[0],
 );
 
 
+}
+
+
+catch(error){
+
+
+showToast(
+
+"Upload failed",
+
+"error"
+
+);
+
+
+unlockSubmit();
+
+
+return;
+
 
 }
 
+
+
+}
 
 
 
@@ -1081,19 +1243,21 @@ if(
 
 
 
-
-
 showToast(
 
-"Add file, link or description"
+"Add file, link or description",
+
+"error"
 
 );
 
 
 
+unlockSubmit();
+
+
 
 return;
-
 
 
 
@@ -1107,14 +1271,13 @@ return;
 
 
 
-let collection =
 
+let collection =
 document.querySelector(
 
 "input[name='ctype']:checked"
 
 )
-
 .value;
 
 
@@ -1125,8 +1288,8 @@ document.querySelector(
 
 
 
-let contribution={
 
+let contribution={
 
 
 
@@ -1157,11 +1320,13 @@ link:link
 
 
 
+
 course:
 
 document.getElementById(
 "select-course"
 ).value,
+
 
 
 curriculum:
@@ -1171,11 +1336,13 @@ document.getElementById(
 ).value,
 
 
+
 semester:
 
 document.getElementById(
 "select-semester"
 ).value,
+
 
 
 subject:
@@ -1185,6 +1352,7 @@ document.getElementById(
 ).value,
 
 
+
 unit:
 
 document.getElementById(
@@ -1192,11 +1360,14 @@ document.getElementById(
 ).value,
 
 
+
+
+
+
+
 tags:
 
-document
-
-.getElementById(
+document.getElementById(
 "resource-tags"
 )
 
@@ -1222,16 +1393,11 @@ author:user,
 
 
 
-
-
 review:{
-
 
 comments:[]
 
 },
-
-
 
 
 
@@ -1248,9 +1414,6 @@ downloads:0
 
 
 },
-
-
-
 
 
 
@@ -1276,7 +1439,6 @@ user.permissions?.includes(
 
 
 
-
 };
 
 
@@ -1287,8 +1449,8 @@ user.permissions?.includes(
 
 
 
-let saved =
 
+let saved =
 await createRecord(
 
 collection,
@@ -1304,27 +1466,8 @@ contribution
 
 
 
-console.log(
 
-"Contribution saved:",
-
-saved
-
-);
-
-
-
-
-
-
-
-
-
-if(
-
-typeof trackEvent==="function"
-
-){
+if(typeof trackEvent==="function"){
 
 
 
@@ -1347,10 +1490,11 @@ saved.id
 
 
 
-
 showToast(
 
-"Submitted for review"
+"Submitted for review",
+
+"success"
 
 );
 
@@ -1377,9 +1521,13 @@ document
 
 
 
+
 loadContributionOptions();
 
 
+
+
+unlockSubmit();
 
 
 
@@ -1392,11 +1540,7 @@ loadContributionOptions();
 
 
 
-
 loadContributionOptions();
-
-
-
 
 
 

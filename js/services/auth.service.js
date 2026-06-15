@@ -64,11 +64,7 @@ await loadAuthConfig();
 
 
 
-
-
-if(
-config.provider==="demo"
-){
+if(config.provider==="demo"){
 
 
 return demoRegister(
@@ -77,7 +73,6 @@ data
 
 
 }
-
 
 
 
@@ -107,6 +102,11 @@ data
 
 
 
+
+return null;
+
+
+
 }
 
 
@@ -131,12 +131,7 @@ await loadAuthConfig();
 
 
 
-
-
-
-if(
-config.provider==="demo"
-){
+if(config.provider==="demo"){
 
 
 
@@ -151,7 +146,6 @@ password
 
 
 }
-
 
 
 
@@ -186,7 +180,13 @@ password
 
 
 
+
+return null;
+
+
+
 }
+
 
 
 
@@ -200,6 +200,10 @@ function currentUser(){
 
 
 
+try{
+
+
+
 return JSON.parse(
 
 localStorage.getItem(
@@ -209,6 +213,22 @@ localStorage.getItem(
 )
 
 );
+
+
+
+}
+
+
+
+catch(error){
+
+
+
+return null;
+
+
+
+}
 
 
 
@@ -235,6 +255,27 @@ localStorage.removeItem(
 
 
 
+
+if(typeof showToast==="function"){
+
+
+
+showToast(
+
+"Logged out",
+
+"info"
+
+);
+
+
+
+}
+
+
+
+
+
 location.href =
 
 appPath(
@@ -244,6 +285,7 @@ appPath(
 
 
 }
+
 
 
 
@@ -277,14 +319,18 @@ return null;
 
 user={
 
+
 ...user,
 
+
 ...updates,
+
 
 updatedAt:
 
 new Date()
 .toISOString()
+
 
 };
 
@@ -300,6 +346,29 @@ localStorage.setItem(
 JSON.stringify(user)
 
 );
+
+
+
+
+
+
+if(typeof showToast==="function"){
+
+
+
+showToast(
+
+"Profile updated",
+
+"success"
+
+);
+
+
+
+}
+
+
 
 
 
@@ -324,7 +393,6 @@ return user;
 DEMO AUTH ENGINE
 
 */
-
 
 
 
@@ -362,6 +430,7 @@ localStorage.getItem(
 
 
 
+
 function saveDemoUsers(
 users
 ){
@@ -372,13 +441,16 @@ localStorage.setItem(
 
 "users",
 
-JSON.stringify(users)
+JSON.stringify(
+users
+)
 
 );
 
 
 
 }
+
 
 
 
@@ -395,6 +467,8 @@ data
 
 
 
+
+
 let users =
 getDemoUsers();
 
@@ -407,7 +481,13 @@ getDemoUsers();
 let exists =
 users.find(
 
-u=>u.email===data.email
+u=>
+
+u.email.toLowerCase()
+
+===
+
+data.email.toLowerCase()
 
 );
 
@@ -420,6 +500,11 @@ u=>u.email===data.email
 if(exists){
 
 
+
+if(typeof showToast==="function"){
+
+
+
 showToast(
 
 "Account already exists",
@@ -429,10 +514,17 @@ showToast(
 );
 
 
+
+}
+
+
+
 return null;
 
 
+
 }
+
 
 
 
@@ -472,8 +564,9 @@ data.password,
 
 role:
 
-data.role || "student",
+data.role ||
 
+"member",
 
 
 
@@ -485,6 +578,8 @@ new Date()
 
 
 };
+
+
 
 
 
@@ -513,6 +608,8 @@ users
 
 
 
+
+
 let session={
 
 ...user
@@ -521,7 +618,9 @@ let session={
 
 
 
+
 delete session.password;
+
 
 
 
@@ -537,6 +636,31 @@ localStorage.setItem(
 JSON.stringify(session)
 
 );
+
+
+
+
+
+
+
+
+if(typeof showToast==="function"){
+
+
+
+showToast(
+
+"Account created successfully",
+
+"success"
+
+);
+
+
+
+}
+
+
 
 
 
@@ -558,10 +682,14 @@ return session;
 
 
 
+
+
 function demoLogin(
 email,
 password
 ){
+
+
 
 
 
@@ -574,12 +702,17 @@ getDemoUsers();
 
 
 
+
 let user =
 users.find(
 
 u=>
 
-u.email===email
+u.email.toLowerCase()
+
+===
+
+email.toLowerCase()
 
 &&
 
@@ -594,7 +727,14 @@ u.password===password
 
 
 
+
 if(!user){
+
+
+
+
+
+if(typeof showToast==="function"){
 
 
 
@@ -605,6 +745,12 @@ showToast(
 "error"
 
 );
+
+
+
+}
+
+
 
 
 
@@ -622,16 +768,19 @@ return null;
 
 
 
+
+
 let session={
 
-...user,
 
+...user,
 
 
 lastLogin:
 
 new Date()
 .toISOString()
+
 
 };
 
@@ -650,6 +799,7 @@ delete session.password;
 
 
 
+
 localStorage.setItem(
 
 "currentUser",
@@ -657,6 +807,31 @@ localStorage.setItem(
 JSON.stringify(session)
 
 );
+
+
+
+
+
+
+
+
+
+if(typeof showToast==="function"){
+
+
+
+showToast(
+
+"Login successful",
+
+"success"
+
+);
+
+
+
+}
+
 
 
 

@@ -652,7 +652,7 @@ return;
 
 
 
-alert(`
+showToast(`
 
 
 Title:
@@ -805,7 +805,7 @@ review:review
 
 
 
-alert(
+showToast(
 
 "Comment saved"
 
