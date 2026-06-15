@@ -41,7 +41,6 @@ return databaseConfig;
 
 
 
-
 async function createRecord(
 collection,
 data
@@ -67,8 +66,6 @@ config.provider
 
 
 
-
-
 if(
 config.provider==="demo"
 ){
@@ -84,32 +81,66 @@ data
 
 
 
+}
 
 
 
 
-/*
-
-Future:
-
-if(config.provider==="supabase"){
 
 
-return supabaseCreate(
-collection,
-data
+
+
+
+function getLocalCollection(
+collection
+){
+
+
+
+return JSON.parse(
+
+localStorage.getItem(
+
+"db_" + collection
+
+)
+
+||
+
+"[]"
+
 );
 
 
-}
-
-
-*/
-
-
 
 }
 
+
+
+
+
+
+
+
+
+function saveLocalCollection(
+collection,
+items
+){
+
+
+
+localStorage.setItem(
+
+"db_" + collection,
+
+JSON.stringify(items)
+
+);
+
+
+
+}
 
 
 
@@ -126,7 +157,16 @@ data
 
 
 
-let record = {
+let items =
+getLocalCollection(
+collection
+);
+
+
+
+
+
+let record={
 
 
 id:
@@ -150,6 +190,29 @@ new Date()
 
 
 
+items.push(
+record
+);
+
+
+
+
+
+
+saveLocalCollection(
+
+collection,
+
+items
+
+);
+
+
+
+
+
+
+
 console.log(
 
 "Created:",
@@ -164,8 +227,8 @@ record
 
 
 
-
 return record;
+
 
 
 }
@@ -192,23 +255,27 @@ await loadDatabaseConfig();
 
 
 
+
 if(
 config.provider==="demo"
 ){
 
 
 
-return fetch(
 
-"/data/" +
 
-collection +
+let local =
+getLocalCollection(
+collection
+);
 
-".json"
 
-)
 
-.then(r=>r.json());
+
+
+
+
+return local;
 
 
 
