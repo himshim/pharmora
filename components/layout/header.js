@@ -7,6 +7,7 @@
 async function loadHeader(){
 
 
+
 const root =
 document.getElementById(
 "site-header"
@@ -22,10 +23,10 @@ return;
 
 
 
-
 let site={};
 
 let nav=[];
+
 
 
 
@@ -117,16 +118,22 @@ nav.forEach(item=>{
 
 
 
+
+
 const url =
 
 appPath(
 
 item.url.replace(
-"/",
+
+/^\/+/,
+
 ""
+
 )
 
 );
+
 
 
 
@@ -177,22 +184,31 @@ ${item.title}
 
 
 
+
 let authLinks="";
 
 
-if(
+
+let user =
 
 typeof currentUser==="function"
 
-&&
+?
 
 currentUser()
 
-){
+:
+
+null;
 
 
-let user =
-currentUser();
+
+
+
+
+
+if(user){
+
 
 
 authLinks = `
@@ -205,7 +221,9 @@ authLinks = `
 </a>
 
 
-<a href="#"
+
+<a 
+href="javascript:void(0)"
 
 onclick="logoutUser()">
 
@@ -217,11 +235,14 @@ onclick="logoutUser()">
 `;
 
 
+
 }
 
 
 
+
 else{
+
 
 
 authLinks = `
@@ -237,14 +258,25 @@ authLinks = `
 `;
 
 
+
 }
+
+
+
+
+
+
+
+
 
 root.innerHTML = `
 
 
 
 
+
 <header class="container">
+
 
 
 
@@ -258,9 +290,14 @@ root.innerHTML = `
 
 
 
-<a 
+
+<a
+
 href="${appPath("")}"
+
 class="logo">
+
+
 
 
 
@@ -291,6 +328,8 @@ alt="${site.name} logo"
 "⚕"
 
 }
+
+
 
 
 
@@ -336,6 +375,7 @@ onclick="toggleMenu()">
 
 
 
+
 <div class="nav-links">
 
 
@@ -346,6 +386,7 @@ ${authLinks}
 
 
 </div>
+
 
 
 
@@ -389,7 +430,8 @@ ${authLinks}
 
 
 
-<span>
+
+<span class="notice-title">
 
 🔔 Latest Updates
 
@@ -401,7 +443,9 @@ ${authLinks}
 
 
 
+
 <div class="notice-track">
+
 
 
 
@@ -415,15 +459,15 @@ Loading updates...
 
 
 
-</div>
-
-
-
-
-
 
 </div>
 
+
+
+
+
+
+</div>
 
 
 
@@ -447,6 +491,10 @@ loadNoticeTicker();
 
 
 }
+
+
+
+
 
 
 
@@ -499,13 +547,6 @@ let data=[];
 
 
 
-/*
-
-CMS DATABASE NOTIFICATIONS
-
-*/
-
-
 if(
 
 typeof getRecords==="function"
@@ -533,15 +574,11 @@ await getRecords(
 
 
 
-/*
-
-ONLY ACTIVE + NOT EXPIRED
-
-*/
-
-
 let today =
 new Date();
+
+
+
 
 
 
@@ -565,18 +602,21 @@ return false;
 
 
 
+
 if(item.expiry){
 
 
 
-let expiryDate =
+let expiry =
 new Date(
+
 item.expiry
+
 );
 
 
 
-if(expiryDate < today){
+if(expiry < today){
 
 return false;
 
@@ -594,9 +634,8 @@ return true;
 
 
 
-
-
 });
+
 
 
 
@@ -630,18 +669,12 @@ return;
 
 
 
-/*
-
-SORT PRIORITY
-
-*/
-
 
 data.sort((a,b)=>{
 
 
 
-let order={
+let priority={
 
 Urgent:3,
 
@@ -653,9 +686,10 @@ Normal:1
 
 
 
+
 return (
 
-order[b.priority] || 0
+priority[b.priority] || 0
 
 )
 
@@ -663,7 +697,7 @@ order[b.priority] || 0
 
 (
 
-order[a.priority] || 0
+priority[a.priority] || 0
 
 );
 
@@ -679,10 +713,13 @@ order[a.priority] || 0
 
 
 
+
+
 notice.innerHTML =
 
 
 data.map(item=>{
+
 
 
 
@@ -709,9 +746,12 @@ Normal:"🔔"
 
 
 
+
 let text =
 
 `${icon} ${item.title} : ${item.message}`;
+
+
 
 
 
@@ -747,8 +787,6 @@ return text;
 
 
 
-
-
 })
 
 .join(
@@ -763,11 +801,8 @@ return text;
 
 
 
+
 }
-
-
-
-
 
 
 
@@ -796,14 +831,12 @@ notice.innerHTML =
 
 
 
-
-
 }
 
 
 
-
 }
+
 
 
 

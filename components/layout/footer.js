@@ -96,6 +96,7 @@ tagline:"Open Pharmacy Learning Network"
 
 
 
+
 root.innerHTML = `
 
 
@@ -112,7 +113,17 @@ root.innerHTML = `
 
 
 
-<div class="footer-brand">
+
+<a
+
+href="${appPath("")}"
+
+class="footer-brand"
+
+style="text-decoration:none;display:flex;justify-content:center;align-items:center;gap:10px;"
+
+>
+
 
 
 
@@ -150,6 +161,8 @@ alt="${site.name} logo"
 
 
 
+
+
 <span>
 
 
@@ -165,7 +178,7 @@ ${site.name}
 
 
 
-</div>
+</a>
 
 
 
@@ -178,6 +191,8 @@ ${site.name}
 
 
 <div class="footer-links">
+
+
 
 
 
@@ -251,9 +266,8 @@ Contribute
 
 
 
-
-
 <div class="footer-text">
+
 
 
 
@@ -306,7 +320,6 @@ ${site.tagline || ""}
 
 
 `;
-
 
 
 

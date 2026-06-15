@@ -6,30 +6,24 @@
 
 <meta charset="UTF-8">
 
-<meta
+<meta 
 name="viewport"
 content="width=device-width, initial-scale=1.0">
 
 
 <title>
-
 Dashboard
-
 </title>
 
 
-<link 
-rel="icon"
-href="../assets/branding/favicon.svg">
+<link rel="icon" href="../assets/branding/favicon.svg">
 
 
 <link rel="stylesheet" href="../css/variables.css">
-
 <link rel="stylesheet" href="../css/base.css">
-
 <link rel="stylesheet" href="../css/components.css">
-
 <link rel="stylesheet" href="../css/responsive.css">
+
 
 
 <style>
@@ -42,7 +36,6 @@ display:flex;
 min-height:100vh;
 
 }
-
 
 
 
@@ -60,7 +53,6 @@ border-right:1px solid var(--border);
 
 
 
-
 .brand{
 
 font-size:1.8rem;
@@ -68,7 +60,6 @@ font-size:1.8rem;
 font-weight:900;
 
 margin-bottom:35px;
-
 
 background:
 
@@ -78,13 +69,13 @@ var(--primary),
 var(--secondary)
 );
 
-
 -webkit-background-clip:text;
+
+background-clip:text;
 
 color:transparent;
 
 }
-
 
 
 
@@ -107,7 +98,6 @@ text-decoration:none;
 
 
 
-
 .menu a:hover{
 
 background:var(--surface-light);
@@ -115,7 +105,6 @@ background:var(--surface-light);
 color:var(--text);
 
 }
-
 
 
 
@@ -142,7 +131,6 @@ align-items:center;
 gap:20px;
 
 }
-
 
 
 
@@ -181,7 +169,6 @@ background:var(--surface);
 
 
 
-
 .hero-card{
 
 margin:35px 0;
@@ -211,13 +198,11 @@ cursor:pointer;
 
 
 
-
 .quick{
 
 margin-top:30px;
 
 }
-
 
 
 
@@ -245,7 +230,6 @@ transition:var(--transition);
 
 
 
-
 .resource:hover{
 
 border-color:var(--primary);
@@ -254,13 +238,11 @@ border-color:var(--primary);
 
 
 
-
 .mobile-nav{
 
 display:none;
 
 }
-
 
 
 
@@ -275,7 +257,6 @@ display:none;
 }
 
 
-
 .content{
 
 padding:18px;
@@ -285,15 +266,11 @@ padding-bottom:80px;
 }
 
 
-
-
 .top{
 
 display:block;
 
 }
-
-
 
 
 .user{
@@ -303,8 +280,6 @@ display:inline-block;
 margin-top:15px;
 
 }
-
-
 
 
 .mobile-nav{
@@ -332,7 +307,6 @@ justify-content:space-around;
 }
 
 
-
 .mobile-nav a{
 
 text-decoration:none;
@@ -340,7 +314,6 @@ text-decoration:none;
 font-size:1.5rem;
 
 }
-
 
 
 }
@@ -356,11 +329,11 @@ font-size:1.5rem;
 
 
 
-
-
-
 <body>
 
+
+
+<div id="site-header"></div>
 
 
 
@@ -371,22 +344,11 @@ font-size:1.5rem;
 
 
 
-
-
-
-
 <aside class="sidebar">
 
 
 
-
-
-
-
-
-<a href="../"
-style="text-decoration:none;">
-
+<a href="../" style="text-decoration:none;">
 
 
 <div 
@@ -398,13 +360,7 @@ Platform
 </div>
 
 
-
-
 </a>
-
-
-
-
 
 
 
@@ -428,18 +384,11 @@ Platform
 <a href="../contribute/">🌱 Contribute</a>
 
 
-
 </div>
 
 
 
-
-
 </aside>
-
-
-
-
 
 
 
@@ -453,20 +402,13 @@ Platform
 
 
 
-
-
-
 <div class="top">
-
-
-
 
 
 <div class="search">
 
 
-
-<input 
+<input
 
 placeholder="Search knowledge..."
 
@@ -475,10 +417,7 @@ oninput="pharmoraSearch(this.value)"
 >
 
 
-
 </div>
-
-
 
 
 
@@ -488,17 +427,13 @@ oninput="pharmoraSearch(this.value)"
 class="user"
 id="dashboard-user">
 
-👤 Member
+👤 Loading
 
 </div>
 
 
 
-
-
 </div>
-
-
 
 
 
@@ -522,14 +457,7 @@ style="margin-top:25px;">
 
 
 
-
-
-
-
 <div class="hero-card">
-
-
-
 
 
 <h1 id="welcome-title">
@@ -539,8 +467,6 @@ Welcome back 👋
 </h1>
 
 
-
-
 <p>
 
 Continue learning, teaching and building knowledge.
@@ -548,12 +474,7 @@ Continue learning, teaching and building knowledge.
 </p>
 
 
-
-
 </div>
-
-
-
 
 
 
@@ -566,38 +487,12 @@ Continue learning, teaching and building knowledge.
 
 
 
-
-
-
-
-
-<div
-
-class="card"
-
+<div class="card"
 onclick="location.href='../learn/'">
 
+<h2>🎓 Continue Learning</h2>
 
-
-
-
-<h2>
-
-🎓 Continue Learning
-
-</h2>
-
-
-
-
-<p>
-
-Resume your curriculum.
-
-</p>
-
-
-
+<p>Resume your curriculum.</p>
 
 </div>
 
@@ -606,38 +501,12 @@ Resume your curriculum.
 
 
 
-
-
-
-
-
-<div
-
-class="card"
-
+<div class="card"
 onclick="location.href='../teach/'">
 
+<h2>👨‍🏫 Teacher Workspace</h2>
 
-
-
-
-<h2>
-
-👨‍🏫 Teacher Workspace
-
-</h2>
-
-
-
-
-<p>
-
-Access teaching resources.
-
-</p>
-
-
-
+<p>Access teaching resources.</p>
 
 </div>
 
@@ -646,39 +515,12 @@ Access teaching resources.
 
 
 
-
-
-
-
-
-
-<div
-
-class="card"
-
+<div class="card"
 onclick="location.href='../community/'">
 
+<h2>🌐 Discussions</h2>
 
-
-
-
-<h2>
-
-🌐 Discussions
-
-</h2>
-
-
-
-
-<p>
-
-Learn with the community.
-
-</p>
-
-
-
+<p>Learn with the community.</p>
 
 </div>
 
@@ -687,50 +529,18 @@ Learn with the community.
 
 
 
-
-
-
-
-
-<div
-
-class="card"
-
+<div class="card"
 onclick="location.href='../tools/'">
 
+<h2>🧪 Quick Tools</h2>
 
-
-
-
-<h2>
-
-🧪 Quick Tools
-
-</h2>
-
-
-
-
-<p>
-
-Calculators and references.
-
-</p>
-
-
-
+<p>Calculators and references.</p>
 
 </div>
 
 
 
-
-
-
-
-
 </div>
-
 
 
 
@@ -742,115 +552,53 @@ Calculators and references.
 <section class="quick">
 
 
-
-
-
-
 <h2>
 
 🔥 Latest Resources
 
 </h2>
 
+
 <br>
 
 
 
-
-
-
-
-
-<div
-
-class="resource"
-
+<div class="resource"
 onclick="location.href='../library/'">
-
-
 
 Knowledge Resources
 
-
-<span>
-
-Open
-
-</span>
-
-
+<span>Open</span>
 
 </div>
 
 
 
 
-
-
-
-
-
-<div
-
-class="resource"
-
+<div class="resource"
 onclick="location.href='../tools/'">
-
-
 
 Reference Tools
 
-
-<span>
-
-Open
-
-</span>
-
-
+<span>Open</span>
 
 </div>
 
 
 
 
-
-
-
-
-
-
-<div
-
-class="resource"
-
+<div class="resource"
 onclick="location.href='../community/'">
-
-
 
 Community Discussions
 
-
-<span>
-
-View
-
-</span>
-
-
+<span>View</span>
 
 </div>
-
-
-
-
 
 
 
 </section>
-
-
-
 
 
 
@@ -861,9 +609,6 @@ View
 
 
 
-
-
-
 </div>
 
 
@@ -873,9 +618,7 @@ View
 
 
 
-
 <div class="mobile-nav">
-
 
 
 <a href="../dashboard/">🏠</a>
@@ -889,7 +632,6 @@ View
 <a href="../library/">📖</a>
 
 
-
 </div>
 
 
@@ -897,10 +639,57 @@ View
 
 
 
+<div id="site-footer"></div>
+
+
+
+
+
+
+
+
+
+<!-- CORE -->
+
+<script src="../js/app.js"></script>
+
+
+
+
+
+<!-- SERVICES -->
+
+<script src="../js/services/auth.service.js"></script>
+
+<script src="../js/services/database.service.js"></script>
+
+<script src="../js/services/analytics.service.js"></script>
+
+
+
+
+
+<!-- COMPONENTS -->
+
+<script src="../components/layout/header.js"></script>
+
+<script src="../components/layout/footer.js"></script>
+
+
+
+
+
+<!-- FEATURES -->
+
+<script src="../js/search.js"></script>
+
+
+
 
 
 
 <script>
+
 
 
 fetch("../config/site.json")
@@ -925,7 +714,6 @@ document.getElementById(
 
 
 
-
 window.addEventListener(
 
 "load",
@@ -934,30 +722,23 @@ window.addEventListener(
 
 
 
-
-
-if(
-
-typeof currentUser !== "function"
-
-){
-
-return;
-
-}
-
-
-
-
-
 let user =
-currentUser();
+
+typeof currentUser==="function"
+
+?
+
+currentUser()
+
+:
+
+null;
 
 
 
 
 
-let userBox =
+let box =
 document.getElementById(
 "dashboard-user"
 );
@@ -973,42 +754,15 @@ document.getElementById(
 
 
 
-
-if(
-
-!userBox ||
-
-!welcome
-
-){
-
-return;
-
-}
+if(!user){
 
 
-
-
-
-
-
-
-if(
-
-!user
-
-){
-
-
-
-userBox.innerHTML =
+box.innerHTML=
 
 "👤 Guest";
 
 
-
 return;
-
 
 
 }
@@ -1017,17 +771,19 @@ return;
 
 
 
+box.innerHTML =
 
+"👤 "
 
++
 
-userBox.innerHTML =
+(user.name || user.email)
 
++
 
-"👤 " +
+" • "
 
-user.name +
-
-" • " +
++
 
 user.role;
 
@@ -1036,39 +792,28 @@ user.role;
 
 
 
-
-
-
 welcome.innerHTML =
 
+"Welcome back, "
 
-"Welcome back, " +
++
 
-user.name +
+(user.name || "User")
+
++
 
 " 👋";
 
 
 
-
-
 }
+
 
 );
 
 
+
 </script>
-
-<script src="../js/app.js"></script>
-
-<script src="../js/services/auth.service.js"></script>
-
-<script src="../js/services/analytics.service.js"></script>
-
-<script src="../js/search.js"></script>
-
-
-
 
 
 
@@ -1077,4 +822,4 @@ user.name +
 </body>
 
 
-</html>    
+</html>
