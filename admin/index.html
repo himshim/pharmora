@@ -6,28 +6,20 @@
 
 <meta charset="UTF-8">
 
-<meta
+<meta 
 name="viewport"
 content="width=device-width, initial-scale=1.0">
 
 
 <title>
-
 Admin
-
 </title>
 
 
-
 <link rel="stylesheet" href="../css/variables.css">
-
 <link rel="stylesheet" href="../css/base.css">
-
 <link rel="stylesheet" href="../css/components.css">
-
 <link rel="stylesheet" href="../css/responsive.css">
-
-
 
 
 <style>
@@ -40,8 +32,6 @@ display:flex;
 min-height:100vh;
 
 }
-
-
 
 
 
@@ -59,8 +49,6 @@ border-right:1px solid var(--border);
 
 
 
-
-
 .brand{
 
 font-size:1.8rem;
@@ -69,23 +57,20 @@ font-weight:900;
 
 margin-bottom:35px;
 
-
 background:
-
 linear-gradient(
 90deg,
 var(--primary),
 var(--secondary)
 );
 
-
 -webkit-background-clip:text;
+
+background-clip:text;
 
 color:transparent;
 
 }
-
-
 
 
 
@@ -105,16 +90,11 @@ cursor:pointer;
 
 
 
-
-
 .menu div:hover{
 
 background:var(--surface-light);
 
 }
-
-
-
 
 
 
@@ -125,8 +105,6 @@ flex:1;
 padding:30px;
 
 }
-
-
 
 
 
@@ -146,12 +124,7 @@ display:flex;
 
 justify-content:space-between;
 
-cursor:pointer;
-
 }
-
-
-
 
 
 
@@ -159,10 +132,9 @@ cursor:pointer;
 
 color:var(--primary);
 
+font-weight:bold;
+
 }
-
-
-
 
 
 
@@ -189,12 +161,7 @@ width:100%;
 
 </style>
 
-
 </head>
-
-
-
-
 
 
 
@@ -203,16 +170,7 @@ width:100%;
 
 
 
-
-
-
-
 <div class="admin">
-
-
-
-
-
 
 
 
@@ -220,26 +178,13 @@ width:100%;
 
 
 
-
-
-
-
-<div 
+<div
 class="brand"
-
 id="admin-brand">
-
 
 ⚕ Platform
 
-
 </div>
-
-
-
-
-
-
 
 
 
@@ -247,17 +192,11 @@ id="admin-brand">
 <div class="menu">
 
 
-
-
-
 <div data-permission="analytics">
 
 📊 Overview
 
 </div>
-
-
-
 
 
 
@@ -269,20 +208,11 @@ id="admin-brand">
 
 
 
-
-
-
-
 <div data-permission="verification">
 
 👨‍🏫 Verification
 
 </div>
-
-
-
-
-
 
 
 
@@ -294,21 +224,11 @@ id="admin-brand">
 
 
 
-
-
-
-
-
 <div data-permission="events">
 
 📅 Events
 
 </div>
-
-
-
-
-
 
 
 
@@ -320,11 +240,6 @@ id="admin-brand">
 
 
 
-
-
-
-
-
 <div data-permission="settings">
 
 ⚙ Settings
@@ -333,25 +248,10 @@ id="admin-brand">
 
 
 
-
-
-
 </div>
 
 
-
-
-
-
-
 </aside>
-
-
-
-
-
-
-
 
 
 
@@ -362,19 +262,11 @@ id="admin-brand">
 
 
 
-
-
-
-
-
 <h1>
 
 Admin Console
 
 </h1>
-
-
-
 
 
 
@@ -388,153 +280,20 @@ Manage content, users and platform quality.
 
 
 
-
-
-
-
-
-
 <section class="section">
 
 
 
-
-
-
-
-
-
-<div class="grid">
-
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-
-<h2 id="pending-resources">
-
-0
-
-</h2>
-
-
-
-<p>
-
-Pending Resources
-
-</p>
-
-
+<div
+class="grid"
+id="admin-stats">
 
 
 </div>
-
-
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-
-
-<h2 id="verification-count">
-
-0
-
-</h2>
-
-
-
-
-
-<p>
-
-Verification Requests
-
-</p>
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-
-
-
-<h2 id="reports-count">
-
-0
-
-</h2>
-
-
-
-
-
-<p>
-
-Reports
-
-</p>
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-</div>
-
-
-
-
-
 
 
 
 </section>
-
-
-
-
-
-
 
 
 
@@ -544,11 +303,6 @@ Reports
 <section>
 
 
-
-
-
-
-
 <h2>
 
 Pending Actions
@@ -556,66 +310,14 @@ Pending Actions
 </h2>
 
 
-
-
-
-
-
 <br>
-
-
-
-
-
-
-
 
 
 
 <div id="admin-actions">
 
 
-
-
-
-
-
-<div class="panel">
-
-
-
-
-
-No pending actions
-
-
-
-
-
-<span class="status">
-
-✓
-
-</span>
-
-
-
-
-
 </div>
-
-
-
-
-
-
-
-
-</div>
-
-
-
-
 
 
 
@@ -623,25 +325,11 @@ No pending actions
 
 
 
-
-
-
-
-
-
 </main>
 
 
 
-
-
-
-
-
 </div>
-
-
-
 
 
 
@@ -659,7 +347,9 @@ fetch("../config/site.json")
 .then(site=>{
 
 
-document.getElementById("admin-brand").innerHTML =
+document.getElementById(
+"admin-brand"
+).innerHTML =
 
 "⚕ " + site.name;
 
@@ -673,6 +363,21 @@ document.getElementById("admin-brand").innerHTML =
 
 
 
+<script src="../js/services/admin.service.js"></script>
+
+
+
+<script>
+
+
+renderAdminStats();
+
+
+renderAdminActions();
+
+
+</script>
+
 
 
 
@@ -681,11 +386,6 @@ document.getElementById("admin-brand").innerHTML =
 
 
 
-
-
-
-
 </body>
-
 
 </html>
