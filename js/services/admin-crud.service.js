@@ -16,7 +16,6 @@ let activeSchema=[];
 async function loadSchema(){
 
 
-
 return await fetch(
 
 appPath(
@@ -25,7 +24,6 @@ appPath(
 
 )
 .then(r=>r.json());
-
 
 
 }
@@ -58,7 +56,9 @@ schemas[collection] || [];
 
 
 let data =
-await getRecords(collection);
+await getRecords(
+collection
+);
 
 
 
@@ -67,6 +67,8 @@ let area =
 document.getElementById(
 "admin-actions"
 );
+
+
 
 
 
@@ -98,6 +100,7 @@ data.map(item=>`
 
 <strong>
 
+
 ${
 
 item.name ||
@@ -106,9 +109,12 @@ item.title ||
 
 item.code ||
 
+(item.system ? item.system+" "+item.number : "") ||
+
 "Untitled"
 
 }
+
 
 </strong>
 
@@ -175,9 +181,6 @@ ${item.description || ""}
 
 
 
-
-
-
 async function showForm(id=null){
 
 
@@ -199,9 +202,7 @@ activeCollection
 
 existing =
 records.find(
-
 x=>x.id===id
-
 );
 
 
@@ -239,6 +240,8 @@ ${activeCollection}
 
 
 
+
+
 for(let field of activeSchema){
 
 
@@ -246,17 +249,11 @@ for(let field of activeSchema){
 
 
 let value =
-
 existing
-
 ?
-
 (existing[field.name] ?? "")
-
 :
-
 "";
-
 
 
 
@@ -264,15 +261,13 @@ existing
 
 html += `
 
-
 <label>
-
 ${field.label}
-
 </label>
 
-
 `;
+
+
 
 
 
@@ -287,24 +282,19 @@ ${field.label}
 if(field.type==="textarea"){
 
 
-
 html += `
 
-
 <textarea
-
 id="field-${field.name}"
-
 placeholder="${field.label}"
-
 >${value}</textarea>
-
 
 `;
 
 
-
 }
+
+
 
 
 
@@ -327,14 +317,11 @@ html += `
 
 
 <option value="">
-
 Select
-
 </option>
 
 
 ${
-
 
 field.options.map(opt=>`
 
@@ -354,7 +341,6 @@ ${opt}
 
 `).join("")
 
-
 }
 
 
@@ -366,6 +352,8 @@ ${opt}
 
 
 }
+
+
 
 
 
@@ -393,7 +381,15 @@ field.collection
 html += `
 
 
-<select id="field-${field.name}">
+<select
+
+id="field-${field.name}"
+
+data-depends="${field.dependsOn || ""}"
+
+onchange="refreshDependentRelations()"
+
+>
 
 
 <option value="">
@@ -413,7 +409,24 @@ records.map(item=>`
 
 value="${item.id}"
 
+
+data-parent="${
+
+field.dependsOn
+
+?
+
+(item[field.dependsOn] || "")
+
+:
+
+""
+
+}"
+
+
 ${value===item.id?"selected":""}
+
 
 >
 
@@ -424,7 +437,11 @@ item.name ||
 
 item.title ||
 
-item.code
+item.code ||
+
+(item.system ? item.system+" "+item.number : "") ||
+
+"Unnamed"
 
 }
 
@@ -446,6 +463,109 @@ item.code
 
 
 }
+
+
+
+
+
+
+
+
+
+
+/* DYNAMIC MULTI */
+
+
+else if(field.type==="dynamic-multi"){
+
+
+
+let records =
+await getRecords(
+field.source
+);
+
+
+
+
+html += `
+
+
+<div>
+
+
+${
+
+
+records.map(item=>`
+
+
+<label>
+
+
+<input
+
+type="checkbox"
+
+class="field-${field.name}"
+
+value="${item.id}"
+
+
+${
+
+Array.isArray(value)
+
+&&
+
+value.includes(item.id)
+
+?
+
+"checked"
+
+:
+
+""
+
+}
+
+
+>
+
+
+${
+
+item.name ||
+
+item.title ||
+
+item.code
+
+}
+
+
+</label>
+
+
+<br>
+
+
+`).join("")
+
+
+}
+
+
+</div>
+
+
+`;
+
+
+
+}
+
 
 
 
@@ -490,7 +610,9 @@ ${value ? "checked" : ""}
 
 
 
-/* DEFAULT INPUT */
+
+
+/* DEFAULT */
 
 
 else{
@@ -502,23 +624,9 @@ html += `
 
 <input
 
-type="${
-
-field.type==="number"
-
-?
-
-"number"
-
-:
-
-"text"
-
-}"
-
+type="${field.type==="number"?"number":"text"}"
 
 id="field-${field.name}"
-
 
 value="${
 
@@ -534,9 +642,7 @@ value
 
 }"
 
-
 placeholder="${field.label}"
-
 
 >
 
@@ -587,6 +693,7 @@ Save
 
 
 
+
 document
 
 .getElementById(
@@ -594,6 +701,12 @@ document
 )
 
 .innerHTML=html;
+
+
+
+
+
+refreshDependentRelations();
 
 
 
@@ -620,7 +733,53 @@ let data={};
 
 
 
+
 for(let field of activeSchema){
+
+
+
+
+
+
+
+if(field.type==="dynamic-multi"){
+
+
+
+let selected=[];
+
+
+
+document
+
+.querySelectorAll(
+
+".field-"+field.name+":checked"
+
+)
+
+.forEach(box=>{
+
+
+selected.push(
+box.value
+);
+
+
+});
+
+
+
+data[field.name]=selected;
+
+
+
+continue;
+
+
+
+}
+
 
 
 
@@ -630,7 +789,7 @@ for(let field of activeSchema){
 let input =
 document.getElementById(
 
-"field-" + field.name
+"field-"+field.name
 
 );
 
@@ -639,7 +798,6 @@ document.getElementById(
 
 
 let value;
-
 
 
 
@@ -655,7 +813,6 @@ value=input.checked;
 }
 
 
-
 else{
 
 
@@ -663,7 +820,6 @@ value=input.value;
 
 
 }
-
 
 
 
@@ -684,9 +840,7 @@ field.type==="multi"
 
 
 
-value =
-
-value
+value = value
 
 .split(",")
 
@@ -708,6 +862,155 @@ data[field.name]=value;
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+/* AUTO GENERATE SEMESTERS / YEARS */
+
+
+if(
+
+activeCollection==="semesters"
+
+&&
+
+!id
+
+){
+
+
+
+
+
+let old =
+await getRecords(
+"semesters"
+);
+
+
+
+
+
+if(
+
+old.some(x=>x.curriculum===data.curriculum)
+
+){
+
+
+
+showToast(
+
+"Already generated",
+
+"error"
+
+);
+
+
+
+return;
+
+
+
+}
+
+
+
+
+
+
+
+
+let total =
+Number(data.count);
+
+
+
+
+
+for(
+
+let i=1;
+
+i<=total;
+
+i++
+
+){
+
+
+
+await createRecord(
+
+"semesters",
+
+{
+
+course:data.course,
+
+curriculum:data.curriculum,
+
+system:data.system,
+
+number:i,
+
+
+name:
+
+data.system+" "+i,
+
+
+status:"active"
+
+}
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+showToast(
+
+total+" "+data.system+"s created",
+
+"success"
+
+);
+
+
+
+
+loadManager(
+
+activeCollection
+
+);
+
+
+
+return;
+
+
+
+}
+
 
 
 
@@ -763,21 +1066,15 @@ status:"active"
 
 
 
-if(
-
-typeof showToast==="function"
-
-){
 
 
 showToast(
+
 "Saved successfully",
+
 "success"
+
 );
-
-
-}
-
 
 
 
@@ -805,13 +1102,10 @@ async function removeEntry(id){
 
 
 
-
 if(
 
 !confirm(
-
 "Delete this item?"
-
 )
 
 ){
@@ -819,7 +1113,6 @@ if(
 return;
 
 }
-
 
 
 
@@ -842,6 +1135,119 @@ loadManager(
 activeCollection
 
 );
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function refreshDependentRelations(){
+
+
+
+let selects =
+document.querySelectorAll(
+
+"select[data-depends]"
+
+);
+
+
+
+
+selects.forEach(select=>{
+
+
+
+
+
+let parentName =
+select.dataset.depends;
+
+
+
+
+if(!parentName){
+
+return;
+
+}
+
+
+
+
+let parent =
+document.getElementById(
+
+"field-"+parentName
+
+);
+
+
+
+
+if(!parent){
+
+return;
+
+}
+
+
+
+
+
+
+let parentValue =
+parent.value;
+
+
+
+
+
+
+select
+
+.querySelectorAll(
+
+"option"
+
+)
+
+.forEach(option=>{
+
+
+
+
+
+if(!option.dataset.parent){
+
+return;
+
+}
+
+
+
+
+option.hidden =
+
+option.dataset.parent !== parentValue;
+
+
+
+
+});
+
+
+
+
+});
 
 
 

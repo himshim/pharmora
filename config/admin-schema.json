@@ -50,7 +50,6 @@
 
 
 
-
 "curriculums":[
 
 
@@ -84,6 +83,7 @@
 
 
 
+
 "semesters":[
 
 
@@ -99,7 +99,8 @@
 "name":"curriculum",
 "label":"Curriculum",
 "type":"relation",
-"collection":"curriculums"
+"collection":"curriculums",
+"dependsOn":"course"
 },
 
 
@@ -115,21 +116,13 @@
 
 
 {
-"name":"number",
-"label":"Semester / Year Number",
+"name":"count",
+"label":"Number of Semesters / Years",
 "type":"number"
-},
-
-
-{
-"name":"description",
-"label":"Description",
-"type":"textarea"
 }
 
 
 ],
-
 
 
 
@@ -152,7 +145,8 @@
 "name":"curriculum",
 "label":"Curriculum",
 "type":"relation",
-"collection":"curriculums"
+"collection":"curriculums",
+"dependsOn":"course"
 },
 
 
@@ -160,7 +154,8 @@
 "name":"semester",
 "label":"Semester / Year",
 "type":"relation",
-"collection":"semesters"
+"collection":"semesters",
+"dependsOn":"curriculum"
 },
 
 
@@ -193,14 +188,43 @@
 
 
 
+
+
 "units":[
+
+
+{
+"name":"course",
+"label":"Course",
+"type":"relation",
+"collection":"courses"
+},
+
+
+{
+"name":"curriculum",
+"label":"Curriculum",
+"type":"relation",
+"collection":"curriculums",
+"dependsOn":"course"
+},
+
+
+{
+"name":"semester",
+"label":"Semester / Year",
+"type":"relation",
+"collection":"semesters",
+"dependsOn":"curriculum"
+},
 
 
 {
 "name":"subject",
 "label":"Subject",
 "type":"relation",
-"collection":"subjects"
+"collection":"subjects",
+"dependsOn":"semester"
 },
 
 
@@ -224,27 +248,21 @@
 
 
 {
-"name":"title",
-"label":"Title",
+"name":"name",
+"label":"Unit / Chapter / Practical Name",
 "type":"text"
 },
 
 
 {
-"name":"topics",
-"label":"Important Topics",
-"type":"tags"
-},
-
-
-{
 "name":"description",
-"label":"Description",
+"label":"Description / Important Topics",
 "type":"textarea"
 }
 
 
 ],
+
 
 
 
@@ -273,8 +291,8 @@
 {
 "name":"subjects",
 "label":"Subjects",
-"type":"relation",
-"collection":"subjects"
+"type":"dynamic-multi",
+"source":"subjects"
 },
 
 
@@ -286,6 +304,7 @@
 
 
 ],
+
 
 
 
