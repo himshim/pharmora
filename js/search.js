@@ -1,19 +1,104 @@
 /*
- Universal Search Engine
- Path Safe Version
+ Pharmora Universal Search Engine
+ Dynamic Database Version
 */
 
 
-let searchIndex = [];
+
+
+
+
+let searchIndex=[];
 
 
 
 
 
-function getBasePath(){
 
 
-return location.pathname.split("/").length > 2
+
+
+const searchableCollections=[
+
+
+{
+name:"resources",
+icon:"📚",
+url:"library/"
+},
+
+
+
+{
+name:"books",
+icon:"📖",
+url:"books/"
+},
+
+
+
+
+{
+name:"events",
+icon:"📅",
+url:"events/"
+},
+
+
+
+
+{
+name:"tools",
+icon:"🧰",
+url:"tools/"
+},
+
+
+
+
+{
+name:"courses",
+icon:"🎓",
+url:"learn/"
+},
+
+
+
+
+{
+name:"subjects",
+icon:"🧪",
+url:"learn/"
+},
+
+
+
+
+{
+name:"categories",
+icon:"🏷",
+url:"library/"
+}
+
+
+
+];
+
+
+
+
+
+
+
+
+
+function basePath(){
+
+
+
+return location.pathname
+.split("/")
+.length > 2
 
 ?
 
@@ -24,7 +109,10 @@ return location.pathname.split("/").length > 2
 "";
 
 
+
 }
+
+
 
 
 
@@ -43,85 +131,83 @@ searchIndex=[];
 
 
 
-const base =
-getBasePath();
 
 
 
 
 
-const sources=[
+for(
 
+let source of searchableCollections
 
-
-{
-file:"data/resources.json",
-type:"📄 Resource",
-url:"library/"
-},
-
-
-
-{
-file:"data/books.json",
-type:"📚 Book",
-url:"books/"
-},
-
-
-
-
-{
-file:"data/events.json",
-type:"📅 Event",
-url:"events/"
-},
-
-
-
-
-{
-file:"data/forum.json",
-type:"💬 Forum",
-url:"community/"
-}
-
-
-
-];
+){
 
 
 
 
 
 
-
-
-
-for(const source of sources){
 
 
 try{
 
 
-let response =
-await fetch(
-base + source.file
+
+
+
+
+let data=[];
+
+
+
+
+
+
+if(
+
+typeof getRecords==="function"
+
+){
+
+
+
+data =
+await getRecords(
+source.name
 );
 
 
-
-
-if(!response.ok){
-
-continue;
 
 }
 
 
 
-let data =
-await response.json();
+
+
+
+
+
+data
+
+.filter(item=>{
+
+
+return (
+
+!item.status
+
+||
+
+item.status==="approved"
+
+);
+
+
+
+})
+
+
+.forEach(item=>{
 
 
 
@@ -129,76 +215,141 @@ await response.json();
 
 
 
-data.forEach(item=>{
 
-
-
-searchIndex.push({
-
-
-title:
-item.title || "",
-
-
-description:
-item.description || "",
-
-
-type:
-source.type,
-
-
-url:
-base + source.url,
-
-
-keywords:[
+let text=[
 
 
 item.title,
 
 
+item.name,
+
+
 item.description,
+
+
+item.author?.name,
 
 
 item.category,
 
 
-item.course,
-
-
-item.semester,
-
-
-item.subject,
-
-
-item.unit,
-
-
-item.author,
-
-
 item.type,
 
 
-...(item.tags || [])
+...(item.tags || []),
+
+
+...(item.subjects || []),
+
+
+...(item.courses || []),
+
+
+...(item.semesters || [])
 
 
 ]
 
 .flat()
 
+.filter(Boolean)
+
 .join(" ")
 
-.toLowerCase()
+.toLowerCase();
+
+
+
+
+
+
+
+
+
+
+searchIndex.push({
+
+
+
+title:
+
+item.title ||
+
+item.name ||
+
+"Untitled",
+
+
+
+
+
+
+description:
+
+item.description ||
+
+"",
+
+
+
+
+
+
+icon:
+
+source.icon,
+
+
+
+
+
+
+url:
+
+basePath()
+
++
+
+"library/view.html?id="
+
++
+
+item.id
+
++
+
+"&type="
+
++
+
+source.name,
+
+
+
+
+
+
+keywords:text
+
+
+
+
 
 
 });
 
 
 
+
+
+
+
+
 });
+
+
+
 
 
 
@@ -206,34 +357,53 @@ item.type,
 
 
 
-catch(error){
+
+catch(e){
+
 
 
 console.log(
-"Search error",
-source.file,
-error
+
+"Search skipped:",
+
+source.name
+
 );
 
 
+
+}
+
+
+
+
+
 }
 
 
 
-}
+
 
 
 
 
 
 console.log(
-"Universal Search Loaded",
+
+"Dynamic Search Loaded",
+
 searchIndex.length
+
 );
 
 
 
+
 }
+
+
+
+
 
 
 
@@ -244,29 +414,55 @@ searchIndex.length
 
 
 window.pharmoraSearch =
-async function(value){
+
+async function(query){
+
+
+
+
+
+
 
 if(
+
 typeof trackSearch==="function"
+
 ){
 
-trackSearch(value);
+
+trackSearch(query);
+
 
 }
 
 
 
-const box =
+
+
+
+
+
+
+let box =
+
 document.getElementById(
+
 "search-results"
+
 );
+
+
+
+
 
 
 
 
 if(!box){
 
+
 return;
+
 
 }
 
@@ -274,7 +470,16 @@ return;
 
 
 
-if(searchIndex.length===0){
+
+
+
+
+
+if(
+
+searchIndex.length===0
+
+){
 
 
 await buildSearchIndex();
@@ -287,7 +492,15 @@ await buildSearchIndex();
 
 
 
-if(value.length < 2){
+
+
+
+
+if(
+
+query.trim().length < 2
+
+){
 
 
 
@@ -297,6 +510,7 @@ box.innerHTML="";
 return;
 
 
+
 }
 
 
@@ -304,8 +518,18 @@ return;
 
 
 
-let keyword =
-value.toLowerCase();
+
+
+
+let key =
+
+query
+
+.toLowerCase();
+
+
+
+
 
 
 
@@ -313,15 +537,20 @@ value.toLowerCase();
 
 
 let results =
+
 searchIndex.filter(item=>{
 
 
 return item.keywords.includes(
-keyword
+
+key
+
 );
 
 
 });
+
+
 
 
 
@@ -342,6 +571,11 @@ results.map(item=>`
 
 
 
+
+
+
+
+
 <a
 
 href="${item.url}"
@@ -350,11 +584,15 @@ class="card">
 
 
 
+
+
 <h3>
 
-${item.type}
+${item.icon}
 
 </h3>
+
+
 
 
 
@@ -367,6 +605,8 @@ ${item.title}
 
 
 
+
+
 <p>
 
 ${item.description}
@@ -375,16 +615,18 @@ ${item.description}
 
 
 
+
+
 </a>
+
+
+
 
 
 
 `).join("")
 
-
-
 :
-
 
 `
 
@@ -403,7 +645,11 @@ No results found
 
 
 
+
+
 };
+
+
 
 
 
