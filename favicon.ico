@@ -1,0 +1,85 @@
+<svg width="300" height="300"
+viewBox="0 0 300 300"
+fill="none"
+xmlns="http://www.w3.org/2000/svg">
+
+
+<!-- Background Aurora Circle -->
+
+<circle
+cx="150"
+cy="150"
+r="135"
+fill="url(#bg)"
+/>
+
+
+
+<!-- Pharmacy Cross -->
+
+<path
+d="
+M130 65
+H170
+V130
+H235
+V170
+H170
+V235
+H130
+V170
+H65
+V130
+H130
+Z
+"
+fill="white"
+/>
+
+
+
+<!-- Knowledge Orbit -->
+
+<circle
+cx="150"
+cy="150"
+r="105"
+stroke="white"
+stroke-width="12"
+stroke-opacity="0.35"
+/>
+
+
+
+<!-- Aurora Gradient -->
+
+<defs>
+
+
+<linearGradient
+id="bg"
+x1="20"
+y1="20"
+x2="280"
+y2="280"
+gradientUnits="userSpaceOnUse">
+
+
+<stop
+stop-color="#22D3EE"
+/>
+
+
+<stop
+offset="1"
+stop-color="#A78BFA"
+/>
+
+
+</linearGradient>
+
+
+</defs>
+
+
+</svg>

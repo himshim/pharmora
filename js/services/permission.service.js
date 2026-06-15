@@ -440,11 +440,15 @@ showToast(
 
 location.href =
 
-appPath(
+typeof appPath==="function"
 
-"dashboard/"
+?
 
-);
+appPath("dashboard/")
+
+:
+
+"../dashboard/";
 
 
 
