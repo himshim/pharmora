@@ -1,0 +1,36 @@
+[
+  {
+    "id": "q001",
+
+    "title": "Difference between bactericidal and bacteriostatic antibiotics?",
+
+    "description": "Can someone explain with simple examples?",
+
+    "category": "Pharmacology",
+
+    "tags": [
+      "Antibiotics",
+      "Microbiology"
+    ],
+
+    "author": {
+      "name": "Student User",
+      "role": "Student"
+    },
+
+    "answers": [
+      {
+        "user": "Educator",
+        "verified": true,
+        "text": "Bactericidal drugs kill bacteria while bacteriostatic drugs inhibit their growth."
+      }
+    ],
+
+    "stats": {
+      "views": 120,
+      "votes": 15
+    },
+
+    "status": "open"
+  }
+]
