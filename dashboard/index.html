@@ -532,7 +532,7 @@ style="margin-top:25px;">
 
 
 
-<h1>
+<h1 id="welcome-title">
 
 Welcome back 👋
 
@@ -910,7 +910,9 @@ fetch("../config/site.json")
 .then(site=>{
 
 
-document.getElementById("dashboard-brand").innerHTML =
+document.getElementById(
+"dashboard-brand"
+).innerHTML =
 
 "⚕ " + site.name;
 
@@ -922,11 +924,15 @@ document.getElementById("dashboard-brand").innerHTML =
 
 
 
+
+
 window.addEventListener(
 
 "load",
 
 ()=>{
+
+
 
 
 
@@ -943,8 +949,45 @@ return;
 
 
 
+
 let user =
 currentUser();
+
+
+
+
+
+let userBox =
+document.getElementById(
+"dashboard-user"
+);
+
+
+
+let welcome =
+document.getElementById(
+"welcome-title"
+);
+
+
+
+
+
+
+if(
+
+!userBox ||
+
+!welcome
+
+){
+
+return;
+
+}
+
+
+
 
 
 
@@ -957,17 +1000,15 @@ if(
 ){
 
 
-document.getElementById(
 
-"dashboard-user"
-
-).innerHTML =
+userBox.innerHTML =
 
 "👤 Guest";
 
 
 
 return;
+
 
 
 }
@@ -979,11 +1020,7 @@ return;
 
 
 
-document.getElementById(
-
-"dashboard-user"
-
-).innerHTML =
+userBox.innerHTML =
 
 
 "👤 " +
@@ -1001,11 +1038,8 @@ user.role;
 
 
 
-document.getElementById(
 
-"welcome-title"
-
-).innerHTML =
+welcome.innerHTML =
 
 
 "Welcome back, " +
@@ -1043,4 +1077,4 @@ user.name +
 </body>
 
 
-</html>
+</html>    
