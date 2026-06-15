@@ -7,45 +7,22 @@
 
 
 
+
+
 async function renderAdminStats(){
 
 
 
-let resources = [];
-
-let users = [];
-
-
-
-
-
-if(
-typeof getRecords==="function"
-){
-
-
-resources =
+let resources =
 await getRecords(
 "resources"
 );
 
 
-users =
-await getRecords(
-"users"
-);
-
-
-}
 
 
 
-
-
-
-
-
-let pendingResources =
+let pending =
 
 resources.filter(
 
@@ -60,15 +37,11 @@ item=>item.status==="pending"
 
 
 
-
 document
-
 .getElementById(
 "admin-stats"
 )
-
 .innerHTML = `
-
 
 
 
@@ -76,11 +49,7 @@ document
 <div class="card">
 
 
-<h2>
-
-${pendingResources}
-
-</h2>
+<h2>${pending}</h2>
 
 
 <p>
@@ -96,48 +65,15 @@ Pending Resources
 
 
 
-
-
-
 <div class="card">
 
 
-<h2>
-
-0
-
-</h2>
+<h2>${resources.length}</h2>
 
 
 <p>
 
-Reports
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h2>
-
-${users.length}
-
-</h2>
-
-
-<p>
-
-Users
+Total Resources
 
 </p>
 
@@ -152,9 +88,6 @@ Users
 
 
 }
-
-
-
 
 
 
@@ -180,34 +113,10 @@ document.getElementById(
 
 
 
-
-let resources=[];
-
-
-
-
-
-
-if(
-
-typeof getRecords==="function"
-
-){
-
-
-
-resources =
-
+let resources =
 await getRecords(
-
 "resources"
-
 );
-
-
-
-}
-
 
 
 
@@ -216,8 +125,6 @@ await getRecords(
 
 
 let pending =
-
-
 resources.filter(
 
 item=>item.status==="pending"
@@ -232,13 +139,9 @@ item=>item.status==="pending"
 
 
 
-
 if(
-
 pending.length===0
-
 ){
-
 
 
 box.innerHTML=`
@@ -263,9 +166,7 @@ Everything reviewed
 `;
 
 
-
 return;
-
 
 
 }
@@ -279,14 +180,12 @@ return;
 
 
 box.innerHTML =
-
-
 pending.map(item=>`
 
 
 
-<div class="panel">
 
+<div class="panel">
 
 
 <span>
@@ -301,22 +200,12 @@ pending.map(item=>`
 <small>
 
 
-${
-
-item.author?
-
-item.author.name:
-
-"Unknown"
-
-
-}
+${item.author?.name || "Unknown"}
 
 
 </small>
 
 
-
 </span>
 
 
@@ -324,16 +213,28 @@ item.author.name:
 
 
 
-<span class="status">
+<span>
 
 
-Review
+
+<button onclick="approveResource('${item.id}')">
+
+✅
+
+</button>
+
+
+
+<button onclick="rejectResource('${item.id}')">
+
+❌
+
+</button>
+
+
 
 
 </span>
-
-
-
 
 
 </div>
@@ -342,6 +243,80 @@ Review
 
 `).join("");
 
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+async function approveResource(id){
+
+
+
+await updateRecord(
+
+"resources",
+
+id,
+
+{
+status:"approved"
+}
+
+);
+
+
+
+
+
+renderAdminStats();
+
+renderAdminActions();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+async function rejectResource(id){
+
+
+
+await updateRecord(
+
+"resources",
+
+id,
+
+{
+status:"rejected"
+}
+
+);
+
+
+
+
+
+renderAdminStats();
+
+renderAdminActions();
 
 
 

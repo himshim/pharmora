@@ -284,3 +284,100 @@ return local;
 
 
 }
+
+async function updateRecord(
+collection,
+id,
+updates
+){
+
+
+
+const config =
+await loadDatabaseConfig();
+
+
+
+
+
+if(
+config.provider==="demo"
+){
+
+
+
+let items =
+getLocalCollection(
+collection
+);
+
+
+
+
+
+
+items =
+items.map(item=>{
+
+
+
+if(
+item.id===id
+){
+
+
+return {
+
+...item,
+
+...updates,
+
+updatedAt:
+new Date()
+.toISOString()
+
+};
+
+
+}
+
+
+
+return item;
+
+
+
+});
+
+
+
+
+
+
+
+saveLocalCollection(
+
+collection,
+
+items
+
+);
+
+
+
+
+
+
+return items.find(
+
+item=>item.id===id
+
+);
+
+
+
+}
+
+
+
+}
