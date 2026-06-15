@@ -1,5 +1,6 @@
 /*
- Universal Search Service
+ Universal Search Engine
+ Path Safe Version
 */
 
 
@@ -9,39 +10,82 @@ let searchIndex = [];
 
 
 
+function getBasePath(){
+
+
+return location.pathname.split("/").length > 2
+
+?
+
+"../"
+
+:
+
+"";
+
+
+}
+
+
+
+
+
+
+
+
+
+
 async function buildSearchIndex(){
 
 
 
-searchIndex = [];
+searchIndex=[];
+
+
+
+const base =
+getBasePath();
 
 
 
 
-const sources = [
+
+const sources=[
+
+
 
 {
-path:"/data/resources.json",
-type:"📄 Resource"
+file:"data/resources.json",
+type:"📄 Resource",
+url:"library/"
 },
 
 
+
 {
-path:"/data/books.json",
-type:"📚 Book"
+file:"data/books.json",
+type:"📚 Book",
+url:"books/"
 },
 
 
+
+
 {
-path:"/data/events.json",
-type:"📅 Event"
+file:"data/events.json",
+type:"📅 Event",
+url:"events/"
 },
 
 
+
+
 {
-path:"/data/forum.json",
-type:"💬 Discussion"
+file:"data/forum.json",
+type:"💬 Forum",
+url:"community/"
 }
+
 
 
 ];
@@ -53,17 +97,32 @@ type:"💬 Discussion"
 
 
 
-for(
-const source of sources
-){
+
+for(const source of sources){
 
 
 try{
 
 
-const data =
-await fetch(source.path)
-.then(r=>r.json());
+let response =
+await fetch(
+base + source.file
+);
+
+
+
+
+if(!response.ok){
+
+continue;
+
+}
+
+
+
+let data =
+await response.json();
+
 
 
 
@@ -90,10 +149,7 @@ source.type,
 
 
 url:
-getSearchURL(
-source.type,
-item.id
-)
+base + source.url
 
 
 });
@@ -107,12 +163,14 @@ item.id
 }
 
 
-catch(e){
+
+catch(error){
 
 
 console.log(
-"Skipped",
-source.path
+"Search error",
+source.file,
+error
 );
 
 
@@ -124,53 +182,13 @@ source.path
 
 
 
-}
 
 
+console.log(
+"Universal Search Loaded",
+searchIndex.length
+);
 
-
-
-
-
-
-
-
-function getSearchURL(
-type,
-id
-){
-
-
-if(type.includes("Resource")){
-
-return "/library/";
-
-}
-
-
-if(type.includes("Book")){
-
-return "/books/";
-
-}
-
-
-if(type.includes("Event")){
-
-return "/events/";
-
-}
-
-
-if(type.includes("Discussion")){
-
-return "/community/";
-
-}
-
-
-
-return "/";
 
 
 }
@@ -183,19 +201,9 @@ return "/";
 
 
 
+window.pharmoraSearch =
+async function(value){
 
-
-async function pharmoraSearch(query){
-
-
-
-if(
-searchIndex.length===0
-){
-
-await buildSearchIndex();
-
-}
 
 
 
@@ -218,9 +226,21 @@ return;
 
 
 
-if(
-query.length < 2
-){
+if(searchIndex.length===0){
+
+
+await buildSearchIndex();
+
+
+}
+
+
+
+
+
+
+if(value.length < 2){
+
 
 
 box.innerHTML="";
@@ -236,27 +256,31 @@ return;
 
 
 
+let keyword =
+value.toLowerCase();
 
 
-const results =
+
+
+
+
+let results =
 searchIndex.filter(item=>{
 
 
+return (
 
-let text =
-(
 item.title +
+
 item.description +
+
 item.type
+
 )
-.toLowerCase();
 
+.toLowerCase()
 
-
-return text.includes(
-query.toLowerCase()
-);
-
+.includes(keyword);
 
 
 });
@@ -281,8 +305,11 @@ results.map(item=>`
 
 
 <a
+
 href="${item.url}"
+
 class="card">
+
 
 
 <h3>
@@ -292,11 +319,14 @@ ${item.type}
 </h3>
 
 
+
 <h2>
 
 ${item.title}
 
 </h2>
+
+
 
 
 <p>
@@ -314,23 +344,28 @@ ${item.description}
 `).join("")
 
 
+
 :
+
 
 `
 
+
 <div class="card">
+
 
 No results found
 
+
 </div>
+
 
 `;
 
 
 
 
-}
-
+};
 
 
 
