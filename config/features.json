@@ -39,5 +39,12 @@
     "icon": "📅",
     "description": "Workshops, seminars and conferences.",
     "url": "/events/"
+  },
+
+  {
+    "title": "Books",
+    "icon": "📚",
+    "description": "Recommended textbooks and exam references.",
+    "url": "/books/"
   }
 ]

@@ -1,0 +1,67 @@
+[
+  {
+    "id": "book_001",
+
+    "title": "Essentials of Medical Pharmacology",
+
+    "author": "K.D. Tripathi",
+
+    "category": "Pharmacology",
+
+    "course": [
+      "B.Pharm",
+      "Pharm.D"
+    ],
+
+    "semester": [
+      "4",
+      "5"
+    ],
+
+    "description": "Popular pharmacology reference textbook for pharmacy and medical students.",
+
+    "tags": [
+      "Pharmacology",
+      "Drugs",
+      "Reference"
+    ],
+
+    "links": {
+      "buy": "",
+      "affiliate": ""
+    },
+
+    "recommended": true
+  },
+
+
+  {
+    "id": "book_002",
+
+    "title": "Pharmaceutics",
+
+    "author": "Aulton",
+
+    "category": "Pharmaceutics",
+
+    "course": [
+      "B.Pharm"
+    ],
+
+    "semester": [],
+
+    "description": "Reference book for dosage forms and pharmaceutical technology.",
+
+    "tags": [
+      "Formulation",
+      "Industrial Pharmacy"
+    ],
+
+    "links": {
+      "buy": "",
+      "affiliate": ""
+    },
+
+    "recommended": true
+  }
+]

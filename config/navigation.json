@@ -1,43 +1,49 @@
 [
   {
-    "title":"Learn",
-    "icon":"📚",
-    "url":"/learn/"
+    "title": "Learn",
+    "icon": "📚",
+    "url": "/learn/"
   },
 
   {
-    "title":"Teach",
-    "icon":"👨‍🏫",
-    "url":"/teach/"
+    "title": "Teach",
+    "icon": "👨‍🏫",
+    "url": "/teach/"
   },
 
   {
-    "title":"Tools",
-    "icon":"🧪",
-    "url":"/tools/"
+    "title": "Tools",
+    "icon": "🧪",
+    "url": "/tools/"
   },
 
   {
-    "title":"Community",
-    "icon":"🌐",
-    "url":"/community/"
+    "title": "Community",
+    "icon": "🌐",
+    "url": "/community/"
   },
 
   {
-    "title":"Library",
-    "icon":"📖",
-    "url":"/library/"
+    "title": "Library",
+    "icon": "📖",
+    "url": "/library/"
   },
 
-{
-"title":"Events",
-"icon":"📅",
-"url":"/events/"
-},
+  {
+    "title": "Events",
+    "icon": "📅",
+    "url": "/events/"
+  },
 
   {
-    "title":"Login",
-    "icon":"👤",
-    "url":"/auth/login.html"
+    "title": "Books",
+    "icon": "📚",
+    "url": "/books/"
+  },
+
+  {
+    "title": "Login",
+    "icon": "👤",
+    "url": "/auth/login.html"
   }
 ]
