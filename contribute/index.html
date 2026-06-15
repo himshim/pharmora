@@ -421,6 +421,8 @@ Approved content becomes available.
 
 <script src="../js/services/database.service.js"></script>
 
+<script src="../js/services/auth.service.js"></script>
+
 <script src="../js/services/analytics.service.js"></script>
 
 
@@ -551,11 +553,19 @@ file:uploaded,
 
 
 
-author:{
+author:
+
+currentUser()
+
+||
+
+{
 
 id:"guest",
 
-name:"Guest User"
+name:"Guest User",
+
+role:"guest"
 
 },
 

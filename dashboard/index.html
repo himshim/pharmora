@@ -484,7 +484,9 @@ oninput="pharmoraSearch(this.value)"
 
 
 
-<div class="user">
+<div 
+class="user"
+id="dashboard-user">
 
 👤 Member
 
@@ -916,9 +918,116 @@ document.getElementById("dashboard-brand").innerHTML =
 });
 
 
+
+
+
+
+window.addEventListener(
+
+"load",
+
+()=>{
+
+
+
+if(
+
+typeof currentUser !== "function"
+
+){
+
+return;
+
+}
+
+
+
+
+let user =
+currentUser();
+
+
+
+
+
+if(
+
+!user
+
+){
+
+
+document.getElementById(
+
+"dashboard-user"
+
+).innerHTML =
+
+"👤 Guest";
+
+
+
+return;
+
+
+}
+
+
+
+
+
+
+
+
+document.getElementById(
+
+"dashboard-user"
+
+).innerHTML =
+
+
+"👤 " +
+
+user.name +
+
+" • " +
+
+user.role;
+
+
+
+
+
+
+
+
+document.getElementById(
+
+"welcome-title"
+
+).innerHTML =
+
+
+"Welcome back, " +
+
+user.name +
+
+" 👋";
+
+
+
+
+
+}
+
+);
+
+
 </script>
 
 
+
+<script src="../js/services/auth.service.js"></script>
 
 <script src="../js/services/analytics.service.js"></script>
 
