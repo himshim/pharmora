@@ -88,30 +88,6 @@ function toggleTheme(){
 
 
 
-/* =========================
-
-   SEARCH PLACEHOLDER
-
-========================= */
-
-
-function pharmoraSearch(query){
-
-
-    console.log(
-
-        "Searching Pharmora:",
-
-        query
-
-    );
-
-
-}
-
-
-
-
 
 
 /* =========================
