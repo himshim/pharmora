@@ -192,24 +192,23 @@ self.clients.claim();
 
 
 
-/* =========================
-   FETCH
-========================= */
+/* FETCH */
 
 
 self.addEventListener(
-
 "fetch",
-
 event=>{
 
 
-
+/*
+Ignore unsupported requests
+(chrome extensions etc.)
+*/
 
 
 if(
 
-event.request.method !== "GET"
+!event.request.url.startsWith("http")
 
 ){
 
@@ -222,42 +221,24 @@ return;
 
 
 
-
-
-
-
-
-
 event.respondWith(
 
 
 
-fetch(
-
-event.request
-
-)
-
+fetch(event.request)
 
 
 .then(response=>{
 
 
 
-
-
-let copy =
-
+let clone =
 response.clone();
 
 
 
 
-
-
-caches
-
-.open(
+caches.open(
 
 CACHE_NAME
 
@@ -266,17 +247,20 @@ CACHE_NAME
 .then(cache=>{
 
 
+
 cache.put(
 
 event.request,
 
-copy
+clone
 
-);
+)
+
+.catch(()=>{});
+
 
 
 });
-
 
 
 
@@ -292,60 +276,32 @@ return response;
 
 
 
-
-
-
-.catch(async()=>{
-
-
-
-
-
-
-let cached =
-
-await caches.match(
-
-event.request
-
-);
-
-
-
-
-
-if(cached){
-
-
-return cached;
-
-
-}
-
-
-
-
-
-
-
-
-if(
-
-event.request.mode==="navigate"
-
-){
+.catch(()=>{
 
 
 
 return caches.match(
 
-"./offline.html"
+event.request
+
+)
+
+
+.then(cached=>{
+
+
+
+return cached ||
+
+caches.match(
+
+OFFLINE_PAGE
 
 );
 
 
 
-}
+});
 
 
 
@@ -357,6 +313,4 @@ return caches.match(
 
 
 
-}
-
-);
+});
