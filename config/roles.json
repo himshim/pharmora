@@ -1,0 +1,62 @@
+[
+  {
+    "role": "owner",
+
+    "permissions": [
+      "*"
+    ]
+  },
+
+
+  {
+    "role": "admin",
+
+    "permissions": [
+      "manage_users",
+      "delete_content",
+      "verify_users",
+      "site_settings"
+    ]
+  },
+
+
+  {
+    "role": "maintainer",
+
+    "permissions": [
+      "approve_resources",
+      "approve_events",
+      "moderate_forum"
+    ]
+  },
+
+
+  {
+    "role": "educator",
+
+    "permissions": [
+      "verify_answers",
+      "upload_resources"
+    ]
+  },
+
+
+  {
+    "role": "contributor",
+
+    "permissions": [
+      "upload_resources",
+      "create_posts"
+    ]
+  },
+
+
+  {
+    "role": "member",
+
+    "permissions": [
+      "comment",
+      "save_resources"
+    ]
+  }
+]

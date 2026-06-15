@@ -1,211 +1,46 @@
-{
-  "users": [
+[
+  {
+    "id": "user_001",
 
+    "name": "Platform Owner",
 
-    {
+    "username": "owner",
 
-      "id": "user-001",
+    "role": "owner",
 
+    "verified": true,
 
-      "name": "Pharmora Member",
+    "badges": [
+      "Founder"
+    ],
 
-
-      "role": "Student",
-
-
-      "profile": {
-
-
-        "course": "B.Pharm",
-
-
-        "curriculum": "PCI",
-
-
-        "semester": 1
-
-
-      },
-
-
-
-      "contributions": {
-
-
-        "resources_uploaded": 0,
-
-
-        "answers_given": 0,
-
-
-        "reviews": 0
-
-
-      },
-
-
-
-      "reputation": {
-
-
-        "points": 0,
-
-
-        "badges": [
-
-          "Early Member"
-
-        ]
-
-
-      }
-
-    },
-
-
-
-
-
-
-
-    {
-
-      "id": "teacher-001",
-
-
-      "name": "Verified Educator",
-
-
-      "role": "Teacher",
-
-
-
-      "verification": {
-
-
-        "status": "verified",
-
-
-        "verified_by": "Pharmora Team"
-
-
-      },
-
-
-
-      "contributions": {
-
-
-        "lectures": 0,
-
-
-        "resources_uploaded": 0,
-
-
-        "students_helped": 0
-
-
-      },
-
-
-
-      "badges": [
-
-        "Educator"
-
-      ]
-
+    "stats": {
+      "resources": 0,
+      "answers": 0,
+      "points": 999
     }
-
-  ],
-
+  },
 
 
+  {
+    "id": "user_002",
 
+    "name": "Demo Teacher",
 
+    "username": "teacher",
 
-  "roles": [
+    "role": "educator",
 
+    "verified": true,
 
-    {
+    "badges": [
+      "Verified Educator"
+    ],
 
-      "name": "Student",
-
-
-      "permissions": [
-
-        "learn",
-
-        "ask_questions",
-
-        "save_resources"
-
-      ]
-
-    },
-
-
-
-
-
-    {
-
-      "name": "Teacher",
-
-
-      "permissions": [
-
-        "upload_resources",
-
-        "answer_questions",
-
-        "review_content"
-
-      ]
-
-    },
-
-
-
-
-
-    {
-
-      "name": "Contributor",
-
-
-      "permissions": [
-
-        "suggest_changes",
-
-        "improve_content"
-
-      ]
-
-    },
-
-
-
-
-
-    {
-
-      "name": "Admin",
-
-
-      "permissions": [
-
-        "manage_users",
-
-        "approve_content",
-
-        "moderate"
-
-      ]
-
+    "stats": {
+      "resources": 10,
+      "answers": 25,
+      "points": 250
     }
-
-
-  ]
-
-}
+  }
+]
