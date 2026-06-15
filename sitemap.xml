@@ -5,23 +5,31 @@
 xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 
+
+
+
 <url>
 
 <loc>
-
-https://himshim.github.io/pharmora/
-
+https://pharmora.netlify.app/
 </loc>
 
+<lastmod>
+2026-06-15
+</lastmod>
+
+<changefreq>
+weekly
+</changefreq>
 
 <priority>
-
 1.0
-
 </priority>
 
-
 </url>
+
+
+
 
 
 
@@ -30,20 +38,25 @@ https://himshim.github.io/pharmora/
 <url>
 
 <loc>
-
-https://himshim.github.io/pharmora/learn/
-
+https://pharmora.netlify.app/learn/
 </loc>
 
+<lastmod>
+2026-06-15
+</lastmod>
+
+<changefreq>
+weekly
+</changefreq>
 
 <priority>
-
 0.9
-
 </priority>
 
-
 </url>
+
+
+
 
 
 
@@ -52,20 +65,25 @@ https://himshim.github.io/pharmora/learn/
 <url>
 
 <loc>
-
-https://himshim.github.io/pharmora/teach/
-
+https://pharmora.netlify.app/library/
 </loc>
 
+<lastmod>
+2026-06-15
+</lastmod>
+
+<changefreq>
+weekly
+</changefreq>
 
 <priority>
-
-0.8
-
+0.9
 </priority>
 
-
 </url>
+
+
+
 
 
 
@@ -74,20 +92,26 @@ https://himshim.github.io/pharmora/teach/
 <url>
 
 <loc>
-
-https://himshim.github.io/pharmora/tools/
-
+https://pharmora.netlify.app/contribute/
 </loc>
 
+<lastmod>
+2026-06-15
+</lastmod>
+
+<changefreq>
+monthly
+</changefreq>
 
 <priority>
-
 0.8
-
 </priority>
 
-
 </url>
+
+
+
+
 
 
 
@@ -96,20 +120,107 @@ https://himshim.github.io/pharmora/tools/
 <url>
 
 <loc>
-
-https://himshim.github.io/pharmora/community/
-
+https://pharmora.netlify.app/teach/
 </loc>
 
+<lastmod>
+2026-06-15
+</lastmod>
+
+<changefreq>
+monthly
+</changefreq>
 
 <priority>
-
 0.8
-
 </priority>
 
+</url>
+
+
+
+
+
+
+
+
+<url>
+
+<loc>
+https://pharmora.netlify.app/tools/
+</loc>
+
+<lastmod>
+2026-06-15
+</lastmod>
+
+<changefreq>
+monthly
+</changefreq>
+
+<priority>
+0.8
+</priority>
 
 </url>
+
+
+
+
+
+
+
+
+<url>
+
+<loc>
+https://pharmora.netlify.app/community/
+</loc>
+
+<lastmod>
+2026-06-15
+</lastmod>
+
+<changefreq>
+monthly
+</changefreq>
+
+<priority>
+0.7
+</priority>
+
+</url>
+
+
+
+
+
+
+
+
+<url>
+
+<loc>
+https://pharmora.netlify.app/about/
+</loc>
+
+<lastmod>
+2026-06-15
+</lastmod>
+
+<changefreq>
+monthly
+</changefreq>
+
+<priority>
+0.6
+</priority>
+
+</url>
+
+
+
+
 
 
 </urlset>

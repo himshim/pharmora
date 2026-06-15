@@ -1,9 +1,11 @@
 {
+  "id": "/",
+
   "name": "Pharmora - Open Pharmacy Learning Network",
 
   "short_name": "Pharmora",
 
-  "description": "The future of pharmacy learning — open, collaborative, and accessible.",
+  "description": "An open collaborative pharmacy learning platform for students, teachers, professionals and contributors.",
 
 
   "start_url": "./",
@@ -13,27 +15,100 @@
 
   "display": "standalone",
 
-
-  "background_color": "#020617",
-
-
-  "theme_color": "#22d3ee",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
 
 
   "orientation": "portrait-primary",
 
+
+  "background_color": "#020617",
+
+  "theme_color": "#22d3ee",
+
+
+  "categories": [
+    "education",
+    "medical",
+    "productivity"
+  ],
 
 
   "icons": [
 
 
     {
-
       "src": "assets/branding/logo.svg",
 
       "sizes": "512x512",
 
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+
+      "purpose": "any maskable"
+    },
+
+
+    {
+      "src": "assets/branding/icon-192.png",
+
+      "sizes": "192x192",
+
+      "type": "image/png"
+    },
+
+
+    {
+      "src": "assets/branding/icon-512.png",
+
+      "sizes": "512x512",
+
+      "type": "image/png"
+    }
+
+
+  ],
+
+
+  "shortcuts": [
+
+
+    {
+
+      "name": "Learn",
+
+      "short_name": "Learn",
+
+      "url": "learn/",
+
+      "description": "Browse pharmacy learning resources"
+
+    },
+
+
+    {
+
+      "name": "Contribute",
+
+      "short_name": "Contribute",
+
+      "url": "contribute/",
+
+      "description": "Share educational content"
+
+    },
+
+
+    {
+
+      "name": "Library",
+
+      "short_name": "Library",
+
+      "url": "library/",
+
+      "description": "Open knowledge library"
 
     }
 

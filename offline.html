@@ -6,9 +6,15 @@
 
 <meta charset="UTF-8">
 
-<meta 
+
+<meta
 name="viewport"
 content="width=device-width, initial-scale=1.0">
+
+
+<meta
+name="theme-color"
+content="#22d3ee">
 
 
 <title>
@@ -19,18 +25,33 @@ Offline | Pharmora
 
 
 
+<link
+rel="manifest"
+href="manifest.json">
+
+
+<link
+rel="icon"
+href="assets/branding/favicon.svg">
+
+
+
 <link rel="stylesheet" href="css/variables.css">
 
 <link rel="stylesheet" href="css/base.css">
 
 <link rel="stylesheet" href="css/components.css">
 
+<link rel="stylesheet" href="css/responsive.css">
+
+
+
 
 
 <style>
 
 
-body{
+.offline-page{
 
 min-height:100vh;
 
@@ -50,15 +71,31 @@ text-align:center;
 
 max-width:600px;
 
-padding:30px;
+}
+
+
+
+.offline-icon{
+
+font-size:5rem;
+
+margin-bottom:20px;
 
 }
 
 
 
-.icon{
+.offline-actions{
 
-font-size:4rem;
+margin-top:25px;
+
+display:flex;
+
+gap:15px;
+
+justify-content:center;
+
+flex-wrap:wrap;
 
 }
 
@@ -74,21 +111,31 @@ font-size:4rem;
 
 
 
+
 <body>
 
 
 
 
 
-<div class="offline-box">
+<main class="offline-page">
 
 
 
-<div class="icon">
+<div class="card offline-box">
 
-⚕
+
+
+
+
+
+<div class="offline-icon">
+
+⚕️
 
 </div>
+
+
 
 
 
@@ -102,35 +149,82 @@ You're Offline
 
 
 
+
+
 <p>
 
-Pharmora cannot connect right now.
 
-Previously saved learning resources will remain available offline.
+No internet connection is available right now.
+
+
+<br><br>
+
+
+Cached Pharmora pages and saved learning resources
+may still be available.
+
 
 </p>
 
 
 
 
-<br>
 
 
 
 
-<a 
+<div class="offline-actions">
+
+
+
+
+
+<button
+
+class="btn btn-primary"
+
+onclick="location.reload()">
+
+Try Again
+
+</button>
+
+
+
+
+
+
+
+<a
+
 href="./"
-class="btn btn-primary">
 
-Return Home
+class="btn">
+
+Home
 
 </a>
 
 
 
 
+
+
 </div>
 
+
+
+
+
+
+
+
+</div>
+
+
+
+
+</main>
 
 
 

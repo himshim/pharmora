@@ -1,32 +1,115 @@
 /*
  Pharmora Service Worker
- Development Mode
- Network First Strategy
+ Production Ready
+ Network + Cache Strategy
 */
 
 
+
+
+
 const CACHE_NAME =
-"pharmora-dev-v3";
-
-
-
-const OFFLINE_PAGE =
-"/offline.html";
+"pharmora-v1";
 
 
 
 
 
+const CORE_ASSETS = [
 
-/* INSTALL */
+
+"./",
+
+"./index.html",
+
+"./offline.html",
+
+
+
+"./css/variables.css",
+
+"./css/base.css",
+
+"./css/components.css",
+
+"./css/responsive.css",
+
+
+
+"./js/app.js",
+
+"./js/search.js",
+
+
+
+"./config/site.json",
+
+"./config/navigation.json",
+
+
+
+"./assets/branding/logo.svg",
+
+
+
+"./manifest.json"
+
+
+];
+
+
+
+
+
+
+
+
+
+/* =========================
+   INSTALL
+========================= */
 
 
 self.addEventListener(
+
 "install",
+
 event=>{
 
 
+
+event.waitUntil(
+
+
+
+caches
+
+.open(
+
+CACHE_NAME
+
+)
+
+.then(cache=>{
+
+
+return cache.addAll(
+
+CORE_ASSETS
+
+);
+
+
+})
+
+
+
+);
+
+
+
 self.skipWaiting();
+
 
 
 }
@@ -39,47 +122,62 @@ self.skipWaiting();
 
 
 
-/* ACTIVATE */
+
+
+
+/* =========================
+   ACTIVATE
+========================= */
 
 
 self.addEventListener(
+
 "activate",
+
 event=>{
+
 
 
 event.waitUntil(
 
 
+
 caches.keys()
 
-.then(cacheNames=>{
+.then(keys=>{
+
 
 
 return Promise.all(
 
 
-cacheNames.map(cache=>{
+
+keys
+
+.filter(key=>key!==CACHE_NAME)
+
+.map(key=>caches.delete(key))
 
 
-return caches.delete(cache);
+
+);
+
 
 
 })
 
 
-);
-
-
-})
-
 
 );
+
+
 
 
 
 self.clients.claim();
 
 
+
 }
 
 );
@@ -93,46 +191,162 @@ self.clients.claim();
 
 
 
-/* FETCH */
+
+/* =========================
+   FETCH
+========================= */
 
 
 self.addEventListener(
+
 "fetch",
+
 event=>{
+
+
+
+
+
+if(
+
+event.request.method !== "GET"
+
+){
+
+
+return;
+
+
+}
+
+
+
+
+
+
+
+
 
 
 event.respondWith(
 
 
 
-fetch(event.request)
+fetch(
+
+event.request
+
+)
+
 
 
 .then(response=>{
 
 
+
+
+
+let copy =
+
+response.clone();
+
+
+
+
+
+
+caches
+
+.open(
+
+CACHE_NAME
+
+)
+
+.then(cache=>{
+
+
+cache.put(
+
+event.request,
+
+copy
+
+);
+
+
+});
+
+
+
+
+
+
 return response;
+
 
 
 })
 
 
 
-.catch(()=>{
 
 
-return caches.match(event.request)
 
 
-.then(cached=>{
+
+.catch(async()=>{
 
 
-return cached ||
-
-caches.match(OFFLINE_PAGE);
 
 
-});
+
+
+let cached =
+
+await caches.match(
+
+event.request
+
+);
+
+
+
+
+
+if(cached){
+
+
+return cached;
+
+
+}
+
+
+
+
+
+
+
+
+if(
+
+event.request.mode==="navigate"
+
+){
+
+
+
+return caches.match(
+
+"./offline.html"
+
+);
+
+
+
+}
+
 
 
 })
@@ -142,4 +356,7 @@ caches.match(OFFLINE_PAGE);
 );
 
 
-});
+
+}
+
+);

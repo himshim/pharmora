@@ -2,7 +2,8 @@ User-agent: *
 
 Allow: /
 
+Allow: /assets/
+Allow: /css/
+Allow: /js/
 
-Sitemap:
-
-https://himshim.github.io/pharmora/sitemap.xml
+Sitemap: https://pharmora.netlify.app/sitemap.xml
