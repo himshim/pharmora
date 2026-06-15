@@ -3,104 +3,311 @@
  Open Pharmacy Learning Network
 */
 
-console.log("⚕ Pharmora Initialized");
+
+
+
 
 /* =========================
-
- GLOBAL PATH SYSTEM
-
+   GLOBAL PATH SYSTEM
 ========================= */
 
-function getBasePath() {
-  let path = location.pathname;
 
-  /*
-Folder pages:
-learn/
-admin/
-dashboard/
-etc.
-*/
+function getBasePath(){
 
-  if (path.endsWith("/") && path !== "/") {
-    return "../";
-  }
 
-  /*
-Files inside folders:
-auth/login.html
-library/view.html
-*/
 
-  let depth = path.split("/").filter(Boolean).length;
+let path =
+location.pathname;
 
-  if (depth > 1) {
-    return "../";
-  }
 
-  return "./";
+
+
+
+if(
+
+path.endsWith("/")
+
+&&
+
+path !== "/"
+
+){
+
+
+return "../";
+
+
 }
 
-function appPath(path) {
-  return getBasePath() + path.replace(/^\/+/, "");
+
+
+
+
+
+let depth =
+path
+
+.split("/")
+
+.filter(Boolean)
+
+.length;
+
+
+
+
+
+if(depth>1){
+
+
+return "../";
+
+
 }
+
+
+
+
+return "./";
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+function appPath(path=""){
+
+
+
+return (
+
+getBasePath()
+
++
+
+path.replace(/^\/+/,"")
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
 
 /* =========================
-
- THEME SYSTEM
-
+   THEME SYSTEM
 ========================= */
 
-function loadTheme() {
-  const savedTheme = localStorage.getItem("pharmora-theme");
 
-  if (savedTheme) {
-    document.documentElement.setAttribute("data-theme", savedTheme);
-  }
+function loadTheme(){
+
+
+
+let saved =
+localStorage.getItem(
+
+"pharmora-theme"
+
+);
+
+
+
+
+
+if(saved){
+
+
+
+document
+
+.documentElement
+
+.setAttribute(
+
+"data-theme",
+
+saved
+
+);
+
+
+
 }
 
-function toggleTheme() {
-  const current = document.documentElement.getAttribute("data-theme");
 
-  const next = current === "light" ? "dark" : "light";
 
-  document.documentElement.setAttribute("data-theme", next);
-
-  localStorage.setItem("pharmora-theme", next);
 }
+
+
+
+
+
+
+
+
+
+function toggleTheme(){
+
+
+
+let current =
+
+document
+
+.documentElement
+
+.getAttribute(
+
+"data-theme"
+
+);
+
+
+
+
+
+
+let next =
+
+current==="light"
+
+?
+
+"dark"
+
+:
+
+"light";
+
+
+
+
+
+
+
+document
+
+.documentElement
+
+.setAttribute(
+
+"data-theme",
+
+next
+
+);
+
+
+
+
+
+
+localStorage.setItem(
+
+"pharmora-theme",
+
+next
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
 
 /* =========================
-
- MOBILE MENU
-
+   MOBILE MENU
 ========================= */
 
-function toggleMenu() {
-  const menu = document.querySelector(".mobile-menu");
 
-  if (menu) {
-    menu.classList.toggle("active");
-  }
+function toggleMenu(){
+
+
+
+let menu =
+
+document.querySelector(
+
+".mobile-menu"
+
+);
+
+
+
+
+
+if(menu){
+
+
+menu.classList.toggle(
+
+"active"
+
+);
+
+
 }
 
+
+
+}
+
+
+
+
+
+
+
+
+
 /* =========================
-
- PHARMORA TOAST SYSTEM
-
+   TOAST SYSTEM
 ========================= */
 
 
 function showToast(
+
 message,
+
 type="info"
+
 ){
 
 
 
+
+
 let container =
+
 document.getElementById(
+
 "toast-container"
+
 );
+
+
 
 
 
@@ -110,19 +317,26 @@ if(!container){
 
 
 container =
+
 document.createElement(
+
 "div"
+
 );
 
 
 
 container.id =
+
 "toast-container";
 
 
 
+
 document.body.appendChild(
+
 container
+
 );
 
 
@@ -135,9 +349,14 @@ container
 
 
 
+
+
 let toast =
+
 document.createElement(
+
 "div"
+
 );
 
 
@@ -150,8 +369,8 @@ toast.className =
 
 
 
+toast.textContent =
 
-toast.innerText =
 message;
 
 
@@ -159,8 +378,11 @@ message;
 
 
 
+
 container.appendChild(
+
 toast
+
 );
 
 
@@ -168,15 +390,17 @@ toast
 
 
 
-setTimeout(()=>{
+requestAnimationFrame(()=>{
 
 
 toast.classList.add(
+
 "show"
+
 );
 
 
-},50);
+});
 
 
 
@@ -190,7 +414,9 @@ setTimeout(()=>{
 
 
 toast.classList.remove(
+
 "show"
+
 );
 
 
@@ -211,31 +437,252 @@ toast.remove();
 
 
 
-
 }
+
+
+
+
+
+
+
+
+
+
+
 /* =========================
-
- APP INIT
-
+   CONFIRM MODAL
 ========================= */
 
-document.addEventListener(
-  "DOMContentLoaded",
 
-  () => {
-    loadTheme();
+function showConfirm(
 
-    console.log("Interface Ready");
-  },
+message
+
+){
+
+
+
+
+
+return new Promise(resolve=>{
+
+
+
+
+
+
+let overlay =
+
+document.createElement(
+
+"div"
+
 );
 
-/* =========================
 
- PWA
 
-========================= */
 
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register(appPath("sw.js")).catch(() => {});
+
+
+overlay.className =
+
+"confirm-overlay";
+
+
+
+
+
+
+
+overlay.innerHTML = `
+
+
+<div class="confirm-box">
+
+
+<h3>
+
+${message}
+
+</h3>
+
+
+<br>
+
+
+<button
+
+class="btn btn-primary"
+
+id="confirm-yes">
+
+
+Yes
+
+
+</button>
+
+
+
+
+<button
+
+class="btn"
+
+id="confirm-no">
+
+
+Cancel
+
+
+</button>
+
+
+</div>
+
+
+`;
+
+
+
+
+
+
+
+
+
+document.body.appendChild(
+
+overlay
+
+);
+
+
+
+
+
+
+
+
+
+let finish = value=>{
+
+
+
+overlay.remove();
+
+
+
+resolve(value);
+
+
+
+};
+
+
+
+
+
+
+
+
+document
+
+.getElementById(
+
+"confirm-yes"
+
+)
+
+.onclick = ()=>finish(true);
+
+
+
+
+
+
+
+
+document
+
+.getElementById(
+
+"confirm-no"
+
+)
+
+.onclick = ()=>finish(false);
+
+
+
+
+
+});
+
+
+
 }
 
+
+
+
+
+
+
+
+
+
+
+
+/* =========================
+   APP INIT
+========================= */
+
+
+document.addEventListener(
+
+"DOMContentLoaded",
+
+()=>{
+
+
+
+loadTheme();
+
+
+
+
+
+
+if(
+
+"serviceWorker"
+
+in navigator
+
+){
+
+
+
+navigator
+
+.serviceWorker
+
+.register(
+
+appPath("sw.js")
+
+)
+
+.catch(()=>{});
+
+
+
+}
+
+
+
+
+}
+
+);

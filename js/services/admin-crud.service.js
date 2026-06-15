@@ -1353,6 +1353,8 @@ html += `
 
 <button
 
+id="admin-save-btn"
+
 class="btn btn-primary"
 
 onclick="saveEntry('${id || ""}')"
@@ -1406,13 +1408,88 @@ refreshDependentRelations();
 
 
 
+function lockAdminSave(){
 
+
+
+let btn =
+document.getElementById(
+"admin-save-btn"
+);
+
+
+
+if(!btn){
+
+return;
+
+}
+
+
+
+btn.disabled=true;
+
+
+
+btn.innerHTML=
+
+"Saving...";
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+function unlockAdminSave(){
+
+
+
+let btn =
+document.getElementById(
+"admin-save-btn"
+);
+
+
+
+if(!btn){
+
+return;
+
+}
+
+
+
+
+btn.disabled=false;
+
+
+
+
+btn.innerHTML=
+
+"Save";
+
+
+
+}
 
 
 
 
 
 async function saveEntry(id){
+
+
+
+lockAdminSave();
 
 
 
@@ -1589,6 +1666,10 @@ showToast(
 
 
 
+unlockAdminSave();
+
+
+
 return;
 
 
@@ -1649,6 +1730,10 @@ showToast(
 "error"
 
 );
+
+
+
+unlockAdminSave();
 
 
 
@@ -1738,6 +1823,10 @@ total+" "+data.system+"s created",
 
 
 
+unlockAdminSave();
+
+
+
 
 loadManager(
 
@@ -1824,6 +1913,11 @@ showToast(
 
 
 
+unlockAdminSave();
+
+
+
+
 
 loadManager(
 
@@ -1852,23 +1946,24 @@ async function removeEntry(id){
 
 
 
-
-
-if(
-
-!confirm(
+let ok =
+await showConfirm(
 
 "Delete this item?"
 
-)
+);
 
-){
+
+
+
+if(!ok){
 
 
 return;
 
 
 }
+
 
 
 
@@ -1884,6 +1979,17 @@ id
 );
 
 
+
+
+
+
+showToast(
+
+"Deleted successfully",
+
+"success"
+
+);
 
 
 
