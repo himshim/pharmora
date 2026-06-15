@@ -1,47 +1,103 @@
 /*
- Global Header Component
+ Pharmora Global Header Component
 */
+
 
 
 async function loadHeader(){
 
 
 const root =
-document.getElementById("site-header");
+document.getElementById(
+"site-header"
+);
+
 
 
 if(!root){
+
 return;
+
 }
 
 
 
 
-const base =
-location.pathname.split("/").length > 2
-?
-"../"
-:
-"";
+let site={};
+
+let nav=[];
 
 
 
 
+try{
 
-const site =
+
+
+site =
 await fetch(
-base+"config/site.json"
+
+appPath(
+"config/site.json"
+)
+
 )
 .then(r=>r.json());
 
 
 
 
-const nav =
+
+nav =
 await fetch(
-base+"config/navigation.json"
+
+appPath(
+"config/navigation.json"
+)
+
 )
 .then(r=>r.json());
+
+
+
+}
+
+
+
+catch(error){
+
+
+
+console.error(
+
+"Header config failed",
+
+error
+
+);
+
+
+
+site={
+
+name:"Pharmora",
+
+logo:"",
+
+tagline:"Open Pharmacy Learning Network"
+
+};
+
+
+
+nav=[];
+
+
+
+}
+
+
+
 
 
 
@@ -56,33 +112,64 @@ let mobileLinks="";
 
 
 
+
 nav.forEach(item=>{
 
 
-let url =
-base + item.url.replace("/","");
+
+const url =
+
+appPath(
+
+item.url.replace(
+"/",
+""
+)
+
+);
+
+
+
+
 
 
 desktopLinks += `
 
+
 <a href="${url}">
+
 ${item.title}
+
 </a>
 
+
 `;
+
+
+
+
 
 
 
 mobileLinks += `
 
+
 <a href="${url}">
-${item.icon} ${item.title}
+
+${item.icon || ""}
+
+${item.title}
+
 </a>
+
 
 `;
 
 
+
 });
+
+
 
 
 
@@ -96,8 +183,8 @@ root.innerHTML = `
 
 
 
-<header class="container">
 
+<header class="container">
 
 
 
@@ -110,20 +197,52 @@ root.innerHTML = `
 
 
 
-<a href="${base}" class="logo">
+
+<a 
+href="${appPath("")}"
+class="logo">
 
 
+
+
+
+${
+
+site.logo
+
+?
+
+`
 
 <img
 
-src="${base}${site.logo}"
+class="site-logo"
 
-height="32"
+src="${appPath(site.logo)}"
 
-style="vertical-align:middle;">
+alt="${site.name} logo"
 
+>
+
+`
+
+:
+
+"⚕"
+
+}
+
+
+
+
+<span>
 
 ${site.name}
+
+</span>
+
+
+
 
 
 
@@ -135,13 +254,21 @@ ${site.name}
 
 
 
-<div 
+
+
+<div
+
 class="menu-toggle"
+
 onclick="toggleMenu()">
+
 
 ☰
 
+
 </div>
+
+
 
 
 
@@ -172,6 +299,7 @@ ${desktopLinks}
 
 
 
+
 <div class="mobile-menu">
 
 
@@ -186,7 +314,13 @@ ${mobileLinks}
 
 
 
+
+
+
 <div class="notice-bar">
+
+
+
 
 
 <span>
@@ -197,24 +331,32 @@ ${mobileLinks}
 
 
 
-<div class="notice-track">
+
+
+
 
 <div class="notice-track">
+
+
 
 <span id="notice-text">
 
+
 Loading updates...
+
 
 </span>
 
-</div>
-
-</div>
-
 
 
 </div>
 
+
+
+
+
+
+</div>
 
 
 
@@ -225,12 +367,16 @@ Loading updates...
 </header>
 
 
+
+
 `;
 
 
 
 
+
 loadNoticeTicker();
+
 
 
 
@@ -245,12 +391,18 @@ loadNoticeTicker();
 
 
 
+
+
+
 async function loadNoticeTicker(){
+
 
 
 const notice =
 document.getElementById(
+
 "notice-text"
+
 );
 
 
@@ -265,14 +417,24 @@ return;
 
 
 
+
 try{
+
+
+
 
 
 const data =
 await fetch(
-"/config/notices.json"
+
+appPath(
+"config/notices.json"
+)
+
 )
 .then(r=>r.json());
+
+
 
 
 
@@ -284,12 +446,21 @@ data.map(item=>
 
 `${item.title} : ${item.message}`
 
-).join(" &nbsp;&nbsp; • &nbsp;&nbsp; ");
+)
+
+.join(
+
+" &nbsp;&nbsp; • &nbsp;&nbsp; "
+
+);
+
+
 
 
 
 
 }
+
 
 
 
@@ -307,7 +478,10 @@ notice.innerHTML =
 
 
 
+
 }
+
+
 
 
 

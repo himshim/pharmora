@@ -1,6 +1,7 @@
 /*
- Global Footer Component
+ Pharmora Global Footer Component
 */
+
 
 
 async function loadFooter(){
@@ -8,7 +9,12 @@ async function loadFooter(){
 
 
 const root =
-document.getElementById("site-footer");
+document.getElementById(
+
+"site-footer"
+
+);
+
 
 
 
@@ -21,23 +27,66 @@ return;
 
 
 
-const base =
-location.pathname.split("/").length > 2
-?
-"../"
-:
-"";
+
+
+
+let site={};
 
 
 
 
 
 
-const site =
+try{
+
+
+
+site =
 await fetch(
-base+"config/site.json"
+
+appPath(
+"config/site.json"
+)
+
 )
 .then(r=>r.json());
+
+
+
+}
+
+
+
+
+
+catch(error){
+
+
+
+console.error(
+
+"Footer config failed",
+
+error
+
+);
+
+
+
+
+site={
+
+name:"Pharmora",
+
+logo:"",
+
+tagline:"Open Pharmacy Learning Network"
+
+};
+
+
+
+}
 
 
 
@@ -51,7 +100,13 @@ root.innerHTML = `
 
 
 
+
+
+
 <footer class="footer">
+
+
+
 
 
 
@@ -60,10 +115,60 @@ root.innerHTML = `
 <div class="footer-brand">
 
 
-⚕ ${site.name}
+
+
+
+
+
+${
+
+site.logo
+
+?
+
+`
+
+<img
+
+class="footer-logo"
+
+src="${appPath(site.logo)}"
+
+alt="${site.name} logo"
+
+>
+
+`
+
+:
+
+"⚕"
+
+}
+
+
+
+
+
+<span>
+
+
+${site.name}
+
+
+</span>
+
+
+
+
+
+
 
 
 </div>
+
+
+
 
 
 
@@ -78,7 +183,9 @@ root.innerHTML = `
 
 
 
-<a href="${base}about/">
+
+
+<a href="${appPath("about/")}">
 
 About
 
@@ -89,7 +196,9 @@ About
 
 
 
-<a href="${base}learn/">
+
+
+<a href="${appPath("learn/")}">
 
 Learn
 
@@ -100,7 +209,9 @@ Learn
 
 
 
-<a href="${base}tools/">
+
+
+<a href="${appPath("tools/")}">
 
 Tools
 
@@ -112,7 +223,9 @@ Tools
 
 
 
-<a href="${base}contribute/">
+
+
+<a href="${appPath("contribute/")}">
 
 Contribute
 
@@ -125,7 +238,12 @@ Contribute
 
 
 
+
 </div>
+
+
+
+
 
 
 
@@ -141,9 +259,13 @@ Contribute
 
 
 
+
+
 © ${new Date().getFullYear()}
 
 ${site.name}
+
+
 
 
 
@@ -154,7 +276,12 @@ ${site.name}
 
 
 
-${site.tagline}
+
+
+
+${site.tagline || ""}
+
+
 
 
 
@@ -168,7 +295,13 @@ ${site.tagline}
 
 
 
+
+
+
 </footer>
+
+
+
 
 
 
@@ -178,6 +311,11 @@ ${site.tagline}
 
 
 }
+
+
+
+
+
 
 
 

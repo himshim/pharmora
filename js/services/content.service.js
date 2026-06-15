@@ -47,14 +47,18 @@ target
 
 
 
-
-
-
 let box =
 document.getElementById(
 target
 );
 
+
+
+if(!box){
+
+return;
+
+}
 
 
 
@@ -69,7 +73,6 @@ collection
 
 
 
-
 if(
 
 items.length===0
@@ -78,10 +81,10 @@ items.length===0
 
 
 
-box.innerHTML=`
+box.innerHTML = `
 
 
-<div class="card">
+<div class="card empty-state">
 
 
 <h2>
@@ -118,11 +121,10 @@ return;
 
 
 
-
 box.innerHTML =
 
-items.map(item=>`
 
+items.map(item=>`
 
 
 
@@ -133,12 +135,9 @@ items.map(item=>`
 
 <h2>
 
-
 ${contentIcon(collection)}
 
 ${item.title}
-
-
 
 </h2>
 
@@ -146,20 +145,13 @@ ${item.title}
 
 
 
-<p>
 
+<p>
 
 ${item.description || ""}
 
-
 </p>
 
-
-
-
-
-
-<br>
 
 
 
@@ -189,8 +181,8 @@ ${item.description || ""}
 🏷 ${(item.tags || []).join(", ")}
 
 
-
 </small>
+
 
 
 
@@ -204,47 +196,25 @@ ${item.description || ""}
 
 
 
-${
-
-item.content?.link
-
-?
-
-`
-
 <a
 
 class="btn"
 
-target="_blank"
+href="${
 
-location.href =
+appPath(
 
-"../library/view.html?id="
+`library/view.html?id=${item.id}&type=${collection}`
 
-+
+)
 
-item.id
+}"
 
-+
-
-"&type="
-
-+
-
-collection
+>
 
 Open
 
 </a>
-
-`
-
-:
-
-""
-
-}
 
 
 

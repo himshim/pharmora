@@ -1,23 +1,86 @@
 /*
- Pharmora App Script
+ Pharmora App Core
  Open Pharmacy Learning Network
 */
 
 
-console.log(
-    "⚕ Pharmora Initialized"
-);
+console.log("⚕ Pharmora Initialized");
+
+
+/* =========================
+
+ GLOBAL PATH SYSTEM
+
+========================= */
+
+
+function getBasePath(){
+
+
+    const parts =
+    location.pathname
+    .split("/")
+    .filter(Boolean);
+
+
+
+    /*
+      GitHub pages:
+      /pharmora/page.html
+
+      Local:
+      /page.html
+    */
+
+
+    if(
+        parts.length > 1
+    ){
+
+        return "../";
+
+    }
+
+
+    return "./";
+
+
+}
+
+
+
+function appPath(path){
+
+
+    return (
+
+        getBasePath()
+
+        +
+
+        path.replace(
+            /^\/+/,
+            ""
+        )
+
+    );
+
+
+}
 
 
 
 /* =========================
 
-   THEME SYSTEM
+ THEME SYSTEM
 
 ========================= */
 
 
-const savedTheme =
+function loadTheme(){
+
+
+    const savedTheme =
 
     localStorage.getItem(
         "pharmora-theme"
@@ -25,24 +88,26 @@ const savedTheme =
 
 
 
-if(savedTheme){
+    if(savedTheme){
 
-    document.documentElement
-    .setAttribute(
-        "data-theme",
-        savedTheme
-    );
+
+        document.documentElement
+        .setAttribute(
+            "data-theme",
+            savedTheme
+        );
+
+
+    }
+
 
 }
 
 
 
-/* Toggle theme function
-   (button will be added later)
-*/
-
 
 function toggleTheme(){
+
 
 
     const current =
@@ -54,31 +119,34 @@ function toggleTheme(){
 
 
 
+
     const next =
 
-    current === "light"
-    ? "dark"
-    : "light";
+    current==="light"
+
+    ?
+
+    "dark"
+
+    :
+
+    "light";
+
 
 
 
     document.documentElement
     .setAttribute(
-
         "data-theme",
-
         next
-
     );
 
 
 
+
     localStorage.setItem(
-
         "pharmora-theme",
-
         next
-
     );
 
 
@@ -86,38 +154,9 @@ function toggleTheme(){
 
 
 
-
-
-
-
 /* =========================
 
-   UI READY
-
-========================= */
-
-
-document.addEventListener(
-
-    "DOMContentLoaded",
-
-    ()=>{
-
-
-        console.log(
-
-        "Interface Ready"
-
-        );
-
-
-    }
-
-);
-
-/* =========================
-
- MOBILE NAVIGATION
+ MOBILE MENU
 
 ========================= */
 
@@ -125,38 +164,135 @@ document.addEventListener(
 function toggleMenu(){
 
 
-const menu =
 
-document.querySelector(
-".mobile-menu"
-);
+    const menu =
 
-
-
-if(menu){
+    document.querySelector(
+        ".mobile-menu"
+    );
 
 
-menu.classList.toggle(
-"active"
-);
+
+    if(menu){
+
+
+        menu.classList.toggle(
+            "active"
+        );
+
+
+    }
 
 
 }
 
 
-}
 
-/* PWA */
 
-if(
-"serviceWorker" in navigator
+/* =========================
+
+ SIMPLE TOAST SYSTEM
+ (used later)
+
+========================= */
+
+
+function showToast(
+message,
+type="info"
 ){
 
 
-navigator.serviceWorker
-.register(
-"../sw.js"
+
+    let toast =
+    document.createElement(
+        "div"
+    );
+
+
+
+    toast.className =
+    "toast " + type;
+
+
+
+    toast.textContent =
+    message;
+
+
+
+
+    document.body.appendChild(
+        toast
+    );
+
+
+
+
+    setTimeout(()=>{
+
+
+        toast.remove();
+
+
+    },3000);
+
+
+
+}
+
+
+
+
+
+/* =========================
+
+ APP INIT
+
+========================= */
+
+
+document.addEventListener(
+
+"DOMContentLoaded",
+
+()=>{
+
+
+    loadTheme();
+
+
+
+    console.log(
+        "Interface Ready"
+    );
+
+
+}
+
 );
+
+
+
+
+
+/* =========================
+
+ PWA
+
+========================= */
+
+
+if(
+    "serviceWorker" in navigator
+){
+
+
+    navigator.serviceWorker
+    .register(
+        appPath("sw.js")
+    )
+    .catch(()=>{});
 
 
 }

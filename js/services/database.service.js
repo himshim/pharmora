@@ -23,11 +23,46 @@ return databaseConfig;
 
 
 
+try{
+
+
 databaseConfig =
 await fetch(
-"/config/database.json"
+
+appPath(
+"config/database.json"
+)
+
 )
 .then(r=>r.json());
+
+
+
+}
+
+catch(error){
+
+
+
+console.error(
+
+"Database config loading failed",
+
+error
+
+);
+
+
+
+databaseConfig={
+
+provider:"demo"
+
+};
+
+
+
+}
 
 
 

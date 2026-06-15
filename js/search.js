@@ -5,13 +5,7 @@
 
 
 
-
-
-
 let searchIndex=[];
-
-
-
 
 
 
@@ -21,97 +15,64 @@ let searchIndex=[];
 const searchableCollections=[
 
 
+
 {
 name:"resources",
-icon:"📚",
-url:"library/"
+icon:"📚"
 },
 
 
 
 {
 name:"books",
-icon:"📖",
-url:"books/"
+icon:"📖"
 },
-
 
 
 
 {
 name:"events",
-icon:"📅",
-url:"events/"
+icon:"📅"
 },
-
 
 
 
 {
 name:"tools",
-icon:"🧰",
-url:"tools/"
+icon:"🧰"
 },
-
 
 
 
 {
 name:"courses",
-icon:"🎓",
-url:"learn/"
+icon:"🎓"
 },
-
 
 
 
 {
 name:"subjects",
-icon:"🧪",
-url:"learn/"
+icon:"🧪"
 },
-
 
 
 
 {
 name:"categories",
-icon:"🏷",
-url:"library/"
+icon:"🏷"
+},
+
+
+
+{
+name:"tags",
+icon:"🔖"
 }
 
 
 
 ];
-
-
-
-
-
-
-
-
-
-function basePath(){
-
-
-
-return location.pathname
-.split("/")
-.length > 2
-
-?
-
-"../"
-
-:
-
-"";
-
-
-
-}
-
 
 
 
@@ -134,8 +95,6 @@ searchIndex=[];
 
 
 
-
-
 for(
 
 let source of searchableCollections
@@ -147,17 +106,11 @@ let source of searchableCollections
 
 
 
-
-
 try{
 
 
 
-
-
-
 let data=[];
-
 
 
 
@@ -170,12 +123,10 @@ typeof getRecords==="function"
 ){
 
 
-
 data =
 await getRecords(
 source.name
 );
-
 
 
 }
@@ -187,7 +138,9 @@ source.name
 
 
 
+
 data
+
 
 .filter(item=>{
 
@@ -203,12 +156,11 @@ item.status==="approved"
 );
 
 
-
 })
 
 
-.forEach(item=>{
 
+.forEach(item=>{
 
 
 
@@ -221,35 +173,28 @@ let text=[
 
 item.title,
 
-
 item.name,
-
 
 item.description,
 
-
 item.author?.name,
 
-
 item.category,
-
 
 item.type,
 
 
 ...(item.tags || []),
 
-
 ...(item.subjects || []),
 
-
 ...(item.courses || []),
-
 
 ...(item.semesters || [])
 
 
 ]
+
 
 .flat()
 
@@ -272,6 +217,8 @@ searchIndex.push({
 
 
 
+
+
 title:
 
 item.title ||
@@ -284,12 +231,9 @@ item.name ||
 
 
 
-
 description:
 
-item.description ||
-
-"",
+item.description || "",
 
 
 
@@ -305,25 +249,15 @@ source.icon,
 
 
 
+
 url:
 
-basePath()
+appPath(
 
-+
+`library/view.html?id=${item.id}&type=${source.name}`
 
-"library/view.html?id="
+),
 
-+
-
-item.id
-
-+
-
-"&type="
-
-+
-
-source.name,
 
 
 
@@ -353,12 +287,14 @@ keywords:text
 
 
 
+
 }
 
 
 
 
-catch(e){
+
+catch(error){
 
 
 
@@ -377,9 +313,7 @@ source.name
 
 
 
-
 }
-
 
 
 
@@ -390,7 +324,7 @@ source.name
 
 console.log(
 
-"Dynamic Search Loaded",
+"Search ready:",
 
 searchIndex.length
 
@@ -409,14 +343,9 @@ searchIndex.length
 
 
 
-
-
-
-
 window.pharmoraSearch =
 
 async function(query){
-
 
 
 
@@ -442,8 +371,7 @@ trackSearch(query);
 
 
 
-
-let box =
+const box =
 
 document.getElementById(
 
@@ -456,17 +384,11 @@ document.getElementById(
 
 
 
-
-
 if(!box){
-
 
 return;
 
-
 }
-
-
 
 
 
@@ -495,7 +417,6 @@ await buildSearchIndex();
 
 
 
-
 if(
 
 query.trim().length < 2
@@ -503,12 +424,10 @@ query.trim().length < 2
 ){
 
 
-
 box.innerHTML="";
 
 
 return;
-
 
 
 }
@@ -520,12 +439,9 @@ return;
 
 
 
+const key =
 
-let key =
-
-query
-
-.toLowerCase();
+query.toLowerCase();
 
 
 
@@ -534,24 +450,17 @@ query
 
 
 
+const results =
+
+searchIndex.filter(item=>
 
 
-let results =
-
-searchIndex.filter(item=>{
-
-
-return item.keywords.includes(
-
+item.keywords.includes(
 key
+)
+
 
 );
-
-
-});
-
-
-
 
 
 
@@ -573,14 +482,13 @@ results.map(item=>`
 
 
 
-
-
-
 <a
 
 href="${item.url}"
 
-class="card">
+class="card"
+
+>
 
 
 
@@ -591,6 +499,7 @@ class="card">
 ${item.icon}
 
 </h3>
+
 
 
 
@@ -617,8 +526,8 @@ ${item.description}
 
 
 
-</a>
 
+</a>
 
 
 
@@ -631,17 +540,14 @@ ${item.description}
 `
 
 
-<div class="card">
-
+<div class="card empty-state">
 
 No results found
-
 
 </div>
 
 
 `;
-
 
 
 
@@ -657,4 +563,17 @@ No results found
 
 
 
+
+document.addEventListener(
+
+"DOMContentLoaded",
+
+()=>{
+
+
 buildSearchIndex();
+
+
+}
+
+);

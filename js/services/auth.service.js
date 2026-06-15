@@ -27,7 +27,11 @@ return authConfig;
 
 authConfig =
 await fetch(
-"/config/auth.json"
+
+appPath(
+"config/auth.json"
+)
+
 )
 .then(r=>r.json());
 
@@ -233,7 +237,9 @@ localStorage.removeItem(
 
 location.href =
 
-"/auth/login.html";
+appPath(
+"auth/login.html"
+);
 
 
 
@@ -414,9 +420,11 @@ u=>u.email===data.email
 if(exists){
 
 
-alert(
+showToast(
 
-"Account already exists"
+"Account already exists",
+
+"error"
 
 );
 
@@ -590,9 +598,11 @@ if(!user){
 
 
 
-alert(
+showToast(
 
-"Invalid login details"
+"Invalid login details",
+
+"error"
 
 );
 

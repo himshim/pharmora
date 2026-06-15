@@ -25,11 +25,47 @@ return storageConfig;
 
 
 
+try{
+
+
+
 storageConfig =
 await fetch(
-"/config/storage.json"
+
+appPath(
+"config/storage.json"
+)
+
 )
 .then(r=>r.json());
+
+
+
+}
+
+catch(error){
+
+
+
+console.error(
+
+"Storage config loading failed",
+
+error
+
+);
+
+
+
+storageConfig={
+
+provider:"demo"
+
+};
+
+
+
+}
 
 
 
