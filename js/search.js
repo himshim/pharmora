@@ -1,6 +1,7 @@
 /*
  Pharmora Universal Search Engine
  Dynamic Database Version
+ Hierarchy Ready
 */
 
 
@@ -12,69 +13,156 @@ let searchIndex=[];
 
 
 
-const searchableCollections=[
 
+const searchableCollections=[
 
 
 {
 name:"resources",
-icon:"📚"
+icon:"📚",
+page:"library/view.html"
 },
-
 
 
 {
 name:"books",
-icon:"📖"
+icon:"📖",
+page:"library/view.html"
 },
-
 
 
 {
 name:"events",
-icon:"📅"
+icon:"📅",
+page:"library/view.html"
 },
-
 
 
 {
 name:"tools",
-icon:"🧰"
+icon:"🧰",
+page:"library/view.html"
 },
-
 
 
 {
 name:"courses",
-icon:"🎓"
+icon:"🎓",
+page:"learn/"
 },
 
+
+{
+name:"curriculums",
+icon:"📘",
+page:"learn/"
+},
+
+
+{
+name:"semesters",
+icon:"📅",
+page:"learn/"
+},
 
 
 {
 name:"subjects",
-icon:"🧪"
+icon:"🧪",
+page:"learn/"
 },
 
 
-
 {
-name:"categories",
-icon:"🏷"
-},
-
-
-
-{
-name:"tags",
-icon:"🔖"
+name:"units",
+icon:"📄",
+page:"learn/"
 }
-
 
 
 ];
 
 
+
+
+
+
+
+
+
+
+async function resolveSearchName(
+collection,
+id
+){
+
+
+
+if(!id){
+
+return "";
+
+}
+
+
+
+try{
+
+
+
+let data =
+await getRecords(
+collection
+);
+
+
+
+let item =
+data.find(
+
+x=>x.id===id
+
+);
+
+
+
+return item
+
+?
+
+(
+
+item.name ||
+
+item.title ||
+
+item.code ||
+
+""
+
+)
+
+:
+
+"";
+
+
+
+}
+
+
+
+catch(e){
+
+
+return "";
+
+
+}
+
+
+
+}
 
 
 
@@ -95,11 +183,7 @@ searchIndex=[];
 
 
 
-for(
-
-let source of searchableCollections
-
-){
+for(let source of searchableCollections){
 
 
 
@@ -110,7 +194,22 @@ try{
 
 
 
-let data=[];
+
+
+let data =
+await getRecords(
+source.name
+);
+
+
+
+
+
+
+
+for(let item of data){
+
+
 
 
 
@@ -118,16 +217,19 @@ let data=[];
 
 if(
 
-typeof getRecords==="function"
+item.status
+
+&&
+
+item.status!=="approved"
+
+&&
+
+item.status!=="active"
 
 ){
 
-
-data =
-await getRecords(
-source.name
-);
-
+continue;
 
 }
 
@@ -139,28 +241,69 @@ source.name
 
 
 
-data
 
+let course =
+await resolveSearchName(
 
-.filter(item=>{
+"courses",
 
-
-return (
-
-!item.status
-
-||
-
-item.status==="approved"
+item.course
 
 );
 
 
-})
 
 
 
-.forEach(item=>{
+let curriculum =
+await resolveSearchName(
+
+"curriculums",
+
+item.curriculum
+
+);
+
+
+
+
+
+let semester =
+await resolveSearchName(
+
+"semesters",
+
+item.semester
+
+);
+
+
+
+
+
+let subject =
+await resolveSearchName(
+
+"subjects",
+
+item.subject
+
+);
+
+
+
+
+
+let unit =
+await resolveSearchName(
+
+"units",
+
+item.unit
+
+);
+
+
 
 
 
@@ -171,26 +314,36 @@ item.status==="approved"
 let text=[
 
 
+
 item.title,
 
 item.name,
 
 item.description,
 
-item.author?.name,
-
-item.category,
+item.code,
 
 item.type,
 
+item.category,
 
-...(item.tags || []),
 
-...(item.subjects || []),
+course,
 
-...(item.courses || []),
+curriculum,
 
-...(item.semesters || [])
+semester,
+
+subject,
+
+unit,
+
+
+item.author?.name,
+
+
+...(item.tags || [])
+
 
 
 ]
@@ -212,10 +365,66 @@ item.type,
 
 
 
+let url="";
+
+
+
+
+
+
+if(
+
+[
+"resources",
+"books",
+"events",
+"tools"
+
+].includes(source.name)
+
+){
+
+
+
+url =
+appPath(
+
+`library/view.html?id=${item.id}&type=${source.name}`
+
+);
+
+
+
+}
+
+
+
+
+else{
+
+
+
+url =
+appPath(
+
+source.page
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
 
 searchIndex.push({
-
-
 
 
 
@@ -225,18 +434,17 @@ item.title ||
 
 item.name ||
 
+item.code ||
+
 "Untitled",
-
-
 
 
 
 description:
 
-item.description || "",
+item.description ||
 
-
-
+"",
 
 
 
@@ -246,21 +454,7 @@ source.icon,
 
 
 
-
-
-
-
-url:
-
-appPath(
-
-`library/view.html?id=${item.id}&type=${source.name}`
-
-),
-
-
-
-
+url:url,
 
 
 
@@ -268,19 +462,8 @@ keywords:text
 
 
 
-
-
-
 });
 
-
-
-
-
-
-
-
-});
 
 
 
@@ -292,6 +475,13 @@ keywords:text
 
 
 
+
+
+
+
+
+
+}
 
 
 catch(error){
@@ -312,8 +502,8 @@ source.name
 
 
 
-
 }
+
 
 
 
@@ -332,8 +522,10 @@ searchIndex.length
 
 
 
-
 }
+
+
+
 
 
 
@@ -369,8 +561,6 @@ trackSearch(query);
 
 
 
-
-
 const box =
 
 document.getElementById(
@@ -378,8 +568,6 @@ document.getElementById(
 "search-results"
 
 );
-
-
 
 
 
@@ -438,8 +626,7 @@ return;
 
 
 
-
-const key =
+let key =
 
 query.toLowerCase();
 
@@ -449,19 +636,17 @@ query.toLowerCase();
 
 
 
+let results =
 
-const results =
+searchIndex.filter(
 
-searchIndex.filter(item=>
-
+item=>
 
 item.keywords.includes(
 key
 )
 
-
 );
-
 
 
 
@@ -481,7 +666,6 @@ results.map(item=>`
 
 
 
-
 <a
 
 href="${item.url}"
@@ -491,17 +675,11 @@ class="card"
 >
 
 
-
-
-
 <h3>
 
 ${item.icon}
 
 </h3>
-
-
-
 
 
 
@@ -514,8 +692,6 @@ ${item.title}
 
 
 
-
-
 <p>
 
 ${item.description}
@@ -524,18 +700,16 @@ ${item.description}
 
 
 
-
-
-
 </a>
-
 
 
 
 
 `).join("")
 
+
 :
+
 
 `
 
@@ -552,9 +726,7 @@ No results found
 
 
 
-
 };
-
 
 
 

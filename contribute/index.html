@@ -523,7 +523,7 @@ Available for everyone.
 <div id="site-footer"></div>
 
 
-
+<script src="../js/app.js"></script>
 
 
 <script src="../js/services/database.service.js"></script>
@@ -562,7 +562,7 @@ Available for everyone.
 
 
 
-const dynamicGroups=[
+const hierarchy=[
 
 "courses",
 
@@ -572,9 +572,7 @@ const dynamicGroups=[
 
 "subjects",
 
-"categories",
-
-"tags"
+"units"
 
 ];
 
@@ -597,57 +595,7 @@ document.getElementById(
 
 
 
-box.innerHTML="";
-
-
-
-
-
-
-
-for(
-
-let group of dynamicGroups
-
-){
-
-
-
-
-
-let items=[];
-
-
-
-
-try{
-
-
-items =
-await getRecords(
-group
-);
-
-
-
-}
-
-catch(e){
-
-
-items=[];
-
-
-}
-
-
-
-
-
-
-
-
-box.innerHTML += `
+box.innerHTML = `
 
 
 <div class="option-box">
@@ -655,38 +603,194 @@ box.innerHTML += `
 
 <h3>
 
-${group}
+Academic Classification
 
 </h3>
 
+
+<select id="select-course"
+onchange="loadChildOptions('curriculums')">
+
+<option value="">
+Select Course
+</option>
+
+</select>
+
+
+
+
+<select id="select-curriculum"
+onchange="loadChildOptions('semesters')">
+
+<option value="">
+Select Curriculum
+</option>
+
+</select>
+
+
+
+
+<select id="select-semester"
+onchange="loadChildOptions('subjects')">
+
+<option value="">
+Select Semester / Year
+</option>
+
+</select>
+
+
+
+
+<select id="select-subject"
+onchange="loadChildOptions('units')">
+
+<option value="">
+Select Subject
+</option>
+
+</select>
+
+
+
+
+<select id="select-unit">
+
+<option value="">
+Select Unit / Chapter (optional)
+</option>
+
+</select>
+
+
+<br><br>
+
+
+<input
+
+id="resource-tags"
+
+placeholder="Tags (comma separated)"
+
+>
+
+
+</div>
+
+
 `;
 
 
 
+loadChildOptions(
+"courses"
+);
+
+
+
+}
+
+
+async function loadChildOptions(type){
+
+
+
+let map={
+
+courses:"select-course",
+
+curriculums:"select-curriculum",
+
+semesters:"select-semester",
+
+subjects:"select-subject",
+
+units:"select-unit"
+
+};
+
+
+
+
+let records =
+await getRecords(type);
 
 
 
 
 
-if(
 
-items.length===0
-
-){
+if(type==="curriculums"){
 
 
-box.innerHTML += `
+let course =
+document.getElementById(
+"select-course"
+).value;
 
 
-<small>
-
-No ${group} added yet
-
-</small>
+records =
+records.filter(x=>x.course===course);
 
 
-`;
+}
 
+
+
+
+
+if(type==="semesters"){
+
+
+let curriculum =
+document.getElementById(
+"select-curriculum"
+).value;
+
+
+records =
+records.filter(x=>x.curriculum===curriculum);
+
+
+}
+
+
+
+
+
+if(type==="subjects"){
+
+
+let semester =
+document.getElementById(
+"select-semester"
+).value;
+
+
+records =
+records.filter(x=>x.semester===semester);
+
+
+}
+
+
+
+
+
+
+if(type==="units"){
+
+
+let subject =
+document.getElementById(
+"select-subject"
+).value;
+
+
+records =
+records.filter(x=>x.subject===subject);
 
 
 }
@@ -697,58 +801,55 @@ No ${group} added yet
 
 
 
-
-
-items.forEach(item=>{
-
-
-
-box.innerHTML += `
+let select =
+document.getElementById(
+map[type]
+);
 
 
 
-<label>
 
 
-<input
+select.innerHTML =
 
-type="checkbox"
+`
+<option value="">
 
-class="dynamic-${group}"
+Select
 
-value="${item.name}">
-
-
-
-${item.name}
-
-
-</label>
-
-
-
+</option>
 `;
 
+
+
+
+
+records.forEach(item=>{
+
+
+select.innerHTML += `
+
+<option value="${item.id}">
+
+${
+
+item.name ||
+
+item.title ||
+
+item.code
+
+}
+
+</option>
+
+`;
 
 
 });
 
 
 
-
-
-
-
-box.innerHTML +=
-
-"</div>";
-
-
-
-}
-
-
-
 }
 
 
@@ -759,31 +860,6 @@ box.innerHTML +=
 
 
 
-
-
-function selected(group){
-
-
-
-return [
-
-...document.querySelectorAll(
-
-".dynamic-" + group + ":checked"
-
-)
-
-]
-
-.map(
-
-x=>x.value
-
-);
-
-
-
-}
 
 
 
@@ -818,10 +894,9 @@ if(!user){
 
 
 
-alert(
-
-"Login required before contribution"
-
+showToast(
+"Login required",
+"error"
 );
 
 
@@ -928,7 +1003,7 @@ document.getElementById(
 if(!title){
 
 
-alert(
+showToast(
 
 "Enter title"
 
@@ -1008,7 +1083,7 @@ if(
 
 
 
-alert(
+showToast(
 
 "Add file, link or description"
 
@@ -1082,49 +1157,56 @@ link:link
 
 
 
-courses:
+course:
 
-selected("courses"),
-
-
-
-
-
-curriculums:
-
-selected("curriculums"),
+document.getElementById(
+"select-course"
+).value,
 
 
+curriculum:
+
+document.getElementById(
+"select-curriculum"
+).value,
 
 
+semester:
 
-semesters:
-
-selected("semesters"),
-
-
-
+document.getElementById(
+"select-semester"
+).value,
 
 
-subjects:
+subject:
 
-selected("subjects"),
-
-
-
-
-
-categories:
-
-selected("categories"),
+document.getElementById(
+"select-subject"
+).value,
 
 
+unit:
 
+document.getElementById(
+"select-unit"
+).value,
 
 
 tags:
 
-selected("tags"),
+document
+
+.getElementById(
+"resource-tags"
+)
+
+.value
+
+.split(",")
+
+.map(x=>x.trim())
+
+.filter(Boolean),
 
 
 
@@ -1266,7 +1348,7 @@ saved.id
 
 
 
-alert(
+showToast(
 
 "Submitted for review"
 
@@ -1327,7 +1409,7 @@ loadContributionOptions();
 
 
 
-<script src="../js/app.js"></script>
+
 
 
 

@@ -7,6 +7,7 @@
 
 
 
+
 async function getPublished(
 collection
 ){
@@ -20,7 +21,6 @@ collection
 
 
 
-
 return data.filter(
 
 item=>item.status==="approved"
@@ -31,6 +31,69 @@ item=>item.status==="approved"
 
 }
 
+
+
+
+
+
+
+
+
+
+async function resolveName(
+collection,
+id
+){
+
+
+
+if(!id){
+
+return "";
+
+}
+
+
+
+
+let data =
+await getRecords(
+collection
+);
+
+
+
+let item =
+data.find(
+x=>x.id===id
+);
+
+
+
+
+if(!item){
+
+return "";
+
+}
+
+
+
+return (
+
+item.name ||
+
+item.title ||
+
+item.code ||
+
+""
+
+);
+
+
+
+}
 
 
 
@@ -63,6 +126,7 @@ return;
 
 
 
+
 let items =
 await getPublished(
 collection
@@ -73,15 +137,12 @@ collection
 
 
 
-if(
 
-items.length===0
-
-){
+if(items.length===0){
 
 
 
-box.innerHTML = `
+box.innerHTML=`
 
 
 <div class="card empty-state">
@@ -121,10 +182,68 @@ return;
 
 
 
-box.innerHTML =
 
 
-items.map(item=>`
+let html="";
+
+
+
+
+
+
+for(let item of items){
+
+
+
+
+
+
+let course =
+await resolveName(
+"courses",
+item.course
+);
+
+
+
+let curriculum =
+await resolveName(
+"curriculums",
+item.curriculum
+);
+
+
+
+let semester =
+await resolveName(
+"semesters",
+item.semester
+);
+
+
+
+let subject =
+await resolveName(
+"subjects",
+item.subject
+);
+
+
+
+let unit =
+await resolveName(
+"units",
+item.unit
+);
+
+
+
+
+
+
+
+
+html += `
 
 
 
@@ -133,11 +252,16 @@ items.map(item=>`
 
 
 
+
+
+
 <h2>
+
 
 ${contentIcon(collection)}
 
 ${item.title}
+
 
 </h2>
 
@@ -146,11 +270,15 @@ ${item.title}
 
 
 
+
 <p>
+
 
 ${item.description || ""}
 
+
 </p>
+
 
 
 
@@ -160,25 +288,36 @@ ${item.description || ""}
 <small>
 
 
-🎓 ${(item.courses || []).join(", ")}
+${course ? "🎓 "+course+"<br>" : ""}
 
 
-<br>
+${curriculum ? "📘 "+curriculum+"<br>" : ""}
 
 
-📘 ${(item.semesters || []).join(", ")}
+${semester ? "📅 "+semester+"<br>" : ""}
 
 
-<br>
+${subject ? "🧪 "+subject+"<br>" : ""}
 
 
-🧪 ${(item.subjects || []).join(", ")}
+${unit ? "📄 "+unit+"<br>" : ""}
 
 
-<br>
 
+${
 
-🏷 ${(item.tags || []).join(", ")}
+(item.tags || []).length
+
+?
+
+"🏷 "+item.tags.join(", ")
+
+:
+
+""
+
+}
+
 
 
 </small>
@@ -190,7 +329,9 @@ ${item.description || ""}
 
 
 
+
 <br><br>
+
 
 
 
@@ -212,9 +353,14 @@ appPath(
 
 >
 
+
 Open
 
+
 </a>
+
+
+
 
 
 
@@ -225,9 +371,20 @@ Open
 
 
 
+`;
 
-`).join("");
 
+
+}
+
+
+
+
+
+
+
+
+box.innerHTML=html;
 
 
 
