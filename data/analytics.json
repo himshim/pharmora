@@ -1,0 +1,13 @@
+[
+  {
+    "id": "log_001",
+
+    "event": "resource_view",
+
+    "target": "res_001",
+
+    "user": "guest",
+
+    "date": "2026-06-15"
+  }
+]

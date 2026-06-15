@@ -129,6 +129,14 @@ r.file.url
 
 <a
 class="btn btn-primary"
+
+onclick="
+trackEvent(
+'resource_download',
+'${r.id}'
+)
+"
+
 href="${r.file.url}">
 
 Open

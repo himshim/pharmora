@@ -246,7 +246,13 @@ searchIndex.length
 window.pharmoraSearch =
 async function(value){
 
+if(
+typeof trackSearch==="function"
+){
 
+trackSearch(value);
+
+}
 
 
 
