@@ -418,21 +418,194 @@ return;
 
 
 
+
+
 try{
 
 
 
 
 
-const data =
-await fetch(
+let data=[];
 
-appPath(
-"config/notices.json"
+
+
+
+
+
+/*
+
+CMS DATABASE NOTIFICATIONS
+
+*/
+
+
+if(
+
+typeof getRecords==="function"
+
+){
+
+
+
+data =
+await getRecords(
+
+"notifications"
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/*
+
+ONLY ACTIVE + NOT EXPIRED
+
+*/
+
+
+let today =
+new Date();
+
+
+
+
+data =
+
+data.filter(item=>{
+
+
+
+
+
+if(item.active===false){
+
+return false;
+
+}
+
+
+
+
+
+
+if(item.expiry){
+
+
+
+let expiryDate =
+new Date(
+item.expiry
+);
+
+
+
+if(expiryDate < today){
+
+return false;
+
+}
+
+
+
+}
+
+
+
+
+
+return true;
+
+
+
+
+
+});
+
+
+
+
+
+
+
+
+
+if(data.length===0){
+
+
+
+notice.innerHTML =
+
+"No current updates";
+
+
+
+return;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/*
+
+SORT PRIORITY
+
+*/
+
+
+data.sort((a,b)=>{
+
+
+
+let order={
+
+Urgent:3,
+
+High:2,
+
+Normal:1
+
+};
+
+
+
+return (
+
+order[b.priority] || 0
+
 )
 
-)
-.then(r=>r.json());
+-
+
+(
+
+order[a.priority] || 0
+
+);
+
+
+
+});
+
+
 
 
 
@@ -442,11 +615,75 @@ appPath(
 
 notice.innerHTML =
 
-data.map(item=>
 
-`${item.title} : ${item.message}`
+data.map(item=>{
 
-)
+
+
+
+
+let icon={
+
+
+Urgent:"🚨",
+
+High:"⚠️",
+
+Normal:"🔔"
+
+
+}[item.priority]
+
+||
+
+"🔔";
+
+
+
+
+
+
+let text =
+
+`${icon} ${item.title} : ${item.message}`;
+
+
+
+
+
+
+if(item.link){
+
+
+
+return `
+
+<a href="${item.link}">
+
+${text}
+
+</a>
+
+`;
+
+
+
+}
+
+
+
+
+
+
+
+return text;
+
+
+
+
+
+
+})
 
 .join(
 
@@ -459,7 +696,12 @@ data.map(item=>
 
 
 
+
 }
+
+
+
+
 
 
 
@@ -468,9 +710,25 @@ catch(error){
 
 
 
+
+
+console.error(
+
+"Notification loading failed",
+
+error
+
+);
+
+
+
+
+
 notice.innerHTML =
 
 "No current updates";
+
+
 
 
 

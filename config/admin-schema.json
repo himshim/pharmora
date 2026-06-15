@@ -396,9 +396,43 @@
 
 
 {
+"name":"type",
+"label":"Notification Type",
+"type":"select",
+"options":[
+"General",
+"Announcement",
+"Exam",
+"Resource",
+"Event",
+"Important"
+]
+},
+
+
+{
 "name":"link",
 "label":"Optional Link",
 "type":"text"
+},
+
+
+{
+"name":"priority",
+"label":"Priority",
+"type":"select",
+"options":[
+"Normal",
+"High",
+"Urgent"
+]
+},
+
+
+{
+"name":"expiry",
+"label":"Expiry Date",
+"type":"date"
 },
 
 

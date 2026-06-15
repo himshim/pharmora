@@ -189,7 +189,43 @@ ${displayName(item)}
 
 <small>
 
-${item.description || ""}
+
+${
+
+item.message ||
+
+item.description ||
+
+""
+
+}
+
+
+<br>
+
+
+${
+
+item.active===false
+
+?
+
+"🔴 Disabled"
+
+:
+
+item.active===true
+
+?
+
+"🟢 Active"
+
+:
+
+""
+
+}
+
 
 </small>
 
@@ -1268,7 +1304,17 @@ html += `
 
 <input
 
-type="${field.type==="number"?"number":"text"}"
+type="${
+field.type==="number"
+?
+"number"
+:
+field.type==="date"
+?
+"date"
+:
+"text"
+}"
 
 id="field-${field.name}"
 
@@ -1515,7 +1561,39 @@ data[field.name]=value;
 
 
 
+/*
 
+DUPLICATE CHECK
+
+*/
+
+
+if(
+
+await isDuplicateEntry(
+data,
+id
+)
+
+){
+
+
+
+showToast(
+
+"Duplicate entry found",
+
+"error"
+
+);
+
+
+
+return;
+
+
+
+}
 
 
 /*
@@ -1959,6 +2037,280 @@ option.dataset.parent !== parentValue;
 });
 
 
+
+
+
+}
+async function isDuplicateEntry(
+data,
+id
+){
+
+
+
+let records =
+await getRecords(
+activeCollection
+);
+
+
+
+
+
+if(id){
+
+
+
+records =
+records.filter(
+
+x=>x.id!==id
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+/*
+Courses
+
+same education level cannot have duplicate course
+*/
+
+
+if(activeCollection==="courses"){
+
+
+
+return records.some(x=>
+
+
+x.educationLevel===data.educationLevel
+
+&&
+
+x.name?.toLowerCase()
+
+===
+
+data.name?.toLowerCase()
+
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/*
+Curriculum
+
+same course cannot repeat curriculum
+*/
+
+
+if(activeCollection==="curriculums"){
+
+
+
+return records.some(x=>
+
+
+x.course===data.course
+
+&&
+
+x.name?.toLowerCase()
+
+===
+
+data.name?.toLowerCase()
+
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/*
+Subject
+
+same semester cannot repeat code/name
+*/
+
+
+if(activeCollection==="subjects"){
+
+
+
+return records.some(x=>
+
+
+x.semester===data.semester
+
+&&
+
+(
+
+x.code?.toLowerCase()
+
+===
+
+data.code?.toLowerCase()
+
+
+||
+
+
+x.name?.toLowerCase()
+
+===
+
+data.name?.toLowerCase()
+
+)
+
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+/*
+Units / Chapters
+
+same subject cannot repeat same unit
+*/
+
+
+if(activeCollection==="units"){
+
+
+
+return records.some(x=>
+
+
+x.subject===data.subject
+
+&&
+
+x.type===data.type
+
+&&
+
+String(x.number)
+
+===
+
+String(data.number)
+
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+/*
+Notifications/books/tools/events fallback
+*/
+
+
+return records.some(x=>
+
+
+(
+
+x.title
+
+&&
+
+data.title
+
+&&
+
+x.title.toLowerCase()
+
+===
+
+data.title.toLowerCase()
+
+
+)
+
+
+||
+
+
+(
+
+x.name
+
+&&
+
+data.name
+
+&&
+
+x.name.toLowerCase()
+
+===
+
+data.name.toLowerCase()
+
+
+)
+
+
+);
 
 
 
