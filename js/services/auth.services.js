@@ -1,16 +1,35 @@
 /*
- User & Role Service
- Demo Layer
+ Authentication Adapter Service
 */
 
 
-async function getUsers(){
+let authConfig=null;
 
 
-return await fetch(
-"/data/users.json"
+
+
+
+
+async function loadAuthConfig(){
+
+
+if(authConfig){
+
+return authConfig;
+
+}
+
+
+
+authConfig =
+await fetch(
+"/config/auth.json"
 )
 .then(r=>r.json());
+
+
+
+return authConfig;
 
 
 }
@@ -19,58 +38,315 @@ return await fetch(
 
 
 
-async function getRoles(){
-
-
-return await fetch(
-"/config/roles.json"
-)
-.then(r=>r.json());
-
-
-}
 
 
 
 
-
-
-async function checkPermission(
-role,
-permission
+async function registerUser(
+data
 ){
 
 
-const roles =
-await getRoles();
+
+const config =
+await loadAuthConfig();
 
 
 
-const found =
-roles.find(
-r=>r.role===role
+
+
+console.log(
+
+"Auth provider:",
+
+config.provider
+
 );
 
 
 
-if(!found){
 
-return false;
+
+
+
+if(
+config.provider==="demo"
+){
+
+
+return demoRegister(
+data
+);
+
 
 }
 
 
 
 
-return (
+/*
 
-found.permissions.includes("*")
+Future:
 
-||
+if(config.provider==="supabase"){
 
-found.permissions.includes(permission)
+
+return supabase.auth.signUp()
+
+
+}
+
+
+*/
+
+
+}
+
+
+
+
+
+
+
+
+
+async function loginUser(
+email,
+password
+){
+
+
+
+const config =
+await loadAuthConfig();
+
+
+
+
+
+console.log(
+
+"Auth provider:",
+
+config.provider
 
 );
+
+
+
+
+
+
+if(
+config.provider==="demo"
+){
+
+
+return demoLogin(
+email,
+password
+);
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+function demoRegister(
+data
+){
+
+
+
+let user={
+
+
+
+id:
+
+crypto.randomUUID(),
+
+
+
+name:data.name,
+
+
+
+email:data.email,
+
+
+
+role:data.role,
+
+
+
+createdAt:
+
+new Date()
+.toISOString()
+
+
+
+};
+
+
+
+
+
+
+localStorage.setItem(
+
+"currentUser",
+
+JSON.stringify(user)
+
+);
+
+
+
+
+
+
+
+console.log(
+
+"Registered:",
+
+user
+
+);
+
+
+
+
+
+return user;
+
+
+}
+
+
+
+
+
+
+
+
+
+function demoLogin(
+email,
+password
+){
+
+
+
+let user={
+
+
+
+id:"demo-user",
+
+
+name:"Demo User",
+
+
+email:email,
+
+
+role:"student"
+
+
+};
+
+
+
+
+
+
+localStorage.setItem(
+
+"currentUser",
+
+JSON.stringify(user)
+
+);
+
+
+
+
+
+
+
+console.log(
+
+"Logged in:",
+
+user
+
+);
+
+
+
+
+return user;
+
+
+}
+
+
+
+
+
+
+
+
+
+function currentUser(){
+
+
+
+return JSON.parse(
+
+localStorage.getItem(
+"currentUser"
+)
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+function logoutUser(){
+
+
+
+localStorage.removeItem(
+
+"currentUser"
+
+);
+
 
 
 }

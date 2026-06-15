@@ -440,9 +440,11 @@ placeholder="••••••••">
 
 
 
-<a
+<button
 
-href="onboarding.html"
+type="button"
+
+onclick="handleLogin()"
 
 class="btn btn-primary"
 
@@ -454,7 +456,7 @@ Continue
 
 
 
-</a>
+</button>
 
 
 
@@ -625,9 +627,99 @@ document.getElementById("auth-brand").innerHTML =
 
 
 
-
+<script src="../js/services/auth.service.js"></script>
 
 <script src="../js/services/analytics.service.js"></script>
+
+<script>
+
+
+async function handleLogin(){
+
+
+
+let email =
+document.getElementById(
+"email"
+).value;
+
+
+
+
+let password =
+document.getElementById(
+"password"
+).value;
+
+
+
+
+
+if(
+email.trim()==="" ||
+password.trim()===""
+){
+
+
+alert(
+"Enter email and password"
+);
+
+
+return;
+
+
+}
+
+
+
+
+
+
+let user =
+await loginUser(
+
+email,
+
+password
+
+);
+
+
+
+
+
+
+if(
+typeof trackEvent==="function"
+){
+
+
+trackEvent(
+
+"login",
+
+user.id
+
+);
+
+
+}
+
+
+
+
+
+
+location.href="../dashboard/";
+
+
+
+}
+
+
+
+</script>
 
 <script src="../js/app.js"></script>
 

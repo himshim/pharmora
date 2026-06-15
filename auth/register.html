@@ -650,9 +650,11 @@ Contributor
 
 
 
-<a
+<button
 
-href="onboarding.html"
+type="button"
+
+onclick="handleRegister()"
 
 class="btn btn-primary"
 
@@ -664,7 +666,7 @@ Create Account
 
 
 
-</a>
+</button>
 
 
 
@@ -765,9 +767,158 @@ document.getElementById("auth-brand").innerHTML =
 
 
 
-
+<script src="../js/services/auth.service.js"></script>
 
 <script src="../js/services/analytics.service.js"></script>
+
+<script>
+
+
+let selectedRole =
+"student";
+
+
+
+
+
+document
+
+.querySelectorAll(
+".role-card"
+)
+
+.forEach(card=>{
+
+
+
+card.onclick=()=>{
+
+
+
+document
+
+.querySelectorAll(
+".role-card"
+)
+
+.forEach(
+
+c=>c.classList.remove(
+"active"
+)
+
+);
+
+
+
+
+card.classList.add(
+"active"
+);
+
+
+
+
+selectedRole =
+card.dataset.role;
+
+
+
+};
+
+
+
+});
+
+
+
+
+
+
+
+
+
+async function handleRegister(){
+
+
+
+
+
+let user =
+await registerUser({
+
+
+
+name:
+document.getElementById(
+"name"
+).value,
+
+
+
+email:
+document.getElementById(
+"email"
+).value,
+
+
+
+password:
+document.getElementById(
+"password"
+).value,
+
+
+
+role:selectedRole
+
+
+
+});
+
+
+
+
+
+
+
+
+
+if(
+typeof trackEvent==="function"
+){
+
+
+
+trackEvent(
+
+"register",
+
+user.id
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+location.href="onboarding.html";
+
+
+
+}
+
+
+
+</script>
 
 <script src="../js/app.js"></script>
 
