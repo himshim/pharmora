@@ -1,98 +1,48 @@
 /*
- Pharmora Universal Search Engine
- Works on GitHub Pages, custom domains, Netlify, Vercel
+ Universal Search Service
 */
 
 
-let pharmoraIndex=[];
+let searchIndex = [];
 
 
 
-
-
-/* Find project root automatically */
-
-
-function rootPath(){
-
-
-let scripts =
-document.getElementsByTagName(
-"script"
-);
-
-
-
-for(let script of scripts){
-
-
-if(
-script.src.includes(
-"search.js"
-)
-){
-
-
-return script.src
-.replace(
-"js/search.js",
-""
-);
-
-
-}
-
-
-}
-
-
-
-return "./";
-
-
-}
-
-
-
-
-
-
-
-
-
-/* Build Search Index */
 
 
 async function buildSearchIndex(){
 
 
 
-pharmoraIndex=[];
-
-
-
-const base =
-rootPath();
+searchIndex = [];
 
 
 
 
+const sources = [
+
+{
+path:"/data/resources.json",
+type:"📄 Resource"
+},
 
 
+{
+path:"/data/books.json",
+type:"📚 Book"
+},
 
 
-/* Courses */
+{
+path:"/data/events.json",
+type:"📅 Event"
+},
 
 
-const courses=[
+{
+path:"/data/forum.json",
+type:"💬 Discussion"
+}
 
-"bpharm",
-
-"dpharm",
-
-"mpharm",
-
-"pharmd"
 
 ];
 
@@ -102,63 +52,51 @@ const courses=[
 
 
 
-for(const course of courses){
 
+for(
+const source of sources
+){
 
 
 try{
 
 
-
-let response =
-await fetch(
-
-base+
-
-"data/courses/"+
-
-course+
-
-".json"
-
-);
-
-
-
-let data =
-await response.json();
+const data =
+await fetch(source.path)
+.then(r=>r.json());
 
 
 
 
 
 
+data.forEach(item=>{
 
-pharmoraIndex.push({
 
+
+searchIndex.push({
 
 
 title:
-
-data.course.name,
-
-
-
-type:
-
-"Course",
-
+item.title || "",
 
 
 description:
-
-data.course.description,
-
+item.description || "",
 
 
-link:
+type:
+source.type,
 
-base+"learn/"
+
+url:
+getSearchURL(
+source.type,
+item.id
+)
+
+
+});
 
 
 
@@ -166,149 +104,23 @@ base+"learn/"
 
 
 
-
-
 }
-
-
 
 
 catch(e){
 
 
-
 console.log(
-
-"Course missing:",
-
-course
-
+"Skipped",
+source.path
 );
 
 
-
 }
 
 
 
-
 }
-
-
-
-
-
-
-
-
-
-
-/* Curriculum Subjects */
-
-
-try{
-
-
-
-let response =
-await fetch(
-
-base+
-
-"data/curriculum/bpharm-pci.json"
-
-);
-
-
-
-let data =
-await response.json();
-
-
-
-
-
-
-data.curriculum.semesters.forEach(
-
-semester=>{
-
-
-
-semester.subjects.forEach(
-
-subject=>{
-
-
-
-
-
-pharmoraIndex.push({
-
-
-
-title:
-
-subject.name,
-
-
-
-type:
-
-"Subject",
-
-
-
-description:
-
-subject.code+
-
-" | Semester "+
-
-semester.semester,
-
-
-
-link:
-
-base+
-
-"learn/subject.html?id="+
-
-subject.code
-
-
-
-
-});
-
-
-
-
-
-});
-
-
-
-});
-
-
-
-
-
-}
-
-
-
-catch(e){
-
-
-
-console.log(
-
-"Curriculum unavailable"
-
-);
 
 
 
@@ -323,14 +135,42 @@ console.log(
 
 
 
-console.log(
+function getSearchURL(
+type,
+id
+){
 
-"Pharmora Search Loaded:",
 
-pharmoraIndex.length
+if(type.includes("Resource")){
 
-);
+return "/library/";
 
+}
+
+
+if(type.includes("Book")){
+
+return "/books/";
+
+}
+
+
+if(type.includes("Event")){
+
+return "/events/";
+
+}
+
+
+if(type.includes("Discussion")){
+
+return "/community/";
+
+}
+
+
+
+return "/";
 
 
 }
@@ -345,25 +185,30 @@ pharmoraIndex.length
 
 
 
-/* Search Function */
-
-
-function pharmoraSearch(query){
+async function pharmoraSearch(query){
 
 
 
-const resultBox =
+if(
+searchIndex.length===0
+){
+
+await buildSearchIndex();
+
+}
+
+
+
+
+const box =
 document.getElementById(
-
 "search-results"
-
 );
 
 
 
 
-
-if(!resultBox){
+if(!box){
 
 return;
 
@@ -373,10 +218,12 @@ return;
 
 
 
-if(query.length < 2){
+if(
+query.length < 2
+){
 
 
-resultBox.innerHTML="";
+box.innerHTML="";
 
 
 return;
@@ -384,15 +231,6 @@ return;
 
 }
 
-
-
-
-
-
-
-
-query =
-query.toLowerCase();
 
 
 
@@ -401,38 +239,29 @@ query.toLowerCase();
 
 
 const results =
-
-pharmoraIndex.filter(
-
-item=>
-
-
-item.title
-.toLowerCase()
-.includes(query)
-
-
-||
-
-
-item.description
-.toLowerCase()
-.includes(query)
+searchIndex.filter(item=>{
 
 
 
+let text =
+(
+item.title +
+item.description +
+item.type
+)
+.toLowerCase();
+
+
+
+return text.includes(
+query.toLowerCase()
 );
 
 
 
+});
 
 
-
-
-
-
-
-resultBox.innerHTML="";
 
 
 
@@ -441,11 +270,53 @@ resultBox.innerHTML="";
 
 
 
-if(results.length===0){
+box.innerHTML =
+
+results.length
+
+?
+
+results.map(item=>`
 
 
 
-resultBox.innerHTML=`
+<a
+href="${item.url}"
+class="card">
+
+
+<h3>
+
+${item.type}
+
+</h3>
+
+
+<h2>
+
+${item.title}
+
+</h2>
+
+
+<p>
+
+${item.description}
+
+</p>
+
+
+
+</a>
+
+
+
+`).join("")
+
+
+:
+
+`
 
 <div class="card">
 
@@ -457,68 +328,8 @@ No results found
 
 
 
-return;
-
 
 }
-
-
-
-
-
-
-
-
-
-
-results.forEach(item=>{
-
-
-
-resultBox.innerHTML += `
-
-
-<div
-
-class="card"
-
-onclick="location.href='${item.link}'">
-
-
-<h2>
-
-${item.title}
-
-</h2>
-
-
-
-<p>
-
-${item.type}
-
-<br>
-
-${item.description}
-
-</p>
-
-
-</div>
-
-
-`;
-
-
-
-
-});
-
-
-
-
-}
-
 
 
 

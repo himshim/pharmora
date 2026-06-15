@@ -12,10 +12,21 @@
     "role": "admin",
 
     "permissions": [
-      "manage_users",
-      "delete_content",
-      "verify_users",
-      "site_settings"
+
+      "analytics",
+
+      "resources",
+
+      "verification",
+
+      "forum",
+
+      "events",
+
+      "users",
+
+      "settings"
+
     ]
   },
 
@@ -24,9 +35,13 @@
     "role": "maintainer",
 
     "permissions": [
-      "approve_resources",
-      "approve_events",
-      "moderate_forum"
+
+      "resources",
+
+      "forum",
+
+      "events"
+
     ]
   },
 
@@ -35,8 +50,9 @@
     "role": "educator",
 
     "permissions": [
-      "verify_answers",
-      "upload_resources"
+
+      "verification"
+
     ]
   },
 
@@ -44,19 +60,13 @@
   {
     "role": "contributor",
 
-    "permissions": [
-      "upload_resources",
-      "create_posts"
-    ]
+    "permissions": []
   },
 
 
   {
     "role": "member",
 
-    "permissions": [
-      "comment",
-      "save_resources"
-    ]
+    "permissions": []
   }
 ]
