@@ -192,6 +192,36 @@ width:100%;
 
 }
 
+/* ADMIN USER BAR */
+
+.admin-user-bar{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+gap:15px;
+
+margin:20px 0;
+
+padding:15px 20px;
+
+border-radius:20px;
+
+background:var(--surface);
+
+border:1px solid var(--border);
+
+}
+
+
+.admin-user-bar span{
+
+font-weight:700;
+
+}
 
 
 </style>
@@ -431,9 +461,6 @@ onclick="loadManager('users')">
 
 
 
-
-
-
 <div class="admin-title">
 
 
@@ -448,6 +475,30 @@ Admin Console
 
 
 
+<div class="admin-user-bar">
+
+
+<span id="admin-user">
+
+Loading...
+
+</span>
+
+
+
+<button
+class="btn btn-primary"
+onclick="logoutUser()">
+
+🚪 Logout
+
+</button>
+
+
+</div>
+
+
+
 <p>
 
 Manage platform content and quality.
@@ -455,17 +506,14 @@ Manage platform content and quality.
 </p>
 
 
-</div>
-
-
-
-<div id="admin-user">
 
 </div>
 
 
-
 </div>
+
+
+
 
 
 
@@ -680,54 +728,7 @@ await applyPermissions();
 
 
 
-let user =
 
-currentUser
-
-?
-
-currentUser()
-
-:
-
-null;
-
-
-
-
-
-
-
-
-
-if(user){
-
-
-
-document
-
-.getElementById(
-
-"admin-user"
-
-)
-
-.innerHTML =
-
-
-"👤 " +
-
-user.name +
-
-" (" +
-
-user.role +
-
-")";
-
-
-
-}
 
 
 
@@ -754,6 +755,76 @@ renderAdminActions();
 
 
 
+
+function loadAdminUser(){
+
+
+
+if(
+
+typeof currentUser!=="function"
+
+){
+
+return;
+
+}
+
+
+
+
+let user =
+currentUser();
+
+
+
+
+let box =
+document.getElementById(
+"admin-user"
+);
+
+
+
+
+if(
+
+box && user
+
+){
+
+
+box.innerHTML =
+
+"👑 "
+
++
+
+(user.name || user.email)
+
++
+
+" ("
+
++
+
+user.role
+
++
+
+")";
+
+
+}
+
+
+
+}
+
+
+
+
+loadAdminUser();
 
 
 startAdmin();

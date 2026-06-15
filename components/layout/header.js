@@ -177,7 +177,67 @@ ${item.title}
 
 
 
+let authLinks="";
 
+
+if(
+
+typeof currentUser==="function"
+
+&&
+
+currentUser()
+
+){
+
+
+let user =
+currentUser();
+
+
+authLinks = `
+
+
+<a href="${appPath("dashboard/")}">
+
+👤 ${user.name || "Profile"}
+
+</a>
+
+
+<a href="#"
+
+onclick="logoutUser()">
+
+🚪 Logout
+
+</a>
+
+
+`;
+
+
+}
+
+
+
+else{
+
+
+authLinks = `
+
+
+<a href="${appPath("auth/login.html")}">
+
+🔑 Login
+
+</a>
+
+
+`;
+
+
+}
 
 root.innerHTML = `
 
@@ -282,6 +342,9 @@ onclick="toggleMenu()">
 ${desktopLinks}
 
 
+${authLinks}
+
+
 </div>
 
 
@@ -304,6 +367,9 @@ ${desktopLinks}
 
 
 ${mobileLinks}
+
+
+${authLinks}
 
 
 </div>
