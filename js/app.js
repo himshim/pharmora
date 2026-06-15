@@ -17,53 +17,88 @@ console.log("⚕ Pharmora Initialized");
 function getBasePath(){
 
 
-    const parts =
-    location.pathname
-    .split("/")
-    .filter(Boolean);
+let path =
+location.pathname;
 
 
 
-    /*
-      GitHub pages:
-      /pharmora/page.html
-
-      Local:
-      /page.html
-    */
-
-
-    if(
-        parts.length > 1
-    ){
-
-        return "../";
-
-    }
+/*
+Folder pages:
+learn/
+admin/
+dashboard/
+etc.
+*/
 
 
-    return "./";
+if(
+path.endsWith("/")
+&&
+path !== "/"
+){
+
+return "../";
+
+}
+
+
+
+
+/*
+Files inside folders:
+auth/login.html
+library/view.html
+*/
+
+
+let depth =
+
+path
+.split("/")
+.filter(Boolean)
+.length;
+
+
+
+
+if(depth>1){
+
+return "../";
+
+}
+
+
+
+return "./";
+
 
 
 }
 
 
 
+
+
+
+
+
 function appPath(path){
 
 
-    return (
 
-        getBasePath()
+return (
 
-        +
+getBasePath()
 
-        path.replace(
-            /^\/+/,
-            ""
-        )
++
 
-    );
+path.replace(
+/^\/+/,
+""
+)
+
+);
+
 
 
 }
