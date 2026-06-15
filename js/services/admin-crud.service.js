@@ -13,19 +13,19 @@ let activeSchema=[];
 
 
 
-
-
-
 async function loadSchema(){
+
 
 
 return await fetch(
 
-"/config/admin-schema.json"
-
+appPath(
+"config/admin-schema.json"
 )
 
+)
 .then(r=>r.json());
+
 
 
 }
@@ -38,15 +38,11 @@ return await fetch(
 
 
 
-async function loadManager(
-collection
-){
+async function loadManager(collection){
 
 
 
-activeCollection =
-collection;
-
+activeCollection=collection;
 
 
 
@@ -61,15 +57,8 @@ schemas[collection] || [];
 
 
 
-
-
-
 let data =
-await getRecords(
-collection
-);
-
-
+await getRecords(collection);
 
 
 
@@ -81,25 +70,14 @@ document.getElementById(
 
 
 
-
-
-
-
 area.innerHTML = `
 
 
-
 <button
-
 class="btn btn-primary"
-
 onclick="showForm()">
 
-
-
 + Add ${collection}
-
-
 
 </button>
 
@@ -107,23 +85,32 @@ onclick="showForm()">
 <br><br>
 
 
-
 ${
 
-
 data.map(item=>`
-
-
 
 
 <div class="panel">
 
 
+<div>
 
-<span>
 
+<strong>
 
-${item.name || item.title || "Untitled"}
+${
+
+item.name ||
+
+item.title ||
+
+item.code ||
+
+"Untitled"
+
+}
+
+</strong>
 
 
 
@@ -132,29 +119,18 @@ ${item.name || item.title || "Untitled"}
 
 <small>
 
-
-${
-
-(item.tags || [])
-
-.join(", ")
-
-}
-
+${item.description || ""}
 
 </small>
 
 
-
-</span>
-
+</div>
 
 
 
 
 
-<span>
-
+<div>
 
 
 <button onclick="showForm('${item.id}')">
@@ -172,15 +148,11 @@ ${
 </button>
 
 
-
-
-</span>
+</div>
 
 
 
 </div>
-
-
 
 
 `).join("")
@@ -189,9 +161,7 @@ ${
 }
 
 
-
 `;
-
 
 
 
@@ -208,11 +178,7 @@ ${
 
 
 
-
-
-async function showForm(
-id=null
-){
+async function showForm(id=null){
 
 
 
@@ -221,18 +187,13 @@ let existing=null;
 
 
 
-
-
-
 if(id){
-
 
 
 let records =
 await getRecords(
 activeCollection
 );
-
 
 
 
@@ -244,11 +205,7 @@ x=>x.id===id
 );
 
 
-
 }
-
-
-
 
 
 
@@ -264,11 +221,9 @@ let html=`
 
 <h2>
 
-
 ${id?"Edit":"Add"}
 
 ${activeCollection}
-
 
 </h2>
 
@@ -284,12 +239,7 @@ ${activeCollection}
 
 
 
-
-
-for(
-let field of activeSchema
-){
-
+for(let field of activeSchema){
 
 
 
@@ -297,16 +247,15 @@ let field of activeSchema
 
 let value =
 
-existing ?
+existing
 
-(existing[field.name] || [])
+?
+
+(existing[field.name] ?? "")
 
 :
 
-[];
-
-
-
+"";
 
 
 
@@ -332,107 +281,87 @@ ${field.label}
 
 
 
-
-if(
-
-field.type==="dynamic-multi"
-
-){
+/* TEXTAREA */
 
 
-
-
-
-let options =
-
-await getRecords(
-
-field.source
-
-);
-
-
-
-
-
-
-
-
-
-options.forEach(option=>{
-
-
-
-
-
-
-let checked =
-
-value.includes(option.id)
-
-||
-
-value.includes(option.name)
-
-?
-
-"checked"
-
-:
-
-"";
-
-
-
-
-
-
-
+if(field.type==="textarea"){
 
 
 
 html += `
 
 
+<textarea
 
-<label>
+id="field-${field.name}"
 
+placeholder="${field.label}"
 
-<input
-
-type="checkbox"
-
-class="field-${field.name}"
-
-value="${option.name}"
-
-${checked}
-
->
-
-
-${option.name}
-
-
-
-</label>
-
-
-<br>
+>${value}</textarea>
 
 
 `;
 
 
 
+}
 
 
 
-});
 
 
 
 
+
+/* SELECT */
+
+
+else if(field.type==="select"){
+
+
+
+html += `
+
+
+<select id="field-${field.name}">
+
+
+<option value="">
+
+Select
+
+</option>
+
+
+${
+
+
+field.options.map(opt=>`
+
+
+<option
+
+value="${opt}"
+
+${value===opt?"selected":""}
+
+>
+
+${opt}
+
+</option>
+
+
+`).join("")
+
+
+}
+
+
+</select>
+
+
+`;
 
 
 
@@ -446,9 +375,17 @@ ${option.name}
 
 
 
-else{
+/* RELATION */
 
 
+else if(field.type==="relation"){
+
+
+
+let records =
+await getRecords(
+field.collection
+);
 
 
 
@@ -456,10 +393,132 @@ else{
 html += `
 
 
+<select id="field-${field.name}">
+
+
+<option value="">
+
+Select
+
+</option>
+
+
+${
+
+
+records.map(item=>`
+
+
+<option
+
+value="${item.id}"
+
+${value===item.id?"selected":""}
+
+>
+
+
+${
+
+item.name ||
+
+item.title ||
+
+item.code
+
+}
+
+
+</option>
+
+
+`).join("")
+
+
+}
+
+
+</select>
+
+
+`;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/* BOOLEAN */
+
+
+else if(field.type==="boolean"){
+
+
+
+html += `
+
 
 <input
 
+type="checkbox"
+
 id="field-${field.name}"
+
+${value ? "checked" : ""}
+
+>
+
+
+`;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/* DEFAULT INPUT */
+
+
+else{
+
+
+
+html += `
+
+
+<input
+
+type="${
+
+field.type==="number"
+
+?
+
+"number"
+
+:
+
+"text"
+
+}"
+
+
+id="field-${field.name}"
+
 
 value="${
 
@@ -475,7 +534,9 @@ value
 
 }"
 
+
 placeholder="${field.label}"
+
 
 >
 
@@ -484,17 +545,11 @@ placeholder="${field.label}"
 
 
 
-
-
-
-
 }
 
 
 
 }
-
-
 
 
 
@@ -523,15 +578,10 @@ Save
 </button>
 
 
-
 </div>
 
 
 `;
-
-
-
-
 
 
 
@@ -565,66 +615,30 @@ async function saveEntry(id){
 
 
 
-
-
 let data={};
 
 
 
 
-
-
-
-
-for(
-let field of activeSchema
-){
+for(let field of activeSchema){
 
 
 
 
 
 
+let input =
+document.getElementById(
 
-
-if(
-
-field.type==="dynamic-multi"
-
-){
-
-
-
-
-
-
-
-let selected=[];
-
-
-
-
-
-
-document
-
-.querySelectorAll(
-
-".field-" + field.name + ":checked"
-
-)
-
-.forEach(box=>{
-
-
-selected.push(
-
-box.value
+"field-" + field.name
 
 );
 
 
-});
+
+
+
+let value;
 
 
 
@@ -632,41 +646,23 @@ box.value
 
 
 
-
-data[field.name]=selected;
-
+if(field.type==="boolean"){
 
 
-
-
+value=input.checked;
 
 
 }
 
 
 
-
-
-
-
-
-
-
 else{
 
 
+value=input.value;
 
 
-
-
-let value =
-
-document.getElementById(
-
-"field-" + field.name
-
-).value;
-
+}
 
 
 
@@ -706,25 +702,12 @@ value
 
 
 
-
-
-
 data[field.name]=value;
 
 
 
 
-
-
 }
-
-
-
-
-
-
-}
-
 
 
 
@@ -750,9 +733,6 @@ data
 
 
 }
-
-
-
 
 
 
@@ -783,6 +763,24 @@ status:"active"
 
 
 
+if(
+
+typeof showToast==="function"
+
+){
+
+
+showToast(
+"Saved successfully",
+"success"
+);
+
+
+}
+
+
+
+
 
 
 loadManager(
@@ -803,11 +801,7 @@ activeCollection
 
 
 
-
-
-
 async function removeEntry(id){
-
 
 
 
@@ -822,13 +816,9 @@ if(
 
 ){
 
-
 return;
 
-
 }
-
-
 
 
 
@@ -842,8 +832,6 @@ activeCollection,
 id
 
 );
-
-
 
 
 
