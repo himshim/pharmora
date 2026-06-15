@@ -694,7 +694,236 @@ No recent activity
 
 
 
+<script src="../js/services/auth.service.js"></script>
+
+<script src="../js/services/database.service.js"></script>
+
 <script src="../js/services/analytics.service.js"></script>
+
+
+<script>
+
+
+async function loadProfile(){
+
+
+
+if(
+typeof currentUser !== "function"
+){
+
+return;
+
+}
+
+
+
+
+
+let user =
+currentUser();
+
+
+
+
+
+
+if(
+!user
+){
+
+
+document.getElementById(
+"profile-name"
+).innerHTML =
+"Guest User";
+
+
+document.getElementById(
+"profile-bio"
+).innerHTML =
+"Login to personalize your profile.";
+
+
+return;
+
+
+}
+
+
+
+
+
+
+
+
+
+document.getElementById(
+"profile-name"
+).innerHTML =
+user.name;
+
+
+
+
+
+
+document.getElementById(
+"profile-bio"
+).innerHTML =
+
+
+user.role +
+
+" • Open knowledge contributor";
+
+
+
+
+
+
+
+
+
+
+
+let resources=[];
+
+
+
+
+
+if(
+typeof getRecords==="function"
+){
+
+
+resources =
+await getRecords(
+"resources"
+);
+
+
+}
+
+
+
+
+
+
+
+
+
+let myResources =
+resources.filter(
+
+item=>
+
+item.author &&
+
+item.author.id===user.id
+
+);
+
+
+
+
+
+
+
+
+
+document.getElementById(
+"resource-count"
+).innerHTML =
+
+myResources.length;
+
+
+
+
+
+
+
+
+
+let activity =
+document.getElementById(
+"activity-list"
+);
+
+
+
+
+
+
+
+
+if(
+myResources.length>0
+){
+
+
+
+activity.innerHTML="";
+
+
+
+
+
+myResources
+
+.slice(0,5)
+
+.forEach(item=>{
+
+
+
+activity.innerHTML += `
+
+
+<div class="activity">
+
+
+Uploaded ${item.title}
+
+
+<span>
+
+📚
+
+</span>
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+}
+
+
+
+loadProfile();
+
+
+</script>
+
 
 <script src="../js/app.js"></script>
 

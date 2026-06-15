@@ -1,15 +1,39 @@
 /*
  Admin Service
+ Uses Database Adapter
 */
 
 
 
-async function loadData(path){
 
 
-return await fetch(path)
+async function renderAdminStats(){
 
-.then(response=>response.json());
+
+
+let resources = [];
+
+let users = [];
+
+
+
+
+
+if(
+typeof getRecords==="function"
+){
+
+
+resources =
+await getRecords(
+"resources"
+);
+
+
+users =
+await getRecords(
+"users"
+);
 
 
 }
@@ -21,47 +45,14 @@ return await fetch(path)
 
 
 
-async function renderAdminStats(){
+let pendingResources =
 
-
-
-const resources =
-await loadData(
-"/data/resources.json"
-);
-
-
-
-const events =
-await loadData(
-"/data/events.json"
-);
-
-
-
-const users =
-await loadData(
-"/data/users.json"
-);
-
-
-
-
-
-
-
-const pendingResources =
 resources.filter(
+
 item=>item.status==="pending"
+
 ).length;
 
-
-
-
-const pendingEvents =
-events.filter(
-item=>item.status==="pending"
-).length;
 
 
 
@@ -71,8 +62,14 @@ item=>item.status==="pending"
 
 
 document
-.getElementById("admin-stats")
+
+.getElementById(
+"admin-stats"
+)
+
 .innerHTML = `
+
+
 
 
 
@@ -100,24 +97,28 @@ Pending Resources
 
 
 
+
+
 <div class="card">
 
 
 <h2>
 
-${pendingEvents}
+0
 
 </h2>
 
 
 <p>
 
-Pending Events
+Reports
 
 </p>
 
 
 </div>
+
+
 
 
 
@@ -136,12 +137,13 @@ ${users.length}
 
 <p>
 
-Registered Users
+Users
 
 </p>
 
 
 </div>
+
 
 
 
@@ -159,11 +161,16 @@ Registered Users
 
 
 
+
+
+
 async function renderAdminActions(){
 
 
 
-const box =
+
+
+let box =
 document.getElementById(
 "admin-actions"
 );
@@ -171,16 +178,50 @@ document.getElementById(
 
 
 
-const resources =
-await loadData(
-"/data/resources.json"
+
+
+
+let resources=[];
+
+
+
+
+
+
+if(
+
+typeof getRecords==="function"
+
+){
+
+
+
+resources =
+
+await getRecords(
+
+"resources"
+
 );
 
 
 
-const events =
-await loadData(
-"/data/events.json"
+}
+
+
+
+
+
+
+
+
+let pending =
+
+
+resources.filter(
+
+item=>item.status==="pending"
+
 );
 
 
@@ -188,74 +229,19 @@ await loadData(
 
 
 
-let actions = [];
 
 
 
 
+if(
 
+pending.length===0
 
-resources
-
-.filter(
-item=>item.status==="pending"
-)
-
-.forEach(item=>{
-
-
-actions.push({
-
-icon:"📚",
-
-title:item.title,
-
-type:"Resource"
-
-});
-
-
-});
+){
 
 
 
-
-
-
-events
-
-.filter(
-item=>item.status==="pending"
-)
-
-.forEach(item=>{
-
-
-actions.push({
-
-icon:"📅",
-
-title:item.title,
-
-type:"Event"
-
-
-});
-
-
-});
-
-
-
-
-
-
-
-if(actions.length===0){
-
-
-
-box.innerHTML = `
+box.innerHTML=`
 
 
 <div class="panel">
@@ -281,6 +267,7 @@ Everything reviewed
 return;
 
 
+
 }
 
 
@@ -290,23 +277,49 @@ return;
 
 
 
+
 box.innerHTML =
-actions.map(item=>`
+
+
+pending.map(item=>`
 
 
 
 <div class="panel">
 
 
+
 <span>
 
 
-${item.icon}
+📚 ${item.title}
 
-${item.title}
+
+<br>
+
+
+<small>
+
+
+${
+
+item.author?
+
+item.author.name:
+
+"Unknown"
+
+
+}
+
+
+</small>
+
 
 
 </span>
+
+
 
 
 
@@ -314,10 +327,12 @@ ${item.title}
 <span class="status">
 
 
-${item.type}
+Review
 
 
 </span>
+
+
 
 
 
@@ -326,6 +341,7 @@ ${item.type}
 
 
 `).join("");
+
 
 
 
