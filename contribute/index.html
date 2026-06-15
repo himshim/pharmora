@@ -419,6 +419,8 @@ Approved content becomes available.
 
 <script src="../js/services/storage.service.js"></script>
 
+<script src="../js/services/database.service.js"></script>
+
 <script src="../js/services/analytics.service.js"></script>
 
 
@@ -440,10 +442,14 @@ document.getElementById(
 
 
 
+
 let fileInput =
 document.getElementById(
 "resource-file"
 );
+
+
+
 
 
 
@@ -463,6 +469,9 @@ return;
 
 
 }
+
+
+
 
 
 
@@ -489,6 +498,8 @@ return;
 
 
 
+
+
 let uploaded =
 await uploadFile(
 
@@ -505,10 +516,14 @@ fileInput.files[0],
 
 
 
-let contribution = {
+
+
+let contribution={
+
 
 
 title:title,
+
 
 
 course:
@@ -517,22 +532,50 @@ document.getElementById(
 ).value,
 
 
+
 type:
 document.getElementById(
 "resource-type"
 ).value,
 
 
+
 description:
 document.getElementById(
 "resource-description"
-).value,
+).value.trim(),
+
 
 
 file:uploaded,
 
 
+
+author:{
+
+id:"guest",
+
+name:"Guest User"
+
+},
+
+
+
+stats:{
+
+
+views:0,
+
+
+downloads:0
+
+
+},
+
+
+
 status:"pending"
+
 
 
 };
@@ -543,13 +586,34 @@ status:"pending"
 
 
 
-console.log(
 
-"Contribution Created:",
+
+let saved =
+await createRecord(
+
+"resources",
 
 contribution
 
 );
+
+
+
+
+
+
+
+
+
+
+console.log(
+
+"Saved Contribution:",
+
+saved
+
+);
+
 
 
 
@@ -563,16 +627,20 @@ typeof trackEvent==="function"
 ){
 
 
+
 trackEvent(
 
 "resource_submit",
 
-title
+saved.id
 
 );
 
 
+
 }
+
+
 
 
 
@@ -586,6 +654,11 @@ alert(
 "Contribution submitted for review"
 
 );
+
+
+
+
+
 
 
 

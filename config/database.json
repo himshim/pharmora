@@ -1,0 +1,19 @@
+{
+  "provider": "demo",
+
+  "collections": {
+
+    "resources": "resources",
+
+    "users": "users",
+
+    "events": "events",
+
+    "books": "books",
+
+    "forum": "forum",
+
+    "analytics": "analytics"
+
+  }
+}
