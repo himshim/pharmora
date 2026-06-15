@@ -149,7 +149,49 @@ source.type,
 
 
 url:
-base + source.url
+base + source.url,
+
+
+keywords:[
+
+
+item.title,
+
+
+item.description,
+
+
+item.category,
+
+
+item.course,
+
+
+item.semester,
+
+
+item.subject,
+
+
+item.unit,
+
+
+item.author,
+
+
+item.type,
+
+
+...(item.tags || [])
+
+
+]
+
+.flat()
+
+.join(" ")
+
+.toLowerCase()
 
 
 });
@@ -268,19 +310,9 @@ let results =
 searchIndex.filter(item=>{
 
 
-return (
-
-item.title +
-
-item.description +
-
-item.type
-
-)
-
-.toLowerCase()
-
-.includes(keyword);
+return item.keywords.includes(
+keyword
+);
 
 
 });
