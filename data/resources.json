@@ -1,109 +1,39 @@
-{
-  "resources": [
+[
+  {
+    "id": "res_001",
 
-    {
+    "title": "General Pharmacology Notes",
 
-      "id": "sample-note-001",
+    "description": "Basic introduction to pharmacology concepts.",
 
-      "title": "Introduction to Pharmora Resources",
+    "type": "Notes",
 
-      "description": "Example resource structure showing how learning materials will be organized.",
+    "course": "B.Pharm",
 
+    "semester": "4",
 
-      "course": "B.Pharm",
+    "subject": "Pharmacology",
 
-      "curriculum": "PCI",
+    "unit": "Unit 1",
 
-      "semester": 1,
+    "file": {
+      "name": "general-pharmacology.pdf",
+      "url": "",
+      "size": "2 MB"
+    },
 
+    "author": {
+      "id": "user_002",
+      "name": "Demo Teacher"
+    },
 
-      "subject": "Pharmaceutics I",
+    "status": "approved",
 
+    "stats": {
+      "downloads": 0,
+      "views": 0
+    },
 
-      "topic": "Introduction to Pharmacy",
-
-
-      "resource_type": "Notes",
-
-
-      "format": "PDF",
-
-
-      "uploaded_by": "Pharmora Team",
-
-
-      "verification": {
-
-        "status": "Verified",
-
-        "reviewed_by": "Moderator"
-
-      },
-
-
-      "tags": [
-
-        "pharmaceutics",
-
-        "basics",
-
-        "bpharm"
-
-      ],
-
-
-      "stats": {
-
-        "views": 0,
-
-        "downloads": 0,
-
-        "likes": 0
-
-      },
-
-
-      "created": "2026-01-01"
-
-    }
-
-  ],
-
-
-
-  "resource_types": [
-
-
-    "Notes",
-
-    "Presentation",
-
-    "Question Paper",
-
-    "MCQ",
-
-    "Practical File",
-
-    "Video",
-
-    "Teacher Material",
-
-    "Article"
-
-  ],
-
-
-
-  "verification_status": [
-
-
-    "Pending Review",
-
-    "Verified",
-
-    "Needs Improvement"
-
-
-  ]
-
-}
+    "created": "2026-06-15"
+  }
+]
