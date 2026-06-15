@@ -1,9 +1,12 @@
 /*
- Database Adapter Service
+ Pharmora Database Adapter
+ Demo + Cloud Ready
 */
 
 
+
 let databaseConfig=null;
+
 
 
 
@@ -41,6 +44,49 @@ return databaseConfig;
 
 
 
+function resolveCollection(
+collection
+){
+
+
+
+if(
+
+databaseConfig
+
+&&
+
+databaseConfig.collections
+
+&&
+
+databaseConfig.collections[collection]
+
+){
+
+
+return databaseConfig.collections[collection];
+
+
+}
+
+
+
+
+return collection;
+
+
+
+}
+
+
+
+
+
+
+
+
+
 async function createRecord(
 collection,
 data
@@ -53,14 +99,11 @@ await loadDatabaseConfig();
 
 
 
-
-console.log(
-
-"Database provider:",
-
-config.provider
-
+collection =
+resolveCollection(
+collection
 );
+
 
 
 
@@ -81,9 +124,373 @@ data
 
 
 
+
+
+
+if(
+config.provider==="supabase"
+&&
+typeof supabaseCreate==="function"
+){
+
+
+
+return supabaseCreate(
+
+collection,
+
+data
+
+);
+
+
+
 }
 
 
+
+}
+
+
+
+
+
+
+
+
+
+async function getRecords(
+collection
+){
+
+
+
+const config =
+await loadDatabaseConfig();
+
+
+
+
+collection =
+resolveCollection(
+collection
+);
+
+
+
+
+
+
+
+if(
+config.provider==="demo"
+){
+
+
+
+return getLocalCollection(
+
+collection
+
+)
+
+.filter(
+
+item=>item.deleted!==true
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+if(
+
+config.provider==="supabase"
+
+&&
+
+typeof supabaseGet==="function"
+
+){
+
+
+
+return supabaseGet(
+
+collection
+
+);
+
+
+
+}
+
+
+
+
+return [];
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function updateRecord(
+collection,
+id,
+updates
+){
+
+
+
+const config =
+await loadDatabaseConfig();
+
+
+
+
+collection =
+resolveCollection(
+collection
+);
+
+
+
+
+
+
+
+if(
+config.provider==="demo"
+){
+
+
+
+let items =
+getLocalCollection(
+collection
+);
+
+
+
+
+
+
+items =
+items.map(item=>{
+
+
+
+if(
+item.id===id
+){
+
+
+return {
+
+...item,
+
+...updates,
+
+
+updatedAt:
+
+new Date()
+.toISOString()
+
+};
+
+
+}
+
+
+
+return item;
+
+
+
+});
+
+
+
+
+
+
+
+saveLocalCollection(
+
+collection,
+
+items
+
+);
+
+
+
+
+
+
+
+
+return items.find(
+
+item=>item.id===id
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+if(
+
+config.provider==="supabase"
+
+&&
+
+typeof supabaseUpdate==="function"
+
+){
+
+
+
+return supabaseUpdate(
+
+collection,
+
+id,
+
+updates
+
+);
+
+
+
+}
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function deleteRecord(
+collection,
+id
+){
+
+
+
+
+
+return updateRecord(
+
+collection,
+
+id,
+
+{
+
+deleted:true,
+
+
+deletedAt:
+
+new Date()
+.toISOString()
+
+}
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+async function restoreRecord(
+collection,
+id
+){
+
+
+
+
+
+return updateRecord(
+
+collection,
+
+id,
+
+{
+
+deleted:false,
+
+
+restoredAt:
+
+new Date()
+.toISOString()
+
+}
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/*
+
+DEMO LOCAL STORAGE ENGINE
+
+*/
 
 
 
@@ -134,13 +541,20 @@ localStorage.setItem(
 
 "db_" + collection,
 
-JSON.stringify(items)
+
+JSON.stringify(
+
+items
+
+)
 
 );
 
 
 
 }
+
+
 
 
 
@@ -157,10 +571,15 @@ data
 
 
 
+
+
 let items =
 getLocalCollection(
 collection
 );
+
+
+
 
 
 
@@ -169,12 +588,18 @@ collection
 let record={
 
 
+
 id:
 
 crypto.randomUUID(),
 
 
+
+
 ...data,
+
+
+
 
 
 createdAt:
@@ -183,7 +608,11 @@ new Date()
 .toISOString()
 
 
+
 };
+
+
+
 
 
 
@@ -191,8 +620,11 @@ new Date()
 
 
 items.push(
+
 record
+
 );
+
 
 
 
@@ -209,269 +641,12 @@ items
 
 
 
-
-
-
-
-console.log(
-
-"Created:",
-
-collection,
-
-record
-
-);
 
 
 
 
 
 return record;
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-async function getRecords(
-collection
-){
-
-
-
-const config =
-await loadDatabaseConfig();
-
-
-
-
-
-if(
-config.provider==="demo"
-){
-
-
-
-
-
-let local =
-getLocalCollection(
-collection
-);
-
-
-
-
-
-
-return local.filter(
-
-item=>item.deleted!==true
-
-);
-
-
-
-}
-
-
-
-}
-
-async function updateRecord(
-collection,
-id,
-updates
-){
-
-
-
-const config =
-await loadDatabaseConfig();
-
-
-
-
-
-if(
-config.provider==="demo"
-){
-
-
-
-let items =
-getLocalCollection(
-collection
-);
-
-
-
-
-
-
-items =
-items.map(item=>{
-
-
-
-if(
-item.id===id
-){
-
-
-return {
-
-...item,
-
-...updates,
-
-updatedAt:
-new Date()
-.toISOString()
-
-};
-
-
-}
-
-
-
-return item;
-
-
-
-});
-
-
-
-
-
-
-
-saveLocalCollection(
-
-collection,
-
-items
-
-);
-
-
-
-
-
-
-return items.find(
-
-item=>item.id===id
-
-);
-
-
-
-}
-
-
-
-}
-
-async function deleteRecord(
-collection,
-id
-){
-
-
-
-const config =
-await loadDatabaseConfig();
-
-
-
-
-
-if(
-config.provider==="demo"
-){
-
-
-
-return updateRecord(
-
-collection,
-
-id,
-
-{
-
-deleted:true,
-
-deletedAt:
-
-new Date()
-.toISOString()
-
-}
-
-);
-
-
-
-}
-
-
-
-}
-
-async function restoreRecord(
-collection,
-id
-){
-
-
-
-const config =
-await loadDatabaseConfig();
-
-
-
-
-if(
-config.provider==="demo"
-){
-
-
-
-return updateRecord(
-
-collection,
-
-id,
-
-{
-
-deleted:false,
-
-restoredAt:
-
-new Date()
-.toISOString()
-
-}
-
-);
-
-
-
-}
 
 
 

@@ -1,6 +1,8 @@
 /*
- Authentication Adapter Service
+ Pharmora Authentication Adapter
+ Demo + Cloud Ready
 */
+
 
 
 let authConfig=null;
@@ -10,7 +12,9 @@ let authConfig=null;
 
 
 
+
 async function loadAuthConfig(){
+
 
 
 if(authConfig){
@@ -30,6 +34,7 @@ await fetch(
 
 
 return authConfig;
+
 
 
 }
@@ -55,18 +60,6 @@ await loadAuthConfig();
 
 
 
-console.log(
-
-"Auth provider:",
-
-config.provider
-
-);
-
-
-
-
-
 
 
 if(
@@ -84,20 +77,30 @@ data
 
 
 
-/*
-
-Future:
-
-if(config.provider==="supabase"){
 
 
-return supabase.auth.signUp()
+
+
+if(
+
+config.provider==="supabase"
+
+&&
+
+typeof supabaseRegister==="function"
+
+){
+
+
+
+return supabaseRegister(
+data
+);
+
 
 
 }
 
-
-*/
 
 
 }
@@ -124,16 +127,6 @@ await loadAuthConfig();
 
 
 
-console.log(
-
-"Auth provider:",
-
-config.provider
-
-);
-
-
-
 
 
 
@@ -142,15 +135,16 @@ config.provider==="demo"
 ){
 
 
+
 return demoLogin(
+
 email,
+
 password
+
 );
 
 
-}
-
-
 
 }
 
@@ -161,145 +155,31 @@ password
 
 
 
+if(
 
+config.provider==="supabase"
 
-function demoRegister(
-data
+&&
+
+typeof supabaseLogin==="function"
+
 ){
 
 
 
-let user={
+return supabaseLogin(
 
+email,
 
-
-id:
-
-crypto.randomUUID(),
-
-
-
-name:data.name,
-
-
-
-email:data.email,
-
-
-
-role:data.role,
-
-
-
-createdAt:
-
-new Date()
-.toISOString()
-
-
-
-};
-
-
-
-
-
-
-localStorage.setItem(
-
-"currentUser",
-
-JSON.stringify(user)
+password
 
 );
 
-
-
-
-
-
-
-console.log(
-
-"Registered:",
-
-user
-
-);
-
-
-
-
-
-return user;
 
 
 }
 
 
-
-
-
-
-
-
-
-function demoLogin(
-email,
-password
-){
-
-
-
-let user={
-
-
-
-id:"demo-user",
-
-
-name:"Demo User",
-
-
-email:email,
-
-
-role:"student"
-
-
-};
-
-
-
-
-
-
-localStorage.setItem(
-
-"currentUser",
-
-JSON.stringify(user)
-
-);
-
-
-
-
-
-
-
-console.log(
-
-"Logged in:",
-
-user
-
-);
-
-
-
-
-return user;
 
 
 }
@@ -319,7 +199,9 @@ function currentUser(){
 return JSON.parse(
 
 localStorage.getItem(
+
 "currentUser"
+
 )
 
 );
@@ -346,6 +228,434 @@ localStorage.removeItem(
 "currentUser"
 
 );
+
+
+
+location.href =
+
+"/auth/login.html";
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function updateProfile(
+updates
+){
+
+
+
+let user =
+currentUser();
+
+
+
+
+if(!user){
+
+return null;
+
+}
+
+
+
+
+
+user={
+
+...user,
+
+...updates,
+
+updatedAt:
+
+new Date()
+.toISOString()
+
+};
+
+
+
+
+
+
+localStorage.setItem(
+
+"currentUser",
+
+JSON.stringify(user)
+
+);
+
+
+
+
+
+return user;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/*
+
+DEMO AUTH ENGINE
+
+*/
+
+
+
+
+
+
+
+
+function getDemoUsers(){
+
+
+
+return JSON.parse(
+
+localStorage.getItem(
+
+"users"
+
+)
+
+||
+
+"[]"
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function saveDemoUsers(
+users
+){
+
+
+
+localStorage.setItem(
+
+"users",
+
+JSON.stringify(users)
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+function demoRegister(
+data
+){
+
+
+
+let users =
+getDemoUsers();
+
+
+
+
+
+
+
+let exists =
+users.find(
+
+u=>u.email===data.email
+
+);
+
+
+
+
+
+
+
+if(exists){
+
+
+alert(
+
+"Account already exists"
+
+);
+
+
+return null;
+
+
+}
+
+
+
+
+
+
+
+
+
+let user={
+
+
+
+id:
+
+crypto.randomUUID(),
+
+
+
+name:
+
+data.name,
+
+
+
+email:
+
+data.email,
+
+
+
+password:
+
+data.password,
+
+
+
+role:
+
+data.role || "student",
+
+
+
+
+createdAt:
+
+new Date()
+.toISOString()
+
+
+
+};
+
+
+
+
+
+
+
+
+users.push(
+user
+);
+
+
+
+
+
+
+saveDemoUsers(
+users
+);
+
+
+
+
+
+
+
+
+let session={
+
+...user
+
+};
+
+
+
+delete session.password;
+
+
+
+
+
+
+
+
+localStorage.setItem(
+
+"currentUser",
+
+JSON.stringify(session)
+
+);
+
+
+
+
+
+
+
+return session;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function demoLogin(
+email,
+password
+){
+
+
+
+let users =
+getDemoUsers();
+
+
+
+
+
+
+
+let user =
+users.find(
+
+u=>
+
+u.email===email
+
+&&
+
+u.password===password
+
+);
+
+
+
+
+
+
+
+
+if(!user){
+
+
+
+alert(
+
+"Invalid login details"
+
+);
+
+
+
+return null;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+let session={
+
+...user,
+
+
+
+lastLogin:
+
+new Date()
+.toISOString()
+
+};
+
+
+
+
+
+
+
+delete session.password;
+
+
+
+
+
+
+
+
+localStorage.setItem(
+
+"currentUser",
+
+JSON.stringify(session)
+
+);
+
+
+
+
+
+
+
+
+return session;
 
 
 

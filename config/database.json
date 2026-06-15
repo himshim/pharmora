@@ -1,19 +1,74 @@
 {
-  "provider": "demo",
+  "provider":"demo",
 
-  "collections": {
 
-    "resources": "resources",
+  "demo":{
 
-    "users": "users",
+    "storage":"local"
 
-    "events": "events",
+  },
 
-    "books": "books",
 
-    "forum": "forum",
+  "supabase":{
 
-    "analytics": "analytics"
+    "url":"",
+
+    "key":""
+
+  },
+
+
+  "collections":{
+
+
+    "resources":"resources",
+
+
+    "users":"users",
+
+
+    "events":"events",
+
+
+    "books":"books",
+
+
+    "forum":"forum",
+
+
+    "analytics":"analytics",
+
+
+
+    "courses":"courses",
+
+
+    "curriculums":"curriculums",
+
+
+    "semesters":"semesters",
+
+
+    "subjects":"subjects",
+
+
+    "categories":"categories",
+
+
+    "tags":"tags",
+
+
+    "audience":"audience",
+
+
+    "exams":"exams",
+
+
+    "notifications":"notifications",
+
+
+    "tools":"tools"
 
   }
+
 }

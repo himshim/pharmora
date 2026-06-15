@@ -1,6 +1,18 @@
 /*
- Permission Service
+ Pharmora Permission Service
+ Role Based Access Control
 */
+
+
+
+
+
+
+
+
+let cachedPermissions=null;
+
+
 
 
 
@@ -23,6 +35,7 @@ await fetch(
 )
 
 .then(r=>r.json());
+
 
 
 
@@ -60,7 +73,9 @@ return [];
 
 
 
+
 return found.permissions;
+
 
 
 
@@ -68,6 +83,135 @@ return found.permissions;
 
 
 
+
+
+
+
+
+
+async function userPermissions(){
+
+
+
+
+
+if(cachedPermissions){
+
+
+return cachedPermissions;
+
+
+}
+
+
+
+
+
+
+
+if(
+
+typeof currentUser!=="function"
+
+){
+
+
+return [];
+
+
+}
+
+
+
+
+
+
+
+
+let user =
+currentUser();
+
+
+
+
+
+
+if(!user){
+
+
+return [];
+
+
+}
+
+
+
+
+
+
+
+
+cachedPermissions =
+
+await getPermissions(
+
+user.role
+
+);
+
+
+
+
+
+
+return cachedPermissions;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function hasPermission(
+permission
+){
+
+
+
+
+
+
+let permissions =
+
+await userPermissions();
+
+
+
+
+
+
+
+
+return (
+
+permissions.includes("*")
+
+||
+
+permissions.includes(permission)
+
+);
+
+
+
+
+}
 
 
 
@@ -83,65 +227,12 @@ async function applyPermissions(){
 
 
 
-if(
-
-typeof currentUser !== "function"
-
-){
-
-
-return;
-
-
-}
-
-
-
-
-
-
-
-
-let user =
-
-currentUser();
-
-
-
-
-
-
-
-
-if(
-
-!user
-
-){
-
-
-return;
-
-
-}
-
-
-
-
-
-
 
 
 
 let permissions =
 
-await getPermissions(
-
-user.role
-
-);
-
-
+await userPermissions();
 
 
 
@@ -166,6 +257,7 @@ document
 
 
 
+
 let required =
 
 item.dataset.permission;
@@ -177,17 +269,13 @@ item.dataset.permission;
 
 
 
-
-
 if(
-
 
 permissions.includes("*")
 
 ||
 
 permissions.includes(required)
-
 
 ){
 
@@ -201,11 +289,26 @@ item.style.display="block";
 
 
 
+
+
+
+
 else{
 
 
 
-item.style.display="none";
+item.remove();
+
+
+
+}
+
+
+
+
+
+});
+
 
 
 
@@ -217,9 +320,96 @@ item.style.display="none";
 
 
 
-});
 
 
+
+
+async function requirePermission(
+permission
+){
+
+
+
+
+
+
+
+let allowed =
+
+await hasPermission(
+
+permission
+
+);
+
+
+
+
+
+
+
+
+if(!allowed){
+
+
+
+
+
+
+alert(
+
+"You do not have permission"
+
+);
+
+
+
+
+
+
+location.href="/dashboard/";
+
+
+
+
+
+
+
+return false;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+return true;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+function clearPermissionCache(){
+
+
+
+cachedPermissions=null;
 
 
 

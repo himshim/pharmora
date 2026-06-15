@@ -1,6 +1,8 @@
 /*
- Storage Adapter Service
+ Pharmora Storage Adapter
+ Demo + Cloud Ready
 */
+
 
 
 let storageConfig=null;
@@ -11,6 +13,7 @@ let storageConfig=null;
 
 
 async function loadStorageConfig(){
+
 
 
 if(storageConfig){
@@ -30,12 +33,12 @@ await fetch(
 
 
 
+
 return storageConfig;
 
 
+
 }
-
-
 
 
 
@@ -47,7 +50,7 @@ return storageConfig;
 
 async function uploadFile(
 file,
-folder
+folder="uploads/"
 ){
 
 
@@ -55,13 +58,6 @@ folder
 const config =
 await loadStorageConfig();
 
-
-
-
-console.log(
-"Uploading using:",
-config.provider
-);
 
 
 
@@ -73,13 +69,167 @@ config.provider==="demo"
 ){
 
 
+
 return demoUpload(
+
 file,
+
 folder
+
 );
 
 
+
 }
+
+
+
+
+
+
+
+if(
+
+config.provider==="supabase"
+
+&&
+
+typeof supabaseUpload==="function"
+
+){
+
+
+
+return supabaseUpload(
+
+file,
+
+folder
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+return null;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function deleteFile(
+file
+){
+
+
+
+const config =
+await loadStorageConfig();
+
+
+
+
+
+
+
+if(
+config.provider==="demo"
+){
+
+
+console.log(
+
+"Demo delete:",
+
+file
+
+);
+
+
+return true;
+
+
+}
+
+
+
+
+
+
+
+if(
+
+config.provider==="supabase"
+
+&&
+
+typeof supabaseDelete==="function"
+
+){
+
+
+
+return supabaseDelete(
+file
+);
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function getFileUrl(
+file
+){
+
+
+
+
+
+if(!file){
+
+return "";
+
+}
+
+
+
+
+
+return file.url || "";
+
+
+
+}
+
+
+
 
 
 
@@ -88,26 +238,9 @@ folder
 
 /*
 
-Future:
-
-if(config.provider==="supabase"){
-
-return supabaseUpload(file,folder);
-
-}
-
-
-
-if(config.provider==="r2"){
-
-return r2Upload(file,folder);
-
-}
+DEMO STORAGE ENGINE
 
 */
-
-
-}
 
 
 
@@ -124,10 +257,35 @@ folder
 
 
 
-return {
 
 
-name:file.name,
+
+let record={
+
+
+
+id:
+
+crypto.randomUUID(),
+
+
+
+name:
+
+file.name,
+
+
+
+type:
+
+file.type,
+
+
+
+size:
+
+file.size,
+
 
 
 path:
@@ -137,17 +295,48 @@ folder +
 file.name,
 
 
+
 url:
 
 "",
 
 
+
 provider:
 
-"demo"
+"demo",
+
+
+
+uploadedAt:
+
+new Date()
+.toISOString()
+
 
 
 };
+
+
+
+
+
+
+
+console.log(
+
+"Demo uploaded:",
+
+record
+
+);
+
+
+
+
+
+
+return record;
 
 
 

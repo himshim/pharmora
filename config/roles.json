@@ -1,72 +1,123 @@
 [
-  {
-    "role": "owner",
 
-    "permissions": [
+  {
+    "role":"owner",
+    "permissions":[
       "*"
     ]
   },
 
 
+
   {
-    "role": "admin",
+    "role":"admin",
+    "permissions":[
 
-    "permissions": [
+      "analytics.view",
 
-      "analytics",
+      "content.review",
+      "content.approve",
+      "content.edit",
+      "content.delete",
 
-      "resources",
+      "courses.manage",
+      "subjects.manage",
+      "curriculum.manage",
+      "categories.manage",
 
-      "verification",
+      "books.manage",
+      "events.manage",
+      "tools.manage",
 
-      "forum",
+      "notifications.manage",
 
-      "events",
+      "users.view",
+      "users.manage",
 
-      "users",
-
-      "settings"
+      "settings.manage"
 
     ]
   },
 
 
+
   {
-    "role": "maintainer",
+    "role":"maintainer",
 
-    "permissions": [
+    "permissions":[
 
-      "resources",
+      "content.review",
+      "content.approve",
+      "content.edit",
 
-      "forum",
-
-      "events"
+      "books.manage",
+      "events.manage",
+      "tools.manage"
 
     ]
   },
 
 
+
   {
-    "role": "educator",
+    "role":"moderator",
 
-    "permissions": [
+    "permissions":[
 
-      "verification"
+      "content.review",
+      "content.approve"
 
     ]
   },
 
 
-  {
-    "role": "contributor",
 
-    "permissions": []
+  {
+    "role":"educator",
+
+    "permissions":[
+
+      "verified.creator",
+
+      "events.suggest"
+
+    ]
   },
 
 
-  {
-    "role": "member",
 
-    "permissions": []
+  {
+    "role":"professional",
+
+    "permissions":[
+
+      "verified.creator"
+
+    ]
+  },
+
+
+
+  {
+    "role":"student",
+
+    "permissions":[]
+  },
+
+
+
+  {
+    "role":"contributor",
+
+    "permissions":[]
+  },
+
+
+
+  {
+    "role":"member",
+
+    "permissions":[]
   }
+
 ]

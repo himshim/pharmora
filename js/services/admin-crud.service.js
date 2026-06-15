@@ -1,15 +1,34 @@
 /*
  Universal Admin CRUD Service
+ Dynamic Schema Based
 */
-
-
-
-
 
 
 
 let activeCollection=null;
 
+let activeSchema=[];
+
+
+
+
+
+
+
+
+async function loadSchema(){
+
+
+return await fetch(
+
+"/config/admin-schema.json"
+
+)
+
+.then(r=>r.json());
+
+
+}
 
 
 
@@ -31,12 +50,24 @@ collection;
 
 
 
+let schemas =
+await loadSchema();
+
+
+
+activeSchema =
+schemas[collection] || [];
+
+
+
+
+
+
 
 let data =
 await getRecords(
 collection
 );
-
 
 
 
@@ -53,17 +84,21 @@ document.getElementById(
 
 
 
+
 area.innerHTML = `
+
 
 
 <button
 
 class="btn btn-primary"
 
-onclick="addEntry()">
+onclick="showForm()">
+
 
 
 + Add ${collection}
+
 
 
 </button>
@@ -80,13 +115,35 @@ data.map(item=>`
 
 
 
+
 <div class="panel">
+
 
 
 <span>
 
 
-${item.name || item.title}
+${item.name || item.title || "Untitled"}
+
+
+
+<br>
+
+
+<small>
+
+
+${
+
+(item.tags || [])
+
+.join(", ")
+
+}
+
+
+</small>
+
 
 
 </span>
@@ -95,10 +152,12 @@ ${item.name || item.title}
 
 
 
+
 <span>
 
 
-<button onclick="editEntry('${item.id}')">
+
+<button onclick="showForm('${item.id}')">
 
 ✏
 
@@ -114,10 +173,14 @@ ${item.name || item.title}
 
 
 
+
 </span>
 
 
+
 </div>
+
+
 
 
 `).join("")
@@ -126,39 +189,11 @@ ${item.name || item.title}
 }
 
 
+
 `;
 
 
 
-}
-
-
-
-
-
-
-
-
-
-
-
-
-async function addEntry(){
-
-
-
-let name =
-prompt(
-"Enter name"
-);
-
-
-
-
-
-if(!name){
-
-return;
 
 }
 
@@ -166,30 +201,50 @@ return;
 
 
 
-await createRecord(
-
-activeCollection,
-
-{
-
-name:name,
-
-status:"active"
-
-}
-
-);
 
 
 
 
 
-loadManager(
+
+
+
+
+async function showForm(
+id=null
+){
+
+
+
+let existing=null;
+
+
+
+
+
+
+
+if(id){
+
+
+
+let records =
+await getRecords(
 activeCollection
 );
 
 
 
+
+existing =
+records.find(
+
+x=>x.id===id
+
+);
+
+
+
 }
 
 
@@ -201,30 +256,484 @@ activeCollection
 
 
 
+let html=`
 
 
-async function editEntry(
-id
+<div class="card">
+
+
+<h2>
+
+
+${id?"Edit":"Add"}
+
+${activeCollection}
+
+
+</h2>
+
+
+<br>
+
+
+`;
+
+
+
+
+
+
+
+
+
+for(
+let field of activeSchema
 ){
 
 
 
+
+
+
 let value =
-prompt(
-"Enter updated name"
+
+existing ?
+
+(existing[field.name] || [])
+
+:
+
+[];
+
+
+
+
+
+
+
+
+
+html += `
+
+
+<label>
+
+${field.label}
+
+</label>
+
+
+`;
+
+
+
+
+
+
+
+
+
+if(
+
+field.type==="dynamic-multi"
+
+){
+
+
+
+
+
+let options =
+
+await getRecords(
+
+field.source
+
 );
 
 
 
 
-if(!value){
 
-return;
+
+
+
+
+options.forEach(option=>{
+
+
+
+
+
+
+let checked =
+
+value.includes(option.id)
+
+||
+
+value.includes(option.name)
+
+?
+
+"checked"
+
+:
+
+"";
+
+
+
+
+
+
+
+
+
+
+html += `
+
+
+
+<label>
+
+
+<input
+
+type="checkbox"
+
+class="field-${field.name}"
+
+value="${option.name}"
+
+${checked}
+
+>
+
+
+${option.name}
+
+
+
+</label>
+
+
+<br>
+
+
+`;
+
+
+
+
+
+
+});
+
+
+
+
+
+
 
 }
 
 
 
+
+
+
+
+
+
+else{
+
+
+
+
+
+
+html += `
+
+
+
+<input
+
+id="field-${field.name}"
+
+value="${
+
+Array.isArray(value)
+
+?
+
+value.join(",")
+
+:
+
+value
+
+}"
+
+placeholder="${field.label}"
+
+>
+
+
+`;
+
+
+
+
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+html += `
+
+
+<br>
+
+
+<button
+
+class="btn btn-primary"
+
+onclick="saveEntry('${id || ""}')">
+
+
+Save
+
+
+</button>
+
+
+
+</div>
+
+
+`;
+
+
+
+
+
+
+
+
+
+document
+
+.getElementById(
+"admin-actions"
+)
+
+.innerHTML=html;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+async function saveEntry(id){
+
+
+
+
+
+let data={};
+
+
+
+
+
+
+
+
+for(
+let field of activeSchema
+){
+
+
+
+
+
+
+
+
+if(
+
+field.type==="dynamic-multi"
+
+){
+
+
+
+
+
+
+
+let selected=[];
+
+
+
+
+
+
+document
+
+.querySelectorAll(
+
+".field-" + field.name + ":checked"
+
+)
+
+.forEach(box=>{
+
+
+selected.push(
+
+box.value
+
+);
+
+
+});
+
+
+
+
+
+
+
+
+data[field.name]=selected;
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+else{
+
+
+
+
+
+
+let value =
+
+document.getElementById(
+
+"field-" + field.name
+
+).value;
+
+
+
+
+
+
+
+
+
+
+if(
+
+field.type==="tags"
+
+||
+
+field.type==="multi"
+
+){
+
+
+
+value =
+
+value
+
+.split(",")
+
+.map(x=>x.trim())
+
+.filter(Boolean);
+
+
+
+}
+
+
+
+
+
+
+
+
+data[field.name]=value;
+
+
+
+
+
+
+}
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+if(id){
 
 
 
@@ -234,13 +743,42 @@ activeCollection,
 
 id,
 
+data
+
+);
+
+
+
+}
+
+
+
+
+
+
+else{
+
+
+
+await createRecord(
+
+activeCollection,
+
 {
 
-name:value
+...data,
+
+status:"active"
 
 }
 
 );
+
+
+
+}
+
+
 
 
 
@@ -248,7 +786,9 @@ name:value
 
 
 loadManager(
+
 activeCollection
+
 );
 
 
@@ -266,9 +806,9 @@ activeCollection
 
 
 
-async function removeEntry(
-id
-){
+async function removeEntry(id){
+
+
 
 
 
@@ -282,9 +822,12 @@ if(
 
 ){
 
+
 return;
 
+
 }
+
 
 
 
@@ -307,7 +850,9 @@ id
 
 
 loadManager(
+
 activeCollection
+
 );
 
 

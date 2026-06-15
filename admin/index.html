@@ -17,9 +17,13 @@ Admin
 
 
 <link rel="stylesheet" href="../css/variables.css">
+
 <link rel="stylesheet" href="../css/base.css">
+
 <link rel="stylesheet" href="../css/components.css">
+
 <link rel="stylesheet" href="../css/responsive.css">
+
 
 
 <style>
@@ -57,12 +61,19 @@ font-weight:900;
 
 margin-bottom:35px;
 
+
 background:
+
 linear-gradient(
+
 90deg,
+
 var(--primary),
+
 var(--secondary)
+
 );
+
 
 -webkit-background-clip:text;
 
@@ -86,6 +97,8 @@ color:var(--text-soft);
 
 cursor:pointer;
 
+transition:var(--transition);
+
 }
 
 
@@ -93,6 +106,8 @@ cursor:pointer;
 .menu div:hover{
 
 background:var(--surface-light);
+
+color:var(--text);
 
 }
 
@@ -124,6 +139,10 @@ display:flex;
 
 justify-content:space-between;
 
+align-items:center;
+
+gap:15px;
+
 }
 
 
@@ -133,6 +152,20 @@ justify-content:space-between;
 color:var(--primary);
 
 font-weight:bold;
+
+}
+
+
+
+.admin-title{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+flex-wrap:wrap;
 
 }
 
@@ -148,11 +181,13 @@ display:block;
 }
 
 
+
 .sidebar{
 
 width:100%;
 
 }
+
 
 
 }
@@ -161,7 +196,9 @@ width:100%;
 
 </style>
 
+
 </head>
+
 
 
 
@@ -170,11 +207,17 @@ width:100%;
 
 
 
+
+
 <div class="admin">
 
 
 
+
+
 <aside class="sidebar">
+
+
 
 
 
@@ -189,10 +232,19 @@ id="admin-brand">
 
 
 
+
+
+
 <div class="menu">
 
 
-<div onclick="renderAdminActions()">
+
+
+
+
+<div
+data-permission="content.review"
+onclick="renderAdminActions()">
 
 📊 Review Queue
 
@@ -200,7 +252,12 @@ id="admin-brand">
 
 
 
-<div onclick="loadManager('courses')">
+
+
+
+<div
+data-permission="courses.manage"
+onclick="loadManager('courses')">
 
 🎓 Courses
 
@@ -208,7 +265,12 @@ id="admin-brand">
 
 
 
-<div onclick="loadManager('curriculums')">
+
+
+
+<div
+data-permission="curriculum.manage"
+onclick="loadManager('curriculums')">
 
 📘 Curriculums
 
@@ -216,7 +278,13 @@ id="admin-brand">
 
 
 
-<div onclick="loadManager('semesters')">
+
+
+
+
+<div
+data-permission="curriculum.manage"
+onclick="loadManager('semesters')">
 
 📅 Semesters
 
@@ -224,7 +292,13 @@ id="admin-brand">
 
 
 
-<div onclick="loadManager('subjects')">
+
+
+
+
+<div
+data-permission="subjects.manage"
+onclick="loadManager('subjects')">
 
 🧪 Subjects
 
@@ -232,7 +306,13 @@ id="admin-brand">
 
 
 
-<div onclick="loadManager('categories')">
+
+
+
+
+<div
+data-permission="categories.manage"
+onclick="loadManager('categories')">
 
 🏷 Categories
 
@@ -240,7 +320,13 @@ id="admin-brand">
 
 
 
-<div onclick="loadManager('tags')">
+
+
+
+
+<div
+data-permission="categories.manage"
+onclick="loadManager('tags')">
 
 #️⃣ Tags
 
@@ -248,7 +334,14 @@ id="admin-brand">
 
 
 
-<div onclick="loadManager('books')">
+
+
+
+
+
+<div
+data-permission="books.manage"
+onclick="loadManager('books')">
 
 📚 Books
 
@@ -256,7 +349,14 @@ id="admin-brand">
 
 
 
-<div onclick="loadManager('events')">
+
+
+
+
+
+<div
+data-permission="events.manage"
+onclick="loadManager('events')">
 
 📅 Events
 
@@ -264,7 +364,14 @@ id="admin-brand">
 
 
 
-<div onclick="loadManager('tools')">
+
+
+
+
+
+<div
+data-permission="tools.manage"
+onclick="loadManager('tools')">
 
 🧰 Tools
 
@@ -272,7 +379,14 @@ id="admin-brand">
 
 
 
-<div onclick="loadManager('notifications')">
+
+
+
+
+
+<div
+data-permission="notifications.manage"
+onclick="loadManager('notifications')">
 
 🔔 Notifications
 
@@ -280,7 +394,14 @@ id="admin-brand">
 
 
 
-<div onclick="loadManager('users')">
+
+
+
+
+
+<div
+data-permission="users.manage"
+onclick="loadManager('users')">
 
 👥 Users
 
@@ -288,7 +409,12 @@ id="admin-brand">
 
 
 
+
+
+
+
 </div>
+
 
 
 </aside>
@@ -298,8 +424,20 @@ id="admin-brand">
 
 
 
+
+
+
 <main class="content">
 
+
+
+
+
+
+<div class="admin-title">
+
+
+<div>
 
 
 <h1>
@@ -312,9 +450,24 @@ Admin Console
 
 <p>
 
-Manage content, users and platform quality.
+Manage platform content and quality.
 
 </p>
+
+
+</div>
+
+
+
+<div id="admin-user">
+
+</div>
+
+
+
+</div>
+
+
 
 
 
@@ -340,24 +493,35 @@ id="admin-stats">
 
 
 
+
+
+
 <section>
 
 
-<h2>
 
-Pending Actions
+<h2 id="section-title">
+
+Management
 
 </h2>
+
 
 
 <br>
 
 
 
+
+
 <div id="admin-actions">
 
 
+Loading...
+
+
 </div>
+
 
 
 
@@ -365,11 +529,20 @@ Pending Actions
 
 
 
+
+
+
 </main>
 
 
 
+
+
 </div>
+
+
+
+
 
 
 
@@ -387,9 +560,15 @@ fetch("../config/site.json")
 .then(site=>{
 
 
-document.getElementById(
+document
+
+.getElementById(
+
 "admin-brand"
-).innerHTML =
+
+)
+
+.innerHTML =
 
 "⚕ " + site.name;
 
@@ -403,19 +582,159 @@ document.getElementById(
 
 
 
+
+
+
+
 <script src="../js/services/auth.service.js"></script>
 
 <script src="../js/services/database.service.js"></script>
 
+<script src="../js/services/permission.service.js"></script>
+
 
 <script src="../js/services/admin.service.js"></script>
-
 
 <script src="../js/services/admin-crud.service.js"></script>
 
 
 
+
+
+
+
+
 <script>
+
+
+
+
+async function startAdmin(){
+
+
+
+
+
+
+if(
+
+typeof requirePermission==="function"
+
+){
+
+
+
+let allowed =
+
+await requirePermission(
+
+"content.review"
+
+);
+
+
+
+
+
+if(!allowed){
+
+
+return;
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+if(
+
+typeof applyPermissions==="function"
+
+){
+
+
+
+await applyPermissions();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+let user =
+
+currentUser
+
+?
+
+currentUser()
+
+:
+
+null;
+
+
+
+
+
+
+
+
+
+if(user){
+
+
+
+document
+
+.getElementById(
+
+"admin-user"
+
+)
+
+.innerHTML =
+
+
+"👤 " +
+
+user.name +
+
+" (" +
+
+user.role +
+
+")";
+
+
+
+}
+
+
+
+
+
+
+
 
 
 renderAdminStats();
@@ -424,26 +743,41 @@ renderAdminStats();
 renderAdminActions();
 
 
+
+
+
+}
+
+
+
+
+
+
+
+
+
+startAdmin();
+
+
+
+
+
 </script>
 
 
 
-<script src="../js/services/permission.service.js"></script>
 
 
-<script>
 
 
-applyPermissions();
-
-
-</script>
 
 
 <script src="../js/app.js"></script>
 
 
 
+
 </body>
+
 
 </html>

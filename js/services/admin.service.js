@@ -1,7 +1,98 @@
 /*
- Admin Service
- Uses Database Adapter
+ Pharmora Admin Review Service
+ Universal Content Moderation
 */
+
+
+
+
+
+
+
+const reviewCollections = [
+
+"resources",
+
+"books",
+
+"events",
+
+"tools"
+
+];
+
+
+
+
+
+
+
+
+
+async function getAllReviewItems(){
+
+
+
+let all=[];
+
+
+
+
+
+
+for(
+
+let collection of reviewCollections
+
+){
+
+
+
+
+
+let data =
+await getRecords(
+collection
+);
+
+
+
+
+
+
+data.forEach(item=>{
+
+
+
+all.push({
+
+...item,
+
+_collection:
+
+collection
+
+});
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+return all;
+
+
+
+}
+
+
 
 
 
@@ -13,10 +104,13 @@ async function renderAdminStats(){
 
 
 
-let resources =
-await getRecords(
-"resources"
-);
+
+
+
+let items =
+await getAllReviewItems();
+
+
 
 
 
@@ -24,9 +118,24 @@ await getRecords(
 
 let pending =
 
-resources.filter(
+items.filter(
 
-item=>item.status==="pending"
+x=>x.status==="pending"
+
+).length;
+
+
+
+
+
+
+
+
+let approved =
+
+items.filter(
+
+x=>x.status==="approved"
 
 ).length;
 
@@ -38,9 +147,13 @@ item=>item.status==="pending"
 
 
 document
+
 .getElementById(
+
 "admin-stats"
+
 )
+
 .innerHTML = `
 
 
@@ -49,17 +162,24 @@ document
 <div class="card">
 
 
-<h2>${pending}</h2>
+<h2>
+
+${pending}
+
+</h2>
 
 
 <p>
 
-Pending Resources
+Pending Review
 
 </p>
 
 
 </div>
+
+
+
 
 
 
@@ -68,12 +188,16 @@ Pending Resources
 <div class="card">
 
 
-<h2>${resources.length}</h2>
+<h2>
+
+${approved}
+
+</h2>
 
 
 <p>
 
-Total Resources
+Published
 
 </p>
 
@@ -83,11 +207,42 @@ Total Resources
 
 
 
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+${items.length}
+
+</h2>
+
+
+<p>
+
+Total Content
+
+</p>
+
+
+</div>
+
+
+
 `;
 
 
 
+
 }
+
+
+
+
 
 
 
@@ -103,9 +258,12 @@ async function renderAdminActions(){
 
 
 
+
 let box =
 document.getElementById(
+
 "admin-actions"
+
 );
 
 
@@ -113,10 +271,10 @@ document.getElementById(
 
 
 
-let resources =
-await getRecords(
-"resources"
-);
+
+
+let items =
+await getAllReviewItems();
 
 
 
@@ -125,12 +283,11 @@ await getRecords(
 
 
 let pending =
-resources.filter(
+items.filter(
 
-item=>item.status==="pending"
+x=>x.status==="pending"
 
 );
-
 
 
 
@@ -140,11 +297,15 @@ item=>item.status==="pending"
 
 
 if(
+
 pending.length===0
+
 ){
 
 
+
 box.innerHTML=`
+
 
 
 <div class="panel">
@@ -163,10 +324,13 @@ Everything reviewed
 </div>
 
 
+
 `;
 
 
+
 return;
+
 
 
 }
@@ -180,7 +344,11 @@ return;
 
 
 box.innerHTML =
+
 pending.map(item=>`
+
+
+
 
 
 
@@ -188,36 +356,140 @@ pending.map(item=>`
 <div class="panel">
 
 
-<span>
 
 
-📚 ${item.title}
 
 
-<br>
+<div>
+
+
+
+
+
+<h3>
+
+
+${icon(item._collection)}
+
+${item.title}
+
+
+</h3>
+
+
+
+
+
 
 
 <small>
 
 
+
+Type:
+
+${item._collection}
+
+
+
+<br>
+
+
+
+👤
+
 ${item.author?.name || "Unknown"}
+
+
+
+<br>
+
+
+
+🎓
+
+${(item.courses || []).join(", ")}
+
+
+
+<br>
+
+
+
+📘
+
+${(item.semesters || []).join(", ")}
+
+
+
+
+<br>
+
+
+
+🧪
+
+${(item.subjects || []).join(", ")}
+
+
+
+
+<br>
+
+
+
+🏷
+
+${(item.tags || []).join(", ")}
+
 
 
 </small>
 
 
-</span>
+
+
+
+
+</div>
 
 
 
 
 
 
-<span>
+
+
+<div>
 
 
 
-<button onclick="approveResource('${item.id}')">
+
+
+<button onclick="viewContent('${item._collection}','${item.id}')">
+
+👁
+
+</button>
+
+
+
+
+
+
+<button onclick="commentContent('${item._collection}','${item.id}')">
+
+💬
+
+</button>
+
+
+
+
+
+
+
+<button onclick="approveContent('${item._collection}','${item.id}')">
 
 ✅
 
@@ -225,7 +497,11 @@ ${item.author?.name || "Unknown"}
 
 
 
-<button onclick="rejectResource('${item.id}')">
+
+
+
+
+<button onclick="rejectContent('${item._collection}','${item.id}')">
 
 ❌
 
@@ -234,10 +510,31 @@ ${item.author?.name || "Unknown"}
 
 
 
-</span>
+
+
+
+<button onclick="deleteContent('${item._collection}','${item.id}')">
+
+🗑
+
+</button>
+
+
+
+
 
 
 </div>
+
+
+
+
+
+
+
+</div>
+
+
 
 
 
@@ -256,22 +553,305 @@ ${item.author?.name || "Unknown"}
 
 
 
+function icon(type){
 
-async function approveResource(id){
+
+
+return {
+
+resources:"📚",
+
+books:"📖",
+
+events:"📅",
+
+tools:"🧰"
+
+
+}[type] || "📄";
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+async function findContent(
+collection,
+id
+){
+
+
+
+let items =
+await getRecords(
+collection
+);
+
+
+
+
+return items.find(
+
+x=>x.id===id
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function viewContent(
+collection,
+id
+){
+
+
+
+
+
+
+let item =
+await findContent(
+collection,
+id
+);
+
+
+
+
+
+if(!item){
+
+return;
+
+}
+
+
+
+
+
+
+
+
+alert(`
+
+
+Title:
+${item.title}
+
+
+Type:
+${collection}
+
+
+Description:
+${item.description || ""}
+
+
+Courses:
+${(item.courses || []).join(", ")}
+
+
+Subjects:
+${(item.subjects || []).join(", ")}
+
+
+Tags:
+${(item.tags || []).join(", ")}
+
+
+Link:
+${item.content?.link || "None"}
+
+
+File:
+${item.content?.file?.name || "None"}
+
+
+`);
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+async function commentContent(
+collection,
+id
+){
+
+
+
+
+
+let message =
+prompt(
+
+"Comment for contributor"
+
+);
+
+
+
+
+
+if(!message){
+
+return;
+
+}
+
+
+
+
+
+
+let item =
+await findContent(
+
+collection,
+
+id
+
+);
+
+
+
+
+
+
+
+let review =
+item.review || {
+
+comments:[]
+
+};
+
+
+
+
+
+
+review.comments.push({
+
+
+message:message,
+
+
+time:
+
+new Date()
+
+.toISOString()
+
+
+});
+
+
+
+
+
 
 
 
 await updateRecord(
 
-"resources",
+collection,
 
 id,
 
 {
+
+review:review
+
+}
+
+);
+
+
+
+
+
+
+alert(
+
+"Comment saved"
+
+);
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+async function approveContent(
+collection,
+id
+){
+
+
+
+
+
+
+await updateRecord(
+
+collection,
+
+id,
+
+{
+
 status:"approved"
+
 }
 
 );
+
 
 
 
@@ -283,6 +863,7 @@ renderAdminActions();
 
 
 
+
 }
 
 
@@ -294,18 +875,29 @@ renderAdminActions();
 
 
 
-async function rejectResource(id){
+
+
+
+async function rejectContent(
+collection,
+id
+){
+
+
+
 
 
 
 await updateRecord(
 
-"resources",
+collection,
 
 id,
 
 {
+
 status:"rejected"
+
 }
 
 );
@@ -314,9 +906,72 @@ status:"rejected"
 
 
 
+
 renderAdminStats();
 
 renderAdminActions();
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function deleteContent(
+collection,
+id
+){
+
+
+
+
+
+
+if(
+
+!confirm(
+
+"Delete permanently?"
+
+)
+
+){
+
+return;
+
+}
+
+
+
+
+
+
+
+await deleteRecord(
+
+collection,
+
+id
+
+);
+
+
+
+
+
+
+
+renderAdminStats();
+
+renderAdminActions();
+
 
 
 
