@@ -255,7 +255,6 @@ await loadDatabaseConfig();
 
 
 
-
 if(
 config.provider==="demo"
 ){
@@ -274,8 +273,11 @@ collection
 
 
 
+return local.filter(
 
-return local;
+item=>item.deleted!==true
+
+);
 
 
 
@@ -371,6 +373,99 @@ items
 return items.find(
 
 item=>item.id===id
+
+);
+
+
+
+}
+
+
+
+}
+
+async function deleteRecord(
+collection,
+id
+){
+
+
+
+const config =
+await loadDatabaseConfig();
+
+
+
+
+
+if(
+config.provider==="demo"
+){
+
+
+
+return updateRecord(
+
+collection,
+
+id,
+
+{
+
+deleted:true,
+
+deletedAt:
+
+new Date()
+.toISOString()
+
+}
+
+);
+
+
+
+}
+
+
+
+}
+
+async function restoreRecord(
+collection,
+id
+){
+
+
+
+const config =
+await loadDatabaseConfig();
+
+
+
+
+if(
+config.provider==="demo"
+){
+
+
+
+return updateRecord(
+
+collection,
+
+id,
+
+{
+
+deleted:false,
+
+restoredAt:
+
+new Date()
+.toISOString()
+
+}
 
 );
 

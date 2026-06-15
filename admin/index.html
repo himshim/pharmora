@@ -192,39 +192,71 @@ id="admin-brand">
 <div class="menu">
 
 
-<div data-permission="analytics">
+<div onclick="renderAdminActions()">
 
-📊 Overview
-
-</div>
-
-
-
-<div data-permission="resources">
-
-📚 Resource Review
+📊 Review Queue
 
 </div>
 
 
 
-<div data-permission="verification">
+<div onclick="loadManager('courses')">
 
-👨‍🏫 Verification
-
-</div>
-
-
-
-<div data-permission="forum">
-
-💬 Forum Moderation
+🎓 Courses
 
 </div>
 
 
 
-<div data-permission="events">
+<div onclick="loadManager('curriculums')">
+
+📘 Curriculums
+
+</div>
+
+
+
+<div onclick="loadManager('semesters')">
+
+📅 Semesters
+
+</div>
+
+
+
+<div onclick="loadManager('subjects')">
+
+🧪 Subjects
+
+</div>
+
+
+
+<div onclick="loadManager('categories')">
+
+🏷 Categories
+
+</div>
+
+
+
+<div onclick="loadManager('tags')">
+
+#️⃣ Tags
+
+</div>
+
+
+
+<div onclick="loadManager('books')">
+
+📚 Books
+
+</div>
+
+
+
+<div onclick="loadManager('events')">
 
 📅 Events
 
@@ -232,17 +264,25 @@ id="admin-brand">
 
 
 
-<div data-permission="users">
+<div onclick="loadManager('tools')">
 
-👥 Users
+🧰 Tools
 
 </div>
 
 
 
-<div data-permission="settings">
+<div onclick="loadManager('notifications')">
 
-⚙ Settings
+🔔 Notifications
+
+</div>
+
+
+
+<div onclick="loadManager('users')">
+
+👥 Users
 
 </div>
 
@@ -367,7 +407,11 @@ document.getElementById(
 
 <script src="../js/services/database.service.js"></script>
 
+
 <script src="../js/services/admin.service.js"></script>
+
+
+<script src="../js/services/admin-crud.service.js"></script>
 
 
 
