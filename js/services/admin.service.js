@@ -7,16 +7,11 @@
 
 
 
-
-
-const reviewCollections = [
+const reviewCollections=[
 
 "resources",
-
 "books",
-
 "events",
-
 "tools"
 
 ];
@@ -39,23 +34,16 @@ let all=[];
 
 
 
-
-for(
-
-let collection of reviewCollections
-
-){
+for(let collection of reviewCollections){
 
 
+
+try{
 
 
 
 let data =
-await getRecords(
-collection
-);
-
-
+await getRecords(collection);
 
 
 
@@ -68,15 +56,34 @@ all.push({
 
 ...item,
 
-_collection:
+_collection:collection
 
+});
+
+
+
+});
+
+
+
+}
+
+
+
+catch(error){
+
+
+
+console.warn(
+
+"Skipped:",
 collection
 
-});
+);
 
 
 
-});
+}
 
 
 
@@ -104,6 +111,20 @@ async function renderAdminStats(){
 
 
 
+let box =
+document.getElementById(
+"admin-stats"
+);
+
+
+
+if(!box){
+
+return;
+
+}
+
+
 
 
 
@@ -114,29 +135,17 @@ await getAllReviewItems();
 
 
 
-
-
 let pending =
-
 items.filter(
-
 x=>x.status==="pending"
-
 ).length;
-
-
-
-
 
 
 
 
 let approved =
-
 items.filter(
-
 x=>x.status==="approved"
-
 ).length;
 
 
@@ -144,97 +153,39 @@ x=>x.status==="approved"
 
 
 
-
-
-document
-
-.getElementById(
-
-"admin-stats"
-
-)
-
-.innerHTML = `
-
-
+box.innerHTML = `
 
 
 <div class="card">
 
+<h2>${pending}</h2>
 
-<h2>
-
-${pending}
-
-</h2>
-
-
-<p>
-
-Pending Review
-
-</p>
-
+<p>Pending Review</p>
 
 </div>
 
 
 
-
-
-
-
-
 <div class="card">
 
+<h2>${approved}</h2>
 
-<h2>
-
-${approved}
-
-</h2>
-
-
-<p>
-
-Published
-
-</p>
-
+<p>Published</p>
 
 </div>
 
 
 
-
-
-
-
-
-
 <div class="card">
 
+<h2>${items.length}</h2>
 
-<h2>
-
-${items.length}
-
-</h2>
-
-
-<p>
-
-Total Content
-
-</p>
-
+<p>Total Content</p>
 
 </div>
-
 
 
 `;
-
 
 
 
@@ -248,26 +199,22 @@ Total Content
 
 
 
-
-
-
-
 async function renderAdminActions(){
-
-
-
 
 
 
 let box =
 document.getElementById(
-
 "admin-actions"
-
 );
 
 
 
+if(!box){
+
+return;
+
+}
 
 
 
@@ -275,8 +222,6 @@ document.getElementById(
 
 let items =
 await getAllReviewItems();
-
-
 
 
 
@@ -295,24 +240,16 @@ x=>x.status==="pending"
 
 
 
-
-if(
-
-pending.length===0
-
-){
+if(pending.length===0){
 
 
 
 box.innerHTML=`
 
 
-
 <div class="panel">
 
-
 Everything reviewed
-
 
 <span class="status">
 
@@ -320,9 +257,7 @@ Everything reviewed
 
 </span>
 
-
 </div>
-
 
 
 `;
@@ -351,12 +286,7 @@ pending.map(item=>`
 
 
 
-
-
 <div class="panel">
-
-
-
 
 
 
@@ -364,19 +294,13 @@ pending.map(item=>`
 
 
 
-
-
 <h3>
 
-
-${icon(item._collection)}
+${contentIcon(item._collection)}
 
 ${item.title}
 
-
 </h3>
-
-
 
 
 
@@ -385,15 +309,12 @@ ${item.title}
 <small>
 
 
-
 Type:
 
 ${item._collection}
 
 
-
 <br>
-
 
 
 👤
@@ -401,41 +322,31 @@ ${item._collection}
 ${item.author?.name || "Unknown"}
 
 
-
 <br>
-
 
 
 🎓
 
-${(item.courses || []).join(", ")}
-
+${item.course || "-"}
 
 
 <br>
-
 
 
 📘
 
-${(item.semesters || []).join(", ")}
-
-
+${item.semester || "-"}
 
 
 <br>
-
 
 
 🧪
 
-${(item.subjects || []).join(", ")}
-
-
+${item.subject || "-"}
 
 
 <br>
-
 
 
 🏷
@@ -443,10 +354,7 @@ ${(item.subjects || []).join(", ")}
 ${(item.tags || []).join(", ")}
 
 
-
 </small>
-
-
 
 
 
@@ -463,17 +371,11 @@ ${(item.tags || []).join(", ")}
 <div>
 
 
-
-
-
 <button onclick="viewContent('${item._collection}','${item.id}')">
 
 👁
 
 </button>
-
-
-
 
 
 
@@ -485,19 +387,11 @@ ${(item.tags || []).join(", ")}
 
 
 
-
-
-
-
 <button onclick="approveContent('${item._collection}','${item.id}')">
 
 ✅
 
 </button>
-
-
-
-
 
 
 
@@ -509,10 +403,6 @@ ${(item.tags || []).join(", ")}
 
 
 
-
-
-
-
 <button onclick="deleteContent('${item._collection}','${item.id}')">
 
 🗑
@@ -520,26 +410,18 @@ ${(item.tags || []).join(", ")}
 </button>
 
 
-
-
-
-
 </div>
 
 
 
 
 
-
-
 </div>
-
 
 
 
 
 `).join("");
-
 
 
 
@@ -553,7 +435,7 @@ ${(item.tags || []).join(", ")}
 
 
 
-function icon(type){
+function contentIcon(type){
 
 
 
@@ -568,13 +450,13 @@ events:"📅",
 tools:"🧰"
 
 
-}[type] || "📄";
+}[type]
+
+|| "📄";
 
 
 
 }
-
-
 
 
 
@@ -600,7 +482,6 @@ collection
 
 
 
-
 return items.find(
 
 x=>x.id===id
@@ -619,13 +500,12 @@ x=>x.id===id
 
 
 
+
+
 async function viewContent(
 collection,
 id
 ){
-
-
-
 
 
 
@@ -634,7 +514,6 @@ await findContent(
 collection,
 id
 );
-
 
 
 
@@ -649,54 +528,19 @@ return;
 
 
 
+showToast(
 
+`${item.title}
 
+${item.description || ""}`,
 
-showToast(`
+"info"
 
-
-Title:
-${item.title}
-
-
-Type:
-${collection}
-
-
-Description:
-${item.description || ""}
-
-
-Courses:
-${(item.courses || []).join(", ")}
-
-
-Subjects:
-${(item.subjects || []).join(", ")}
-
-
-Tags:
-${(item.tags || []).join(", ")}
-
-
-Link:
-${item.content?.link || "None"}
-
-
-File:
-${item.content?.file?.name || "None"}
-
-
-`);
-
-
+);
 
 
 
 }
-
-
-
 
 
 
@@ -725,7 +569,6 @@ prompt(
 
 
 
-
 if(!message){
 
 return;
@@ -736,17 +579,11 @@ return;
 
 
 
-
 let item =
 await findContent(
-
 collection,
-
 id
-
 );
-
-
 
 
 
@@ -763,7 +600,6 @@ comments:[]
 
 
 
-
 review.comments.push({
 
 
@@ -773,13 +609,10 @@ message:message,
 time:
 
 new Date()
-
 .toISOString()
 
 
 });
-
-
 
 
 
@@ -804,13 +637,13 @@ review:review
 
 
 
-
 showToast(
 
-"Comment saved"
+"Comment saved",
+
+"success"
 
 );
-
 
 
 
@@ -826,13 +659,10 @@ showToast(
 
 
 
-
-
 async function approveContent(
 collection,
 id
 ){
-
 
 
 
@@ -856,6 +686,16 @@ status:"approved"
 
 
 
+showToast(
+
+"Approved",
+
+"success"
+
+);
+
+
+
 
 renderAdminStats();
 
@@ -865,8 +705,6 @@ renderAdminActions();
 
 
 }
-
-
 
 
 
@@ -906,6 +744,16 @@ status:"rejected"
 
 
 
+showToast(
+
+"Rejected",
+
+"info"
+
+);
+
+
+
 
 renderAdminStats();
 
@@ -915,6 +763,8 @@ renderAdminActions();
 
 
 }
+
+
 
 
 
@@ -934,19 +784,33 @@ id
 
 
 
-if(
+let ok =
 
-!confirm(
+typeof showConfirm==="function"
 
+?
+
+await showConfirm(
 "Delete permanently?"
-
 )
 
-){
+:
+
+confirm(
+"Delete permanently?"
+);
+
+
+
+
+
+
+if(!ok){
 
 return;
 
 }
+
 
 
 
@@ -963,6 +827,18 @@ id
 );
 
 
+
+
+
+
+
+showToast(
+
+"Deleted",
+
+"success"
+
+);
 
 
 

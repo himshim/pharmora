@@ -5,7 +5,11 @@
 
 
 
+
+
 let authConfig=null;
+
+
 
 
 
@@ -25,6 +29,12 @@ return authConfig;
 
 
 
+
+
+try{
+
+
+
 authConfig =
 await fetch(
 
@@ -34,6 +44,28 @@ appPath(
 
 )
 .then(r=>r.json());
+
+
+
+}
+
+
+
+catch(error){
+
+
+
+authConfig={
+
+provider:"demo"
+
+};
+
+
+
+}
+
+
 
 
 
@@ -51,9 +83,12 @@ return authConfig;
 
 
 
-async function registerUser(
-data
-){
+
+
+async function registerUser(data){
+
+
+
 
 
 
@@ -64,7 +99,10 @@ await loadAuthConfig();
 
 
 
+
+
 if(config.provider==="demo"){
+
 
 
 return demoRegister(
@@ -72,7 +110,9 @@ data
 );
 
 
+
 }
+
 
 
 
@@ -103,11 +143,17 @@ data
 
 
 
+
+
+
+
 return null;
 
 
 
 }
+
+
 
 
 
@@ -124,8 +170,13 @@ password
 
 
 
+
+
+
 const config =
 await loadAuthConfig();
+
+
 
 
 
@@ -146,6 +197,7 @@ password
 
 
 }
+
 
 
 
@@ -181,6 +233,9 @@ password
 
 
 
+
+
+
 return null;
 
 
@@ -196,7 +251,12 @@ return null;
 
 
 
+
+
 function currentUser(){
+
+
+
 
 
 
@@ -243,7 +303,13 @@ return null;
 
 
 
+
+
+
 function logoutUser(){
+
+
+
 
 
 
@@ -252,6 +318,30 @@ localStorage.removeItem(
 "currentUser"
 
 );
+
+
+
+
+
+
+
+if(
+
+typeof clearPermissionCache==="function"
+
+){
+
+
+
+clearPermissionCache();
+
+
+
+}
+
+
+
+
 
 
 
@@ -276,11 +366,19 @@ showToast(
 
 
 
+
+
+
 location.href =
 
 appPath(
+
 "auth/login.html"
+
 );
+
+
+
 
 
 
@@ -295,14 +393,19 @@ appPath(
 
 
 
-async function updateProfile(
-updates
-){
+
+
+async function updateProfile(updates){
+
+
+
 
 
 
 let user =
 currentUser();
+
+
 
 
 
@@ -317,13 +420,18 @@ return null;
 
 
 
+
+
 user={
+
 
 
 ...user,
 
 
+
 ...updates,
+
 
 
 updatedAt:
@@ -332,7 +440,11 @@ new Date()
 .toISOString()
 
 
+
 };
+
+
+
 
 
 
@@ -352,11 +464,9 @@ JSON.stringify(user)
 
 
 
-if(typeof showToast==="function"){
 
 
-
-showToast(
+showToast?.(
 
 "Profile updated",
 
@@ -364,9 +474,6 @@ showToast(
 
 );
 
-
-
-}
 
 
 
@@ -378,7 +485,14 @@ return user;
 
 
 
+
+
+
 }
+
+
+
+
 
 
 
@@ -390,7 +504,7 @@ return user;
 
 /*
 
-DEMO AUTH ENGINE
+ DEMO AUTH ENGINE
 
 */
 
@@ -400,7 +514,19 @@ DEMO AUTH ENGINE
 
 
 
+
+
+
 function getDemoUsers(){
+
+
+
+
+
+
+try{
+
+
 
 
 
@@ -420,6 +546,25 @@ localStorage.getItem(
 
 
 
+
+
+}
+
+
+
+
+catch(error){
+
+
+
+return [];
+
+
+
+}
+
+
+
 }
 
 
@@ -431,9 +576,12 @@ localStorage.getItem(
 
 
 
-function saveDemoUsers(
-users
-){
+
+
+function saveDemoUsers(users){
+
+
+
 
 
 
@@ -442,10 +590,15 @@ localStorage.setItem(
 "users",
 
 JSON.stringify(
+
 users
+
 )
 
 );
+
+
+
 
 
 
@@ -461,9 +614,37 @@ users
 
 
 
-function demoRegister(
-data
-){
+
+function cleanEmail(email){
+
+
+
+return email
+
+.trim()
+
+.toLowerCase();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+function demoRegister(data){
+
+
+
 
 
 
@@ -478,18 +659,31 @@ getDemoUsers();
 
 
 
+
+let email =
+cleanEmail(
+
+data.email
+
+);
+
+
+
+
+
+
+
+
+
+
 let exists =
 users.find(
 
-u=>
-
-u.email.toLowerCase()
-
-===
-
-data.email.toLowerCase()
+u=>u.email===email
 
 );
+
+
 
 
 
@@ -501,11 +695,10 @@ if(exists){
 
 
 
-if(typeof showToast==="function"){
 
 
 
-showToast(
+showToast?.(
 
 "Account already exists",
 
@@ -515,7 +708,6 @@ showToast(
 
 
 
-}
 
 
 
@@ -523,7 +715,12 @@ return null;
 
 
 
+
+
 }
+
+
+
 
 
 
@@ -538,21 +735,31 @@ let user={
 
 
 
+
+
+
 id:
 
 crypto.randomUUID(),
 
 
 
+
+
+
 name:
 
-data.name,
+data.name.trim(),
 
 
 
-email:
 
-data.email,
+
+
+email:email,
+
+
+
 
 
 
@@ -562,11 +769,27 @@ data.password,
 
 
 
+
+
+
 role:
 
-data.role ||
+data.role || "member",
 
-"member",
+
+
+
+
+
+
+permissions:
+
+data.permissions || [],
+
+
+
+
+
 
 
 
@@ -574,6 +797,9 @@ createdAt:
 
 new Date()
 .toISOString()
+
+
+
 
 
 
@@ -589,7 +815,9 @@ new Date()
 
 
 users.push(
+
 user
+
 );
 
 
@@ -597,8 +825,13 @@ user
 
 
 
+
+
+
 saveDemoUsers(
+
 users
+
 );
 
 
@@ -619,6 +852,8 @@ let session={
 
 
 
+
+
 delete session.password;
 
 
@@ -644,11 +879,9 @@ JSON.stringify(session)
 
 
 
-if(typeof showToast==="function"){
 
 
-
-showToast(
+showToast?.(
 
 "Account created successfully",
 
@@ -656,9 +889,6 @@ showToast(
 
 );
 
-
-
-}
 
 
 
@@ -672,7 +902,13 @@ return session;
 
 
 
+
+
+
 }
+
+
+
 
 
 
@@ -693,8 +929,22 @@ password
 
 
 
+
+
+
 let users =
 getDemoUsers();
+
+
+
+
+
+
+
+
+email =
+cleanEmail(email);
+
 
 
 
@@ -708,11 +958,7 @@ users.find(
 
 u=>
 
-u.email.toLowerCase()
-
-===
-
-email.toLowerCase()
+u.email===email
 
 &&
 
@@ -728,17 +974,15 @@ u.password===password
 
 
 
+
 if(!user){
 
 
 
 
 
-if(typeof showToast==="function"){
 
-
-
-showToast(
+showToast?.(
 
 "Invalid login details",
 
@@ -748,9 +992,6 @@ showToast(
 
 
 
-}
-
-
 
 
 
@@ -758,7 +999,10 @@ return null;
 
 
 
+
+
 }
+
 
 
 
@@ -773,7 +1017,16 @@ return null;
 let session={
 
 
+
+
+
+
 ...user,
+
+
+
+
+
 
 
 lastLogin:
@@ -782,7 +1035,15 @@ new Date()
 .toISOString()
 
 
+
+
+
+
+
 };
+
+
+
 
 
 
@@ -816,11 +1077,7 @@ JSON.stringify(session)
 
 
 
-if(typeof showToast==="function"){
-
-
-
-showToast(
+showToast?.(
 
 "Login successful",
 
@@ -828,9 +1085,6 @@ showToast(
 
 );
 
-
-
-}
 
 
 
@@ -841,6 +1095,9 @@ showToast(
 
 
 return session;
+
+
+
 
 
 

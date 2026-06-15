@@ -1,23 +1,43 @@
 {
-  "name": "Pharmrepo",
+  "name": "Pharmora",
+
 
   "tagline": "Open Pharmacy Learning Network",
 
+
   "description": "Open collaborative platform for pharmacy education",
+
 
   "logo": "assets/branding/logo.svg",
 
+
   "favicon": "assets/branding/favicon.svg",
+
 
   "version": "1.0.0",
 
+
   "theme": {
+
+
     "primary": "#0891b2",
+
+
     "secondary": "#7c3aed"
+
+
   },
 
+
   "links": {
+
+
     "github": "",
+
+
     "contact": "himshim26@protonmail.com"
+
+
   }
+
 }

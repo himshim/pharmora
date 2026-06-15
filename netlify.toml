@@ -1,6 +1,6 @@
 # =========================
-# Netlify Configuration
-# Development Stage
+# Pharmora Netlify Config
+# Static Multi Page App
 # =========================
 
 
@@ -10,8 +10,10 @@ publish = "."
 
 
 
+
+
 # =========================
-# ROUTING
+# CLEAN 404 HANDLING
 # =========================
 
 
@@ -19,9 +21,12 @@ publish = "."
 
 from = "/*"
 
-to = "/index.html"
+to = "/404.html"
 
-status = 200
+status = 404
+
+
+
 
 
 
@@ -36,13 +41,28 @@ status = 200
 
 for = "/*"
 
+
 [headers.values]
+
 
 X-Frame-Options = "DENY"
 
+
 X-Content-Type-Options = "nosniff"
 
+
 Referrer-Policy = "strict-origin-when-cross-origin"
+
+
+Permissions-Policy = """
+camera=(),
+microphone=(),
+geolocation=()
+"""
+
+
+
+
 
 
 
@@ -50,7 +70,7 @@ Referrer-Policy = "strict-origin-when-cross-origin"
 
 # =========================
 # HTML
-# Always refresh pages
+# Always Fresh
 # =========================
 
 
@@ -58,62 +78,28 @@ Referrer-Policy = "strict-origin-when-cross-origin"
 
 for = "/*.html"
 
-[headers.values]
-
-Cache-Control = "no-cache"
-
-
-
-
-
-# =========================
-# CSS
-# Development mode
-# =========================
-
-
-[[headers]]
-
-for = "/css/*"
 
 [headers.values]
 
-Cache-Control = "no-cache"
+
+Cache-Control = """
+no-cache,
+no-store,
+must-revalidate
+"""
+
+
+
+
+
 
 
 
 
 
 # =========================
-# JavaScript
-# Development mode
-# =========================
-
-
-[[headers]]
-
-for = "/js/*"
-
-[headers.values]
-
-Cache-Control = "no-cache"
-
-
-
-[[headers]]
-
-for = "/components/*"
-
-[headers.values]
-
-Cache-Control = "no-cache"
-
-
-
-
-
-# =========================
-# Dynamic JSON data
+# CONFIG + DATA
+# Dynamic Content
 # =========================
 
 
@@ -121,9 +107,15 @@ Cache-Control = "no-cache"
 
 for = "/config/*"
 
+
 [headers.values]
 
+
 Cache-Control = "no-cache"
+
+
+
+
 
 
 
@@ -131,7 +123,9 @@ Cache-Control = "no-cache"
 
 for = "/data/*"
 
+
 [headers.values]
+
 
 Cache-Control = "no-cache"
 
@@ -139,9 +133,86 @@ Cache-Control = "no-cache"
 
 
 
+
+
+
+
+
 # =========================
-# Static assets
-# Cache allowed
+# CSS CACHE
+# =========================
+
+
+[[headers]]
+
+for = "/css/*"
+
+
+[headers.values]
+
+
+Cache-Control = """
+public,
+max-age=604800
+"""
+
+
+
+
+
+
+
+
+
+
+# =========================
+# JAVASCRIPT CACHE
+# =========================
+
+
+[[headers]]
+
+for = "/js/*"
+
+
+[headers.values]
+
+
+Cache-Control = """
+public,
+max-age=604800
+"""
+
+
+
+
+
+
+
+[[headers]]
+
+for = "/components/*"
+
+
+[headers.values]
+
+
+Cache-Control = """
+public,
+max-age=604800
+"""
+
+
+
+
+
+
+
+
+
+
+# =========================
+# IMAGES / ASSETS
 # =========================
 
 
@@ -149,6 +220,12 @@ Cache-Control = "no-cache"
 
 for = "/assets/*"
 
+
 [headers.values]
 
-Cache-Control = "public, max-age=86400"
+
+Cache-Control = """
+public,
+max-age=31536000,
+immutable
+"""

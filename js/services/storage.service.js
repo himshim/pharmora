@@ -5,7 +5,11 @@
 
 
 
+
+
 let storageConfig=null;
+
+
 
 
 
@@ -43,17 +47,9 @@ appPath(
 
 }
 
+
+
 catch(error){
-
-
-
-console.error(
-
-"Storage config loading failed",
-
-error
-
-);
 
 
 
@@ -91,6 +87,20 @@ folder="uploads/"
 
 
 
+
+
+
+if(!file){
+
+return null;
+
+}
+
+
+
+
+
+
 const config =
 await loadStorageConfig();
 
@@ -100,9 +110,8 @@ await loadStorageConfig();
 
 
 
-if(
-config.provider==="demo"
-){
+
+if(config.provider==="demo"){
 
 
 
@@ -117,6 +126,7 @@ folder
 
 
 }
+
 
 
 
@@ -168,9 +178,26 @@ return null;
 
 
 
-async function deleteFile(
-file
-){
+
+
+
+async function deleteFile(file){
+
+
+
+
+
+
+if(!file){
+
+return false;
+
+}
+
+
+
+
+
 
 
 
@@ -183,24 +210,17 @@ await loadStorageConfig();
 
 
 
-if(
-config.provider==="demo"
-){
 
+if(config.provider==="demo"){
 
-console.log(
-
-"Demo delete:",
-
-file
-
-);
 
 
 return true;
 
 
+
 }
+
 
 
 
@@ -230,6 +250,15 @@ file
 
 
 
+
+
+
+
+
+return false;
+
+
+
 }
 
 
@@ -240,9 +269,12 @@ file
 
 
 
-function getFileUrl(
-file
-){
+
+
+
+
+function getFileUrl(file){
+
 
 
 
@@ -253,6 +285,8 @@ if(!file){
 return "";
 
 }
+
+
 
 
 
@@ -272,13 +306,14 @@ return file.url || "";
 
 
 
+
+
+
 /*
 
-DEMO STORAGE ENGINE
+ DEMO STORAGE ENGINE
 
 */
-
-
 
 
 
@@ -296,7 +331,38 @@ folder
 
 
 
+
+
+let safeName =
+
+Date.now()
+
++
+
+"-"
+
++
+
+file.name.replace(
+
+/\s+/g,
+
+"_"
+
+);
+
+
+
+
+
+
+
+
+
 let record={
+
+
+
 
 
 
@@ -306,9 +372,16 @@ crypto.randomUUID(),
 
 
 
+
+
+
 name:
 
 file.name,
+
+
+
+
 
 
 
@@ -318,23 +391,45 @@ file.type,
 
 
 
+
+
+
+
 size:
 
 file.size,
 
 
 
+
+
+
+
+
 path:
 
-folder +
+folder + safeName,
 
-file.name,
+
+
+
+
 
 
 
 url:
 
-"",
+URL.createObjectURL(
+
+file
+
+),
+
+
+
+
+
+
 
 
 
@@ -344,10 +439,20 @@ provider:
 
 
 
+
+
+
+
+
 uploadedAt:
 
 new Date()
 .toISOString()
+
+
+
+
+
 
 
 
@@ -359,20 +464,12 @@ new Date()
 
 
 
-console.log(
-
-"Demo uploaded:",
-
-record
-
-);
-
-
-
-
 
 
 return record;
+
+
+
 
 
 

@@ -1,12 +1,14 @@
 /*
  Pharmora Universal Search Engine
  Dynamic Database Version
- Hierarchy Ready
+ Hierarchy Optimized
 */
 
 
 
 let searchIndex=[];
+
+let relationCache={};
 
 
 
@@ -90,8 +92,75 @@ page:"learn/"
 
 
 
+async function loadRelation(
+collection
+){
 
-async function resolveSearchName(
+
+
+if(
+
+relationCache[collection]
+
+){
+
+
+return relationCache[collection];
+
+
+}
+
+
+
+
+
+try{
+
+
+
+relationCache[collection] =
+
+await getRecords(
+
+collection
+
+);
+
+
+
+}
+
+
+
+catch(error){
+
+
+
+relationCache[collection]=[];
+
+
+
+}
+
+
+
+
+
+return relationCache[collection];
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function resolveName(
 collection,
 id
 ){
@@ -106,23 +175,25 @@ return "";
 
 
 
-try{
 
 
-
-let data =
-await getRecords(
+let records =
+await loadRelation(
 collection
 );
 
 
 
+
+
 let item =
-data.find(
+records.find(
 
 x=>x.id===id
 
 );
+
+
 
 
 
@@ -152,20 +223,6 @@ item.code ||
 
 
 
-catch(e){
-
-
-return "";
-
-
-}
-
-
-
-}
-
-
-
 
 
 
@@ -176,15 +233,23 @@ async function buildSearchIndex(){
 
 
 
+
+
 searchIndex=[];
 
+relationCache={};
 
 
 
 
 
-for(let source of searchableCollections){
 
+
+for(
+
+let source of searchableCollections
+
+){
 
 
 
@@ -198,7 +263,9 @@ try{
 
 let data =
 await getRecords(
+
 source.name
+
 );
 
 
@@ -207,7 +274,14 @@ source.name
 
 
 
-for(let item of data){
+
+for(
+
+let item of data
+
+){
+
+
 
 
 
@@ -221,15 +295,25 @@ item.status
 
 &&
 
-item.status!=="approved"
+![
 
-&&
+"approved",
 
-item.status!=="active"
+"active"
+
+]
+
+.includes(
+
+item.status
+
+)
 
 ){
 
+
 continue;
+
 
 }
 
@@ -242,104 +326,83 @@ continue;
 
 
 
-let course =
-await resolveSearchName(
+let hierarchy=[
 
+
+
+await resolveName(
 "courses",
-
 item.course
-
-);
-
+),
 
 
 
-
-let curriculum =
-await resolveSearchName(
-
+await resolveName(
 "curriculums",
-
 item.curriculum
-
-);
-
+),
 
 
 
-
-let semester =
-await resolveSearchName(
-
+await resolveName(
 "semesters",
-
 item.semester
-
-);
-
+),
 
 
 
-
-let subject =
-await resolveSearchName(
-
+await resolveName(
 "subjects",
-
 item.subject
-
-);
-
+),
 
 
 
-
-let unit =
-await resolveSearchName(
-
+await resolveName(
 "units",
-
 item.unit
-
-);
-
+)
 
 
 
-
+];
 
 
 
 
-let text=[
+
+
+
+
+
+
+
+let keywords=[
 
 
 
 item.title,
 
+
 item.name,
+
 
 item.description,
 
+
 item.code,
 
+
 item.type,
+
 
 item.category,
 
 
-course,
-
-curriculum,
-
-semester,
-
-subject,
-
-unit,
-
-
 item.author?.name,
+
+
+...hierarchy,
 
 
 ...(item.tags || [])
@@ -347,7 +410,6 @@ item.author?.name,
 
 
 ]
-
 
 .flat()
 
@@ -365,55 +427,42 @@ item.author?.name,
 
 
 
-let url="";
-
-
-
-
-
-
-if(
+let url =
 
 [
+
 "resources",
+
 "books",
+
 "events",
+
 "tools"
 
-].includes(source.name)
+]
 
-){
+.includes(
 
+source.name
 
+)
 
-url =
+?
+
 appPath(
 
 `library/view.html?id=${item.id}&type=${source.name}`
 
-);
+)
 
+:
 
-
-}
-
-
-
-
-else{
-
-
-
-url =
 appPath(
 
 source.page
 
 );
 
-
-
-}
 
 
 
@@ -440,11 +489,12 @@ item.code ||
 
 
 
+
 description:
 
-item.description ||
+item.description || "",
 
-"",
+
 
 
 
@@ -454,11 +504,16 @@ source.icon,
 
 
 
+
+
 url:url,
 
 
 
-keywords:text
+
+
+keywords:keywords
+
 
 
 
@@ -469,36 +524,23 @@ keywords:text
 
 
 
-
-
 }
 
 
 
 
 
-
-
-
-
 }
+
+
+
 
 
 catch(error){
 
 
 
-console.log(
-
-"Search skipped:",
-
-source.name
-
-);
-
-
-
-}
+/* ignore missing collections */
 
 
 
@@ -508,24 +550,13 @@ source.name
 
 
 
-
-
-
-
-console.log(
-
-"Search ready:",
-
-searchIndex.length
-
-);
-
-
-
 }
 
 
 
+
+
+}
 
 
 
@@ -544,25 +575,9 @@ async function(query){
 
 
 
-if(
-
-typeof trackSearch==="function"
-
-){
 
 
-trackSearch(query);
-
-
-}
-
-
-
-
-
-
-const box =
-
+let box =
 document.getElementById(
 
 "search-results"
@@ -577,6 +592,29 @@ if(!box){
 return;
 
 }
+
+
+
+
+
+
+
+
+if(
+
+typeof trackSearch==="function"
+
+){
+
+
+
+trackSearch(query);
+
+
+
+}
+
+
 
 
 
@@ -605,17 +643,30 @@ await buildSearchIndex();
 
 
 
-if(
+query =
 
-query.trim().length < 2
+query
 
-){
+.trim()
+
+.toLowerCase();
+
+
+
+
+
+
+
+
+
+if(query.length < 2){
+
 
 
 box.innerHTML="";
 
-
 return;
+
 
 
 }
@@ -626,27 +677,23 @@ return;
 
 
 
-let key =
-
-query.toLowerCase();
-
-
-
 
 
 
 
 let results =
-
 searchIndex.filter(
 
 item=>
 
 item.keywords.includes(
-key
+
+query
+
 )
 
 );
+
 
 
 
@@ -662,7 +709,6 @@ results.length
 ?
 
 results.map(item=>`
-
 
 
 
@@ -682,14 +728,11 @@ ${item.icon}
 </h3>
 
 
-
 <h2>
 
 ${item.title}
 
 </h2>
-
-
 
 
 <p>
@@ -699,20 +742,14 @@ ${item.description}
 </p>
 
 
-
 </a>
-
-
 
 
 `).join("")
 
-
 :
 
-
 `
-
 
 <div class="card empty-state">
 
@@ -720,13 +757,16 @@ No results found
 
 </div>
 
-
 `;
 
 
 
 
+
+
 };
+
+
 
 
 
@@ -742,9 +782,7 @@ document.addEventListener(
 
 ()=>{
 
-
 buildSearchIndex();
-
 
 }
 

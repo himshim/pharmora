@@ -668,29 +668,67 @@ built for everyone.
 <!-- APP CORE -->
 <script src="js/app.js"></script>
 
-<script src="/js/services/database.service.js"></script>
 
-<!-- LAYOUT -->
+
+<!-- SERVICES -->
+<script src="js/services/database.service.js"></script>
+
+<script src="js/services/auth.service.js"></script>
+
+<script src="js/services/storage.service.js"></script>
+
+<script src="js/services/analytics.service.js"></script>
+
+
+
+
+
+<!-- COMPONENTS -->
 <script src="components/layout/header.js"></script>
 
 <script src="components/layout/footer.js"></script>
 
 
-<!-- SERVICES -->
-<script src="js/services/analytics.service.js"></script>
 
-<script src="js/services/features.service.js"></script>
 
 
 <!-- FEATURES -->
+<script src="js/services/features.service.js"></script>
+
 <script src="js/search.js"></script>
+
+
+
 
 
 <script>
 
+
+document.addEventListener(
+
+"DOMContentLoaded",
+
+()=>{
+
+
+if(typeof renderFeatures==="function"){
+
+
 renderFeatures(
+
 "features-list"
+
 );
+
+
+}
+
+
+}
+
+
+);
+
 
 </script>
 

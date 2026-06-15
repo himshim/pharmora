@@ -5,7 +5,14 @@
 
 
 
+
+
 let databaseConfig=null;
+
+let dbCache={};
+
+
+
 
 
 
@@ -13,6 +20,7 @@ let databaseConfig=null;
 
 
 async function loadDatabaseConfig(){
+
 
 
 if(databaseConfig){
@@ -23,7 +31,10 @@ return databaseConfig;
 
 
 
+
+
 try{
+
 
 
 databaseConfig =
@@ -40,17 +51,10 @@ appPath(
 
 }
 
+
+
+
 catch(error){
-
-
-
-console.error(
-
-"Database config loading failed",
-
-error
-
-);
 
 
 
@@ -66,7 +70,10 @@ provider:"demo"
 
 
 
+
+
 return databaseConfig;
+
 
 
 }
@@ -79,9 +86,10 @@ return databaseConfig;
 
 
 
-function resolveCollection(
-collection
-){
+function resolveCollection(collection){
+
+
+
 
 
 
@@ -100,10 +108,14 @@ databaseConfig.collections[collection]
 ){
 
 
+
 return databaseConfig.collections[collection];
 
 
+
 }
+
+
 
 
 
@@ -129,8 +141,12 @@ data
 
 
 
+
+
+
 const config =
 await loadDatabaseConfig();
+
 
 
 
@@ -144,15 +160,21 @@ collection
 
 
 
-if(
-config.provider==="demo"
-){
+
+
+
+if(config.provider==="demo"){
+
 
 
 return demoCreate(
+
 collection,
+
 data
+
 );
+
 
 
 }
@@ -162,10 +184,17 @@ data
 
 
 
+
+
+
 if(
+
 config.provider==="supabase"
+
 &&
+
 typeof supabaseCreate==="function"
+
 ){
 
 
@@ -184,6 +213,14 @@ data
 
 
 
+
+
+
+
+return null;
+
+
+
 }
 
 
@@ -194,14 +231,17 @@ data
 
 
 
-async function getRecords(
-collection
-){
+async function getRecords(collection){
+
+
+
 
 
 
 const config =
 await loadDatabaseConfig();
+
+
 
 
 
@@ -217,9 +257,11 @@ collection
 
 
 
-if(
-config.provider==="demo"
-){
+
+
+if(config.provider==="demo"){
+
+
 
 
 
@@ -237,7 +279,12 @@ item=>item.deleted!==true
 
 
 
+
 }
+
+
+
+
 
 
 
@@ -270,6 +317,9 @@ collection
 
 
 
+
+
+
 return [];
 
 
@@ -292,8 +342,13 @@ updates
 
 
 
+
+
+
 const config =
 await loadDatabaseConfig();
+
+
 
 
 
@@ -309,9 +364,12 @@ collection
 
 
 
-if(
-config.provider==="demo"
-){
+
+
+if(config.provider==="demo"){
+
+
+
 
 
 
@@ -325,21 +383,42 @@ collection
 
 
 
+
+
+let updated=null;
+
+
+
+
+
+
+
+
+
 items =
+
 items.map(item=>{
 
 
 
-if(
-item.id===id
-){
 
 
-return {
+
+if(item.id===id){
+
+
+
+
+
+updated={
+
+
 
 ...item,
 
+
 ...updates,
+
 
 
 updatedAt:
@@ -347,10 +426,27 @@ updatedAt:
 new Date()
 .toISOString()
 
+
+
 };
 
 
+
+
+
+
+return updated;
+
+
+
+
+
 }
+
+
+
+
+
 
 
 
@@ -358,7 +454,13 @@ return item;
 
 
 
+
+
+
 });
+
+
+
 
 
 
@@ -381,15 +483,15 @@ items
 
 
 
-return items.find(
+return updated;
 
-item=>item.id===id
 
-);
+
 
 
 
 }
+
 
 
 
@@ -427,6 +529,14 @@ updates
 
 
 
+
+
+
+
+return null;
+
+
+
 }
 
 
@@ -446,6 +556,7 @@ id
 
 
 
+
 return updateRecord(
 
 collection,
@@ -454,13 +565,16 @@ id,
 
 {
 
+
 deleted:true,
+
 
 
 deletedAt:
 
 new Date()
 .toISOString()
+
 
 }
 
@@ -489,6 +603,7 @@ id
 
 
 
+
 return updateRecord(
 
 collection,
@@ -497,13 +612,16 @@ id,
 
 {
 
+
 deleted:false,
+
 
 
 restoredAt:
 
 new Date()
 .toISOString()
+
 
 }
 
@@ -523,7 +641,7 @@ new Date()
 
 /*
 
-DEMO LOCAL STORAGE ENGINE
+ LOCAL STORAGE ENGINE
 
 */
 
@@ -533,9 +651,16 @@ DEMO LOCAL STORAGE ENGINE
 
 
 
-function getLocalCollection(
-collection
-){
+function getLocalCollection(collection){
+
+
+
+
+
+
+try{
+
+
 
 
 
@@ -552,6 +677,29 @@ localStorage.getItem(
 "[]"
 
 );
+
+
+
+
+
+}
+
+
+
+
+catch(error){
+
+
+
+
+
+return [];
+
+
+
+
+
+}
 
 
 
@@ -572,10 +720,12 @@ items
 
 
 
+
+
+
 localStorage.setItem(
 
 "db_" + collection,
-
 
 JSON.stringify(
 
@@ -587,9 +737,11 @@ items
 
 
 
+
+
+
+
 }
-
-
 
 
 
@@ -608,6 +760,7 @@ data
 
 
 
+
 let items =
 getLocalCollection(
 collection
@@ -619,8 +772,10 @@ collection
 
 
 
-
 let record={
+
+
+
 
 
 
@@ -631,7 +786,12 @@ crypto.randomUUID(),
 
 
 
+
+
 ...data,
+
+
+
 
 
 
@@ -640,7 +800,24 @@ crypto.randomUUID(),
 createdAt:
 
 new Date()
+.toISOString(),
+
+
+
+
+
+
+
+
+updatedAt:
+
+new Date()
 .toISOString()
+
+
+
+
+
 
 
 
@@ -655,10 +832,9 @@ new Date()
 
 
 items.push(
-
 record
-
 );
+
 
 
 
@@ -681,7 +857,104 @@ items
 
 
 
+
 return record;
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+function exportDatabase(){
+
+
+
+
+
+
+let backup={};
+
+
+
+
+
+
+
+Object.keys(
+
+localStorage
+
+)
+
+.filter(
+
+key=>key.startsWith("db_")
+
+)
+
+.forEach(key=>{
+
+
+
+
+
+
+backup[key]=
+
+JSON.parse(
+
+localStorage.getItem(key)
+
+);
+
+
+
+
+
+
+});
+
+
+
+
+
+
+
+
+return backup;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+function clearDatabaseCache(){
+
+
+
+dbCache={};
 
 
 

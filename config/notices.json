@@ -1,17 +1,42 @@
 [
   {
+
     "id": "notice_001",
+
     "title": "Platform Updated",
+
     "message": "New improvements and features added.",
-    "type": "update",
+
+    "type": "General",
+
+    "priority": "Normal",
+
+    "link": "",
+
+    "active": true,
+
     "date": "2026-06-14"
+
   },
 
+
   {
+
     "id": "notice_002",
+
     "title": "Contributions Open",
+
     "message": "Students and educators can submit resources.",
-    "type": "info",
+
+    "type": "Announcement",
+
+    "priority": "Normal",
+
+    "link": "/contribute/",
+
+    "active": true,
+
     "date": "2026-06-14"
+
   }
 ]

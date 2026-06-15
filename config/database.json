@@ -1,73 +1,85 @@
 {
-  "provider":"demo",
+  "provider": "demo",
 
 
-  "demo":{
+  "demo": {
 
-    "storage":"local"
-
-  },
-
-
-  "supabase":{
-
-    "url":"",
-
-    "key":""
+    "storage": "local"
 
   },
 
 
-  "collections":{
+  "supabase": {
+
+    "url": "",
+
+    "key": ""
+
+  },
 
 
-    "resources":"resources",
+  "collections": {
 
 
-    "users":"users",
+    "resources": "resources",
 
 
-    "events":"events",
+    "users": "users",
 
 
-    "books":"books",
+    "events": "events",
 
 
-    "forum":"forum",
+    "books": "books",
 
 
-    "analytics":"analytics",
+    "forum": "forum",
+
+
+    "analytics": "analytics",
 
 
 
-    "courses":"courses",
 
 
-    "curriculums":"curriculums",
+    "courses": "courses",
 
 
-    "semesters":"semesters",
+    "curriculums": "curriculums",
 
 
-    "subjects":"subjects",
+    "semesters": "semesters",
 
 
-    "categories":"categories",
+    "subjects": "subjects",
 
 
-    "tags":"tags",
+    "units": "units",
 
 
-    "audience":"audience",
 
 
-    "exams":"exams",
+
+    "categories": "categories",
 
 
-    "notifications":"notifications",
+    "tags": "tags",
 
 
-    "tools":"tools"
+    "audience": "audience",
+
+
+    "exams": "exams",
+
+
+
+
+
+    "notifications": "notifications",
+
+
+    "tools": "tools"
+
 
   }
 

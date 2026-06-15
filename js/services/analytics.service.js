@@ -1,31 +1,116 @@
 /*
- Analytics Service
+ Pharmora Analytics Service
+ Privacy Friendly Adapter
 */
+
+
+
+
+
+let analyticsQueue=[];
+
+
+
+
+
+
+
+
+
+function analyticsEnabled(){
+
+
+
+return (
+
+localStorage.getItem(
+
+"analytics-disabled"
+
+)
+
+!==
+
+"true"
+
+);
+
+
+
+}
+
+
+
+
+
+
+
 
 
 function trackEvent(
 event,
-target
+target=""
 ){
 
 
 
-let data =
-{
+
+
+
+if(
+
+!analyticsEnabled()
+
+){
+
+return;
+
+}
+
+
+
+
+
+
+
+
+let data={
+
+
+
+id:
+
+crypto.randomUUID(),
+
+
+
 event:event,
+
+
 
 target:target,
 
-time:new Date()
+
+
+time:
+
+new Date()
 .toISOString()
+
+
+
 };
 
 
 
 
 
-console.log(
-"Analytics:",
+
+
+
+
+
+analyticsQueue.push(
 data
 );
 
@@ -33,9 +118,28 @@ data
 
 
 
+
+
+
+
+
+saveLocalAnalytics(
+data
+);
+
+
+
+
+
+
+
+
+
+
+
 /*
 
-Future:
+Future Cloud:
 
 supabase
 .from("analytics")
@@ -45,7 +149,181 @@ supabase
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function saveLocalAnalytics(data){
+
+
+
+
+
+
+let logs =
+JSON.parse(
+
+localStorage.getItem(
+"analytics"
+)
+
+||
+
+"[]"
+
+);
+
+
+
+
+
+
+
+
+logs.push(
+data
+);
+
+
+
+
+
+
+
+
+/*
+
+keep last 100 only
+
+*/
+
+
+
+logs =
+
+logs.slice(-100);
+
+
+
+
+
+
+
+
+localStorage.setItem(
+
+"analytics",
+
+JSON.stringify(logs)
+
+);
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+function getAnalytics(){
+
+
+
+
+
+
+return JSON.parse(
+
+localStorage.getItem(
+
+"analytics"
+
+)
+
+||
+
+"[]"
+
+);
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function clearAnalytics(){
+
+
+
+
+
+
+localStorage.removeItem(
+
+"analytics"
+
+);
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+let lastSearch="";
 
 
 
@@ -59,8 +337,24 @@ function trackSearch(query){
 
 
 
+
+
+
+query =
+
+query.trim();
+
+
+
+
+
+
+
+
 if(
+
 query.length < 2
+
 ){
 
 return;
@@ -70,10 +364,47 @@ return;
 
 
 
+
+
+
+
+
+if(
+
+query===lastSearch
+
+){
+
+return;
+
+}
+
+
+
+
+
+
+
+
+lastSearch=query;
+
+
+
+
+
+
+
+
 trackEvent(
+
 "search",
+
 query
+
 );
+
+
+
 
 
 

@@ -7,10 +7,9 @@
 
 
 
-
-
-
 let cachedPermissions=null;
+
+let cachedRole=null;
 
 
 
@@ -26,11 +25,17 @@ async function getPermissions(role){
 
 
 
+try{
+
+
+
 const roles =
 
 await fetch(
 
-"/config/roles.json"
+appPath(
+"config/roles.json"
+)
 
 )
 
@@ -58,23 +63,34 @@ item=>item.role===role
 
 
 
+return found
 
-if(!found){
+?
+
+found.permissions
+
+:
+
+[];
 
 
-return [];
+
 
 
 }
 
 
 
+catch(error){
 
 
 
+return [];
 
 
-return found.permissions;
+
+}
+
 
 
 
@@ -95,23 +111,11 @@ async function userPermissions(){
 
 
 
-if(cachedPermissions){
-
-
-return cachedPermissions;
-
-
-}
-
-
-
-
-
 
 
 if(
 
-typeof currentUser!=="function"
+typeof currentUser !== "function"
 
 ){
 
@@ -120,7 +124,6 @@ return [];
 
 
 }
-
 
 
 
@@ -139,11 +142,51 @@ currentUser();
 if(!user){
 
 
+
+clearPermissionCache();
+
+
+
 return [];
+
 
 
 }
 
+
+
+
+
+
+
+
+
+if(
+
+cachedPermissions
+
+&&
+
+cachedRole===user.role
+
+){
+
+
+return cachedPermissions;
+
+
+}
+
+
+
+
+
+
+
+
+cachedRole =
+
+user.role;
 
 
 
@@ -164,7 +207,11 @@ user.role
 
 
 
+
+
 return cachedPermissions;
+
+
 
 
 
@@ -178,9 +225,10 @@ return cachedPermissions;
 
 
 
-async function hasPermission(
-permission
-){
+
+
+async function hasPermission(permission){
+
 
 
 
@@ -211,6 +259,8 @@ permissions.includes(permission)
 
 
 
+
+
 }
 
 
@@ -221,8 +271,10 @@ permissions.includes(permission)
 
 
 
-async function applyPermissions(){
 
+
+
+async function applyPermissions(){
 
 
 
@@ -257,7 +309,6 @@ document
 
 
 
-
 let required =
 
 item.dataset.permission;
@@ -281,7 +332,7 @@ permissions.includes(required)
 
 
 
-item.style.display="block";
+item.style.display="";
 
 
 
@@ -312,6 +363,7 @@ item.remove();
 
 
 
+
 }
 
 
@@ -324,9 +376,10 @@ item.remove();
 
 
 
-async function requirePermission(
-permission
-){
+
+
+async function requirePermission(permission){
+
 
 
 
@@ -356,9 +409,40 @@ if(!allowed){
 
 
 
+
+if(
+
+typeof showToast==="function"
+
+){
+
+
+
 showToast(
 
-"You do not have permission"
+"You do not have permission",
+
+"error"
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+location.href =
+
+appPath(
+
+"dashboard/"
 
 );
 
@@ -367,15 +451,11 @@ showToast(
 
 
 
-location.href="/dashboard/";
-
-
-
-
-
 
 
 return false;
+
+
 
 
 
@@ -393,9 +473,9 @@ return true;
 
 
 
+
+
 }
-
-
 
 
 
@@ -410,6 +490,9 @@ function clearPermissionCache(){
 
 
 cachedPermissions=null;
+
+
+cachedRole=null;
 
 
 
