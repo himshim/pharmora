@@ -72,14 +72,74 @@ document.getElementById(
 
 
 
-area.innerHTML = `
+let content="";
+
+
+
+
+
+if(
+
+[
+"curriculums",
+"semesters",
+"subjects",
+"units"
+
+].includes(collection)
+
+){
+
+
+
+content =
+await renderGroupedAdmin(
+
+collection,
+
+data
+
+);
+
+
+
+}
+
+
+
+else{
+
+
+
+content =
+renderSimpleAdmin(
+
+data
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+area.innerHTML=`
 
 
 <button
+
 class="btn btn-primary"
+
 onclick="showForm()">
 
+
 + Add ${collection}
+
 
 </button>
 
@@ -87,10 +147,29 @@ onclick="showForm()">
 <br><br>
 
 
-${
+${content}
 
-data.map(item=>`
 
+`;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+function renderSimpleAdmin(data){
+
+
+
+return data.map(item=>`
 
 <div class="panel">
 
@@ -100,24 +179,9 @@ data.map(item=>`
 
 <strong>
 
-
-${
-
-item.name ||
-
-item.title ||
-
-item.code ||
-
-(item.system ? item.system+" "+item.number : "") ||
-
-"Untitled"
-
-}
-
+${displayName(item)}
 
 </strong>
-
 
 
 <br>
@@ -161,10 +225,462 @@ ${item.description || ""}
 </div>
 
 
-`).join("")
+`).join("");
+
 
 
 }
+
+
+
+
+
+
+
+
+
+
+async function renderGroupedAdmin(
+collection,
+data
+){
+
+
+
+let courses =
+await getRecords(
+"courses"
+);
+
+
+let curriculums =
+await getRecords(
+"curriculums"
+);
+
+
+let semesters =
+await getRecords(
+"semesters"
+);
+
+
+let subjects =
+await getRecords(
+"subjects"
+);
+
+
+
+
+
+let html="";
+
+
+
+
+
+
+courses.forEach(course=>{
+
+
+
+let courseHTML="";
+
+
+
+
+
+
+
+/* CURRICULUM VIEW */
+
+
+if(collection==="curriculums"){
+
+
+
+data
+
+.filter(
+
+x=>x.course===course.id
+
+)
+
+.forEach(item=>{
+
+
+courseHTML +=
+
+adminRow(item);
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/* SEMESTER VIEW */
+
+
+if(collection==="semesters"){
+
+
+
+curriculums
+
+.filter(
+
+c=>c.course===course.id
+
+)
+
+.forEach(cur=>{
+
+
+
+let rows="";
+
+
+
+data
+
+.filter(
+
+s=>s.curriculum===cur.id
+
+)
+
+.forEach(s=>{
+
+
+rows += adminRow(s);
+
+
+});
+
+
+
+
+
+if(rows){
+
+
+courseHTML += `
+
+
+<div class="card">
+
+
+<h3>
+
+📂 ${cur.name}
+
+</h3>
+
+
+${rows}
+
+
+</div>
+
+
+`;
+
+
+}
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+/* SUBJECT VIEW */
+
+
+if(collection==="subjects"){
+
+
+
+curriculums
+
+.filter(
+
+c=>c.course===course.id
+
+)
+
+.forEach(cur=>{
+
+
+
+
+
+semesters
+
+.filter(
+
+s=>s.curriculum===cur.id
+
+)
+
+.forEach(sem=>{
+
+
+
+
+
+let rows="";
+
+
+
+data
+
+.filter(
+
+sub=>sub.semester===sem.id
+
+)
+
+.forEach(sub=>{
+
+
+rows += adminRow(sub);
+
+
+});
+
+
+
+
+
+if(rows){
+
+
+courseHTML += `
+
+
+<div class="card">
+
+
+<h3>
+
+📂 ${cur.name}
+
+→ ${sem.name}
+
+</h3>
+
+
+${rows}
+
+
+</div>
+
+
+`;
+
+
+}
+
+
+
+});
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/* UNIT VIEW */
+
+
+if(collection==="units"){
+
+
+
+
+
+curriculums
+
+.filter(
+
+c=>c.course===course.id
+
+)
+
+.forEach(cur=>{
+
+
+
+
+
+semesters
+
+.filter(
+
+s=>s.curriculum===cur.id
+
+)
+
+.forEach(sem=>{
+
+
+
+
+
+subjects
+
+.filter(
+
+sub=>sub.semester===sem.id
+
+)
+
+.forEach(subject=>{
+
+
+
+
+
+let rows="";
+
+
+
+
+
+data
+
+.filter(
+
+u=>u.subject===subject.id
+
+)
+
+.forEach(unit=>{
+
+
+rows += adminRow(unit);
+
+
+});
+
+
+
+
+
+
+if(rows){
+
+
+courseHTML += `
+
+
+<div class="card">
+
+
+<h3>
+
+📂 ${cur.name}
+
+→ ${sem.name}
+
+<br>
+
+🧪 ${subject.name}
+
+</h3>
+
+
+${rows}
+
+
+</div>
+
+
+`;
+
+
+}
+
+
+
+
+});
+
+
+
+});
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+if(courseHTML){
+
+
+
+html += `
+
+
+<div class="card">
+
+
+<h2>
+
+📘 ${course.name}
+
+</h2>
+
+
+${courseHTML}
+
+
+</div>
 
 
 `;
@@ -172,6 +688,129 @@ ${item.description || ""}
 
 
 }
+
+
+
+});
+
+
+
+
+
+
+return html ||
+
+`
+
+<div class="card">
+
+No records yet
+
+</div>
+
+`;
+
+
+
+}
+
+function adminRow(item){
+
+
+
+return `
+
+
+<div class="panel">
+
+
+
+<span>
+
+${displayName(item)}
+
+</span>
+
+
+
+
+
+<span>
+
+
+<button onclick="showForm('${item.id}')">
+
+✏
+
+</button>
+
+
+
+<button onclick="removeEntry('${item.id}')">
+
+🗑
+
+</button>
+
+
+
+</span>
+
+
+
+</div>
+
+
+`;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function displayName(item){
+
+
+
+return (
+
+
+item.name ||
+
+item.title ||
+
+item.code ||
+
+(
+
+item.system
+
+?
+
+item.system+" "+item.number
+
+:
+
+"Untitled"
+
+)
+
+
+);
+
+
+
+}
+
+
+
 
 
 
@@ -190,7 +829,9 @@ let existing=null;
 
 
 
+
 if(id){
+
 
 
 let records =
@@ -202,8 +843,11 @@ activeCollection
 
 existing =
 records.find(
+
 x=>x.id===id
+
 );
+
 
 
 }
@@ -249,21 +893,32 @@ for(let field of activeSchema){
 
 
 let value =
+
 existing
+
 ?
+
 (existing[field.name] ?? "")
+
 :
+
 "";
 
 
 
 
 
+
+
 html += `
 
+
 <label>
+
 ${field.label}
+
 </label>
+
 
 `;
 
@@ -273,23 +928,24 @@ ${field.label}
 
 
 
-
-
-
-/* TEXTAREA */
 
 
 if(field.type==="textarea"){
 
 
+
 html += `
 
+
 <textarea
+
 id="field-${field.name}"
-placeholder="${field.label}"
+
 >${value}</textarea>
 
+
 `;
+
 
 
 }
@@ -302,11 +958,9 @@ placeholder="${field.label}"
 
 
 
-
-/* SELECT */
-
-
 else if(field.type==="select"){
+
+
 
 
 
@@ -317,11 +971,14 @@ html += `
 
 
 <option value="">
+
 Select
+
 </option>
 
 
 ${
+
 
 field.options.map(opt=>`
 
@@ -334,12 +991,15 @@ ${value===opt?"selected":""}
 
 >
 
+
 ${opt}
+
 
 </option>
 
 
 `).join("")
+
 
 }
 
@@ -351,6 +1011,7 @@ ${opt}
 
 
 
+
 }
 
 
@@ -362,23 +1023,26 @@ ${opt}
 
 
 
-
-/* RELATION */
-
-
 else if(field.type==="relation"){
+
+
 
 
 
 let records =
 await getRecords(
+
 field.collection
+
 );
 
 
 
 
+
+
 html += `
+
 
 
 <select
@@ -405,7 +1069,9 @@ ${
 records.map(item=>`
 
 
+
 <option
+
 
 value="${item.id}"
 
@@ -431,19 +1097,9 @@ ${value===item.id?"selected":""}
 >
 
 
-${
 
-item.name ||
+${displayName(item)}
 
-item.title ||
-
-item.code ||
-
-(item.system ? item.system+" "+item.number : "") ||
-
-"Unnamed"
-
-}
 
 
 </option>
@@ -453,6 +1109,7 @@ item.code ||
 
 
 }
+
 
 
 </select>
@@ -473,17 +1130,20 @@ item.code ||
 
 
 
-/* DYNAMIC MULTI */
-
-
 else if(field.type==="dynamic-multi"){
+
+
+
 
 
 
 let records =
 await getRecords(
+
 field.source
+
 );
+
 
 
 
@@ -511,7 +1171,6 @@ class="field-${field.name}"
 
 value="${item.id}"
 
-
 ${
 
 Array.isArray(value)
@@ -530,19 +1189,10 @@ value.includes(item.id)
 
 }
 
-
 >
 
 
-${
-
-item.name ||
-
-item.title ||
-
-item.code
-
-}
+${displayName(item)}
 
 
 </label>
@@ -575,8 +1225,6 @@ item.code
 
 
 
-/* BOOLEAN */
-
 
 else if(field.type==="boolean"){
 
@@ -591,7 +1239,7 @@ type="checkbox"
 
 id="field-${field.name}"
 
-${value ? "checked" : ""}
+${value?"checked":""}
 
 >
 
@@ -609,10 +1257,6 @@ ${value ? "checked" : ""}
 
 
 
-
-
-
-/* DEFAULT */
 
 
 else{
@@ -628,21 +1272,7 @@ type="${field.type==="number"?"number":"text"}"
 
 id="field-${field.name}"
 
-value="${
-
-Array.isArray(value)
-
-?
-
-value.join(",")
-
-:
-
-value
-
-}"
-
-placeholder="${field.label}"
+value="${value}"
 
 >
 
@@ -652,6 +1282,9 @@ placeholder="${field.label}"
 
 
 }
+
+
+
 
 
 
@@ -668,6 +1301,7 @@ placeholder="${field.label}"
 html += `
 
 
+
 <br>
 
 
@@ -675,13 +1309,16 @@ html += `
 
 class="btn btn-primary"
 
-onclick="saveEntry('${id || ""}')">
+onclick="saveEntry('${id || ""}')"
+
+>
 
 
 Save
 
 
 </button>
+
 
 
 </div>
@@ -694,13 +1331,17 @@ Save
 
 
 
+
 document
 
 .getElementById(
+
 "admin-actions"
+
 )
 
 .innerHTML=html;
+
 
 
 
@@ -724,11 +1365,15 @@ refreshDependentRelations();
 
 
 
+
 async function saveEntry(id){
 
 
 
+
+
 let data={};
+
 
 
 
@@ -746,7 +1391,12 @@ if(field.type==="dynamic-multi"){
 
 
 
+
+
 let selected=[];
+
+
+
 
 
 
@@ -770,6 +1420,8 @@ box.value
 
 
 
+
+
 data[field.name]=selected;
 
 
@@ -779,6 +1431,7 @@ continue;
 
 
 }
+
 
 
 
@@ -797,30 +1450,19 @@ document.getElementById(
 
 
 
-let value;
 
 
+let value =
 
+field.type==="boolean"
 
+?
 
+input.checked
 
-if(field.type==="boolean"){
+:
 
-
-value=input.checked;
-
-
-}
-
-
-else{
-
-
-value=input.value;
-
-
-}
-
+input.value;
 
 
 
@@ -840,7 +1482,9 @@ field.type==="multi"
 
 
 
-value = value
+value =
+
+value
 
 .split(",")
 
@@ -856,7 +1500,10 @@ value = value
 
 
 
+
+
 data[field.name]=value;
+
 
 
 
@@ -871,9 +1518,12 @@ data[field.name]=value;
 
 
 
+/*
 
+AUTO CREATE SEMESTERS / YEARS
 
-/* AUTO GENERATE SEMESTERS / YEARS */
+*/
+
 
 
 if(
@@ -892,8 +1542,11 @@ activeCollection==="semesters"
 
 let old =
 await getRecords(
+
 "semesters"
+
 );
+
 
 
 
@@ -901,7 +1554,11 @@ await getRecords(
 
 if(
 
-old.some(x=>x.curriculum===data.curriculum)
+old.some(
+
+x=>x.curriculum===data.curriculum
+
+)
 
 ){
 
@@ -930,8 +1587,16 @@ return;
 
 
 
+
 let total =
-Number(data.count);
+Number(
+
+data.count
+
+);
+
+
+
 
 
 
@@ -949,6 +1614,8 @@ i++
 
 
 
+
+
 await createRecord(
 
 "semesters",
@@ -963,11 +1630,7 @@ system:data.system,
 
 number:i,
 
-
-name:
-
-data.system+" "+i,
-
+name:data.system+" "+i,
 
 status:"active"
 
@@ -997,11 +1660,13 @@ total+" "+data.system+"s created",
 
 
 
+
 loadManager(
 
 activeCollection
 
 );
+
 
 
 
@@ -1036,6 +1701,7 @@ data
 
 
 }
+
 
 
 
@@ -1080,6 +1746,7 @@ showToast(
 
 
 
+
 loadManager(
 
 activeCollection
@@ -1098,21 +1765,33 @@ activeCollection
 
 
 
+
+
+
+
+
 async function removeEntry(id){
+
+
 
 
 
 if(
 
 !confirm(
+
 "Delete this item?"
+
 )
 
 ){
 
+
 return;
 
+
 }
+
 
 
 
@@ -1130,6 +1809,7 @@ id
 
 
 
+
 loadManager(
 
 activeCollection
@@ -1148,16 +1828,25 @@ activeCollection
 
 
 
+
+
+
 function refreshDependentRelations(){
 
 
 
+
+
 let selects =
+
 document.querySelectorAll(
 
 "select[data-depends]"
 
 );
+
+
+
 
 
 
@@ -1168,8 +1857,12 @@ selects.forEach(select=>{
 
 
 
+
 let parentName =
+
 select.dataset.depends;
+
+
 
 
 
@@ -1183,12 +1876,17 @@ return;
 
 
 
+
+
+
 let parent =
 document.getElementById(
 
 "field-"+parentName
 
 );
+
+
 
 
 
@@ -1204,8 +1902,11 @@ return;
 
 
 
+
 let parentValue =
 parent.value;
+
+
 
 
 
@@ -1226,11 +1927,15 @@ select
 
 
 
+
 if(!option.dataset.parent){
 
 return;
 
 }
+
+
+
 
 
 
@@ -1242,12 +1947,18 @@ option.dataset.parent !== parentValue;
 
 
 
-});
-
-
 
 
 });
+
+
+
+
+
+
+});
+
+
 
 
 
