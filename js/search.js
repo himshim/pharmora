@@ -79,7 +79,27 @@ page:"learn/"
 name:"units",
 icon:"📄",
 page:"learn/"
-}
+}, 
+
+{
+name:"teaching-materials",
+icon:"👨‍🏫",
+page:"library/view.html"
+},
+
+
+{
+name:"question-bank",
+icon:"❓",
+page:"library/view.html"
+},
+
+
+{
+name:"assignments",
+icon:"📝",
+page:"library/view.html"
+},
 
 
 ];

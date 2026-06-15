@@ -53,7 +53,8 @@ margin:auto;
 
 
 input,
-textarea{
+textarea,
+select{
 
 width:100%;
 
@@ -305,7 +306,51 @@ value="tools">
 
 </label>
 
+<label>
 
+<input
+
+type="radio"
+
+name="ctype"
+
+value="teaching-materials">
+
+👨‍🏫 Teaching Material
+
+</label>
+
+
+
+<label>
+
+<input
+
+type="radio"
+
+name="ctype"
+
+value="question-bank">
+
+❓ Question Bank
+
+</label>
+
+
+
+<label>
+
+<input
+
+type="radio"
+
+name="ctype"
+
+value="assignments">
+
+📝 Assignment
+
+</label>
 
 
 
@@ -524,31 +569,26 @@ Available for everyone.
 
 <div id="site-footer"></div>
 
-
 <script src="../js/app.js"></script>
 
 
+<!-- SERVICES FIRST -->
+
+<script src="../js/services/auth.service.js"></script>
+
 <script src="../js/services/database.service.js"></script>
 
+<script src="../js/services/storage.service.js"></script>
 
+<script src="../js/services/analytics.service.js"></script>
+
+
+
+<!-- COMPONENTS LAST -->
 
 <script src="../components/layout/header.js"></script>
 
 <script src="../components/layout/footer.js"></script>
-
-
-
-
-
-
-<script src="../js/services/storage.service.js"></script>
-
-
-
-<script src="../js/services/auth.service.js"></script>
-
-<script src="../js/services/analytics.service.js"></script>
-
 
 
 
@@ -656,6 +696,63 @@ Select Unit / Chapter (optional)
 
 <br><br>
 
+<select id="resource-type">
+
+<option value="">
+Content Type
+</option>
+
+<option>
+Notes
+</option>
+
+<option>
+Question Paper
+</option>
+
+<option>
+Presentation
+</option>
+
+<option>
+Lecture Notes
+</option>
+
+<option>
+Assignment
+</option>
+
+<option>
+Video
+</option>
+
+<option>
+Other
+</option>
+
+</select>
+
+
+
+<select id="difficulty">
+
+<option value="">
+Difficulty
+</option>
+
+<option>
+Beginner
+</option>
+
+<option>
+Intermediate
+</option>
+
+<option>
+Advanced
+</option>
+
+</select>
 
 <input
 
@@ -1163,7 +1260,13 @@ return;
 
 
 
+let collection =
+document.querySelector(
 
+"input[name='ctype']:checked"
+
+)
+.value;
 
 let uploaded=null;
 
@@ -1186,7 +1289,7 @@ await uploadFile(
 
 fileInput.files[0],
 
-"uploads/"
+collection + "/"
 
 );
 
@@ -1272,13 +1375,6 @@ return;
 
 
 
-let collection =
-document.querySelector(
-
-"input[name='ctype']:checked"
-
-)
-.value;
 
 
 
@@ -1300,7 +1396,18 @@ title:title,
 description:description,
 
 
+resourceType:
 
+document.getElementById(
+"resource-type"
+).value,
+
+
+difficulty:
+
+document.getElementById(
+"difficulty"
+).value,
 
 
 content:{
@@ -1422,9 +1529,17 @@ downloads:0
 
 status:
 
-user.permissions?.includes(
+(
 
-"verified.creator"
+user.verified===true
+
+||
+
+user.permissions?.includes("*")
+
+||
+
+user.permissions?.includes("verified.creator")
 
 )
 

@@ -7,12 +7,21 @@
 
 
 
-const reviewCollections=[
+const reviewCollections = [
 
 "resources",
+
 "books",
+
 "events",
-"tools"
+
+"tools",
+
+"teaching-materials",
+
+"question-bank",
+
+"assignments"
 
 ];
 

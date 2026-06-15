@@ -1,449 +1,848 @@
 {
-
-
-"courses":[
-
-{
-"name":"educationLevel",
-"label":"Education Level",
-"type":"select",
-"options":[
-"School / Matriculation",
-"Diploma",
-"Undergraduate",
-"Post Graduate Diploma",
-"Post Graduate",
-"Masters",
-"Doctorate",
-"Certificate",
-"Professional",
-"Other"
-]
-},
-
-
-{
-"name":"name",
-"label":"Course Name",
-"type":"text"
-},
-
-
-{
-"name":"description",
-"label":"Short Description",
-"type":"textarea"
-},
-
-
-{
-"name":"active",
-"label":"Active",
-"type":"boolean"
-}
-
-],
-
-
-
-
-
-
-
-"curriculums":[
-
-
-{
-"name":"course",
-"label":"Course",
-"type":"relation",
-"collection":"courses"
-},
-
-
-{
-"name":"name",
-"label":"Curriculum Name",
-"type":"text"
-},
-
-
-{
-"name":"description",
-"label":"Description",
-"type":"textarea"
-}
-
-
-],
-
-
-
-
-
-
-
-
-"semesters":[
-
-
-{
-"name":"course",
-"label":"Course",
-"type":"relation",
-"collection":"courses"
-},
-
-
-{
-"name":"curriculum",
-"label":"Curriculum",
-"type":"relation",
-"collection":"curriculums",
-"dependsOn":"course"
-},
-
-
-{
-"name":"system",
-"label":"Academic System",
-"type":"select",
-"options":[
-"Semester",
-"Year"
-]
-},
-
-
-{
-"name":"count",
-"label":"Number of Semesters / Years",
-"type":"number"
-}
-
-
-],
-
-
-
-
-
-
-
-"subjects":[
-
-
-{
-"name":"course",
-"label":"Course",
-"type":"relation",
-"collection":"courses"
-},
-
-
-{
-"name":"curriculum",
-"label":"Curriculum",
-"type":"relation",
-"collection":"curriculums",
-"dependsOn":"course"
-},
-
-
-{
-"name":"semester",
-"label":"Semester / Year",
-"type":"relation",
-"collection":"semesters",
-"dependsOn":"curriculum"
-},
-
-
-{
-"name":"code",
-"label":"Subject Code",
-"type":"text"
-},
-
-
-{
-"name":"name",
-"label":"Subject Name",
-"type":"text"
-},
-
-
-{
-"name":"description",
-"label":"Description",
-"type":"textarea"
-}
-
-
-],
-
-
-
-
-
-
-
-
-
-"units":[
-
-
-{
-"name":"course",
-"label":"Course",
-"type":"relation",
-"collection":"courses"
-},
-
-
-{
-"name":"curriculum",
-"label":"Curriculum",
-"type":"relation",
-"collection":"curriculums",
-"dependsOn":"course"
-},
-
-
-{
-"name":"semester",
-"label":"Semester / Year",
-"type":"relation",
-"collection":"semesters",
-"dependsOn":"curriculum"
-},
-
-
-{
-"name":"subject",
-"label":"Subject",
-"type":"relation",
-"collection":"subjects",
-"dependsOn":"semester"
-},
-
-
-{
-"name":"type",
-"label":"Type",
-"type":"select",
-"options":[
-"Unit",
-"Chapter",
-"Practical"
-]
-},
-
-
-{
-"name":"number",
-"label":"Number",
-"type":"number"
-},
-
-
-{
-"name":"name",
-"label":"Unit / Chapter / Practical Name",
-"type":"text"
-},
-
-
-{
-"name":"description",
-"label":"Description / Important Topics",
-"type":"textarea"
-}
-
-
-],
-
-
-
-
-
-
-
-
-
-"books":[
-
-
-{
-"name":"title",
-"label":"Book Title",
-"type":"text"
-},
-
-
-{
-"name":"author",
-"label":"Author",
-"type":"text"
-},
-
-
-{
-"name":"subjects",
-"label":"Subjects",
-"type":"dynamic-multi",
-"source":"subjects"
-},
-
-
-{
-"name":"tags",
-"label":"Tags",
-"type":"tags"
-}
-
-
-],
-
-
-
-
-
-
-
-
-"events":[
-
-
-{
-"name":"title",
-"label":"Event Title",
-"type":"text"
-},
-
-
-{
-"name":"description",
-"label":"Description",
-"type":"textarea"
-},
-
-
-{
-"name":"audience",
-"label":"Audience",
-"type":"tags"
-}
-
-
-],
-
-
-
-
-
-
-
-
-"tools":[
-
-
-{
-"name":"title",
-"label":"Tool Name",
-"type":"text"
-},
-
-
-{
-"name":"description",
-"label":"Description",
-"type":"textarea"
-},
-
-
-{
-"name":"category",
-"label":"Category",
-"type":"text"
-}
-
-
-],
-
-
-
-
-
-
-
-
-"notifications":[
-
-
-{
-"name":"title",
-"label":"Notification Title",
-"type":"text"
-},
-
-
-{
-"name":"message",
-"label":"Notification Content",
-"type":"textarea"
-},
-
-
-{
-"name":"type",
-"label":"Notification Type",
-"type":"select",
-"options":[
-"General",
-"Announcement",
-"Exam",
-"Resource",
-"Event",
-"Important"
-]
-},
-
-
-{
-"name":"link",
-"label":"Optional Link",
-"type":"text"
-},
-
-
-{
-"name":"priority",
-"label":"Priority",
-"type":"select",
-"options":[
-"Normal",
-"High",
-"Urgent"
-]
-},
-
-
-{
-"name":"expiry",
-"label":"Expiry Date",
-"type":"date"
-},
-
-
-{
-"name":"active",
-"label":"Active",
-"type":"boolean"
-}
-
-
-]
-
+  "courses": [
+
+    {
+      "name": "educationLevel",
+      "label": "Education Level",
+      "type": "select",
+      "options": [
+        "School / Matriculation",
+        "Diploma",
+        "Undergraduate",
+        "Post Graduate Diploma",
+        "Post Graduate",
+        "Masters",
+        "Doctorate",
+        "Certificate",
+        "Professional",
+        "Other"
+      ]
+    },
+
+    {
+      "name": "name",
+      "label": "Course Name",
+      "type": "text"
+    },
+
+    {
+      "name": "duration",
+      "label": "Duration",
+      "type": "text"
+    },
+
+    {
+      "name": "icon",
+      "label": "Icon",
+      "type": "text"
+    },
+
+    {
+      "name": "description",
+      "label": "Short Description",
+      "type": "textarea"
+    },
+
+    {
+      "name": "slug",
+      "label": "URL Slug",
+      "type": "text"
+    },
+
+    {
+      "name": "seoTitle",
+      "label": "SEO Title",
+      "type": "text"
+    },
+
+    {
+      "name": "seoDescription",
+      "label": "SEO Description",
+      "type": "textarea"
+    },
+
+    {
+      "name": "active",
+      "label": "Active",
+      "type": "boolean"
+    }
+
+  ],
+
+
+
+  "curriculums": [
+
+    {
+      "name": "course",
+      "label": "Course",
+      "type": "relation",
+      "collection": "courses"
+    },
+
+    {
+      "name": "name",
+      "label": "Curriculum Name",
+      "type": "text"
+    },
+
+    {
+      "name": "authority",
+      "label": "Authority / Board / University",
+      "type": "text"
+    },
+
+    {
+      "name": "year",
+      "label": "Applicable Year",
+      "type": "text"
+    },
+
+    {
+      "name": "description",
+      "label": "Description",
+      "type": "textarea"
+    },
+
+    {
+      "name": "active",
+      "label": "Active",
+      "type": "boolean"
+    }
+
+  ],
+
+
+
+  "semesters": [
+
+    {
+      "name": "course",
+      "label": "Course",
+      "type": "relation",
+      "collection": "courses"
+    },
+
+    {
+      "name": "curriculum",
+      "label": "Curriculum",
+      "type": "relation",
+      "collection": "curriculums",
+      "dependsOn": "course"
+    },
+
+    {
+      "name": "system",
+      "label": "Academic System",
+      "type": "select",
+      "options": [
+        "Semester",
+        "Year"
+      ]
+    },
+
+    {
+      "name": "count",
+      "label": "Number of Semesters / Years",
+      "type": "number"
+    },
+
+    {
+      "name": "active",
+      "label": "Active",
+      "type": "boolean"
+    }
+
+  ],
+
+
+
+  "subjects": [
+
+    {
+      "name": "course",
+      "label": "Course",
+      "type": "relation",
+      "collection": "courses"
+    },
+
+    {
+      "name": "curriculum",
+      "label": "Curriculum",
+      "type": "relation",
+      "collection": "curriculums",
+      "dependsOn": "course"
+    },
+
+    {
+      "name": "semester",
+      "label": "Semester / Year",
+      "type": "relation",
+      "collection": "semesters",
+      "dependsOn": "curriculum"
+    },
+
+    {
+      "name": "code",
+      "label": "Subject Code",
+      "type": "text"
+    },
+
+    {
+      "name": "name",
+      "label": "Subject Name",
+      "type": "text"
+    },
+
+    {
+      "name": "type",
+      "label": "Subject Type",
+      "type": "select",
+      "options": [
+        "Theory",
+        "Practical",
+        "Theory + Practical"
+      ]
+    },
+
+    {
+      "name": "credits",
+      "label": "Credits",
+      "type": "number"
+    },
+
+    {
+      "name": "hours",
+      "label": "Teaching Hours",
+      "type": "number"
+    },
+
+    {
+      "name": "description",
+      "label": "Description",
+      "type": "textarea"
+    },
+
+    {
+      "name": "slug",
+      "label": "URL Slug",
+      "type": "text"
+    }
+
+  ],
+
+
+
+  "units": [
+
+    {
+      "name": "course",
+      "label": "Course",
+      "type": "relation",
+      "collection": "courses"
+    },
+
+    {
+      "name": "curriculum",
+      "label": "Curriculum",
+      "type": "relation",
+      "collection": "curriculums",
+      "dependsOn": "course"
+    },
+
+    {
+      "name": "semester",
+      "label": "Semester / Year",
+      "type": "relation",
+      "collection": "semesters",
+      "dependsOn": "curriculum"
+    },
+
+    {
+      "name": "subject",
+      "label": "Subject",
+      "type": "relation",
+      "collection": "subjects",
+      "dependsOn": "semester"
+    },
+
+    {
+      "name": "type",
+      "label": "Type",
+      "type": "select",
+      "options": [
+        "Unit",
+        "Chapter",
+        "Practical"
+      ]
+    },
+
+    {
+      "name": "number",
+      "label": "Number",
+      "type": "number"
+    },
+
+    {
+      "name": "name",
+      "label": "Title",
+      "type": "text"
+    },
+
+    {
+      "name": "description",
+      "label": "Topics",
+      "type": "textarea"
+    },
+
+    {
+      "name": "learningObjectives",
+      "label": "Learning Objectives",
+      "type": "textarea"
+    },
+
+    {
+      "name": "importantQuestions",
+      "label": "Important Questions",
+      "type": "textarea"
+    }
+
+  ],
+
+    "resources": [
+
+    {
+      "name": "title",
+      "label": "Resource Title",
+      "type": "text"
+    },
+
+    {
+      "name": "description",
+      "label": "Description",
+      "type": "textarea"
+    },
+
+    {
+      "name": "course",
+      "label": "Course",
+      "type": "relation",
+      "collection": "courses"
+    },
+
+    {
+      "name": "curriculum",
+      "label": "Curriculum",
+      "type": "relation",
+      "collection": "curriculums",
+      "dependsOn": "course"
+    },
+
+    {
+      "name": "semester",
+      "label": "Semester / Year",
+      "type": "relation",
+      "collection": "semesters",
+      "dependsOn": "curriculum"
+    },
+
+    {
+      "name": "subject",
+      "label": "Subject",
+      "type": "relation",
+      "collection": "subjects",
+      "dependsOn": "semester"
+    },
+
+    {
+      "name": "unit",
+      "label": "Unit",
+      "type": "relation",
+      "collection": "units",
+      "dependsOn": "subject"
+    },
+
+    {
+      "name": "resourceType",
+      "label": "Resource Type",
+      "type": "select",
+      "options": [
+        "Notes",
+        "Question Paper",
+        "Presentation",
+        "Video",
+        "Article",
+        "Research Paper",
+        "Assignment",
+        "Other"
+      ]
+    },
+
+    {
+      "name": "difficulty",
+      "label": "Difficulty",
+      "type": "select",
+      "options": [
+        "Beginner",
+        "Intermediate",
+        "Advanced"
+      ]
+    },
+
+    {
+      "name": "link",
+      "label": "External Link",
+      "type": "text"
+    },
+
+    {
+      "name": "featured",
+      "label": "Featured",
+      "type": "boolean"
+    },
+
+    {
+      "name": "visibility",
+      "label": "Visibility",
+      "type": "select",
+      "options": [
+        "Public",
+        "Members Only",
+        "Private"
+      ]
+    },
+
+    {
+      "name": "tags",
+      "label": "Tags",
+      "type": "tags"
+    }
+
+  ],
+
+
+
+  "teaching-materials": [
+
+    {
+      "name": "title",
+      "label": "Title",
+      "type": "text"
+    },
+
+    {
+      "name": "course",
+      "label": "Course",
+      "type": "relation",
+      "collection": "courses"
+    },
+
+    {
+      "name": "subject",
+      "label": "Subject",
+      "type": "relation",
+      "collection": "subjects"
+    },
+
+    {
+      "name": "unit",
+      "label": "Unit",
+      "type": "relation",
+      "collection": "units"
+    },
+
+    {
+      "name": "materialType",
+      "label": "Material Type",
+      "type": "select",
+      "options": [
+        "Lecture Notes",
+        "Lesson Plan",
+        "Presentation",
+        "Practical Manual",
+        "Teaching Aid",
+        "Video",
+        "Other"
+      ]
+    },
+
+    {
+      "name": "description",
+      "label": "Description",
+      "type": "textarea"
+    },
+
+    {
+      "name": "status",
+      "label": "Review Status",
+      "type": "select",
+      "options": [
+        "pending",
+        "approved",
+        "rejected"
+      ]
+    },
+
+    {
+      "name": "tags",
+      "label": "Tags",
+      "type": "tags"
+    }
+
+  ],
+
+
+
+  "question-bank": [
+
+    {
+      "name": "question",
+      "label": "Question",
+      "type": "textarea"
+    },
+
+    {
+      "name": "subject",
+      "label": "Subject",
+      "type": "relation",
+      "collection": "subjects"
+    },
+
+    {
+      "name": "unit",
+      "label": "Unit",
+      "type": "relation",
+      "collection": "units"
+    },
+
+    {
+      "name": "questionType",
+      "label": "Question Type",
+      "type": "select",
+      "options": [
+        "MCQ",
+        "Short Answer",
+        "Long Answer",
+        "Numerical",
+        "Viva"
+      ]
+    },
+
+    {
+      "name": "difficulty",
+      "label": "Difficulty",
+      "type": "select",
+      "options": [
+        "Easy",
+        "Medium",
+        "Hard"
+      ]
+    },
+
+    {
+      "name": "answer",
+      "label": "Answer",
+      "type": "textarea"
+    }
+
+  ],
+
+
+
+  "assignments": [
+
+    {
+      "name": "title",
+      "label": "Assignment Title",
+      "type": "text"
+    },
+
+    {
+      "name": "subject",
+      "label": "Subject",
+      "type": "relation",
+      "collection": "subjects"
+    },
+
+    {
+      "name": "instructions",
+      "label": "Instructions",
+      "type": "textarea"
+    },
+
+    {
+      "name": "deadline",
+      "label": "Deadline",
+      "type": "date"
+    }
+
+  ],
+
+    "books": [
+
+    {
+      "name": "title",
+      "label": "Book Title",
+      "type": "text"
+    },
+
+    {
+      "name": "author",
+      "label": "Author",
+      "type": "text"
+    },
+
+    {
+      "name": "publisher",
+      "label": "Publisher",
+      "type": "text"
+    },
+
+    {
+      "name": "edition",
+      "label": "Edition",
+      "type": "text"
+    },
+
+    {
+      "name": "isbn",
+      "label": "ISBN",
+      "type": "text"
+    },
+
+    {
+      "name": "course",
+      "label": "Course",
+      "type": "relation",
+      "collection": "courses"
+    },
+
+    {
+      "name": "subject",
+      "label": "Subject",
+      "type": "relation",
+      "collection": "subjects"
+    },
+
+    {
+      "name": "description",
+      "label": "Description",
+      "type": "textarea"
+    },
+
+    {
+      "name": "featured",
+      "label": "Featured",
+      "type": "boolean"
+    },
+
+    {
+      "name": "tags",
+      "label": "Tags",
+      "type": "tags"
+    }
+
+  ],
+
+
+
+  "events": [
+
+    {
+      "name": "title",
+      "label": "Event Title",
+      "type": "text"
+    },
+
+    {
+      "name": "description",
+      "label": "Description",
+      "type": "textarea"
+    },
+
+    {
+      "name": "date",
+      "label": "Event Date",
+      "type": "date"
+    },
+
+    {
+      "name": "mode",
+      "label": "Mode",
+      "type": "select",
+      "options": [
+        "Online",
+        "Offline",
+        "Hybrid"
+      ]
+    },
+
+    {
+      "name": "venue",
+      "label": "Venue",
+      "type": "text"
+    },
+
+    {
+      "name": "audience",
+      "label": "Audience",
+      "type": "tags"
+    },
+
+    {
+      "name": "status",
+      "label": "Review Status",
+      "type": "select",
+      "options": [
+        "pending",
+        "approved",
+        "rejected"
+      ]
+    }
+
+  ],
+
+
+
+  "tools": [
+
+    {
+      "name": "title",
+      "label": "Tool Name",
+      "type": "text"
+    },
+
+    {
+      "name": "description",
+      "label": "Description",
+      "type": "textarea"
+    },
+
+    {
+      "name": "category",
+      "label": "Category",
+      "type": "text"
+    },
+
+    {
+      "name": "featured",
+      "label": "Featured",
+      "type": "boolean"
+    },
+
+    {
+      "name": "active",
+      "label": "Active",
+      "type": "boolean"
+    }
+
+  ],
+
+
+
+  "users": [
+
+    {
+      "name": "name",
+      "label": "Name",
+      "type": "text"
+    },
+
+    {
+      "name": "email",
+      "label": "Email",
+      "type": "text"
+    },
+
+    {
+      "name": "role",
+      "label": "Role",
+      "type": "select",
+      "options": [
+        "guest",
+        "student",
+        "teacher",
+        "creator",
+        "reviewer",
+        "moderator",
+        "admin",
+        "owner"
+      ]
+    },
+
+    {
+      "name": "verified",
+      "label": "Verified Creator",
+      "type": "boolean"
+    },
+
+    {
+      "name": "active",
+      "label": "Active",
+      "type": "boolean"
+    }
+
+  ],
+
+
+
+  "notifications": [
+
+    {
+      "name": "title",
+      "label": "Notification Title",
+      "type": "text"
+    },
+
+    {
+      "name": "message",
+      "label": "Notification Content",
+      "type": "textarea"
+    },
+
+    {
+      "name": "type",
+      "label": "Notification Type",
+      "type": "select",
+      "options": [
+        "General",
+        "Announcement",
+        "Exam",
+        "Resource",
+        "Event",
+        "Important"
+      ]
+    },
+
+    {
+      "name": "link",
+      "label": "Optional Link",
+      "type": "text"
+    },
+
+    {
+      "name": "priority",
+      "label": "Priority",
+      "type": "select",
+      "options": [
+        "Normal",
+        "High",
+        "Urgent"
+      ]
+    },
+
+    {
+      "name": "expiry",
+      "label": "Expiry Date",
+      "type": "date"
+    },
+
+    {
+      "name": "active",
+      "label": "Active",
+      "type": "boolean"
+    }
+
+  ]
 
 }

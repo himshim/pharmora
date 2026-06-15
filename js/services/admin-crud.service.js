@@ -169,6 +169,28 @@ function renderSimpleAdmin(data){
 
 
 
+if(data.length===0){
+
+
+return `
+
+
+<div class="card">
+
+No records yet
+
+</div>
+
+
+`;
+
+
+}
+
+
+
+
+
 return data.map(item=>`
 
 <div class="panel">
@@ -192,11 +214,15 @@ ${displayName(item)}
 
 ${
 
+clean(
+
 item.message ||
 
 item.description ||
 
 ""
+
+)
 
 }
 
@@ -809,13 +835,39 @@ ${displayName(item)}
 
 
 
+function clean(text){
 
+
+return String(
+
+text || ""
+
+)
+
+.replaceAll(
+
+"<",
+
+"&lt;"
+
+)
+
+.replaceAll(
+
+">",
+
+"&gt;"
+
+);
+
+
+
+}
 
 function displayName(item){
 
 
-
-return (
+return clean(
 
 
 item.name ||
@@ -840,7 +892,6 @@ item.system+" "+item.number
 
 
 );
-
 
 
 }
@@ -1492,6 +1543,8 @@ async function saveEntry(id){
 lockAdminSave();
 
 
+try{
+
 
 
 
@@ -1931,6 +1984,36 @@ activeCollection
 
 
 
+catch(error){
+
+
+
+console.error(error);
+
+
+
+showToast(
+
+"Save failed",
+
+"error"
+
+);
+
+
+
+unlockAdminSave();
+
+
+
+}
+
+
+
+}
+
+
+
 
 
 
@@ -2003,6 +2086,10 @@ activeCollection
 
 
 }
+
+
+
+
 
 
 

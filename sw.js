@@ -9,7 +9,7 @@
 
 
 const CACHE_NAME =
-"pharmora-v1";
+"pharmora-v2";
 
 
 

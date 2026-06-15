@@ -651,38 +651,102 @@ loadTheme();
 
 
 
+console.log(
 
+"⚕ Pharmora Ready"
 
-
-if(
-
-"serviceWorker"
-
-in navigator
-
-){
-
-
-
-navigator
-
-.serviceWorker
-
-.register(
-
-appPath("sw.js")
-
-)
-
-.catch(()=>{});
-
-
-
-}
-
+);
 
 
 
 }
 
 );
+
+
+
+
+
+
+
+
+
+/* =========================
+
+ PWA SERVICE WORKER
+
+========================= */
+
+
+
+if("serviceWorker" in navigator){
+
+
+
+window.addEventListener(
+
+"load",
+
+()=>{
+
+
+
+navigator.serviceWorker
+
+.register(
+
+appPath("sw.js"),
+
+{
+
+scope:appPath("")
+
+}
+
+)
+
+.then(reg=>{
+
+
+
+console.log(
+
+"PWA Ready",
+
+reg.scope
+
+);
+
+
+
+})
+
+
+
+.catch(error=>{
+
+
+
+console.log(
+
+"PWA Disabled",
+
+error
+
+);
+
+
+
+});
+
+
+
+}
+
+
+
+);
+
+
+
+}
