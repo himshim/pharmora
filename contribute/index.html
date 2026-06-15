@@ -12,15 +12,11 @@ content="width=device-width, initial-scale=1.0">
 
 
 <title>
-
 Contribute
-
 </title>
 
 
-<link 
-rel="icon" 
-href="../assets/branding/favicon.svg">
+<link rel="icon" href="../assets/branding/favicon.svg">
 
 
 <link rel="stylesheet" href="../css/variables.css">
@@ -30,7 +26,6 @@ href="../assets/branding/favicon.svg">
 <link rel="stylesheet" href="../css/components.css">
 
 <link rel="stylesheet" href="../css/responsive.css">
-
 
 
 <style>
@@ -45,8 +40,6 @@ padding:60px 0;
 }
 
 
-
-
 .form-box{
 
 max-width:700px;
@@ -54,9 +47,6 @@ max-width:700px;
 margin:auto;
 
 }
-
-
-
 
 
 select,
@@ -82,32 +72,11 @@ outline:none;
 }
 
 
-
-
 textarea{
 
 min-height:130px;
 
 }
-
-
-
-
-
-.info{
-
-padding:20px;
-
-border-radius:20px;
-
-background:var(--surface);
-
-border:1px solid var(--border);
-
-margin-bottom:12px;
-
-}
-
 
 
 </style>
@@ -118,26 +87,11 @@ margin-bottom:12px;
 
 
 
-
-
-
-
-
 <body>
 
 
 
-
-
-
-
-
 <div id="site-header"></div>
-
-
-
-
-
 
 
 
@@ -149,15 +103,7 @@ margin-bottom:12px;
 
 
 
-
-
-
-
 <section class="container hero">
-
-
-
-
 
 
 <div class="badge">
@@ -165,10 +111,6 @@ margin-bottom:12px;
 🌱 Open Contribution
 
 </div>
-
-
-
-
 
 
 
@@ -180,10 +122,6 @@ Build Knowledge Together
 
 
 
-
-
-
-
 <p>
 
 Share educational resources and help create an open learning ecosystem.
@@ -191,18 +129,7 @@ Share educational resources and help create an open learning ecosystem.
 </p>
 
 
-
-
-
-
-
 </section>
-
-
-
-
-
-
 
 
 
@@ -215,14 +142,7 @@ Share educational resources and help create an open learning ecosystem.
 
 
 
-
-
-
 <div class="card form-box">
-
-
-
-
 
 
 
@@ -234,17 +154,7 @@ Submit Resource
 </h2>
 
 
-
-
-
-
-
 <br>
-
-
-
-
-
 
 
 
@@ -253,20 +163,9 @@ Submit Resource
 
 
 
-
-
-
-
 <input 
-
 id="resource-title"
-
 placeholder="Resource title">
-
-
-
-
-
 
 
 
@@ -276,9 +175,6 @@ placeholder="Resource title">
 <select id="resource-course">
 
 
-
-
-
 <option>
 
 Select Course
@@ -286,53 +182,16 @@ Select Course
 </option>
 
 
+<option>B.Pharm</option>
 
+<option>D.Pharm</option>
 
+<option>M.Pharm</option>
 
-<option>
-
-B.Pharm
-
-</option>
-
-
-
-
-
-<option>
-
-D.Pharm
-
-</option>
-
-
-
-
-
-<option>
-
-M.Pharm
-
-</option>
-
-
-
-
-
-<option>
-
-Pharm.D
-
-</option>
-
-
-
-
+<option>Pharm.D</option>
 
 
 </select>
-
-
 
 
 
@@ -343,10 +202,6 @@ Pharm.D
 <select id="resource-type">
 
 
-
-
-
-
 <option>
 
 Contribution Type
@@ -354,76 +209,20 @@ Contribution Type
 </option>
 
 
+<option>Study Notes</option>
 
+<option>Presentation</option>
 
+<option>Question Bank</option>
 
+<option>Practical File</option>
 
+<option>Teaching Material</option>
 
-<option>
-
-Study Notes
-
-</option>
-
-
-
-
-
-<option>
-
-Presentation
-
-</option>
-
-
-
-
-
-<option>
-
-Question Bank
-
-</option>
-
-
-
-
-
-<option>
-
-Practical File
-
-</option>
-
-
-
-
-
-<option>
-
-Teaching Material
-
-</option>
-
-
-
-
-
-<option>
-
-Tool Suggestion
-
-</option>
-
-
-
-
-
+<option>Tool Suggestion</option>
 
 
 </select>
-
-
 
 
 
@@ -434,10 +233,6 @@ Tool Suggestion
 <select id="contributor-role">
 
 
-
-
-
-
 <option>
 
 Contributor Role
@@ -445,41 +240,11 @@ Contributor Role
 </option>
 
 
+<option>Student</option>
 
+<option>Educator</option>
 
-
-
-<option>
-
-Student
-
-</option>
-
-
-
-
-
-
-<option>
-
-Educator
-
-</option>
-
-
-
-
-
-
-<option>
-
-Professional
-
-</option>
-
-
-
-
+<option>Professional</option>
 
 
 </select>
@@ -490,12 +255,8 @@ Professional
 
 
 
-
-
 <input
-
 id="resource-file"
-
 type="file">
 
 
@@ -504,11 +265,14 @@ type="file">
 
 
 
-<textarea 
+<textarea
 
 id="resource-description"
 
-placeholder="Describe your contribution..."></textarea>
+placeholder="Describe your contribution...">
+
+
+</textarea>
 
 
 
@@ -517,25 +281,19 @@ placeholder="Describe your contribution..."></textarea>
 
 
 
-
-
-<button 
+<button
 
 type="button"
 
-class="btn btn-primary">
+onclick="submitContribution()"
 
+class="btn btn-primary">
 
 
 Submit Contribution
 
 
-
 </button>
-
-
-
-
 
 
 
@@ -544,15 +302,7 @@ Submit Contribution
 
 
 
-
-
-
-
-
 </div>
-
-
-
 
 
 
@@ -566,16 +316,7 @@ Submit Contribution
 
 
 
-
-
-
-
-
 <section class="container section">
-
-
-
-
 
 
 <h2 class="section-title">
@@ -588,14 +329,7 @@ Contribution Process
 
 
 
-
-
-
-
 <div class="grid">
-
-
-
 
 
 
@@ -603,16 +337,7 @@ Contribution Process
 
 <div class="card">
 
-
-
-<h2>
-
-📤 Submit
-
-</h2>
-
-
-
+<h2>📤 Submit</h2>
 
 <p>
 
@@ -620,13 +345,7 @@ Share learning resources.
 
 </p>
 
-
-
-
 </div>
-
-
-
 
 
 
@@ -636,18 +355,7 @@ Share learning resources.
 
 <div class="card">
 
-
-
-
-<h2>
-
-🛡 Review
-
-</h2>
-
-
-
-
+<h2>🛡 Review</h2>
 
 <p>
 
@@ -655,14 +363,7 @@ Moderation improves quality and accuracy.
 
 </p>
 
-
-
-
-
 </div>
-
-
-
 
 
 
@@ -673,19 +374,7 @@ Moderation improves quality and accuracy.
 
 <div class="card">
 
-
-
-
-
-<h2>
-
-🌍 Publish
-
-</h2>
-
-
-
-
+<h2>🌍 Publish</h2>
 
 <p>
 
@@ -693,27 +382,12 @@ Approved content becomes available.
 
 </p>
 
-
-
-
-
 </div>
 
 
 
 
-
-
-
-
-
 </div>
-
-
-
-
-
-
 
 
 </section>
@@ -722,15 +396,7 @@ Approved content becomes available.
 
 
 
-
-
-
 </main>
-
-
-
-
-
 
 
 
@@ -745,24 +411,211 @@ Approved content becomes available.
 
 
 
-
 <script src="../components/layout/header.js"></script>
 
 <script src="../components/layout/footer.js"></script>
 
 
+
+<script src="../js/services/storage.service.js"></script>
+
 <script src="../js/services/analytics.service.js"></script>
+
+
+
+
+
+<script>
+
+
+async function submitContribution(){
+
+
+
+let title =
+document.getElementById(
+"resource-title"
+).value;
+
+
+
+
+let fileInput =
+document.getElementById(
+"resource-file"
+);
+
+
+
+
+
+if(
+title.trim()===""
+){
+
+
+alert(
+"Please enter resource title"
+);
+
+
+return;
+
+
+}
+
+
+
+
+
+if(
+fileInput.files.length===0
+){
+
+
+alert(
+"Please select a file"
+);
+
+
+return;
+
+
+}
+
+
+
+
+
+
+
+let uploaded =
+await uploadFile(
+
+fileInput.files[0],
+
+"resources/"
+
+);
+
+
+
+
+
+
+
+
+let contribution = {
+
+
+title:title,
+
+
+course:
+document.getElementById(
+"resource-course"
+).value,
+
+
+type:
+document.getElementById(
+"resource-type"
+).value,
+
+
+description:
+document.getElementById(
+"resource-description"
+).value,
+
+
+file:uploaded,
+
+
+status:"pending"
+
+
+};
+
+
+
+
+
+
+
+console.log(
+
+"Contribution Created:",
+
+contribution
+
+);
+
+
+
+
+
+
+
+
+if(
+typeof trackEvent==="function"
+){
+
+
+trackEvent(
+
+"resource_submit",
+
+title
+
+);
+
+
+}
+
+
+
+
+
+
+
+
+alert(
+
+"Contribution submitted for review"
+
+);
+
+
+
+document
+
+.getElementById(
+"contribution-form"
+)
+
+.reset();
+
+
+
+
+}
+
+
+
+</script>
+
+
+
+
+
+
 
 <script src="../js/app.js"></script>
 
 
 
-
-
-
-
-
 </body>
-
 
 </html>

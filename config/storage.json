@@ -1,0 +1,48 @@
+{
+  "provider": "demo",
+
+  "limits": {
+
+    "maxFileSizeMB": 25,
+
+    "allowedTypes": [
+
+      "pdf",
+
+      "ppt",
+
+      "pptx",
+
+      "doc",
+
+      "docx",
+
+      "jpg",
+
+      "png"
+
+    ]
+
+  },
+
+
+  "paths": {
+
+
+    "resources":
+
+    "resources/",
+
+
+    "profiles":
+
+    "profiles/",
+
+
+    "events":
+
+    "events/"
+
+
+  }
+}
