@@ -477,9 +477,23 @@ Continue learning, teaching and building knowledge.
 </div>
 
 
+<section
+
+id="contributor-panel"
+
+style="margin-bottom:30px;">
 
 
+</section>
 
+<section
+
+id="management-panel"
+
+style="margin-bottom:30px;">
+
+
+</section>
 
 
 
@@ -661,6 +675,8 @@ Community Discussions
 
 <script src="../js/services/auth.service.js"></script>
 
+<script src="../js/services/permission.service.js"></script>
+
 <script src="../js/services/database.service.js"></script>
 
 <script src="../js/services/analytics.service.js"></script>
@@ -710,15 +726,569 @@ document.getElementById(
 
 
 
+async function loadContributorDashboard(){
 
 
 
+let box =
+document.getElementById(
+"contributor-panel"
+);
+
+
+
+if(!box){
+
+return;
+
+}
+
+
+
+
+let user =
+currentUser();
+
+
+
+if(!user){
+
+return;
+
+}
+
+
+
+
+let permissions =
+await userPermissions();
+
+
+
+
+
+
+if(
+
+!permissions.includes("content.submit")
+
+&&
+
+!permissions.includes("*")
+
+){
+
+
+
+box.innerHTML = `
+
+
+<div class="card">
+
+
+<h2>
+
+🌱 Become a Contributor
+
+</h2>
+
+
+<p>
+
+Share pharmacy knowledge and help learners.
+
+</p>
+
+
+<br>
+
+
+<a
+
+href="../contribute/"
+
+class="btn btn-primary">
+
+Apply Now
+
+</a>
+
+
+</div>
+
+
+`;
+
+
+
+return;
+
+
+}
+
+
+
+
+
+
+
+
+let collections=[
+
+"resources",
+
+"books",
+
+"teaching-materials",
+
+"question-bank",
+
+"assignments"
+
+];
+
+
+
+
+
+
+let uploads=[];
+
+
+
+
+
+for(let col of collections){
+
+
+
+try{
+
+
+let data =
+await getRecords(col);
+
+
+
+uploads.push(
+
+...data.filter(
+
+x=>x.author?.id===user.id
+
+)
+
+);
+
+
+
+}
+
+catch(e){}
+
+
+
+}
+
+
+
+
+
+
+
+let approved =
+
+uploads.filter(
+
+x=>x.status==="approved"
+
+)
+.length;
+
+
+
+
+
+let pending =
+
+uploads.filter(
+
+x=>x.status==="pending"
+
+)
+.length;
+
+
+
+
+
+
+let score =
+
+uploads.length
+
+?
+
+Math.round(
+
+(approved/uploads.length)
+
+*
+
+100
+
+)
+
+:
+
+0;
+
+
+
+
+
+
+
+
+box.innerHTML = `
+
+
+
+<div class="card">
+
+
+<div class="contributor-badge">
+
+⭐ Contributor Dashboard
+
+</div>
+
+
+<br><br>
+
+
+<div class="grid">
+
+
+
+<div class="card">
+
+<h2>
+
+${uploads.length}
+
+</h2>
+
+<p>Total Uploads</p>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h2>
+
+${approved}
+
+</h2>
+
+<p>Approved</p>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h2>
+
+${pending}
+
+</h2>
+
+<p>Reviewing</p>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<br>
+
+
+
+<h3>
+
+Trust Score: ${score}%
+
+</h3>
+
+
+
+<progress
+
+value="${score}"
+
+max="100">
+
+</progress>
+
+
+
+</div>
+
+
+`;
+
+
+
+}
+
+async function loadManagementPanel(){
+
+
+
+let box =
+document.getElementById(
+"management-panel"
+);
+
+
+
+if(!box){
+
+return;
+
+}
+
+
+
+
+let user =
+currentUser();
+
+
+
+if(!user){
+
+return;
+
+}
+
+
+
+
+let permissions =
+await userPermissions();
+
+
+
+
+
+let cards="";
+
+
+
+
+
+
+if(
+
+permissions.includes("*")
+
+||
+
+permissions.includes("content.review")
+
+){
+
+
+cards += `
+
+
+<div class="card"
+
+onclick="location.href='../admin/'">
+
+
+<h2>
+
+🛡 Admin Panel
+
+</h2>
+
+
+<p>
+
+Review content and manage platform.
+
+</p>
+
+
+</div>
+
+
+`;
+
+
+}
+
+
+
+
+
+
+
+
+
+if(
+
+permissions.includes("*")
+
+||
+
+permissions.includes("analytics.view")
+
+){
+
+
+cards += `
+
+
+<div class="card"
+
+onclick="location.href='../admin/?view=analytics'">
+
+
+<h2>
+
+📈 Analytics
+
+</h2>
+
+
+<p>
+
+Platform insights and activity.
+
+</p>
+
+
+</div>
+
+
+`;
+
+
+}
+
+
+
+
+
+
+
+
+
+if(
+
+user.role==="owner"
+
+||
+
+permissions.includes("*")
+
+){
+
+
+cards += `
+
+
+<div class="card"
+
+onclick="location.href='../admin/?view=owner'">
+
+
+<h2>
+
+👑 Owner Console
+
+</h2>
+
+
+<p>
+
+System configuration and control.
+
+</p>
+
+
+</div>
+
+
+`;
+
+
+}
+
+
+
+
+
+
+
+if(!cards){
+
+return;
+
+}
+
+
+
+
+
+box.innerHTML=`
+
+
+<h2>
+
+⚙ Management
+
+</h2>
+
+
+<br>
+
+
+<div class="grid">
+
+
+${cards}
+
+
+</div>
+
+
+`;
+
+
+
+}
 
 window.addEventListener(
 
 "load",
 
-()=>{
+async ()=>{
+
 
 
 
@@ -804,7 +1374,10 @@ welcome.innerHTML =
 
 " 👋";
 
+await loadContributorDashboard();
 
+
+await loadManagementPanel();
 
 }
 

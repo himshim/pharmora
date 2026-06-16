@@ -490,7 +490,100 @@ return user;
 
 }
 
+/*
+=========================
+ REFRESH CURRENT SESSION
+=========================
+*/
 
+
+function refreshCurrentUser(){
+
+
+
+let user =
+currentUser();
+
+
+
+if(!user){
+
+return null;
+
+}
+
+
+
+
+let users =
+getDemoUsers();
+
+
+
+
+let latest =
+users.find(
+
+x=>x.id===user.id
+
+);
+
+
+
+if(!latest){
+
+return user;
+
+}
+
+
+
+
+
+let session={
+
+...latest
+
+};
+
+
+
+delete session.password;
+
+
+
+
+
+localStorage.setItem(
+
+"currentUser",
+
+JSON.stringify(session)
+
+);
+
+
+
+
+
+if(
+
+typeof clearPermissionCache==="function"
+
+){
+
+clearPermissionCache();
+
+}
+
+
+
+
+return session;
+
+
+
+}
 
 
 

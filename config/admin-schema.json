@@ -1,6 +1,5 @@
 {
   "courses": [
-
     {
       "name": "educationLevel",
       "label": "Education Level",
@@ -66,13 +65,9 @@
       "label": "Active",
       "type": "boolean"
     }
-
   ],
 
-
-
   "curriculums": [
-
     {
       "name": "course",
       "label": "Course",
@@ -109,13 +104,9 @@
       "label": "Active",
       "type": "boolean"
     }
-
   ],
 
-
-
   "semesters": [
-
     {
       "name": "course",
       "label": "Course",
@@ -135,10 +126,7 @@
       "name": "system",
       "label": "Academic System",
       "type": "select",
-      "options": [
-        "Semester",
-        "Year"
-      ]
+      "options": ["Semester", "Year"]
     },
 
     {
@@ -152,13 +140,9 @@
       "label": "Active",
       "type": "boolean"
     }
-
   ],
 
-
-
   "subjects": [
-
     {
       "name": "course",
       "label": "Course",
@@ -198,11 +182,7 @@
       "name": "type",
       "label": "Subject Type",
       "type": "select",
-      "options": [
-        "Theory",
-        "Practical",
-        "Theory + Practical"
-      ]
+      "options": ["Theory", "Practical", "Theory + Practical"]
     },
 
     {
@@ -228,13 +208,9 @@
       "label": "URL Slug",
       "type": "text"
     }
-
   ],
 
-
-
   "units": [
-
     {
       "name": "course",
       "label": "Course",
@@ -270,11 +246,7 @@
       "name": "type",
       "label": "Type",
       "type": "select",
-      "options": [
-        "Unit",
-        "Chapter",
-        "Practical"
-      ]
+      "options": ["Unit", "Chapter", "Practical"]
     },
 
     {
@@ -306,11 +278,9 @@
       "label": "Important Questions",
       "type": "textarea"
     }
-
   ],
 
-    "resources": [
-
+  "resources": [
     {
       "name": "title",
       "label": "Resource Title",
@@ -382,11 +352,7 @@
       "name": "difficulty",
       "label": "Difficulty",
       "type": "select",
-      "options": [
-        "Beginner",
-        "Intermediate",
-        "Advanced"
-      ]
+      "options": ["Beginner", "Intermediate", "Advanced"]
     },
 
     {
@@ -405,11 +371,7 @@
       "name": "visibility",
       "label": "Visibility",
       "type": "select",
-      "options": [
-        "Public",
-        "Members Only",
-        "Private"
-      ]
+      "options": ["Public", "Members Only", "Private"]
     },
 
     {
@@ -417,13 +379,9 @@
       "label": "Tags",
       "type": "tags"
     }
-
   ],
 
-
-
   "teaching-materials": [
-
     {
       "name": "title",
       "label": "Title",
@@ -476,11 +434,7 @@
       "name": "status",
       "label": "Review Status",
       "type": "select",
-      "options": [
-        "pending",
-        "approved",
-        "rejected"
-      ]
+      "options": ["pending", "approved", "rejected"]
     },
 
     {
@@ -488,13 +442,9 @@
       "label": "Tags",
       "type": "tags"
     }
-
   ],
 
-
-
   "question-bank": [
-
     {
       "name": "question",
       "label": "Question",
@@ -519,24 +469,14 @@
       "name": "questionType",
       "label": "Question Type",
       "type": "select",
-      "options": [
-        "MCQ",
-        "Short Answer",
-        "Long Answer",
-        "Numerical",
-        "Viva"
-      ]
+      "options": ["MCQ", "Short Answer", "Long Answer", "Numerical", "Viva"]
     },
 
     {
       "name": "difficulty",
       "label": "Difficulty",
       "type": "select",
-      "options": [
-        "Easy",
-        "Medium",
-        "Hard"
-      ]
+      "options": ["Easy", "Medium", "Hard"]
     },
 
     {
@@ -544,13 +484,9 @@
       "label": "Answer",
       "type": "textarea"
     }
-
   ],
 
-
-
   "assignments": [
-
     {
       "name": "title",
       "label": "Assignment Title",
@@ -575,11 +511,9 @@
       "label": "Deadline",
       "type": "date"
     }
-
   ],
 
-    "books": [
-
+  "books": [
     {
       "name": "title",
       "label": "Book Title",
@@ -641,13 +575,9 @@
       "label": "Tags",
       "type": "tags"
     }
-
   ],
 
-
-
   "events": [
-
     {
       "name": "title",
       "label": "Event Title",
@@ -670,11 +600,7 @@
       "name": "mode",
       "label": "Mode",
       "type": "select",
-      "options": [
-        "Online",
-        "Offline",
-        "Hybrid"
-      ]
+      "options": ["Online", "Offline", "Hybrid"]
     },
 
     {
@@ -693,19 +619,11 @@
       "name": "status",
       "label": "Review Status",
       "type": "select",
-      "options": [
-        "pending",
-        "approved",
-        "rejected"
-      ]
+      "options": ["pending", "approved", "rejected"]
     }
-
   ],
 
-
-
   "tools": [
-
     {
       "name": "title",
       "label": "Tool Name",
@@ -735,13 +653,9 @@
       "label": "Active",
       "type": "boolean"
     }
-
   ],
 
-
-
   "users": [
-
     {
       "name": "name",
       "label": "Name",
@@ -781,13 +695,9 @@
       "label": "Active",
       "type": "boolean"
     }
-
   ],
 
-
-
   "notifications": [
-
     {
       "name": "title",
       "label": "Notification Title",
@@ -824,11 +734,7 @@
       "name": "priority",
       "label": "Priority",
       "type": "select",
-      "options": [
-        "Normal",
-        "High",
-        "Urgent"
-      ]
+      "options": ["Normal", "High", "Urgent"]
     },
 
     {
@@ -842,7 +748,138 @@
       "label": "Active",
       "type": "boolean"
     }
+  ],
 
+  "forum": [
+    {
+      "name": "title",
+      "label": "Question Title",
+      "type": "text"
+    },
+
+    {
+      "name": "description",
+      "label": "Question Details",
+      "type": "textarea"
+    },
+
+    {
+      "name": "category",
+      "label": "Category",
+      "type": "select",
+      "options": [
+        "Study Help",
+        "Exam",
+        "Subject Doubt",
+        "Career",
+        "Teaching",
+        "General"
+      ]
+    },
+
+    {
+      "name": "subject",
+      "label": "Subject",
+      "type": "relation",
+      "collection": "subjects"
+    },
+
+    {
+      "name": "author",
+      "label": "Author",
+      "type": "object"
+    },
+
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "select",
+      "options": ["active", "hidden", "reported", "closed"]
+    },
+
+    {
+      "name": "tags",
+      "label": "Tags",
+      "type": "tags"
+    }
+  ],
+
+  "forum-answers": [
+    {
+      "name": "question",
+      "label": "Question",
+      "type": "relation",
+      "collection": "forum"
+    },
+
+    {
+      "name": "answer",
+      "label": "Answer",
+      "type": "textarea"
+    },
+
+    {
+      "name": "author",
+      "label": "Author",
+      "type": "object"
+    },
+
+    {
+      "name": "verified",
+      "label": "Verified Answer",
+      "type": "boolean"
+    },
+
+    {
+      "name": "votes",
+      "label": "Votes",
+      "type": "number"
+    },
+
+    {
+      "name": "reports",
+      "label": "Reports",
+      "type": "number"
+    }
+  ],
+
+  "reports": [
+    {
+      "name": "collection",
+      "label": "Content Type",
+      "type": "text"
+    },
+
+    {
+      "name": "contentId",
+      "label": "Content ID",
+      "type": "text"
+    },
+
+    {
+      "name": "reason",
+      "label": "Report Reason",
+      "type": "select",
+      "options": ["Wrong Information", "Spam", "Abuse", "Copyright", "Other"]
+    },
+
+    {
+      "name": "message",
+      "label": "Details",
+      "type": "textarea"
+    },
+
+    {
+      "name": "reportedBy",
+      "label": "Reported By",
+      "type": "object"
+    },
+
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "select",
+      "options": ["pending", "reviewed", "dismissed"]
+    }
   ]
-
 }

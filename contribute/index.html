@@ -35,19 +35,80 @@ Contribute
 
 text-align:center;
 
-padding:60px 0;
+padding:70px 0;
 
 }
+
+
+
+.hero h1{
+
+font-size:3.5rem;
+
+}
+
+
+
+.gradient-text{
+
+background:
+
+linear-gradient(
+90deg,
+var(--primary),
+var(--secondary)
+);
+
+-webkit-background-clip:text;
+
+color:transparent;
+
+}
+
+
+
+
+
+.contributor-stats{
+
+display:grid;
+
+grid-template-columns:
+
+repeat(
+auto-fit,
+minmax(180px,1fr)
+);
+
+gap:20px;
+
+margin-top:35px;
+
+}
+
+
+
+
+
+.status-card,
+.form-box{
+
+max-width:900px;
+
+margin:auto;
+
+}
+
+
 
 
 
 .form-box{
 
-max-width:800px;
-
-margin:auto;
+padding:30px;
 
 }
+
 
 
 
@@ -58,11 +119,11 @@ select{
 
 width:100%;
 
-padding:15px;
+padding:16px;
 
 margin-bottom:15px;
 
-border-radius:15px;
+border-radius:18px;
 
 background:var(--surface);
 
@@ -72,7 +133,29 @@ border:1px solid var(--border);
 
 outline:none;
 
+transition:var(--transition);
+
 }
+
+
+
+
+
+input:focus,
+textarea:focus,
+select:focus{
+
+border-color:var(--primary);
+
+box-shadow:
+
+0 0 0 3px
+
+rgba(34,211,238,.15);
+
+}
+
+
 
 
 
@@ -81,7 +164,12 @@ textarea{
 
 min-height:150px;
 
+resize:vertical;
+
 }
+
+
+
 
 
 
@@ -89,13 +177,23 @@ min-height:150px;
 
 .option-box{
 
-padding:18px;
+padding:22px;
 
-margin-bottom:15px;
+margin-bottom:20px;
 
-border-radius:18px;
+border-radius:22px;
 
-background:var(--surface);
+background:
+
+linear-gradient(
+
+135deg,
+
+rgba(255,255,255,.05),
+
+rgba(255,255,255,.02)
+
+);
 
 border:1px solid var(--border);
 
@@ -104,13 +202,103 @@ border:1px solid var(--border);
 
 
 
+
+
+
+
 .option-box label{
 
 display:block;
 
+padding:12px;
+
 margin:10px 0;
 
+border-radius:15px;
+
 cursor:pointer;
+
+transition:var(--transition);
+
+}
+
+
+
+
+.option-box label:hover{
+
+background:var(--surface-light);
+
+}
+
+
+
+
+
+
+
+
+.upload-area{
+
+border:
+
+2px dashed
+
+var(--border);
+
+
+border-radius:25px;
+
+padding:25px;
+
+margin-bottom:20px;
+
+text-align:center;
+
+}
+
+
+
+
+
+
+
+
+.step-title{
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+margin-bottom:15px;
+
+}
+
+
+
+
+
+
+
+.contributor-badge{
+
+display:inline-block;
+
+padding:8px 15px;
+
+border-radius:50px;
+
+background:
+
+linear-gradient(
+90deg,
+var(--primary),
+var(--secondary)
+);
+
+font-weight:bold;
 
 }
 
@@ -148,7 +336,7 @@ cursor:pointer;
 
 <div class="badge">
 
-🌱 Open Contribution
+🌱 Pharmora Contributor Network
 
 </div>
 
@@ -156,7 +344,18 @@ cursor:pointer;
 
 <h1>
 
-Share Knowledge
+
+Share Pharmacy
+
+<br>
+
+
+<span class="gradient-text">
+
+Knowledge Globally
+
+</span>
+
 
 </h1>
 
@@ -164,9 +363,80 @@ Share Knowledge
 
 <p>
 
-Contribute files, links, books, tools, events and ideas.
+Create trusted resources, teaching materials,
+questions and tools for learners worldwide.
 
 </p>
+
+
+
+
+
+
+<div class="contributor-stats">
+
+
+
+<div class="card">
+
+<h2>
+
+📚
+
+</h2>
+
+<p>
+
+Open Resources
+
+</p>
+
+</div>
+
+
+
+
+
+<div class="card">
+
+<h2>
+
+🛡
+
+</h2>
+
+<p>
+
+Reviewed Quality
+
+</p>
+
+</div>
+
+
+
+
+
+<div class="card">
+
+<h2>
+
+🌍
+
+</h2>
+
+<p>
+
+Community Powered
+
+</p>
+
+</div>
+
+
+
+</div>
+
 
 
 </section>
@@ -176,10 +446,24 @@ Contribute files, links, books, tools, events and ideas.
 
 
 
+<section 
+class="container section"
+id="contributor-gateway">
 
 
+<div class="card">
 
-<section class="container section">
+Checking contributor access...
+
+</div>
+
+
+</section>
+
+
+<section 
+class="container section"
+id="contributor-studio">
 
 
 
@@ -187,11 +471,28 @@ Contribute files, links, books, tools, events and ideas.
 
 
 
+<div class="contributor-badge">
+
+⭐ Contributor Studio
+
+</div>
+
+
+<br><br>
+
+
 <h2>
 
-Submit Contribution
+Create New Contribution
 
 </h2>
+
+
+<p>
+
+Upload educational material for review and publishing.
+
+</p>
 
 
 
@@ -391,11 +692,31 @@ placeholder="External link (optional)">
 
 
 
+<div class="upload-area">
+
+
+<h3>
+
+📎 Upload File
+
+</h3>
+
+
+<p>
+
+Notes, PDFs, presentations or learning material
+
+</p>
+
+
 <input
 
 id="resource-file"
 
 type="file">
+
+
+</div>
 
 
 
@@ -575,6 +896,8 @@ Available for everyone.
 <!-- SERVICES FIRST -->
 
 <script src="../js/services/auth.service.js"></script>
+
+<script src="../js/services/permission.service.js"></script>
 
 <script src="../js/services/database.service.js"></script>
 
@@ -1171,7 +1494,48 @@ return;
 }
 
 
+let submitPermissions =
 
+typeof userPermissions==="function"
+
+?
+
+await userPermissions()
+
+:
+
+[];
+
+
+
+
+if(
+
+!submitPermissions.includes("*")
+
+&&
+
+!submitPermissions.includes("content.submit")
+
+){
+
+
+showToast(
+
+"Contributor approval required",
+
+"error"
+
+);
+
+
+unlockSubmit();
+
+
+return;
+
+
+}
 
 
 
@@ -1382,7 +1746,17 @@ return;
 
 
 
+let permissions =
 
+typeof userPermissions==="function"
+
+?
+
+await userPermissions()
+
+:
+
+(user.permissions || []);
 
 
 let contribution={
@@ -1493,7 +1867,19 @@ document.getElementById(
 
 
 
-author:user,
+author:{
+
+
+id:user.id,
+
+
+name:user.name,
+
+
+role:user.role
+
+
+},
 
 
 
@@ -1531,15 +1917,15 @@ status:
 
 (
 
-user.verified===true
+permissions.includes("*")
 
 ||
 
-user.permissions?.includes("*")
+permissions.includes("content.autoapprove")
 
 ||
 
-user.permissions?.includes("verified.creator")
+permissions.includes("verified.creator")
 
 )
 
@@ -1655,7 +2041,6 @@ unlockSubmit();
 
 
 
-loadContributionOptions();
 
 
 
@@ -1668,7 +2053,577 @@ loadContributionOptions();
 
 
 
+<script>
 
+
+async function loadContributorAccess(){
+
+
+
+let gateway =
+document.getElementById(
+"contributor-gateway"
+);
+
+
+
+let studio =
+document.getElementById(
+"contributor-studio"
+);
+
+
+
+
+if(
+
+!gateway ||
+
+!studio
+
+){
+
+return;
+
+}
+
+
+
+
+
+studio.style.display="none";
+
+
+
+
+
+let user =
+currentUser();
+
+
+
+/*
+GUEST
+*/
+
+
+if(!user){
+
+
+gateway.innerHTML = `
+
+
+<div class="card status-card">
+
+
+<h1>
+
+🌱 Become a Pharmora Contributor
+
+</h1>
+
+
+<p>
+
+Login and join our trusted knowledge community.
+
+</p>
+
+
+<br>
+
+
+<a
+
+href="../auth/login.html"
+
+class="btn btn-primary">
+
+Login / Join
+
+</a>
+
+
+</div>
+
+
+`;
+
+return;
+
+
+}
+
+
+
+
+
+
+
+
+let permissions =
+
+typeof userPermissions==="function"
+
+?
+
+await userPermissions()
+
+:
+
+[];
+
+
+
+
+
+
+
+
+
+/*
+ALREADY CONTRIBUTOR
+*/
+
+
+if(
+
+permissions.includes("*")
+
+||
+
+permissions.includes("content.submit")
+
+){
+
+
+
+gateway.innerHTML = `
+
+
+<div class="card status-card">
+
+
+<div class="contributor-badge">
+
+⭐ Contributor Access
+
+</div>
+
+
+<br><br>
+
+
+<h2>
+
+Welcome ${user.name}
+
+</h2>
+
+
+<p>
+
+Create resources and build your Pharmora reputation.
+
+</p>
+
+
+<br>
+
+
+<div class="grid">
+
+
+<div class="card">
+
+📚 Upload Content
+
+</div>
+
+
+<div class="card">
+
+🛡 Quality Reviewed
+
+</div>
+
+
+<div class="card">
+
+⭐ Earn Trust
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+`;
+
+
+
+studio.style.display="block";
+
+loadContributionOptions();
+
+return;
+
+
+}
+
+
+
+
+
+
+
+
+
+/*
+CHECK APPLICATION
+*/
+
+
+let requests =
+await getRecords(
+
+"contributor-applications"
+
+);
+
+
+
+
+
+let existing =
+requests.find(
+
+x=>x.userId===user.id
+
+);
+
+
+
+
+
+
+if(existing){
+
+
+
+gateway.innerHTML=`
+
+
+<div class="card status-card">
+
+
+<h2>
+
+⏳ Application Submitted
+
+</h2>
+
+
+<p>
+
+Status:
+
+<b>${existing.status}</b>
+
+</p>
+
+
+<p>
+
+We review contributors to keep Pharmora reliable.
+
+</p>
+
+
+</div>
+
+
+`;
+
+
+
+return;
+
+
+}
+
+
+
+
+
+
+
+
+
+/*
+APPLICATION FORM
+*/
+
+
+gateway.innerHTML=`
+
+
+<div class="card status-card">
+
+
+<h1>
+
+🌱 Apply as Contributor
+
+</h1>
+
+
+<p>
+
+Tell us why you want to contribute.
+
+</p>
+
+
+<br>
+
+
+
+<input
+
+id="apply-education"
+
+placeholder="Education / Qualification"
+
+>
+
+
+
+<textarea
+
+id="apply-reason"
+
+placeholder="Why do you want to contribute?"
+
+></textarea>
+
+
+
+
+<button
+
+class="btn btn-primary"
+
+onclick="sendContributorApplication()">
+
+Submit Application
+
+</button>
+
+
+</div>
+
+
+`;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function sendContributorApplication(){
+
+
+
+let user =
+currentUser();
+
+let old =
+await getRecords(
+"contributor-applications"
+);
+
+
+
+if(
+
+old.find(x=>x.userId===user.id)
+
+){
+
+
+showToast(
+
+"Application already submitted",
+
+"info"
+
+);
+
+
+return;
+
+
+}
+
+let education =
+document.getElementById(
+"apply-education"
+)
+.value
+.trim();
+
+
+
+let reason =
+document.getElementById(
+"apply-reason"
+)
+.value
+.trim();
+
+
+
+
+if(
+
+!education ||
+
+!reason
+
+){
+
+
+showToast(
+
+"Complete application first",
+
+"error"
+
+);
+
+
+return;
+
+
+}
+
+await createRecord(
+
+"contributor-applications",
+
+{
+
+
+userId:user.id,
+
+
+name:user.name,
+
+
+email:user.email,
+
+
+education:education,
+
+
+
+reason:reason,
+
+
+
+status:"pending",
+
+
+
+createdAt:
+
+new Date()
+.toISOString(),
+
+
+
+role:user.role,
+
+
+
+stats:{
+
+
+uploads:0,
+
+
+approved:0,
+
+
+rejected:0,
+
+
+trust:0
+
+
+},
+
+
+
+review:{
+
+
+comments:[]
+
+
+}
+
+
+
+}
+
+);
+
+
+
+
+
+
+showToast(
+
+"Application submitted",
+
+"success"
+
+);
+
+
+
+
+
+loadContributorAccess();
+
+
+
+}
+
+
+
+
+
+
+
+
+loadContributorAccess();
+
+
+</script>
 
 
 

@@ -1,18 +1,12 @@
 [
-
   {
-    "role":"owner",
-    "permissions":[
-      "*"
-    ]
+    "role": "owner",
+    "permissions": ["*"]
   },
 
-
-
   {
-    "role":"admin",
-    "permissions":[
-
+    "role": "admin",
+    "permissions": [
       "analytics.view",
 
       "content.review",
@@ -29,95 +23,125 @@
       "events.manage",
       "tools.manage",
 
+      "contributors.manage",
+
+      "forum.moderate",
+      "forum.verify",
+      "forum.delete",
+
       "notifications.manage",
 
       "users.view",
       "users.manage",
 
       "settings.manage"
-
     ]
   },
 
-
-
   {
-    "role":"maintainer",
+    "role": "maintainer",
 
-    "permissions":[
-
+    "permissions": [
       "content.review",
       "content.approve",
       "content.edit",
 
       "books.manage",
       "events.manage",
-      "tools.manage"
+      "tools.manage",
 
+      "forum.moderate",
+      "forum.verify"
     ]
   },
 
-
-
   {
-    "role":"moderator",
+    "role": "moderator",
 
-    "permissions":[
-
+    "permissions": [
       "content.review",
-      "content.approve"
+      "content.approve",
 
+      "forum.moderate",
+      "forum.verify",
+      "forum.delete"
     ]
   },
 
-
-
   {
-    "role":"educator",
+    "role": "educator",
 
-    "permissions":[
+    "permissions": [
+      "content.submit",
+
+      "content.autoapprove",
 
       "verified.creator",
 
+      "forum.create",
+      "forum.reply",
+      "forum.vote",
+      "forum.report",
+      "forum.verify",
+
       "events.suggest"
-
     ]
   },
 
-
-
   {
-    "role":"professional",
+    "role": "professional",
 
-    "permissions":[
+    "permissions": [
+      "content.submit",
 
-      "verified.creator"
+      "content.autoapprove",
 
+      "verified.creator",
+
+      "forum.create",
+      "forum.reply",
+      "forum.vote",
+      "forum.report",
+      "forum.verify"
     ]
   },
 
-
-
   {
-    "role":"student",
+    "role": "student",
 
-    "permissions":[]
+    "permissions": [
+      "contributor.apply",
+
+      "forum.create",
+      "forum.reply",
+      "forum.vote",
+      "forum.report"
+    ]
   },
 
-
-
   {
-    "role":"contributor",
+    "role": "contributor",
 
-    "permissions":[]
+    "permissions": [
+      "content.submit",
+
+      "forum.create",
+      "forum.reply",
+      "forum.vote",
+      "forum.report"
+    ]
   },
 
-
-
   {
-    "role":"member",
+    "role": "member",
 
-    "permissions":[]
+    "permissions": [
+      "contributor.apply",
+
+      "forum.create",
+      "forum.reply",
+      "forum.vote",
+      "forum.report"
+    ]
   }
-
 ]

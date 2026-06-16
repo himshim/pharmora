@@ -1415,6 +1415,18 @@ onclick="loadManager('notifications')">
 <br><br>
 
 
+<button 
+class="btn"
+
+onclick="renderContributorApplications()">
+
+🌱 Contributor Applications
+
+</button>
+
+<br><br>
+
+
 <button
 
 class="btn"
@@ -2003,11 +2015,19 @@ Role
 
 ${[
 
+"member",
+
 "student",
 
-"teacher",
+"contributor",
+
+"educator",
+
+"professional",
 
 "moderator",
+
+"maintainer",
 
 "admin",
 
@@ -2066,24 +2086,16 @@ permissionMatrix.map(p=>`
 
 <input
 
-type="checkbox"
-
 class="permission-check"
 
-value="${p.key}"
+type="checkbox"
 
+value="${p.key}"
 
 ${
 
 (user.permissions || [])
-
 .includes(p.key)
-
-||
-
-(user.permissions || [])
-
-.includes("*")
 
 ?
 
@@ -2095,9 +2107,7 @@ ${
 
 }
 
-
 >
-
 
 ${p.label}
 
@@ -2182,29 +2192,36 @@ let permissions = [];
 
 
 
+document
+
+.querySelectorAll(
+
+".permission-check:checked"
+
+)
+
+.forEach(box=>{
+
+
+permissions.push(
+
+box.value
+
+);
+
+
+});
+
+
+
 
 
 if(role==="owner"){
 
 
-permissions=["*"];
-
-
-}
-
-
-
-
-if(role==="admin"){
-
-
 permissions=[
 
-"content.review",
-
-"courses.manage",
-
-"users.manage"
+"*"
 
 ];
 
@@ -2231,7 +2248,17 @@ permissions
 
 );
 
+if(
 
+typeof clearPermissionCache==="function"
+
+){
+
+
+clearPermissionCache();
+
+
+}
 
 
 
@@ -2365,6 +2392,24 @@ const permissionMatrix = [
 {
 key:"content.review",
 label:"📋 Review Content"
+},
+
+
+{
+key:"content.submit",
+label:"🌱 Submit Content"
+},
+
+
+{
+key:"content.autoapprove",
+label:"⭐ Auto Approve Content"
+},
+
+
+{
+key:"contributors.manage",
+label:"🌱 Manage Contributors"
 },
 
 

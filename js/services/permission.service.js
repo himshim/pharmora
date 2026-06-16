@@ -191,16 +191,42 @@ user.role;
 
 
 
-
-
-
-cachedPermissions =
+let rolePermissions =
 
 await getPermissions(
 
 user.role
 
 );
+
+
+
+
+
+
+let userSpecific =
+
+user.permissions || [];
+
+
+
+
+
+
+
+cachedPermissions =
+
+[
+
+...new Set([
+
+...rolePermissions,
+
+...userSpecific
+
+])
+
+];
 
 
 

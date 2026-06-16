@@ -1,587 +1,419 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
 
-<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<meta charset="UTF-8">
+    <title>Community</title>
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../assets/branding/favicon.svg" />
 
+    <link rel="stylesheet" href="../css/variables.css" />
 
-<title>
+    <link rel="stylesheet" href="../css/base.css" />
 
-Community
+    <link rel="stylesheet" href="../css/components.css" />
 
-</title>
+    <link rel="stylesheet" href="../css/responsive.css" />
 
+    <style>
+      .hero {
+        text-align: center;
 
-<link 
-rel="icon" 
-href="../assets/branding/favicon.svg">
+        padding: 70px 0;
+      }
 
+      .hero h1 {
+        font-size: 3.8rem;
+      }
 
-<link rel="stylesheet" href="../css/variables.css">
+      .question {
+        padding: 22px;
 
-<link rel="stylesheet" href="../css/base.css">
+        margin-bottom: 15px;
 
-<link rel="stylesheet" href="../css/components.css">
+        border-radius: 20px;
 
-<link rel="stylesheet" href="../css/responsive.css">
+        background: var(--surface);
 
+        border: 1px solid var(--border);
 
+        transition: var(--transition);
+      }
 
-<style>
+      .question:hover {
+        border-color: var(--primary);
 
+        transform: translateY(-4px);
+      }
 
-.hero{
+      .question-info {
+        margin-top: 12px;
 
-text-align:center;
+        color: var(--text-muted);
 
-padding:70px 0;
+        font-size: 0.9rem;
+      }
 
-}
+      .tag {
+        display: inline-block;
 
+        padding: 5px 12px;
 
+        border-radius: 20px;
 
-.hero h1{
+        background: var(--surface-light);
 
-font-size:3.8rem;
+        color: var(--primary);
 
-}
+        margin-top: 12px;
 
+        font-size: 0.8rem;
+      }
 
+      .contributor {
+        display: flex;
 
+        justify-content: space-between;
 
+        align-items: center;
 
-.question{
+        padding: 18px;
 
-padding:22px;
+        border-radius: 18px;
 
-margin-bottom:15px;
+        background: var(--surface);
 
-border-radius:20px;
+        border: 1px solid var(--border);
 
-background:var(--surface);
+        margin-bottom: 12px;
 
-border:1px solid var(--border);
+        transition: var(--transition);
+      }
 
-transition:var(--transition);
+      .contributor:hover {
+        border-color: var(--primary);
+      }
+      .community-modal {
+        position: fixed;
 
-}
+        inset: 0;
 
+        background: rgba(0, 0, 0, 0.65);
 
+        display: none;
 
+        align-items: center;
 
-.question:hover{
+        justify-content: center;
 
-border-color:var(--primary);
+        z-index: 999;
+      }
 
-transform:translateY(-4px);
+      .community-box {
+        width: min(600px, 90%);
 
-}
+        padding: 30px;
 
+        border-radius: 25px;
 
+        background: var(--surface);
 
+        border: 1px solid var(--border);
+      }
 
+      .community-box textarea,
+      .community-box input,
+      .community-box select {
+        width: 100%;
 
-.question-info{
+        margin-top: 10px;
 
-margin-top:12px;
+        padding: 15px;
 
-color:var(--text-muted);
+        border-radius: 15px;
 
-font-size:.9rem;
+        background: var(--background);
 
-}
+        color: var(--text);
 
+        border: 1px solid var(--border);
+      }
+    </style>
+  </head>
 
+  <body>
+    <div id="site-header"></div>
 
+    <main>
+      <section class="container hero">
+        <div class="badge">🌐 Community</div>
 
+        <h1>
+          Learn Together
 
-.tag{
+          <br />
 
-display:inline-block;
+          <span
+            style="
+              background: linear-gradient(
+                90deg,
+                var(--primary),
+                var(--secondary)
+              );
+              -webkit-background-clip: text;
+              color: transparent;
+            "
+          >
+            Grow Together
+          </span>
+        </h1>
 
-padding:5px 12px;
+        <p>
+          Ask questions, discuss concepts, share resources and improve pharmacy
+          education collaboratively.
+        </p>
 
-border-radius:20px;
+        <br />
 
-background:var(--surface-light);
+        <button class="btn btn-primary" onclick="openQuestionBox()">
+          Ask Question
+        </button>
 
-color:var(--primary);
+        <div class="search-box" style="margin-top: 30px">
+          <input
+            placeholder="Search discussions, subjects, resources..."
+            oninput="pharmoraSearch(this.value)"
+          />
+        </div>
 
-margin-top:12px;
+        <div id="search-results" class="grid" style="margin-top: 30px"></div>
+      </section>
 
-font-size:.8rem;
+      <section class="container section" id="community-profile"></section>
 
-}
+      <section class="container section">
+        <h2 class="section-title">Discussion Spaces</h2>
 
+        <div class="grid">
+          <div class="card">
+            <h2>❓ Ask Doubts</h2>
 
+            <p>Ask questions and learn with the community.</p>
+          </div>
 
+          <div class="card">
+            <h2>⭐ Verified Answers</h2>
 
+            <p>Responses reviewed by educators and contributors.</p>
+          </div>
 
-.contributor{
+          <div class="card">
+            <h2>📚 Knowledge Sharing</h2>
 
-display:flex;
+            <p>Share notes, explanations and references.</p>
+          </div>
 
-justify-content:space-between;
+          <div class="card">
+            <h2>🏆 Contributors</h2>
 
-align-items:center;
+            <p>Recognizing people building open education.</p>
+          </div>
+        </div>
+      </section>
 
-padding:18px;
+      <section class="container section">
+        <h2 class="section-title">Community Discussions</h2>
 
-border-radius:18px;
+        <div class="grid" id="forum-list"></div>
+      </section>
 
-background:var(--surface);
+      <section class="container section">
+        <h2 class="section-title">Community Contributors</h2>
 
-border:1px solid var(--border);
+        <div class="contributor">
+          <span> 👨‍🏫 Educators </span>
 
-margin-bottom:12px;
+          <span> Share expertise </span>
+        </div>
 
-transition:var(--transition);
+        <div class="contributor">
+          <span> 🌱 Contributors </span>
 
-}
+          <span> Improve platform </span>
+        </div>
 
+        <div class="contributor">
+          <span> 🎓 Students </span>
 
+          <span> Learn and discuss </span>
+        </div>
+      </section>
+    </main>
+    <div class="community-modal" id="question-modal">
+      <div class="community-box">
+        <h2>💬 Ask Question</h2>
 
-.contributor:hover{
+        <input id="question-title" placeholder="Question title" />
 
-border-color:var(--primary);
+        <textarea id="question-text" placeholder="Explain your question">
+        </textarea>
 
-}
+        <select id="question-category">
+          <option>Study Help</option>
 
+          <option>Exam</option>
 
+          <option>Teaching</option>
 
-</style>
+          <option>Career</option>
+        </select>
 
+        <br /><br />
 
-</head>
+        <button class="btn btn-primary" onclick="submitQuestion()">Post</button>
 
+        <button class="btn" onclick="closeQuestionBox()">Cancel</button>
+      </div>
+    </div>
+    <div id="site-footer"></div>
 
+    <script src="../js/app.js"></script>
 
+    <script src="../js/services/auth.service.js"></script>
 
+    <script src="../js/services/permission.service.js"></script>
 
+    <script src="../js/services/database.service.js"></script>
 
+    <script src="../components/layout/header.js"></script>
 
+    <script src="../components/layout/footer.js"></script>
 
-<body>
+    <script src="../js/search.js"></script>
 
+    <script src="../js/services/forum.service.js"></script>
 
+    <script>
+      renderForum("forum-list");
+    </script>
 
+    <script src="../js/services/analytics.service.js"></script>
 
+    <script>
+      async function loadCommunityProfile() {
+        let box = document.getElementById("community-profile");
 
+        if (!box) {
+          return;
+        }
 
-<div id="site-header"></div>
+        let user = typeof currentUser === "function" ? currentUser() : null;
 
+        if (!user) {
+          box.innerHTML = `
 
 
+<div class="card">
 
 
+<h2>
 
-
-
-
-
-
-<main>
-
-
-
-
-
-
-
-
-
-<section class="container hero">
-
-
-
-
-
-
-<div class="badge">
-
-🌐 Community
-
-</div>
-
-
-
-
-
-
-
-
-<h1>
-
-
-Learn Together
-
-
-<br>
-
-
-
-
-
-<span style="
-background:linear-gradient(
-90deg,
-var(--primary),
-var(--secondary)
-);
--webkit-background-clip:text;
-color:transparent;
-">
-
-
-Grow Together
-
-
-</span>
-
-
-
-
-</h1>
-
-
-
-
-
-
-
-
-<p>
-
-
-Ask questions, discuss concepts,
-share resources and improve pharmacy
-education collaboratively.
-
-
-</p>
-
-
-
-
-
-
-
-
-<br>
-
-
-
-
-
-<a
-
-href="../contribute/"
-
-class="btn btn-primary">
-
-
-
-Start Contributing
-
-
-
-</a>
-
-
-
-
-
-
-
-
-
-<div
-
-class="search-box"
-
-style="margin-top:30px;">
-
-
-
-
-
-
-<input
-
-placeholder="Search discussions, subjects, resources..."
-
-oninput="pharmoraSearch(this.value)"
-
->
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<div
-
-id="search-results"
-
-class="grid"
-
-style="margin-top:30px;">
-
-
-
-</div>
-
-
-
-
-
-
-
-</section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<section class="container section">
-
-
-
-
-
-
-<h2 class="section-title">
-
-Discussion Spaces
+🌱 Join Community
 
 </h2>
 
 
+<p>
+
+Create an account to contribute,
+ask questions and build reputation.
+
+</p>
+
+
+<a
+
+class="btn btn-primary"
+
+href="../auth/login.html">
+
+Join
+
+</a>
+
+
+</div>
+
+
+`;
+
+          return;
+        }
+
+        let permissions = await userPermissions();
+
+        let badge = "🎓 Member";
+
+        if (permissions.includes("*")) {
+          badge = "👑 Owner";
+        } else if (user.role === "educator") {
+          badge = "👨‍🏫 Verified Educator";
+        } else if (user.role === "professional") {
+          badge = "💊 Professional";
+        } else if (permissions.includes("content.submit")) {
+          badge = "⭐ Contributor";
+        }
+
+        box.innerHTML = `
 
 
 
+<div class="card">
 
 
+<h2>
+
+${badge}
+
+</h2>
+
+
+<p>
+
+Welcome ${user.name}
+
+</p>
+
+
+<br>
 
 
 <div class="grid">
 
 
 
+<div class="card">
 
+📚 Share Knowledge
 
-
+</div>
 
 
 
 <div class="card">
 
-
-<h2>
-
-❓ Ask Doubts
-
-</h2>
-
-
-
-
-<p>
-
-Ask questions and learn with the community.
-
-</p>
-
-
+💬 Help Learners
 
 </div>
-
-
-
-
-
-
-
 
 
 
 <div class="card">
 
-
-
-<h2>
-
-⭐ Verified Answers
-
-</h2>
-
-
-
-
-<p>
-
-Responses reviewed by educators and contributors.
-
-</p>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-
-<h2>
-
-📚 Knowledge Sharing
-
-</h2>
-
-
-
-
-<p>
-
-Share notes, explanations and references.
-
-</p>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-
-<h2>
-
-🏆 Contributors
-
-</h2>
-
-
-
-
-<p>
-
-Recognizing people building open education.
-
-</p>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-</div>
-
-
-
-
-
-</section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<section class="container section">
-
-
-
-
-
-
-<h2 class="section-title">
-
-Community Discussions
-
-</h2>
-
-
-
-
-
-
-
-
-
-<div 
-class="grid"
-id="forum-list">
-
-
-</div>
-
-
-
-
-<div class="question-info">
-
-Teacher verification planned
+🏆 Build Reputation
 
 </div>
 
@@ -592,288 +424,80 @@ Teacher verification planned
 
 
 
-
-
-
-
-
-
-
-<div class="question">
-
-
-
-
-
-<h3>
-
-How to remember autonomic nervous system drugs?
-
-</h3>
-
-
-
-
-<div class="tag">
-
-Study Methods
-
 </div>
 
 
 
+`;
+      }
 
-<div class="question-info">
+      loadCommunityProfile();
 
-Community learning
+      function openQuestionBox() {
+        let user = currentUser();
 
-</div>
+        if (!user) {
+          showToast(
+            "Please login to ask questions",
 
+            "error",
+          );
 
+          location.href = "../auth/login.html";
 
+          return;
+        }
 
-</div>
+        document.getElementById("question-modal").style.display = "flex";
+      }
 
+      function closeQuestionBox() {
+        document.getElementById("question-modal").style.display = "none";
+      }
 
+      document.addEventListener(
+        "keydown",
 
+        (e) => {
+          if (e.key === "Escape") {
+            closeQuestionBox();
+          }
+        },
+      );
 
+      async function submitQuestion() {
+        let title = document.getElementById("question-title").value.trim();
 
+        let text = document.getElementById("question-text").value.trim();
 
+        let category = document.getElementById("question-category").value;
 
+        if (!title || !text) {
+          showToast(
+            "Complete question first",
 
+            "error",
+          );
 
+          return;
+        }
 
+        await createQuestion({
+          title: title,
 
-<div class="question">
+          description: text,
 
+          category: category,
+        });
 
+        document.getElementById("question-title").value = "";
 
+        document.getElementById("question-text").value = "";
 
+        closeQuestionBox();
 
-<h3>
-
-Best method to explain tablet compression defects?
-
-</h3>
-
-
-
-
-<div class="tag">
-
-Teacher Corner
-
-</div>
-
-
-
-
-<div class="question-info">
-
-Teaching discussion
-
-</div>
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-</section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<section class="container section">
-
-
-
-
-
-
-<h2 class="section-title">
-
-Community Contributors
-
-</h2>
-
-
-
-
-
-
-
-
-
-<div class="contributor">
-
-
-<span>
-
-👨‍🏫 Educators
-
-</span>
-
-
-
-<span>
-
-Share expertise
-
-</span>
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-<div class="contributor">
-
-
-
-<span>
-
-🌱 Contributors
-
-</span>
-
-
-
-<span>
-
-Improve platform
-
-</span>
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-<div class="contributor">
-
-
-
-<span>
-
-🎓 Students
-
-</span>
-
-
-
-<span>
-
-Learn and discuss
-
-</span>
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-</section>
-
-
-
-
-
-
-
-</main>
-
-
-
-
-
-
-
-
-<div id="site-footer"></div>
-
-
-
-
-
-
-<script src="../js/app.js"></script>
-
-
-<script src="../components/layout/header.js"></script>
-
-<script src="../components/layout/footer.js"></script>
-
-
-
-<script src="../js/search.js"></script>
-
-<script src="../js/services/forum.service.js"></script>
-
-
-<script>
-
-renderForum(
-"forum-list"
-);
-
-</script>
-
-<script src="../js/services/analytics.service.js"></script>
-
-
-
-
-
-
-
-
-
-
-</body>
-
-
+        renderForum("forum-list");
+      }
+    </script>
+  </body>
 </html>
