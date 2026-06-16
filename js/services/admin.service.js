@@ -2651,3 +2651,209 @@ renderTrash();
 
 
 }
+
+/*
+ Pharmora Report Moderation
+*/
+
+
+async function renderReports(){
+
+
+const app =
+document.getElementById("admin-content");
+
+
+if(!app){
+return;
+}
+
+
+
+let reports =
+await getRecords("reports");
+
+
+
+reports =
+reports.filter(
+r=>r.status==="pending"
+);
+
+
+
+app.innerHTML = `
+
+<h2>
+🚩 Report Queue
+</h2>
+
+
+${
+reports.length ?
+
+reports.map(report=>`
+
+<div class="panel">
+
+
+<div>
+
+<strong>
+${report.collection}
+</strong>
+
+<p>
+${report.reason}
+</p>
+
+
+<small>
+Reported by:
+${report.reportedBy?.name || "Unknown"}
+</small>
+
+
+</div>
+
+
+<div>
+
+
+<button
+onclick="dismissReport('${report.id}')">
+
+Dismiss
+
+</button>
+
+
+<button
+onclick="removeReportedContent('${report.id}')">
+
+Remove
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+`).join("")
+
+
+:
+
+`
+
+<div class="card">
+
+🎉 No pending reports
+
+</div>
+
+`
+
+}
+
+
+`;
+
+
+
+}
+
+
+
+
+async function dismissReport(id){
+
+
+
+await updateRecord(
+"reports",
+id,
+{
+status:"dismissed",
+reviewedAt:new Date().toISOString()
+}
+);
+
+
+
+showToast(
+"Report dismissed",
+"success"
+);
+
+
+
+renderReports();
+
+
+
+}
+
+
+
+
+async function removeReportedContent(reportId){
+
+
+
+let reports =
+await getRecords("reports");
+
+
+
+let report =
+reports.find(
+r=>r.id===reportId
+);
+
+
+
+if(!report){
+return;
+}
+
+
+
+
+await updateRecord(
+report.collection,
+report.contentId,
+{
+deleted:true,
+deletedAt:new Date().toISOString()
+}
+);
+
+
+
+await updateRecord(
+"reports",
+reportId,
+{
+status:"removed",
+reviewedAt:new Date().toISOString()
+}
+);
+
+
+
+showToast(
+"Content removed",
+"success"
+);
+
+
+
+renderReports();
+
+
+
+}
