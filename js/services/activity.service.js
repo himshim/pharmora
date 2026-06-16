@@ -47,6 +47,11 @@ message:message,
 data:data,
 
 
+level:
+
+data.level || "info",
+
+
 user:
 
 typeof currentUser==="function"
@@ -74,7 +79,7 @@ new Date()
 
 
 logs =
-logs.slice(-200);
+logs.slice(-1000);
 
 
 
@@ -150,6 +155,36 @@ function clearActivities(){
 localStorage.removeItem(
 
 "activity"
+
+);
+
+
+
+}
+function getUserActivities(
+userId,
+limit=20
+){
+
+
+
+return getActivities(
+
+1000
+
+)
+
+.filter(
+
+x=>x.user?.id===userId
+
+)
+
+.slice(
+
+0,
+
+limit
 
 );
 

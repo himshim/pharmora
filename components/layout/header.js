@@ -211,12 +211,46 @@ if(user){
 
 
 
+let unread="";
+
+
+
+if(
+
+typeof unreadUserNotifications==="function"
+
+){
+
+
+let count =
+(
+await unreadUserNotifications()
+)
+.length;
+
+
+
+if(count){
+
+unread =
+
+` 🔔 ${count}`;
+
+}
+
+
+
+}
+
+
+
+
 authLinks = `
 
 
 <a href="${appPath("dashboard/")}">
 
-👤 ${user.name || "Profile"}
+👤 ${user.name || "Profile"} ${unread}
 
 </a>
 

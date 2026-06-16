@@ -511,7 +511,7 @@ placeholder="Create password">
 
 <p>
 
-Choose your role
+Tell us about yourself
 
 </p>
 
@@ -534,10 +534,8 @@ Choose your role
 
 
 <div 
-
 class="role-card"
-
-data-role="student">
+data-type="student">
 
 
 
@@ -560,9 +558,7 @@ Student
 
 
 <div 
-
 class="role-card"
-
 data-role="educator">
 
 
@@ -587,9 +583,7 @@ Educator
 
 
 <div 
-
 class="role-card"
-
 data-role="professional">
 
 
@@ -614,23 +608,6 @@ Professional
 
 
 
-<div 
-
-class="role-card"
-
-data-role="contributor">
-
-
-
-🌱
-
-<br>
-
-Contributor
-
-
-
-</div>
 
 
 
@@ -766,16 +743,17 @@ document.getElementById("auth-brand").innerHTML =
 
 
 
+<script src="../js/services/profile.service.js"></script>
 
 <script src="../js/services/auth.service.js"></script>
-
-<script src="../js/services/analytics.service.js"></script>
 
 <script>
 
 
-let selectedRole =
-"student";
+let selectedTypes =
+[
+"student"
+];
 
 
 
@@ -790,42 +768,44 @@ document
 .forEach(card=>{
 
 
-
 card.onclick=()=>{
 
 
-
-document
-
-.querySelectorAll(
-".role-card"
-)
-
-.forEach(
-
-c=>c.classList.remove(
-"active"
-)
-
-);
+let type =
+card.dataset.type;
 
 
 
-
-card.classList.add(
+card.classList.toggle(
 "active"
 );
 
 
 
+if(
+selectedTypes.includes(type)
+){
 
-selectedRole =
-card.dataset.role;
+
+selectedTypes =
+selectedTypes.filter(
+x=>x!==type
+);
+
+
+}
+
+else{
+
+
+selectedTypes.push(type);
+
+
+}
 
 
 
 };
-
 
 
 });
@@ -870,13 +850,42 @@ document.getElementById(
 
 
 
-role:selectedRole
+role:"member"
 
 
 
 });
 
+let profile =
+await getProfile(
+user.id
+);
 
+
+
+if(profile){
+
+
+
+await updateRecord(
+
+"profiles",
+
+profile.id,
+
+{
+
+
+types:selectedTypes
+
+
+}
+
+);
+
+
+
+}
 
 
 
@@ -885,6 +894,7 @@ role:selectedRole
 
 
 if(
+user &&
 typeof trackEvent==="function"
 ){
 

@@ -68,69 +68,8 @@
     ]
   },
 
-  {
-    "role": "educator",
 
-    "permissions": [
-      "content.submit",
 
-      "content.autoapprove",
-
-      "verified.creator",
-
-      "forum.create",
-      "forum.reply",
-      "forum.vote",
-      "forum.report",
-      "forum.verify",
-
-      "events.suggest"
-    ]
-  },
-
-  {
-    "role": "professional",
-
-    "permissions": [
-      "content.submit",
-
-      "content.autoapprove",
-
-      "verified.creator",
-
-      "forum.create",
-      "forum.reply",
-      "forum.vote",
-      "forum.report",
-      "forum.verify"
-    ]
-  },
-
-  {
-    "role": "student",
-
-    "permissions": [
-      "contributor.apply",
-
-      "forum.create",
-      "forum.reply",
-      "forum.vote",
-      "forum.report"
-    ]
-  },
-
-  {
-    "role": "contributor",
-
-    "permissions": [
-      "content.submit",
-
-      "forum.create",
-      "forum.reply",
-      "forum.vote",
-      "forum.report"
-    ]
-  },
 
   {
     "role": "member",

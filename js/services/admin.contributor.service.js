@@ -202,7 +202,6 @@ userId,
 
 {
 
-role:"contributor",
 
 permissions:[
 
@@ -216,9 +215,58 @@ permissions:[
 
 ]
 
+
 }
 
 );
+
+if(
+typeof getProfile==="function"
+){
+
+
+
+let profile =
+await getProfile(userId);
+
+
+
+if(profile){
+
+
+await updateRecord(
+
+"profiles",
+
+profile.id,
+
+{
+
+contributor:{
+
+
+enabled:true,
+
+
+approvedAt:
+
+new Date()
+.toISOString()
+
+
+}
+
+
+}
+
+);
+
+
+}
+
+
+
+}
 
 if(
 

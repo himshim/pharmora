@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>
+Edit Profile - Pharmora
+</title>
+
+
+<link
+rel="stylesheet"
+href="css/variables.css">
+
+
+<link
+rel="stylesheet"
+href="css/components.css">
+
+
+</head>
+
+
+
+<body>
+
+
+
+<main class="container">
+
+
+<div class="card">
+
+
+<h1>
+Edit Profile
+</h1>
+
+
+
+<label>
+Display Name
+</label>
+
+
+<input id="name">
+
+
+
+<label>
+Headline
+</label>
+
+
+<input
+id="headline"
+placeholder="Example: Clinical Pharmacist | Researcher">
+
+
+
+
+
+<label>
+About
+</label>
+
+
+<textarea id="bio"></textarea>
+
+
+
+
+
+<label>
+Profile Types
+</label>
+
+
+<input
+id="types"
+placeholder="student, educator, professional">
+
+
+
+
+
+<label>
+Specializations
+</label>
+
+
+<input
+id="specializations"
+placeholder="Pharmacology, QA, Clinical Pharmacy">
+
+
+
+
+
+
+<label>
+Current Position
+</label>
+
+
+<input
+id="position"
+placeholder="Assistant Professor / Pharmacist">
+
+
+
+<input
+id="organization"
+placeholder="College / Company">
+
+
+<h2>
+
+✔ Verification
+
+</h2>
+
+
+<p>
+
+Verify educator/professional status to build trust.
+
+</p>
+
+
+<select id="verifyType">
+
+
+<option value="educator">
+
+Educator
+
+</option>
+
+
+<option value="professional">
+
+Professional
+
+</option>
+
+
+</select>
+
+
+
+<input
+
+id="verifyTitle"
+
+placeholder="Professor / Pharmacist / Manager etc.">
+
+
+
+<input
+
+id="verifyOrg"
+
+placeholder="College / Company / Hospital">
+
+
+
+<button
+
+class="btn"
+
+onclick="sendVerificationRequest()"
+
+type="button">
+
+
+Request Verification ✔
+
+
+</button>
+
+
+<br><br>
+
+
+<label>
+LinkedIn</label>
+
+
+<input id="linkedin">
+
+
+
+<label>
+
+<input
+type="checkbox"
+id="linkedinVisible">
+
+Show LinkedIn publicly
+
+</label>
+
+
+
+
+
+
+<label>
+
+<input
+type="checkbox"
+id="emailVisible">
+
+Show email publicly
+
+</label>
+
+
+
+
+
+
+<br><br>
+
+
+
+<button
+class="btn btn-primary"
+onclick="saveProfile()">
+
+Save Profile
+
+</button>
+
+
+
+
+</div>
+
+
+
+</main>
+
+
+
+
+
+
+<script src="js/utils/path.js"></script>
+
+
+<script src="js/services/database.service.js"></script>
+
+
+<script src="js/services/auth.service.js"></script>
+
+
+<script src="js/services/profile.service.js"></script>
+
+<script src="js/services/verification.service.js"></script>
+
+
+
+
+
+<script>
+
+
+loadEditor();
+
+
+
+
+
+async function loadEditor(){
+
+
+
+let user =
+currentUser();
+
+
+
+if(!user){
+
+
+location.href="auth/login.html";
+
+
+return;
+
+}
+
+
+
+
+let profile =
+await getProfile(
+user.id
+);
+
+
+
+
+if(!profile){
+
+profile =
+await createUserProfile(user);
+
+}
+
+
+
+
+
+name.value =
+profile.displayName || "";
+
+
+
+headline.value =
+profile.headline || "";
+
+
+
+bio.value =
+profile.bio || "";
+
+
+
+
+types.value =
+(profile.types || [])
+.join(", ");
+
+
+
+
+specializations.value =
+
+(profile.specializations || [])
+
+.join(", ");
+
+
+
+
+
+let job =
+profile.positions?.[0] || {};
+
+
+
+position.value =
+job.title || "";
+
+
+
+organization.value =
+job.organization || "";
+
+
+
+
+linkedin.value =
+profile.contact?.linkedin?.value || "";
+
+
+
+linkedinVisible.checked =
+profile.contact?.linkedin?.visible || false;
+
+
+
+emailVisible.checked =
+profile.contact?.email?.visible || false;
+
+
+
+}
+
+
+
+
+
+
+
+
+async function saveProfile(){
+
+
+
+await updateUserProfile({
+
+
+
+displayName:name.value,
+
+
+headline:headline.value,
+
+
+bio:bio.value,
+
+
+
+types:
+
+types.value
+
+.split(",")
+
+.map(x=>x.trim()),
+
+
+
+
+
+specializations:
+
+specializations.value
+
+.split(",")
+
+.map(x=>x.trim()),
+
+
+
+
+
+
+positions:[
+
+{
+
+title:position.value,
+
+
+organization:organization.value,
+
+
+current:true
+
+}
+
+],
+
+
+
+
+
+
+contact:{
+
+
+linkedin:{
+
+
+value:linkedin.value,
+
+
+visible:linkedinVisible.checked
+
+
+},
+
+
+
+email:{
+
+
+value:currentUser().email,
+
+
+visible:emailVisible.checked
+
+
+}
+
+
+
+}
+
+
+
+});
+
+
+
+
+
+alert(
+
+"Profile updated"
+
+);
+
+
+
+}
+
+async function sendVerificationRequest(){
+
+
+
+await requestVerification({
+
+
+types:[
+
+verifyType.value
+
+],
+
+
+
+title:
+
+verifyTitle.value,
+
+
+
+organization:
+
+verifyOrg.value
+
+
+
+});
+
+
+
+alert(
+
+"Verification request sent"
+
+);
+
+
+
+}
+
+</script>
+
+
+
+</body>
+
+
+</html>

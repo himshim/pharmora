@@ -342,10 +342,8 @@ Build your learning workspace
 
 
 <div 
-
 class="block"
-
-data-field="role">
+data-field="types">
 
 
 
@@ -359,7 +357,13 @@ I am a
 </h3>
 
 
+<small>
 
+Select all that apply
+
+</small>
+
+<br><br>
 
 
 
@@ -428,17 +432,6 @@ data-value="professional">
 
 
 
-<div 
-
-class="option"
-
-data-value="contributor">
-
-
-🌱 Contributor
-
-
-</div>
 
 
 
@@ -747,21 +740,19 @@ Interests
 
 
 
-<a
+<button
 
-href="../dashboard/"
+onclick="finishSetup()"
 
 class="btn btn-primary"
 
 style="width:100%;">
 
 
-
 Enter Platform
 
 
-
-</a>
+</button>
 
 
 
@@ -819,7 +810,6 @@ document.getElementById("auth-brand").innerHTML =
 
 
 
-
 document
 
 .querySelectorAll(".option")
@@ -832,7 +822,49 @@ item.onclick=()=>{
 
 
 
-let group=item.parentElement;
+let block =
+item.closest(".block");
+
+
+
+let field =
+block.dataset.field;
+
+
+
+
+
+if(
+
+field==="types"
+
+||
+
+field==="interest"
+
+){
+
+
+
+item.classList.toggle(
+
+"active"
+
+);
+
+
+
+}
+
+
+
+
+else{
+
+
+
+let group =
+item.parentElement;
 
 
 
@@ -840,11 +872,27 @@ group
 
 .querySelectorAll(".option")
 
-.forEach(x=>x.classList.remove("active"));
+.forEach(
+
+x=>x.classList.remove(
+
+"active"
+
+)
+
+);
 
 
 
-item.classList.add("active");
+item.classList.add(
+
+"active"
+
+);
+
+
+
+}
 
 
 
@@ -855,12 +903,158 @@ item.classList.add("active");
 });
 
 
+
+
+
+
+
+
+async function finishSetup(){
+
+let user =
+currentUser();
+
+
+
+if(!user){
+
+
+location.href="login.html";
+
+
+return;
+
+
+}
+
+let data={};
+
+
+
+document
+
+.querySelectorAll(".block")
+
+.forEach(block=>{
+
+
+
+let field =
+block.dataset.field;
+
+
+
+let selected =
+
+[
+
+...block.querySelectorAll(
+
+".option.active"
+
+)
+
+]
+
+.map(
+
+x=>x.dataset.value || x.innerText.trim()
+
+);
+
+
+
+
+
+if(
+
+field==="types"
+
+||
+
+field==="interest"
+
+){
+
+
+data[field]=selected;
+
+
+}
+
+
+else{
+
+
+data[field]=selected[0] || "";
+
+
+}
+
+
+
+});
+
+
+
+
+
+
+await updateUserProfile({
+
+
+
+types:
+
+data.types || ["member"],
+
+
+
+education:[
+
+{
+
+course:data.course,
+
+curriculum:data.curriculum
+
+}
+
+],
+
+
+
+specializations:
+
+data.interest || []
+
+
+
+});
+
+
+
+
+
+
+location.href="../dashboard/";
+
+
+
+}
+
+
+
 </script>
 
 
 
 
+<script src="../js/services/database.service.js"></script>
 
+<script src="../js/services/profile.service.js"></script>
+
+<script src="../js/services/auth.service.js"></script>
 
 
 <script src="../js/services/analytics.service.js"></script>

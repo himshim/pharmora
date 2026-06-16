@@ -6,8 +6,12 @@
 async function loadNotifications(){
 
 
+
 const box =
-document.getElementById("notification-panel");
+document.getElementById(
+"notification-panel"
+);
+
 
 
 if(!box){
@@ -18,18 +22,92 @@ return;
 
 
 
-const notices =
-await fetch("/config/notices.json")
+
+
+let notices=[];
+
+
+
+
+
+try{
+
+
+notices =
+await fetch(
+
+appPath(
+"config/notices.json"
+)
+
+)
+
 .then(r=>r.json());
+
+
+}
+
+catch(e){}
+
+
+
+
+
+
+
+let personal=[];
+
+
+
+if(
+
+typeof getMyNotifications==="function"
+
+){
+
+
+
+personal =
+await getMyNotifications();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+let combined = [
+
+...personal,
+
+...notices
+
+];
+
+
 
 
 
 
 
 box.innerHTML =
-notices.map(item=>`
+
+combined.length
+
+?
+
+combined.map(item=>`
+
+
 
 <div class="notice-item">
+
 
 
 <strong>
@@ -39,6 +117,7 @@ ${item.title}
 </strong>
 
 
+
 <p>
 
 ${item.message}
@@ -46,34 +125,81 @@ ${item.message}
 </p>
 
 
+
 <small>
 
-${item.date}
+${
+
+item.createdAt ||
+
+item.date ||
+
+""
+
+}
 
 </small>
+
 
 
 </div>
 
 
-`).join("");
+
+`).join("")
+
+
+:
+
+
+`
+
+<div class="notice-item">
+
+No notifications
+
+</div>
+
+`;
 
 
 
 }
+
+
+
+
+
+
+
 
 
 
 function toggleNotifications(){
 
 
+
 document
-.getElementById("notification-panel")
+
+.getElementById(
+
+"notification-panel"
+
+)
+
 .classList
-.toggle("show");
+
+.toggle(
+
+"show"
+
+);
+
 
 
 }
+
+
 
 
 

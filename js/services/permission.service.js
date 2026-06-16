@@ -11,6 +11,10 @@ let cachedPermissions=null;
 
 let cachedRole=null;
 
+let cachedUser=null;
+
+let cachedTime=null;
+
 
 
 
@@ -169,6 +173,14 @@ cachedPermissions
 
 cachedRole===user.role
 
+&&
+
+cachedUser===user.id
+
+&&
+
+Date.now()-cachedTime < 30000
+
 ){
 
 
@@ -187,6 +199,18 @@ return cachedPermissions;
 cachedRole =
 
 user.role;
+
+
+
+cachedUser =
+
+user.id;
+
+
+
+cachedTime =
+
+Date.now();
 
 
 
@@ -213,6 +237,131 @@ user.permissions || [];
 
 
 
+let profilePermissions=[];
+
+
+
+
+
+if(
+
+typeof getProfile==="function"
+
+){
+
+
+
+let profile =
+
+await getProfile(
+
+user.id
+
+);
+
+
+
+
+
+
+if(profile){
+
+
+
+
+
+if(
+
+profile.contributor?.enabled
+
+){
+
+
+
+profilePermissions.push(
+
+"content.submit"
+
+);
+
+
+
+}
+
+
+
+
+
+
+if(
+
+profile.verification?.verified
+
+&&
+
+(
+
+(
+
+profile.verification.verifiedTypes || []
+
+)
+
+.includes(
+
+"educator"
+
+)
+
+||
+
+(
+
+profile.verification.verifiedTypes || []
+
+)
+
+.includes(
+
+"professional"
+
+)
+
+)
+
+){
+
+
+
+profilePermissions.push(
+
+"forum.verify");
+
+
+
+profilePermissions.push(
+
+"verified.creator"
+
+);
+
+
+
+}
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
 
 cachedPermissions =
 
@@ -220,9 +369,15 @@ cachedPermissions =
 
 ...new Set([
 
+
 ...rolePermissions,
 
+
+...profilePermissions,
+
+
 ...userSpecific
+
 
 ])
 
@@ -408,23 +563,10 @@ async function requirePermission(permission){
 
 
 
-
-
-
-
-
 let allowed =
-
 await hasPermission(
-
 permission
-
 );
-
-
-
-
-
 
 
 
@@ -432,16 +574,9 @@ if(!allowed){
 
 
 
-
-
-
-
 if(
-
 typeof showToast==="function"
-
 ){
-
 
 
 showToast(
@@ -453,12 +588,7 @@ showToast(
 );
 
 
-
 }
-
-
-
-
 
 
 
@@ -479,13 +609,7 @@ appPath("dashboard/")
 
 
 
-
-
-
-
 return false;
-
-
 
 
 
@@ -495,13 +619,7 @@ return false;
 
 
 
-
-
-
-
 return true;
-
-
 
 
 
@@ -523,6 +641,12 @@ cachedPermissions=null;
 
 
 cachedRole=null;
+
+
+cachedUser=null;
+
+
+cachedTime=null;
 
 
 

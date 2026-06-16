@@ -1,0 +1,125 @@
+{
+  "student": {
+
+    "suggestions": [
+
+      "D.Pharm Student",
+      "B.Pharm Student",
+      "Pharm.D Student",
+      "M.Pharm Student",
+      "PhD Scholar"
+
+    ],
+
+    "allowCustom": true,
+    "allowMultiple": true
+
+  },
+
+
+  "educator": {
+
+    "suggestions": [
+
+      "Tutor",
+
+      "Lecturer",
+
+      "Assistant Professor",
+
+      "Associate Professor",
+
+      "Professor",
+
+      "Head of Department",
+
+      "Dean",
+
+      "Research Guide"
+
+    ],
+
+
+    "allowCustom": true,
+
+    "allowMultiple": true
+
+  },
+
+
+
+  "professional": {
+
+    "suggestions": [
+
+      "Community Pharmacist",
+
+      "Hospital Pharmacist",
+
+      "Clinical Pharmacist",
+
+
+      "Production Chemist",
+
+      "Quality Assurance Officer",
+
+      "Quality Control Analyst",
+
+
+      "Regulatory Affairs Specialist",
+
+
+      "Medical Representative",
+
+      "Marketing Executive",
+
+      "Product Manager",
+
+
+      "Research Scientist",
+
+      "Pharmacovigilance Associate",
+
+
+      "Industry Manager",
+
+      "Entrepreneur",
+
+      "Consultant",
+
+      "Other"
+
+    ],
+
+
+    "allowCustom": true,
+
+
+    "allowMultiple": true
+
+  },
+
+
+  "fields": [
+
+    "Pharmaceutics",
+
+    "Pharmacology",
+
+    "Pharmaceutical Chemistry",
+
+    "Pharmacognosy",
+
+    "Pharmacy Practice",
+
+    "Clinical Pharmacy",
+
+    "Biotechnology",
+
+    "Regulatory Science",
+
+    "Industrial Pharmacy"
+
+  ]
+
+}

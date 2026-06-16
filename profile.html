@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>
+Pharmora Profile
+</title>
+
+
+<link
+rel="stylesheet"
+href="css/variables.css">
+
+
+<link
+rel="stylesheet"
+href="css/components.css">
+
+
+</head>
+
+
+
+<body>
+
+
+
+<main class="container">
+
+
+<div id="profile-root">
+
+
+Loading profile...
+
+
+</div>
+
+
+</main>
+
+
+
+
+
+
+<script src="js/utils/path.js"></script>
+
+
+<script src="js/services/database.service.js"></script>
+
+<script src="js/services/profile.service.js"></script>
+
+<script src="js/services/auth.service.js"></script>
+
+
+
+
+
+<script>
+
+
+loadProfile();
+
+
+
+async function loadProfile(){
+
+
+
+let root =
+document.getElementById(
+"profile-root"
+);
+
+
+
+
+
+let params =
+new URLSearchParams(
+location.search
+);
+
+
+
+
+let id =
+params.get("id");
+
+
+
+
+if(!id){
+
+
+root.innerHTML =
+`
+<div class="card">
+
+Profile not found
+
+</div>
+`;
+
+
+return;
+
+
+}
+
+
+
+
+
+let profile =
+await getPublicProfile(id);
+
+
+
+
+
+if(!profile){
+
+
+
+root.innerHTML =
+`
+<div class="card">
+
+Profile unavailable
+
+</div>
+`;
+
+
+
+return;
+
+
+}
+
+
+
+
+
+
+
+root.innerHTML = `
+
+
+<div class="card">
+
+
+<h1>
+
+👤 ${profile.displayName}
+
+${
+
+profile.verification?.verified
+
+?
+
+" ✔"
+
+:
+
+""
+
+}
+
+</h1>
+
+
+
+<p>
+
+${profile.headline || ""}
+
+</p>
+
+
+
+<div class="badge">
+
+${(profile.types || []).join(" • ")}
+
+</div>
+
+
+<br>
+
+
+${
+
+profile.verification?.verified
+
+?
+
+`
+
+<div class="badge">
+
+✔ Verified
+
+${profile.verification.verifiedTypes.join(", ")}
+
+</div>
+
+`
+
+:
+
+""
+
+}
+
+
+
+${
+
+profile.contributor?.enabled
+
+?
+
+`
+
+<div class="badge">
+
+🌱 Pharmora Contributor
+
+</div>
+
+`
+
+:
+
+""
+
+}
+
+
+
+${
+
+(profile.badges || [])
+
+.map(
+
+b=>`
+
+<div class="badge">
+
+${b}
+
+</div>
+
+`
+
+)
+
+.join("")
+
+}
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+About
+
+</h2>
+
+
+
+<p>
+
+${profile.bio || "No bio added yet."}
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+💼 Experience
+
+</h2>
+
+
+
+${
+
+(profile.positions || []).length
+
+?
+
+profile.positions.map(job=>`
+
+<p>
+
+<strong>
+
+${job.title}
+
+</strong>
+
+
+<br>
+
+
+${job.organization || ""}
+
+
+${
+
+job.current
+
+?
+
+"<br>Currently working"
+
+:
+
+""
+
+}
+
+
+</p>
+
+
+`).join("")
+
+
+:
+
+"No experience added"
+
+
+}
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+🎓 Education / Fields
+
+</h2>
+
+
+
+${
+
+(profile.education || [])
+
+.map(e=>`
+
+<p>
+
+${e.course || ""}
+
+${e.curriculum ? " - "+e.curriculum : ""}
+
+</p>
+
+
+`)
+
+.join("")
+
+}
+
+
+
+<p>
+
+${
+
+(profile.specializations || [])
+
+.join(", ")
+
+}
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+⭐ Reputation
+
+</h2>
+
+
+
+<h1>
+
+${profile.stats?.reputation || 0}
+
+</h1>
+
+
+
+<p>
+
+💬 Answers:
+
+${profile.stats?.answers || 0}
+
+
+<br>
+
+
+✔ Verified Answers:
+
+${profile.stats?.verifiedAnswers || 0}
+
+
+<br>
+
+
+📚 Articles:
+
+${profile.stats?.articles || 0}
+
+
+<br>
+
+
+📝 Notes:
+
+${profile.stats?.notes || 0}
+
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+🌐 Contact
+
+</h2>
+
+
+
+${
+
+profile.contact?.linkedin
+
+?
+
+`
+
+<p>
+
+LinkedIn:
+
+${profile.contact.linkedin.value}
+
+</p>
+
+`
+
+:
+
+""
+
+
+
+}
+
+
+
+
+${
+
+profile.contact?.website
+
+?
+
+`
+
+<p>
+
+Website:
+
+${profile.contact.website.value}
+
+</p>
+
+`
+
+:
+
+""
+
+
+
+}
+
+
+
+
+
+${
+
+profile.contact?.email
+
+?
+
+`
+
+<p>
+
+Email:
+
+${profile.contact.email.value}
+
+</p>
+
+`
+
+:
+
+""
+
+
+
+}
+
+
+
+</div>
+
+
+`;
+
+
+
+}
+
+
+
+</script>
+
+
+
+</body>
+
+
+</html>

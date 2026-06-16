@@ -884,6 +884,41 @@ review:review
 );
 
 if(
+
+item?.author?.id
+
+&&
+
+typeof notifyUser==="function"
+
+){
+
+
+
+notifyUser(
+
+item.author.id,
+
+{
+
+title:"New review feedback 💬",
+
+message:
+
+"A reviewer commented on your submission.",
+
+type:"info"
+
+}
+
+);
+
+
+
+}
+
+
+if(
 typeof logActivity==="function"
 ){
 
@@ -943,7 +978,11 @@ id
 
 
 
-
+let item =
+await findContent(
+collection,
+id
+);
 
 await updateRecord(
 
@@ -1018,7 +1057,11 @@ id
 ){
 
 
-
+let item =
+await findContent(
+collection,
+id
+);
 
 
 
@@ -1035,6 +1078,75 @@ status:"rejected"
 }
 
 );
+
+if(
+
+item?.author?.id
+
+&&
+
+typeof notifyUser==="function"
+
+){
+
+
+
+notifyUser(
+
+item.author.id,
+
+{
+
+title:"Submission needs changes",
+
+message:
+
+"Your submission was not approved. Check review comments.",
+
+type:"warning"
+
+}
+
+);
+
+
+
+}
+
+
+if(
+
+item?.author?.id
+
+&&
+
+typeof notifyUser==="function"
+
+){
+
+
+
+notifyUser(
+
+item.author.id,
+
+{
+
+title:"Content approved 🎉",
+
+message:
+
+"Your submission has been published.",
+
+type:"success"
+
+}
+
+);
+
+
+
+}
 
 
 if(
@@ -1868,7 +1980,64 @@ return;
 
 
 
-box.innerHTML = users.map(user=>`
+box.innerHTML = `
+
+
+<div class="card">
+
+
+<h2>
+
+🚫 Quick Ban
+
+</h2>
+
+
+<p>
+
+Ban account using User ID
+
+</p>
+
+
+
+<input
+
+id="quick-ban-id"
+
+placeholder="Paste user ID">
+
+
+
+<br><br>
+
+
+
+<button
+
+class="btn"
+
+onclick="banUserById()">
+
+
+Ban User
+
+
+</button>
+
+
+
+</div>
+
+
+<br>
+
+
+`
+
++
+
+users.map(user=>`
 
 
 
@@ -2016,14 +2185,6 @@ Role
 ${[
 
 "member",
-
-"student",
-
-"contributor",
-
-"educator",
-
-"professional",
 
 "moderator",
 
@@ -2379,6 +2540,158 @@ renderUserManager();
 
 }
 
+async function banUserById(){
+
+
+
+let input =
+document.getElementById(
+"quick-ban-id"
+);
+
+
+
+if(
+!input ||
+!input.value.trim()
+){
+
+
+
+showToast(
+
+"Enter user ID",
+
+"error"
+
+);
+
+
+
+return;
+
+
+
+}
+
+
+
+
+
+let id =
+input.value.trim();
+
+
+
+
+let users =
+await getRecords(
+"users"
+);
+
+
+
+let user =
+users.find(
+
+x=>x.id===id
+
+);
+
+
+
+
+if(!user){
+
+
+
+showToast(
+
+"User not found",
+
+"error"
+
+);
+
+
+
+return;
+
+
+
+}
+
+
+
+
+
+await updateRecord(
+
+"users",
+
+id,
+
+{
+
+disabled:true
+
+}
+
+);
+
+
+
+
+
+
+if(
+
+typeof logActivity==="function"
+
+){
+
+
+
+logActivity(
+
+"user.ban",
+
+"User banned",
+
+{
+
+id,
+
+level:"warning"
+
+}
+
+);
+
+
+
+}
+
+
+
+
+
+showToast(
+
+"User banned",
+
+"success"
+
+);
+
+
+
+renderUserManager();
+
+
+
+}
+
 /*
 =========================
  PERMISSION MATRIX
@@ -2661,7 +2974,7 @@ async function renderReports(){
 
 
 const app =
-document.getElementById("admin-content");
+document.getElementById("admin-actions");
 
 
 if(!app){
@@ -2766,7 +3079,20 @@ Remove
 
 }
 
+let title =
+document.getElementById(
+"section-title"
+);
 
+
+if(title){
+
+
+title.innerHTML =
+"🚩 Report Queue";
+
+
+}
 
 
 async function dismissReport(id){
@@ -2782,7 +3108,26 @@ reviewedAt:new Date().toISOString()
 }
 );
 
+if(
+typeof logActivity==="function"
+){
 
+
+logActivity(
+
+"report.dismiss",
+
+"Report dismissed",
+
+{
+id,
+level:"info"
+}
+
+);
+
+
+}
 
 showToast(
 "Report dismissed",
@@ -2843,7 +3188,35 @@ reviewedAt:new Date().toISOString()
 }
 );
 
+if(
+typeof logActivity==="function"
+){
 
+
+logActivity(
+
+"report.remove",
+
+"Removed reported content",
+
+{
+
+reportId,
+
+collection:
+report.collection,
+
+contentId:
+report.contentId,
+
+level:"warning"
+
+}
+
+);
+
+
+}
 
 showToast(
 "Content removed",
@@ -2853,6 +3226,347 @@ showToast(
 
 
 renderReports();
+
+
+
+}
+
+/*
+=========================
+ VERIFICATION CENTER
+=========================
+*/
+
+
+async function renderVerificationCenter(){
+
+
+let title =
+document.getElementById(
+"section-title"
+);
+
+
+if(title){
+
+title.innerHTML =
+"✔ Verification Center";
+
+}
+
+
+
+
+let box =
+document.getElementById(
+"admin-actions"
+);
+
+
+
+if(!box){
+
+return;
+
+}
+
+
+
+let requests =
+await getVerificationRequests();
+
+
+
+
+box.innerHTML = `
+
+
+<div class="card">
+
+
+<h2>
+Manual Verification
+</h2>
+
+
+<br>
+
+
+<input
+id="verify-search"
+placeholder="Search user id / email / name">
+
+
+<br><br>
+
+
+<button
+class="btn btn-primary"
+onclick="searchVerifyUser()">
+
+Search User
+
+</button>
+
+
+<div id="verify-result"></div>
+
+
+</div>
+
+
+
+<br>
+
+
+
+<h2>
+
+Pending Requests
+
+</h2>
+
+
+${
+
+requests.length
+
+?
+
+requests.map(r=>`
+
+<div class="panel">
+
+
+<div>
+
+
+<h3>
+
+${r.name}
+
+</h3>
+
+
+<p>
+
+${r.types.join(", ")}
+
+<br>
+
+${r.details.title}
+
+<br>
+
+${r.details.organization}
+
+</p>
+
+
+</div>
+
+
+
+
+<div>
+
+
+<button
+onclick="approveVerification('${r.id}')">
+
+✔
+
+</button>
+
+
+<button
+onclick="rejectVerification('${r.id}')">
+
+❌
+
+</button>
+
+
+</div>
+
+
+
+</div>
+
+`).join("")
+
+
+:
+
+`
+
+<div class="card">
+
+No verification requests
+
+</div>
+
+`
+
+}
+
+
+`;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function searchVerifyUser(){
+
+
+
+let q =
+document
+
+.getElementById(
+"verify-search"
+)
+
+.value
+
+.toLowerCase();
+
+
+
+
+let users =
+await getRecords(
+"users"
+);
+
+
+
+
+let user =
+users.find(
+
+u=>
+
+u.id===q
+
+||
+
+u.email?.toLowerCase()===q
+
+||
+
+u.name?.toLowerCase().includes(q)
+
+);
+
+
+
+
+let box =
+document.getElementById(
+"verify-result"
+);
+
+
+
+if(!user){
+
+
+
+box.innerHTML =
+
+`
+
+<br>
+
+User not found
+
+`;
+
+
+
+return;
+
+
+}
+
+
+
+
+
+box.innerHTML = `
+
+
+<br>
+
+
+<div class="panel">
+
+
+<div>
+
+
+<h3>
+
+👤 ${user.name}
+
+</h3>
+
+
+<p>
+
+${user.email}
+
+</p>
+
+
+</div>
+
+
+
+<div>
+
+
+<button
+onclick="verifyUser('${user.id}', ['educator'], 'manual')">
+
+✔ Educator
+
+</button>
+
+
+<button
+onclick="verifyUser('${user.id}', ['professional'], 'manual')">
+
+✔ Professional
+
+</button>
+
+
+<button
+onclick="removeVerification('${user.id}')">
+
+Remove
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+`;
 
 
 

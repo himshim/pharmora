@@ -23,6 +23,145 @@ async function getQuestions() {
   }
 }
 
+async function getAuthorInfo(user){
+
+
+
+if(
+!user?.id ||
+typeof getProfile!=="function"
+){
+
+return {
+
+name:user?.name || "Community",
+
+subtitle:"Member",
+
+badges:[]
+
+};
+
+}
+
+
+
+let profile =
+await getProfile(
+user.id
+);
+
+
+
+if(!profile){
+
+
+return {
+
+name:user.name,
+
+subtitle:"Member",
+
+badges:[]
+
+};
+
+
+}
+
+
+
+let badges=[];
+
+
+
+
+if(
+
+profile.verification?.verified
+
+){
+
+
+badges.push(
+
+"✔ Verified"
+
+);
+
+
+}
+
+
+
+
+if(
+
+profile.contributor?.enabled
+
+){
+
+
+badges.push(
+
+"🌱 Contributor"
+
+);
+
+
+}
+
+
+
+
+return {
+
+
+name:
+
+profile.displayName || user.name,
+
+
+
+subtitle:
+
+[
+
+...(profile.types || []),
+
+...(profile.specializations || [])
+
+]
+
+.slice(0,2)
+
+.join(" • ")
+
+
+
+||
+
+
+"Member",
+
+
+
+badges:badges,
+
+
+
+reputation:
+
+profile.stats?.reputation || 0
+
+
+
+};
+
+
+
+}
+
 async function renderForum(id) {
   const root = document.getElementById(id);
 
@@ -31,6 +170,21 @@ async function renderForum(id) {
   }
 
   const questions = await getQuestions();
+
+  for(
+
+let q of questions
+
+){
+
+
+q.authorInfo =
+await getAuthorInfo(
+q.author
+);
+
+
+}
 
   if (!questions.length) {
     root.innerHTML = `
@@ -119,13 +273,33 @@ ${q.category || "Discussion"}
 
 👤 
 
-${q.author?.name || "Community"}
+<a href="profile.html?id=${q.author?.id}">
+
+${q.authorInfo.name}
+
+</a>
 
 
-•
+<br>
 
 
-${roleBadge(q.author?.role)}
+${q.authorInfo.subtitle}
+
+
+<br>
+
+
+${
+
+q.authorInfo.badges.join(" ")
+
+}
+
+
+<br>
+
+
+⭐ ${q.authorInfo.reputation}
 
 
 </p>
@@ -193,7 +367,7 @@ ${roleBadge(q.author?.role)}
 
 
 
-${renderAnswers(q)}
+${await renderAnswers(q)}
 
 
 
@@ -231,10 +405,37 @@ ${
     .join("");
 }
 
-function renderAnswers(q) {
+async function renderAnswers(q) {
   if (!q.answers || !q.answers.length) {
     return "";
   }
+
+  let verifyAllowed =
+await canVerifyAnswer();
+
+for(
+
+let a of q.answers
+
+){
+
+
+a.authorInfo =
+await getAuthorInfo(
+a.author
+);
+
+
+}
+
+q.answers =
+q.answers.map(a=>({
+
+...a,
+
+canVerify:verifyAllowed
+
+}));
 
   return q.answers
     .map(
@@ -253,16 +454,36 @@ ${a.answer}
 
 <small>
 
-👤 ${a.author?.name || "User"}
+👤
 
-•
+<a href="profile.html?id=${a.author?.id}">
 
-${roleBadge(a.author?.role)}
+${a.authorInfo.name}
+
+</a>
+
+
+<br>
+
+
+${a.authorInfo.subtitle}
+
+
+<br>
+
+
+${a.authorInfo.badges.join(" ")}
+
+
+<br>
+
+
+⭐ ${a.authorInfo.reputation}
 
 </small>
 
 ${
-  canVerifyAnswer() && !a.verified
+  a.canVerify && !a.verified
     ? `
 
 <br>
@@ -307,75 +528,40 @@ ${a.verifiedBy?.name || "Educator"}
     .join("");
 }
 
-function roleBadge(role) {
-  return (
-    {
-      owner: "👑 Owner",
-
-      admin: "🛡 Admin",
-
-      moderator: "🛡 Moderator",
-
-      educator: "👨‍🏫 Educator",
-
-      professional: "💊 Professional",
-
-      contributor: "⭐ Contributor",
-
-      student: "🎓 Student",
-
-      member: "Member",
-    }[role] || "Member"
-  );
-}
-
-function canVerifyAnswer(){
+function roleBadge(role){
 
 
 
-let user =
+return ({
 
-typeof currentUser==="function"
+owner:"👑 Owner",
 
-?
+admin:"🛡 Admin",
 
-currentUser()
+maintainer:"� Maintainer",
 
-:
+moderator:"🛡 Moderator",
 
-null;
-
-
+member:"Member"
 
 
-if(!user){
+}[role] || "Member");
 
-return false;
+
 
 }
 
+async function canVerifyAnswer(){
 
 
 
-return [
+return await hasPermission(
 
-"owner",
-
-"admin",
-
-"moderator",
-
-"educator",
-
-"professional"
-
-]
-
-.includes(
-
-user.role
+"forum.verify"
 
 );
+
+
 
 }
 
@@ -659,15 +845,16 @@ await addReputation(
 
 q.author?.id,
 
+
 type==="up"
 
 ?
 
-5
+"ANSWER_UPVOTED"
 
 :
 
--2
+"ANSWER_DOWNVOTED"
 
 );
 
@@ -1121,88 +1308,37 @@ return;
     "success",
   );
 
+  await addReputation(
+
+target.author.id,
+
+"ANSWER_VERIFIED"
+
+);
   renderForum("forum-list");
 }
 
 async function addReputation(
 userId,
-points
+action
 ){
 
 
+if(
+typeof addProfileReputation==="function"
+){
 
-if(!userId){
+
+return addProfileReputation(
+userId,
+action
+);
+
+
+}
+
 
 return;
-
-}
-
-
-
-let users =
-await getRecords(
-"users"
-);
-
-
-
-
-let user =
-users.find(
-
-x=>x.id===userId
-
-);
-
-
-
-
-if(!user){
-
-return;
-
-}
-
-
-
-
-
-let reputation =
-
-(user.reputation || 0)
-
-+
-
-points;
-
-
-
-
-
-await updateRecord(
-
-"users",
-
-userId,
-
-{
-
-reputation:reputation
-
-}
-
-);
-
-
-
-checkContributorUpgrade(
-
-userId,
-
-reputation
-
-);
-
 
 
 }

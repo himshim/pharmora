@@ -536,6 +536,23 @@ return user;
 
 }
 
+if(
+
+latest.disabled
+
+){
+
+
+
+logoutUser();
+
+
+
+return null;
+
+
+
+}
 
 
 
@@ -934,6 +951,19 @@ users
 
 
 
+if(
+typeof createUserProfile==="function"
+){
+
+createUserProfile(user);
+
+}
+
+
+
+
+
+
 
 
 let session={
@@ -1096,7 +1126,29 @@ return null;
 
 }
 
+if(
 
+user.disabled
+
+){
+
+
+
+showToast?.(
+
+"Account disabled. Contact administrator.",
+
+"error"
+
+);
+
+
+
+return null;
+
+
+
+}
 
 
 
