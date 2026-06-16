@@ -140,7 +140,7 @@ onclick="approveContributor('${app.id}','${app.userId}')">
 
 <button
 
-onclick="rejectContributor('${app.id}')">
+onclick="rejectContributor('${app.id}','${app.userId}')">
 
 ❌
 
@@ -330,6 +330,35 @@ userId:userId
 
 }
 
+if(
+
+typeof notifyUser==="function"
+
+){
+
+
+
+notifyUser(
+
+userId,
+
+{
+
+title:"🌱 Contributor Approved",
+
+message:
+
+"You can now submit educational content on Pharmora.",
+
+type:"success"
+
+}
+
+);
+
+
+
+}
 
 
 showToast(
@@ -357,7 +386,8 @@ renderContributorApplications();
 
 
 async function rejectContributor(
-id
+id,
+userId
 ){
 
 
@@ -397,6 +427,37 @@ id:id
 
 
 }
+
+if(
+
+typeof notifyUser==="function"
+
+){
+
+
+
+notifyUser(
+
+userId,
+
+{
+
+title:"Contributor Application Update",
+
+message:
+
+"Your contributor application was not approved. You may improve your profile and try again later.",
+
+type:"info"
+
+}
+
+);
+
+
+
+}
+
 
 showToast(
 

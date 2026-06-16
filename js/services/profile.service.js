@@ -417,7 +417,7 @@ async function getUserContributions(userId){
 
 
 
-return {
+let result = {
 
 
 articles:[],
@@ -430,6 +430,106 @@ notes:[]
 
 
 };
+
+
+
+
+
+
+let collections = [
+
+{
+
+name:"resources",
+
+key:"articles"
+
+},
+
+
+{
+
+name:"forum-replies",
+
+key:"answers"
+
+},
+
+
+{
+
+name:"notes",
+
+key:"notes"
+
+}
+
+
+];
+
+
+
+
+
+
+
+
+for(
+
+let item of collections
+
+){
+
+
+
+try{
+
+
+
+let data =
+
+await getRecords(
+
+item.name
+
+);
+
+
+
+
+
+result[item.key] =
+
+data.filter(
+
+x=>
+
+x.author?.id===userId
+
+||
+
+x.userId===userId
+
+);
+
+
+
+
+}
+
+catch(e){}
+
+
+
+
+}
+
+
+
+
+
+
+return result;
 
 
 

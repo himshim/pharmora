@@ -250,7 +250,19 @@ authLinks = `
 
 <a href="${appPath("dashboard/")}">
 
-👤 ${user.name || "Profile"} ${unread}
+👤 ${user.name || "Profile"}
+
+</a>
+
+<a href="${appPath("settings/")}">
+
+⚙ Settings
+
+</a>
+
+<a href="${appPath("components/notifications/")}">
+
+🔔 ${unread}
 
 </a>
 

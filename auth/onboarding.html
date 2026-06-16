@@ -456,15 +456,120 @@ data-value="professional">
 
 
 
-<div 
-
+<div
 class="block"
+data-field="educatorLevel">
 
+
+<h3>
+
+Educator Level
+
+</h3>
+
+
+<div class="options">
+
+
+<div class="option" data-value="lecturer">
+
+Lecturer
+
+</div>
+
+
+<div class="option" data-value="assistant professor">
+
+Assistant Professor
+
+</div>
+
+
+<div class="option" data-value="associate professor">
+
+Associate Professor
+
+</div>
+
+
+<div class="option" data-value="professor">
+
+Professor
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div
+class="block"
+data-field="profession">
+
+
+<h3>
+
+Professional Field
+
+</h3>
+
+
+<div class="options">
+
+
+<div class="option" data-value="pharmacist">
+
+💊 Pharmacist
+
+</div>
+
+
+<div class="option" data-value="industry chemist">
+
+🧪 Industry Chemist
+
+</div>
+
+
+<div class="option" data-value="manager">
+
+🏭 Manager
+
+</div>
+
+
+<div class="option" data-value="marketing representative">
+
+📈 Marketing Representative
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div
+class="block"
 data-field="course">
-
-
-
-
 
 
 <h3>
@@ -474,18 +579,7 @@ Select Course
 </h3>
 
 
-
-
-
-
-
-
 <div class="options">
-
-
-
-
-
 
 
 <div class="option" data-value="bpharm">
@@ -495,20 +589,11 @@ B.Pharm
 </div>
 
 
-
-
-
-
 <div class="option" data-value="dpharm">
 
 D.Pharm
 
 </div>
-
-
-
-
-
 
 
 <div class="option" data-value="mpharm">
@@ -518,11 +603,6 @@ M.Pharm
 </div>
 
 
-
-
-
-
-
 <div class="option" data-value="pharmd">
 
 Pharm.D
@@ -530,27 +610,10 @@ Pharm.D
 </div>
 
 
-
-
-
-
-
 </div>
 
 
-
 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 <div 
 
@@ -736,7 +799,26 @@ Interests
 
 
 
+<div class="block">
 
+
+<h3>
+
+Work / Institution (optional)
+
+</h3>
+
+
+<input
+
+id="organization"
+
+placeholder="College, Hospital, Company"
+
+>
+
+
+</div>
 
 
 
@@ -1006,7 +1088,15 @@ await updateUserProfile({
 
 types:
 
-data.types || ["member"],
+data.types.length
+
+?
+
+data.types
+
+:
+
+["member"],
 
 
 
@@ -1026,7 +1116,59 @@ curriculum:data.curriculum
 
 specializations:
 
-data.interest || []
+data.interest || [],
+
+
+
+positions:
+
+(
+
+data.educatorLevel ||
+
+data.profession ||
+
+document.getElementById(
+"organization"
+).value
+
+)
+
+?
+
+[
+
+{
+
+title:
+
+data.educatorLevel ||
+
+data.profession ||
+
+"",
+
+
+organization:
+
+document.getElementById(
+"organization"
+).value,
+
+
+current:true
+
+}
+
+]
+
+:
+
+[],
+
+
+
+onboardingComplete:true
 
 
 

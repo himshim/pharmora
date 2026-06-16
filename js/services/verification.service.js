@@ -273,7 +273,19 @@ async function rejectVerification(
 requestId
 ){
 
+let requests =
+await getRecords(
+"verification-requests"
+);
 
+
+
+let request =
+requests.find(
+
+x=>x.id===requestId
+
+);
 
 await updateRecord(
 
@@ -294,7 +306,39 @@ new Date()
 
 );
 
+if(
 
+request?.userId
+
+&&
+
+typeof notifyUser==="function"
+
+){
+
+
+
+notifyUser(
+
+request.userId,
+
+{
+
+title:"Verification Update",
+
+message:
+
+"Your verification request was not approved. You can update your profile and try again.",
+
+type:"info"
+
+}
+
+);
+
+
+
+}
 
 
 showToast(
@@ -459,6 +503,40 @@ new Date()
 }
 
 );
+
+if(
+
+typeof notifyUser==="function"
+
+){
+
+
+
+notifyUser(
+
+userId,
+
+{
+
+title:"✔ Verification Approved",
+
+message:
+
+"Your Pharmora profile is now verified as: "
+
++
+
+types.join(", "),
+
+type:"success"
+
+}
+
+);
+
+
+
+}
 
 
 

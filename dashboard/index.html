@@ -497,61 +497,11 @@ style="margin-bottom:30px;">
 
 
 
-<div class="grid">
+<div
 
+id="smart-dashboard"
 
-
-<div class="card"
-onclick="location.href='../learn/'">
-
-<h2>🎓 Continue Learning</h2>
-
-<p>Resume your curriculum.</p>
-
-</div>
-
-
-
-
-
-
-<div class="card"
-onclick="location.href='../teach/'">
-
-<h2>👨‍🏫 Teacher Workspace</h2>
-
-<p>Access teaching resources.</p>
-
-</div>
-
-
-
-
-
-
-<div class="card"
-onclick="location.href='../community/'">
-
-<h2>🌐 Discussions</h2>
-
-<p>Learn with the community.</p>
-
-</div>
-
-
-
-
-
-
-<div class="card"
-onclick="location.href='../tools/'">
-
-<h2>🧪 Quick Tools</h2>
-
-<p>Calculators and references.</p>
-
-</div>
-
+class="grid">
 
 
 </div>
@@ -676,6 +626,8 @@ Community Discussions
 <script src="../js/services/database.service.js"></script>
 
 <script src="../js/services/auth.service.js"></script>
+
+<script src="../js/services/profile.service.js"></script>
 
 <script src="../js/services/permission.service.js"></script>
 
@@ -1054,6 +1006,251 @@ max="100">
 
 }
 
+async function loadSmartDashboard(){
+
+
+
+let box =
+document.getElementById(
+"smart-dashboard"
+);
+
+
+
+if(!box){
+
+return;
+
+}
+
+
+
+let user =
+currentUser();
+
+
+
+if(!user){
+
+return;
+
+}
+
+
+
+let profile =
+await getProfile(
+user.id
+);
+
+
+
+let types =
+profile?.types || [];
+
+
+
+
+
+let cards = `
+
+
+<div class="card"
+onclick="location.href='../learn/'">
+
+
+<h2>
+
+🎓 Learning Center
+
+</h2>
+
+
+<p>
+
+Courses, notes and study resources.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+<div class="card"
+onclick="location.href='../community/'">
+
+
+<h2>
+
+🌐 Community Q&A
+
+</h2>
+
+
+<p>
+
+Ask questions and help others.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+<div class="card"
+onclick="location.href='../library/'">
+
+
+<h2>
+
+📚 Library
+
+</h2>
+
+
+<p>
+
+Books, notes and references.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+<div class="card"
+onclick="location.href='../tools/'">
+
+
+<h2>
+
+🧪 Quick Tools
+
+</h2>
+
+
+<p>
+
+Calculators and pharmacy utilities.
+
+</p>
+
+
+</div>
+
+
+`;
+
+
+
+
+
+
+if(
+
+types.includes("educator")
+
+){
+
+
+
+cards += `
+
+
+<div class="card"
+onclick="location.href='../teach/'">
+
+
+<h2>
+
+👨‍🏫 Teaching Studio
+
+</h2>
+
+
+<p>
+
+Create lectures and educational material.
+
+</p>
+
+
+</div>
+
+
+`;
+
+
+
+}
+
+
+
+
+
+
+
+if(
+
+types.includes("professional")
+
+){
+
+
+
+cards += `
+
+
+<div class="card"
+onclick="location.href='../community/'">
+
+
+<h2>
+
+💊 Professional Corner
+
+</h2>
+
+
+<p>
+
+Share experience and answer discussions.
+
+</p>
+
+
+</div>
+
+
+`;
+
+
+
+}
+
+
+
+
+
+box.innerHTML =
+cards;
+
+
+
+}
+
 async function loadManagementPanel(){
 
 
@@ -1343,6 +1540,108 @@ return;
 
 
 
+let profile =
+
+typeof getProfile==="function"
+
+?
+
+await getProfile(
+user.id
+)
+
+:
+
+null;
+
+
+
+
+
+let badge =
+
+profile?.verification?.verified
+
+?
+
+" ✔"
+
+:
+
+"";
+
+
+
+
+
+let subtitle =
+
+"Member";
+
+
+
+
+
+if(
+
+profile?.positions?.length
+
+){
+
+
+subtitle =
+
+profile.positions[0].title;
+
+
+}
+
+
+
+else if(
+
+profile?.education?.length
+
+){
+
+
+
+subtitle =
+
+profile.education[0].course
+
++
+
+" Student";
+
+
+
+}
+
+
+
+else if(
+
+profile?.types?.length
+
+){
+
+
+
+subtitle =
+
+profile.types.join(", ");
+
+
+
+}
+
+
+
+
+
+
+
 box.innerHTML =
 
 "👤 "
@@ -1353,11 +1652,19 @@ box.innerHTML =
 
 +
 
-" • "
+badge
 
 +
 
-user.role;
+"<br><small>"
+
++
+
+subtitle
+
++
+
+"</small>";
 
 
 
@@ -1377,6 +1684,9 @@ welcome.innerHTML =
 " 👋";
 
 await loadContributorDashboard();
+
+
+await loadSmartDashboard();
 
 
 await loadManagementPanel();

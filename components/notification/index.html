@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+
+Notifications
+
+</title>
+
+
+<link rel="stylesheet" href="../css/variables.css">
+
+<link rel="stylesheet" href="../css/base.css">
+
+<link rel="stylesheet" href="../css/components.css">
+
+<link rel="stylesheet" href="../css/responsive.css">
+
+
+<style>
+
+
+.notifications{
+
+max-width:900px;
+
+margin:auto;
+
+padding:40px 20px;
+
+}
+
+
+
+.notice-card{
+
+margin-bottom:15px;
+
+padding:20px;
+
+border-radius:20px;
+
+background:var(--surface);
+
+border:1px solid var(--border);
+
+}
+
+
+
+.notice-card.unread{
+
+border-color:var(--primary);
+
+}
+
+
+
+.notice-top{
+
+display:flex;
+
+justify-content:space-between;
+
+gap:15px;
+
+}
+
+
+
+</style>
+
+
+</head>
+
+
+
+<body>
+
+
+<div id="site-header"></div>
+
+
+
+
+<main class="notifications">
+
+
+
+<h1>
+
+🔔 Notifications
+
+</h1>
+
+
+<br>
+
+
+<div id="notification-list">
+
+
+Loading...
+
+
+</div>
+
+
+
+</main>
+
+
+
+
+<div id="site-footer"></div>
+
+
+
+
+
+
+
+
+<script src="../js/app.js"></script>
+
+
+<script src="../js/services/database.service.js"></script>
+
+<script src="../js/services/auth.service.js"></script>
+
+<script src="../js/services/user-notification.service.js"></script>
+
+
+
+<script src="../components/layout/header.js"></script>
+
+<script src="../components/layout/footer.js"></script>
+
+
+
+
+
+<script>
+
+
+async function loadPage(){
+
+
+
+let box =
+document.getElementById(
+"notification-list"
+);
+
+
+
+let data =
+await getUserNotifications();
+
+
+
+
+if(!data.length){
+
+
+box.innerHTML = `
+
+
+<div class="card">
+
+No notifications yet
+
+</div>
+
+
+`;
+
+return;
+
+
+}
+
+
+
+
+
+
+box.innerHTML =
+
+data.map(n=>`
+
+
+<div
+
+class="notice-card ${!n.read?"unread":""}"
+
+>
+
+
+<div class="notice-top">
+
+
+<h3>
+
+${n.title}
+
+</h3>
+
+
+<small>
+
+${new Date(n.createdAt)
+.toLocaleDateString()}
+
+</small>
+
+
+</div>
+
+
+
+<p>
+
+${n.message}
+
+</p>
+
+
+
+${
+
+!n.read
+
+?
+
+`
+
+<button
+
+class="btn"
+
+onclick="markRead('${n.id}')">
+
+Mark read
+
+</button>
+
+`
+
+:
+
+""
+
+}
+
+
+
+</div>
+
+
+`).join("");
+
+
+
+}
+
+
+
+
+
+
+
+async function markRead(id){
+
+
+
+await readNotification(id);
+
+
+
+loadPage();
+
+
+
+}
+
+
+
+
+
+loadPage();
+
+
+</script>
+
+
+
+</body>
+
+</html>

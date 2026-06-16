@@ -9,22 +9,14 @@ Pharmora Profile
 </title>
 
 
-<link
-rel="stylesheet"
-href="css/variables.css">
+<link rel="stylesheet" href="css/variables.css">
 
-
-<link
-rel="stylesheet"
-href="css/components.css">
-
+<link rel="stylesheet" href="css/components.css">
 
 </head>
 
 
-
 <body>
-
 
 
 <main class="container">
@@ -32,9 +24,7 @@ href="css/components.css">
 
 <div id="profile-root">
 
-
 Loading profile...
-
 
 </div>
 
@@ -46,8 +36,8 @@ Loading profile...
 
 
 
-<script src="js/utils/path.js"></script>
 
+<script src="js/utils/path.js"></script>
 
 <script src="js/services/database.service.js"></script>
 
@@ -77,8 +67,6 @@ document.getElementById(
 
 
 
-
-
 let params =
 new URLSearchParams(
 location.search
@@ -86,27 +74,29 @@ location.search
 
 
 
-
 let id =
-params.get("id");
-
+params.get(
+"id"
+);
 
 
 
 if(!id){
 
 
-root.innerHTML =
-`
+
+root.innerHTML = `
+
 <div class="card">
 
 Profile not found
 
 </div>
+
 `;
 
-
 return;
+
 
 
 }
@@ -115,9 +105,11 @@ return;
 
 
 
-let profile =
-await getPublicProfile(id);
 
+let profile =
+await getPublicProfile(
+id
+);
 
 
 
@@ -126,21 +118,23 @@ if(!profile){
 
 
 
-root.innerHTML =
-`
+root.innerHTML = `
+
 <div class="card">
 
 Profile unavailable
 
 </div>
-`;
 
+`;
 
 
 return;
 
 
+
 }
+
 
 
 
@@ -186,12 +180,17 @@ ${profile.headline || ""}
 
 <div class="badge">
 
-${(profile.types || []).join(" • ")}
+${
+
+(profile.types || [])
+
+.join(" • ")
+
+}
 
 </div>
 
 
-<br>
 
 
 ${
@@ -201,6 +200,8 @@ profile.verification?.verified
 ?
 
 `
+
+<br>
 
 <div class="badge">
 
@@ -228,6 +229,8 @@ profile.contributor?.enabled
 
 `
 
+<br>
+
 <div class="badge">
 
 🌱 Pharmora Contributor
@@ -239,30 +242,6 @@ profile.contributor?.enabled
 :
 
 ""
-
-}
-
-
-
-${
-
-(profile.badges || [])
-
-.map(
-
-b=>`
-
-<div class="badge">
-
-${b}
-
-</div>
-
-`
-
-)
-
-.join("")
 
 }
 
@@ -288,17 +267,20 @@ About
 </h2>
 
 
-
 <p>
 
-${profile.bio || "No bio added yet."}
+${
+
+profile.bio ||
+
+"No bio added yet."
+
+}
 
 </p>
 
 
-
 </div>
-
 
 
 
@@ -319,7 +301,6 @@ ${profile.bio || "No bio added yet."}
 </h2>
 
 
-
 ${
 
 (profile.positions || []).length
@@ -330,50 +311,25 @@ profile.positions.map(job=>`
 
 <p>
 
-<strong>
-
-${job.title}
-
-</strong>
-
+<b>${job.title}</b>
 
 <br>
 
-
 ${job.organization || ""}
-
-
-${
-
-job.current
-
-?
-
-"<br>Currently working"
-
-:
-
-""
-
-}
-
 
 </p>
 
-
 `).join("")
-
 
 :
 
 "No experience added"
 
-
 }
 
 
-
 </div>
+
 
 
 
@@ -388,10 +344,9 @@ job.current
 
 <h2>
 
-🎓 Education / Fields
+🎓 Education
 
 </h2>
-
 
 
 ${
@@ -404,7 +359,19 @@ ${
 
 ${e.course || ""}
 
-${e.curriculum ? " - "+e.curriculum : ""}
+${
+
+e.curriculum
+
+?
+
+" - "+e.curriculum
+
+:
+
+""
+
+}
 
 </p>
 
@@ -414,7 +381,6 @@ ${e.curriculum ? " - "+e.curriculum : ""}
 .join("")
 
 }
-
 
 
 <p>
@@ -430,8 +396,8 @@ ${
 </p>
 
 
-
 </div>
+
 
 
 
@@ -452,50 +418,63 @@ ${
 
 
 
-<h1>
-
-${profile.stats?.reputation || 0}
-
-</h1>
-
-
-
 <p>
 
 💬 Answers:
 
 ${profile.stats?.answers || 0}
 
-
 <br>
-
 
 ✔ Verified Answers:
 
 ${profile.stats?.verifiedAnswers || 0}
 
-
 <br>
-
 
 📚 Articles:
 
 ${profile.stats?.articles || 0}
 
-
 <br>
-
 
 📝 Notes:
 
 ${profile.stats?.notes || 0}
 
-
 </p>
 
 
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+📚 Contributions
+
+</h2>
+
+
+<div id="contribution-list">
+
+Loading...
 
 </div>
+
+
+</div>
+
 
 
 
@@ -513,7 +492,6 @@ ${profile.stats?.notes || 0}
 🌐 Contact
 
 </h2>
-
 
 
 ${
@@ -538,10 +516,7 @@ ${profile.contact.linkedin.value}
 
 ""
 
-
-
 }
-
 
 
 
@@ -567,11 +542,7 @@ ${profile.contact.website.value}
 
 ""
 
-
-
 }
-
-
 
 
 
@@ -597,13 +568,69 @@ ${profile.contact.email.value}
 
 ""
 
-
-
 }
 
 
-
 </div>
+
+
+`;
+
+
+
+
+
+
+
+
+
+let contributions =
+await getUserContributions(
+id
+);
+
+
+
+let box =
+document.getElementById(
+"contribution-list"
+);
+
+
+
+
+if(box){
+
+
+
+box.innerHTML = `
+
+
+<p>
+
+📚 Articles:
+
+${contributions.articles.length}
+
+</p>
+
+
+<p>
+
+💬 Answers:
+
+${contributions.answers.length}
+
+</p>
+
+
+<p>
+
+📝 Notes:
+
+${contributions.notes.length}
+
+</p>
 
 
 `;
@@ -614,11 +641,12 @@ ${profile.contact.email.value}
 
 
 
+}
+
+
 </script>
 
 
-
 </body>
-
 
 </html>
