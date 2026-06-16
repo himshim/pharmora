@@ -190,7 +190,26 @@ LinkedIn</label>
 
 <input id="linkedin">
 
+<label>
 
+Website
+
+</label>
+
+
+<input id="website">
+
+
+
+<label>
+
+<input
+type="checkbox"
+id="websiteVisible">
+
+Show website publicly
+
+</label>
 
 <label>
 
@@ -372,7 +391,15 @@ profile.contact?.linkedin?.value || "";
 linkedinVisible.checked =
 profile.contact?.linkedin?.visible || false;
 
+website.value =
 
+profile.contact?.website?.value || "";
+
+
+
+websiteVisible.checked =
+
+profile.contact?.website?.visible || false;
 
 emailVisible.checked =
 profile.contact?.email?.visible || false;
@@ -412,7 +439,9 @@ types.value
 
 .split(",")
 
-.map(x=>x.trim()),
+.map(x=>x.trim())
+
+.filter(Boolean),
 
 
 
@@ -424,14 +453,28 @@ specializations.value
 
 .split(",")
 
-.map(x=>x.trim()),
+.map(x=>x.trim())
+
+.filter(Boolean),
 
 
 
 
 
 
-positions:[
+positions:
+
+(
+
+position.value ||
+
+organization.value
+
+)
+
+?
+
+[
 
 {
 
@@ -445,7 +488,11 @@ current:true
 
 }
 
-],
+]
+
+:
+
+[],
 
 
 
@@ -466,7 +513,16 @@ visible:linkedinVisible.checked
 
 },
 
+website:{
 
+
+value:website.value,
+
+
+visible:websiteVisible.checked
+
+
+},
 
 email:{
 
@@ -496,6 +552,16 @@ alert(
 "Profile updated"
 
 );
+
+
+
+location.href =
+
+"profile.html?id="
+
++
+
+currentUser().id;
 
 
 

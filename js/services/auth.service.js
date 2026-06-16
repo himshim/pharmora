@@ -1247,3 +1247,256 @@ return session;
 
 
 }
+
+/*
+=========================
+ ADMIN USER ACTIONS
+=========================
+*/
+
+
+function disableUser(
+userId,
+reason=""
+){
+
+
+
+let admin =
+currentUser();
+
+
+
+if(!admin){
+
+return false;
+
+}
+
+
+
+
+
+let users =
+getDemoUsers();
+
+
+
+
+let user =
+users.find(
+
+x=>x.id===userId
+
+);
+
+
+
+
+if(!user){
+
+return false;
+
+}
+
+
+
+
+
+// nobody disables owner
+
+if(
+
+user.role==="owner"
+
+){
+
+
+return false;
+
+
+}
+
+
+
+
+
+
+// admin cannot disable admin
+
+if(
+
+admin.role!=="owner"
+
+&&
+
+user.role==="admin"
+
+){
+
+
+
+return false;
+
+
+
+}
+
+
+
+
+
+
+
+user.disabled=true;
+
+
+
+user.disabledReason =
+reason;
+
+
+
+user.disabledAt =
+
+new Date()
+.toISOString();
+
+
+
+
+user.disabledBy =
+
+admin.id;
+
+
+
+
+
+
+saveDemoUsers(
+users
+);
+
+
+
+
+return true;
+
+
+
+}
+
+/*
+=========================
+ OWNER USER ACTIONS
+=========================
+*/
+
+
+function changeUserRole(
+userId,
+role
+){
+
+
+
+let owner =
+currentUser();
+
+
+
+if(
+
+!owner ||
+
+owner.role!=="owner"
+
+){
+
+
+
+return false;
+
+
+
+}
+
+
+
+
+
+let users =
+getDemoUsers();
+
+
+
+
+let user =
+users.find(
+
+x=>x.id===userId
+
+);
+
+
+
+if(!user){
+
+return false;
+
+}
+
+
+
+
+
+if(
+
+user.role==="owner"
+
+){
+
+
+return false;
+
+
+}
+
+
+
+
+
+user.role =
+role;
+
+
+
+user.roleUpdatedAt =
+
+new Date()
+.toISOString();
+
+
+
+
+user.roleUpdatedBy =
+
+owner.id;
+
+
+
+
+
+saveDemoUsers(
+users
+);
+
+
+
+
+return true;
+
+
+
+}

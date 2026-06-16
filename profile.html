@@ -247,6 +247,38 @@ profile.contributor?.enabled
 
 
 
+
+
+${
+
+currentUser()?.id === id
+
+?
+
+`
+
+<br><br>
+
+<button
+
+class="btn btn-primary"
+
+onclick="location.href='profile-edit.html'">
+
+✏ Edit Profile
+
+</button>
+
+`
+
+:
+
+""
+
+}
+
+
+
 </div>
 
 

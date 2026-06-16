@@ -273,7 +273,7 @@ ${q.category || "Discussion"}
 
 👤 
 
-<a href="profile.html?id=${q.author?.id}">
+<a href="${appPath('profile.html')}?id=${q.author?.id}">
 
 ${q.authorInfo.name}
 
@@ -456,7 +456,7 @@ ${a.answer}
 
 👤
 
-<a href="profile.html?id=${a.author?.id}">
+<a href="${appPath('profile.html')}?id=${a.author?.id}">
 
 ${a.authorInfo.name}
 

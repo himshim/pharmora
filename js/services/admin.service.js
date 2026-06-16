@@ -735,7 +735,7 @@ placeholder="Write improvement suggestions, approval notes, or rejection reason.
 
 class="btn btn-primary"
 
-onclick="saveReviewComment('${collection}','${id}')">
+onclick="saveReviewComment('${collection}','${user.id}')">
 
 Save Comment
 
@@ -2298,7 +2298,7 @@ ${p.label}
 
 class="btn btn-primary"
 
-onclick="saveUserRole('${id}')">
+onclick="saveUserRole('${user.id}')">
 
 
 Save Permissions
