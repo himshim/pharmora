@@ -12,23 +12,48 @@ content="width=device-width, initial-scale=1.0">
 
 
 <title>
-
-Resource
-
+Content | Pharmora
 </title>
 
 
+<link rel="icon" href="../assets/branding/favicon.svg">
+
+
 <link rel="stylesheet" href="../css/variables.css">
-
 <link rel="stylesheet" href="../css/base.css">
-
 <link rel="stylesheet" href="../css/components.css">
-
 <link rel="stylesheet" href="../css/responsive.css">
 
 
-</head>
+<style>
 
+
+.meta{
+
+line-height:2;
+
+margin-top:20px;
+
+}
+
+
+.action-box{
+
+margin-top:30px;
+
+display:flex;
+
+gap:15px;
+
+flex-wrap:wrap;
+
+}
+
+
+</style>
+
+
+</head>
 
 
 
@@ -36,7 +61,6 @@ Resource
 
 
 <div id="site-header"></div>
-
 
 
 
@@ -68,12 +92,21 @@ Loading...
 
 
 
+<!-- CORE -->
 
 <script src="../js/app.js"></script>
 
 
+
+<!-- SERVICES -->
+
+<script src="../js/services/auth.service.js"></script>
+
 <script src="../js/services/database.service.js"></script>
 
+<script src="../js/services/analytics.service.js"></script>
+
+<!-- COMPONENTS -->
 
 <script src="../components/layout/header.js"></script>
 
@@ -85,9 +118,38 @@ Loading...
 
 
 
-
-
 <script>
+
+
+function icon(type){
+
+
+return {
+
+resources:"📚",
+
+books:"📖",
+
+events:"📅",
+
+tools:"🧰",
+
+"teaching-materials":"👨‍🏫",
+
+"question-bank":"❓",
+
+assignments:"📝"
+
+
+}[type] || "📄";
+
+
+}
+
+
+
+
+
 
 
 async function resolveName(
@@ -102,7 +164,6 @@ if(!id){
 return "";
 
 }
-
 
 
 
@@ -130,14 +191,15 @@ item.name ||
 
 item.title ||
 
-item.code
+item.code ||
+
+""
 
 )
 
 :
 
 "";
-
 
 
 }
@@ -154,13 +216,10 @@ async function loadResource(){
 
 
 
-
-
 let params =
 new URLSearchParams(
 location.search
 );
-
 
 
 
@@ -185,6 +244,8 @@ params.get(
 
 
 
+
+
 let items =
 await getRecords(
 collection
@@ -192,15 +253,10 @@ collection
 
 
 
-
 let item =
 items.find(
-
 x=>x.id===id
-
 );
-
-
 
 
 
@@ -219,21 +275,12 @@ document.getElementById(
 if(!item){
 
 
+box.innerHTML=
 
-box.innerHTML=`
-
-<h2>
-
-Resource not found
-
-</h2>
-
-`;
-
+"<h2>Content not found</h2>";
 
 
 return;
-
 
 
 }
@@ -256,21 +303,12 @@ item.status!=="approved"
 ){
 
 
+box.innerHTML=
 
-box.innerHTML=`
-
-<h2>
-
-Content under review
-
-</h2>
-
-`;
-
+"<h2>⏳ Content awaiting review</h2>";
 
 
 return;
-
 
 
 }
@@ -283,13 +321,56 @@ return;
 
 
 
+let viewKey =
+
+"viewed_" +
+
+collection +
+
+"_" +
+
+id;
+
+
+
+let newView =
+
+!sessionStorage.getItem(
+
+viewKey
+
+);
+
+
+
 let views =
 
 (item.stats?.views || 0)
 
 +
 
-1;
+(
+
+newView ? 1 : 0
+
+);
+
+
+
+
+if(newView){
+
+
+sessionStorage.setItem(
+
+viewKey,
+
+"true"
+
+);
+
+
+}
 
 
 
@@ -318,8 +399,23 @@ views:views
 );
 
 
+if(
+
+typeof trackEvent==="function"
+
+){
 
 
+trackEvent(
+
+"view",
+
+title
+
+);
+
+
+}
 
 
 
@@ -333,11 +429,13 @@ item.course
 );
 
 
+
 let curriculum =
 await resolveName(
 "curriculums",
 item.curriculum
 );
+
 
 
 let semester =
@@ -347,11 +445,13 @@ item.semester
 );
 
 
+
 let subject =
 await resolveName(
 "subjects",
 item.subject
 );
+
 
 
 let unit =
@@ -367,15 +467,61 @@ item.unit
 
 
 
+let title =
+
+item.title ||
+
+item.question ||
+
+item.name ||
+
+"Untitled";
 
 
-box.innerHTML=`
+
+
+
+
+let description =
+
+item.description ||
+
+item.instructions ||
+
+item.answer ||
+
+"";
+
+
+
+
+
+
+
+
+box.innerHTML = `
+
+
+
+<div class="badge">
+
+${icon(collection)}
+
+${collection}
+
+</div>
+
+
+
+
+<br><br>
+
 
 
 
 <h1>
 
-${item.title}
+${title}
 
 </h1>
 
@@ -385,7 +531,7 @@ ${item.title}
 
 <p>
 
-${item.description || ""}
+${description}
 
 </p>
 
@@ -393,13 +539,40 @@ ${item.description || ""}
 
 
 
-<br>
+
+
+<div class="meta">
+
+
+
+${item.author?.name ? "👤 "+item.author.name+"<br>" : ""}
+
+
+
+${item.resourceType ? "📂 Type: "+item.resourceType+"<br>" : ""}
+
+
+${item.materialType ? "👨‍🏫 Material: "+item.materialType+"<br>" : ""}
+
+
+${item.questionType ? "❓ Question: "+item.questionType+"<br>" : ""}
+
+
+${item.difficulty ? "⭐ Difficulty: "+item.difficulty+"<br>" : ""}
+
+
+
+${item.publisher ? "🏢 Publisher: "+item.publisher+"<br>" : ""}
+
+
+${item.edition ? "📕 Edition: "+item.edition+"<br>" : ""}
+
+
+${item.isbn ? "🔢 ISBN: "+item.isbn+"<br>" : ""}
 
 
 
 
-
-<p>
 
 
 ${course ? "🎓 "+course+"<br>" : ""}
@@ -411,6 +584,11 @@ ${semester ? "📅 "+semester+"<br>" : ""}
 ${subject ? "🧪 "+subject+"<br>" : ""}
 
 ${unit ? "📄 "+unit+"<br>" : ""}
+
+
+
+
+
 
 
 ${
@@ -428,7 +606,9 @@ ${
 }
 
 
-</p>
+
+
+</div>
 
 
 
@@ -437,9 +617,6 @@ ${
 
 
 <br>
-
-
-
 
 
 <p>
@@ -454,9 +631,15 @@ ${
 
 
 
+
+
+<div class="action-box">
+
+
+
 ${
 
-item.content?.link
+item.content?.link || item.link
 
 ?
 
@@ -468,7 +651,9 @@ class="btn btn-primary"
 
 onclick="openContent()">
 
-Open Link
+
+Open Resource
+
 
 </button>
 
@@ -483,7 +668,6 @@ Open Link
 
 
 
-
 ${
 
 item.content?.file
@@ -491,9 +675,6 @@ item.content?.file
 ?
 
 `
-
-<br><br>
-
 
 <div class="badge">
 
@@ -511,6 +692,8 @@ item.content?.file
 
 
 
+</div>
+
 
 `;
 
@@ -523,7 +706,6 @@ item.content?.file
 
 
 window.openContent = async function(){
-
 
 
 
@@ -557,6 +739,25 @@ downloads:
 
 );
 
+if(
+
+typeof trackEvent==="function"
+
+){
+
+
+
+trackEvent(
+
+"download",
+
+title
+
+);
+
+
+
+}
 
 
 
@@ -565,7 +766,9 @@ downloads:
 
 window.open(
 
-item.content.link,
+item.content?.link ||
+
+item.link,
 
 "_blank"
 
@@ -577,8 +780,9 @@ item.content.link,
 
 
 
-
 }
+
+
 
 
 
@@ -589,12 +793,11 @@ item.content.link,
 loadResource();
 
 
+
 </script>
 
 
 
-
 </body>
-
 
 </html>

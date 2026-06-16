@@ -1,242 +1,104 @@
-/*
- Pharmora Learn Service
- CMS Powered
-*/
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Subject | Pharmora
+</title>
+
+
+<link rel="icon" href="../assets/branding/favicon.svg">
+
+
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/responsive.css">
+
+
+</head>
 
 
 
-async function loadLearn(){
+<body>
 
 
-
-let box =
-document.getElementById(
-"course-list"
-);
-
-
-
-if(!box){
-
-return;
-
-}
-
-
-
-
-let courses =
-await getRecords(
-"courses"
-);
-
-
-
-
-if(courses.length===0){
-
-
-box.innerHTML=`
-
-<div class="card">
-
-No courses added yet
-
-</div>
-
-`;
-
-
-return;
-
-
-}
+<div id="site-header"></div>
 
 
 
 
 
-
-
-box.innerHTML="";
-
-
-
-
-
-
-courses.forEach(course=>{
-
-
-
-box.innerHTML += `
+<main class="container section">
 
 
 <div
-
 class="card"
+id="subject-info">
 
-onclick="openCourse('${course.id}')"
+Loading...
 
->
+</div>
 
 
-<h2>
 
-🎓 ${course.name}
+
+<br><br>
+
+
+
+<h2 class="section-title">
+
+📄 Units / Chapters
 
 </h2>
 
 
-<p>
-
-${course.description || ""}
-
-</p>
-
+<div
+class="grid"
+id="units-list">
 
 </div>
 
 
-`;
 
 
 
-});
 
 
+<br><br>
 
-}
 
+<h2 class="section-title">
 
-
-
-
-
-
-
-
-async function openCourse(id){
-
-
-
-let view =
-document.getElementById(
-"curriculum-view"
-);
-
-
-
-
-let curriculums =
-await getRecords(
-"curriculums"
-);
-
-
-
-
-curriculums =
-
-curriculums.filter(
-
-x=>x.course===id
-
-);
-
-
-
-
-
-
-if(curriculums.length===0){
-
-
-
-view.innerHTML=`
-
-<div class="card">
-
-No curriculum added
-
-</div>
-
-`;
-
-
-
-return;
-
-
-
-}
-
-
-
-
-
-
-
-
-view.innerHTML="";
-
-
-
-
-
-
-curriculums.forEach(cur=>{
-
-
-
-view.innerHTML += `
-
-
-
-<div class="card">
-
-
-<h2>
-
-📘 ${cur.name}
+📚 Learning Materials
 
 </h2>
 
 
-<p>
-
-${cur.description || ""}
-
-</p>
-
-
-
-<button
-
-class="btn"
-
-onclick="openCurriculum('${cur.id}')"
-
->
-
-Explore
-
-</button>
-
+<div
+class="grid"
+id="materials-list">
 
 </div>
 
 
 
-`;
 
+</main>
 
 
-});
 
 
 
-}
+<div id="site-footer"></div>
 
 
 
@@ -244,111 +106,57 @@ Explore
 
 
 
+<!-- CORE -->
 
+<script src="../js/app.js"></script>
 
 
-async function openCurriculum(id){
 
 
 
-let view =
-document.getElementById(
-"curriculum-view"
-);
+<!-- SERVICES -->
 
+<script src="../js/services/auth.service.js"></script>
 
+<script src="../js/services/database.service.js"></script>
 
 
-let semesters =
-await getRecords(
-"semesters"
-);
 
 
 
+<!-- COMPONENTS -->
 
-semesters =
+<script src="../components/layout/header.js"></script>
 
-semesters.filter(
+<script src="../components/layout/footer.js"></script>
 
-x=>x.curriculum===id
 
-);
 
 
 
 
 
+<script>
 
 
-view.innerHTML="";
+let subjectId =
 
+new URLSearchParams(
+location.search
+)
 
+.get("id");
 
 
 
 
-semesters.forEach(sem=>{
 
 
 
-view.innerHTML += `
 
 
-<div class="card">
+async function loadSubject(){
 
-
-<h2>
-
-📁 ${sem.name}
-
-</h2>
-
-
-<button
-
-class="btn"
-
-onclick="openSemester('${sem.id}')"
-
->
-
-Subjects
-
-</button>
-
-
-</div>
-
-
-`;
-
-
-
-});
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-async function openSemester(id){
-
-
-
-let view =
-document.getElementById(
-"curriculum-view"
-);
 
 
 
@@ -361,10 +169,11 @@ await getRecords(
 
 
 
-subjects =
-subjects.filter(
 
-x=>x.semester===id
+let subject =
+subjects.find(
+
+x=>x.id===subjectId
 
 );
 
@@ -373,7 +182,25 @@ x=>x.semester===id
 
 
 
-view.innerHTML="";
+if(!subject){
+
+
+document
+
+.getElementById(
+"subject-info"
+)
+
+.innerHTML=
+
+"<h2>Subject not found</h2>";
+
+
+
+return;
+
+
+}
 
 
 
@@ -381,44 +208,149 @@ view.innerHTML="";
 
 
 
-subjects.forEach(sub=>{
 
 
+document
 
-view.innerHTML += `
+.getElementById(
+"subject-info"
+)
 
-
-<a
-
-class="card"
-
-href="subject.html?id=${sub.id}"
-
->
+.innerHTML = `
 
 
-<h2>
+<h1>
 
-🧪 ${sub.code || ""}
+🧪 ${subject.name}
 
-</h2>
+</h1>
+
 
 
 <h3>
 
-${sub.name}
+${subject.code || ""}
 
 </h3>
 
 
+
 <p>
 
-${sub.description || ""}
+${subject.description || ""}
 
 </p>
 
 
-</a>
+`;
+
+
+
+
+
+
+
+
+loadUnits();
+
+
+loadMaterials();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+async function loadUnits(){
+
+
+
+let box =
+document.getElementById(
+"units-list"
+);
+
+
+
+
+
+let units =
+await getRecords(
+"units"
+);
+
+
+
+
+
+units =
+units.filter(
+
+x=>x.subject===subjectId
+
+);
+
+
+
+
+
+
+
+if(units.length===0){
+
+
+box.innerHTML=
+
+"<div class='card'>No units added</div>";
+
+
+return;
+
+
+}
+
+
+
+
+
+
+
+units.forEach(unit=>{
+
+
+
+box.innerHTML += `
+
+
+<div class="card">
+
+
+<h2>
+
+📄 ${unit.name}
+
+</h2>
+
+
+
+<p>
+
+${unit.description || ""}
+
+</p>
+
+
+</div>
 
 
 `;
@@ -430,3 +362,184 @@ ${sub.description || ""}
 
 
 }
+
+
+
+
+
+
+
+
+
+async function loadMaterials(){
+
+
+
+let box =
+document.getElementById(
+"materials-list"
+);
+
+
+
+
+let collections=[
+
+
+["resources","📚"],
+
+["books","📖"],
+
+["teaching-materials","👨‍🏫"],
+
+["question-bank","❓"],
+
+["assignments","📝"]
+
+
+];
+
+
+
+
+
+
+
+
+for(let col of collections){
+
+
+
+let data =
+await getRecords(
+col[0]
+);
+
+
+
+
+
+data =
+data.filter(x=>
+
+
+x.subject===subjectId
+
+&&
+
+x.status==="approved"
+
+
+);
+
+
+
+
+
+
+
+data.forEach(item=>{
+
+
+
+box.innerHTML += `
+
+
+<div class="card">
+
+
+<h2>
+
+${col[1]}
+
+${
+
+item.title ||
+
+item.question ||
+
+"Untitled"
+
+}
+
+</h2>
+
+
+
+<p>
+
+${item.description || ""}
+
+</p>
+
+
+
+
+
+<a
+
+class="btn"
+
+href="${appPath(`library/view.html?id=${item.id}&type=${col[0]}`)}">
+
+
+Open
+
+
+</a>
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+if(box.innerHTML===""){
+
+
+
+box.innerHTML=
+
+"<div class='card'>No materials yet</div>";
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+loadSubject();
+
+
+</script>
+
+
+
+
+</body>
+
+</html>

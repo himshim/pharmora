@@ -1,7 +1,62 @@
 /*
  Pharmora Learn Service
- CMS Powered
+ Full CMS Learning Engine
 */
+
+
+
+let learningPath = {
+
+course:"",
+curriculum:"",
+semester:"",
+subject:"",
+unit:""
+
+};
+
+
+
+
+
+function updateLearningPath(){
+
+
+let box =
+document.getElementById(
+"learning-path"
+);
+
+
+if(!box){
+
+return;
+
+}
+
+
+
+box.innerHTML =
+
+Object.values(learningPath)
+
+.filter(Boolean)
+
+.join(" → ")
+
+||
+
+"Select course";
+
+
+}
+
+
+
+
+
+
+
 
 
 
@@ -25,6 +80,7 @@ return;
 
 
 
+
 let courses =
 await getRecords(
 "courses"
@@ -33,10 +89,19 @@ await getRecords(
 
 
 
+courses =
+courses.filter(
+x=>x.active!==false
+);
+
+
+
+
+
 if(courses.length===0){
 
 
-box.innerHTML=`
+box.innerHTML = `
 
 <div class="card">
 
@@ -64,7 +129,6 @@ box.innerHTML="";
 
 
 
-
 courses.forEach(course=>{
 
 
@@ -73,12 +137,8 @@ box.innerHTML += `
 
 
 <div
-
 class="card"
-
-onclick="openCourse('${course.id}')"
-
->
+onclick="openCourse('${course.id}','${course.name}')">
 
 
 <h2>
@@ -116,7 +176,24 @@ ${course.description || ""}
 
 
 
-async function openCourse(id){
+async function openCourse(
+id,
+name
+){
+
+
+
+learningPath.course=name;
+
+learningPath.curriculum="";
+learningPath.semester="";
+learningPath.subject="";
+learningPath.unit="";
+
+
+updateLearningPath();
+
+
 
 
 
@@ -128,7 +205,8 @@ document.getElementById(
 
 
 
-let curriculums =
+
+let data =
 await getRecords(
 "curriculums"
 );
@@ -136,12 +214,9 @@ await getRecords(
 
 
 
-curriculums =
-
-curriculums.filter(
-
+data =
+data.filter(
 x=>x.course===id
-
 );
 
 
@@ -149,29 +224,20 @@ x=>x.course===id
 
 
 
-if(curriculums.length===0){
+if(data.length===0){
 
 
 
-view.innerHTML=`
+view.innerHTML=
 
-<div class="card">
-
-No curriculum added
-
-</div>
-
-`;
+"<div class='card'>No curriculum added</div>";
 
 
 
 return;
 
 
-
 }
-
-
 
 
 
@@ -185,7 +251,7 @@ view.innerHTML="";
 
 
 
-curriculums.forEach(cur=>{
+data.forEach(cur=>{
 
 
 
@@ -210,22 +276,20 @@ ${cur.description || ""}
 </p>
 
 
-
 <button
 
 class="btn"
 
-onclick="openCurriculum('${cur.id}')"
+onclick="openCurriculum('${cur.id}','${cur.name}')">
 
->
 
 Explore
+
 
 </button>
 
 
 </div>
-
 
 
 `;
@@ -246,15 +310,33 @@ Explore
 
 
 
+async function openCurriculum(
+id,
+name
+){
 
-async function openCurriculum(id){
+
+
+learningPath.curriculum=name;
+
+learningPath.semester="";
+learningPath.subject="";
+learningPath.unit="";
+
+
+updateLearningPath();
+
+
+
 
 
 
 let view =
 document.getElementById(
-"curriculum-view"
+"semester-view"
 );
+
+
 
 
 
@@ -267,12 +349,10 @@ await getRecords(
 
 
 
+
 semesters =
-
 semesters.filter(
-
 x=>x.curriculum===id
-
 );
 
 
@@ -292,7 +372,25 @@ semesters.forEach(sem=>{
 
 
 
+let title =
+
+sem.name ||
+
+(
+sem.system +
+
+" " +
+
+sem.count
+
+);
+
+
+
+
+
 view.innerHTML += `
+
 
 
 <div class="card">
@@ -300,20 +398,21 @@ view.innerHTML += `
 
 <h2>
 
-📁 ${sem.name}
+📅 ${title}
 
 </h2>
+
 
 
 <button
 
 class="btn"
 
-onclick="openSemester('${sem.id}')"
+onclick="openSemester('${sem.id}','${title}')">
 
->
 
 Subjects
+
 
 </button>
 
@@ -339,16 +438,33 @@ Subjects
 
 
 
+async function openSemester(
+id,
+name
+){
 
 
-async function openSemester(id){
+
+learningPath.semester=name;
+
+learningPath.subject="";
+learningPath.unit="";
+
+
+updateLearningPath();
+
+
+
 
 
 
 let view =
 document.getElementById(
-"curriculum-view"
+"subject-view"
 );
+
+
+
 
 
 
@@ -361,11 +477,10 @@ await getRecords(
 
 
 
+
 subjects =
 subjects.filter(
-
 x=>x.semester===id
-
 );
 
 
@@ -388,13 +503,8 @@ subjects.forEach(sub=>{
 view.innerHTML += `
 
 
-<a
 
-class="card"
-
-href="subject.html?id=${sub.id}"
-
->
+<div class="card">
 
 
 <h2>
@@ -404,11 +514,13 @@ href="subject.html?id=${sub.id}"
 </h2>
 
 
+
 <h3>
 
 ${sub.name}
 
 </h3>
+
 
 
 <p>
@@ -418,7 +530,21 @@ ${sub.description || ""}
 </p>
 
 
-</a>
+
+<button
+
+class="btn"
+
+onclick="openSubject('${sub.id}','${sub.name}')">
+
+
+Open
+
+
+</button>
+
+
+</div>
 
 
 `;
@@ -426,6 +552,339 @@ ${sub.description || ""}
 
 
 });
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+async function openSubject(
+id,
+name
+){
+
+
+
+learningPath.subject=name;
+
+learningPath.unit="";
+
+
+updateLearningPath();
+
+
+
+
+
+
+let view =
+document.getElementById(
+"unit-view"
+);
+
+
+
+
+
+
+let units =
+await getRecords(
+"units"
+);
+
+
+
+
+units =
+units.filter(
+x=>x.subject===id
+);
+
+
+
+
+
+
+view.innerHTML="";
+
+
+
+
+
+
+units.forEach(unit=>{
+
+
+
+view.innerHTML += `
+
+
+<div class="card">
+
+
+<h2>
+
+📄 ${unit.name}
+
+</h2>
+
+
+<p>
+
+${unit.description || ""}
+
+</p>
+
+
+
+<button
+
+class="btn"
+
+onclick="openUnit('${unit.id}','${unit.name}')">
+
+
+Study
+
+
+</button>
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+
+
+
+loadMaterials(
+"subject",
+id
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+async function openUnit(
+id,
+name
+){
+
+
+learningPath.unit=name;
+
+
+updateLearningPath();
+
+
+
+loadMaterials(
+"unit",
+id
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function loadMaterials(
+field,
+id
+){
+
+
+
+let box =
+document.getElementById(
+"learning-materials"
+);
+
+
+
+if(!box){
+
+return;
+
+}
+
+
+
+box.innerHTML="";
+
+
+
+
+
+let collections=[
+
+["resources","📚"],
+
+["teaching-materials","👨‍🏫"],
+
+["question-bank","❓"],
+
+["assignments","📝"]
+
+];
+
+
+
+
+
+
+
+for(let item of collections){
+
+
+
+let data =
+await getRecords(
+item[0]
+);
+
+
+
+
+
+data =
+data.filter(x=>{
+
+
+return (
+
+x.status==="approved"
+
+&&
+
+x[field]===id
+
+);
+
+
+});
+
+
+
+
+
+
+
+data.forEach(content=>{
+
+
+
+box.innerHTML += `
+
+
+<div class="card">
+
+
+<h2>
+
+${item[1]}
+
+${
+
+content.title ||
+
+content.question ||
+
+"Untitled"
+
+}
+
+</h2>
+
+
+<p>
+
+${content.description || ""}
+
+</p>
+
+
+<a
+
+class="btn"
+
+href="${appPath(`library/view.html?id=${content.id}&type=${item[0]}`)}">
+
+
+Open
+
+
+</a>
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+if(box.innerHTML===""){
+
+
+
+box.innerHTML = `
+
+<div class="card">
+
+No study material uploaded yet
+
+</div>
+
+`;
+
+
+}
 
 
 

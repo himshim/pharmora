@@ -220,6 +220,12 @@ item.message ||
 
 item.description ||
 
+item.question ||
+
+item.author ||
+
+item.type ||
+
 ""
 
 )
@@ -814,7 +820,13 @@ ${displayName(item)}
 
 </button>
 
+<button
 
+onclick="showVersions('${item.id}')">
+
+🕘
+
+</button>
 
 </span>
 
@@ -874,6 +886,8 @@ item.name ||
 
 item.title ||
 
+item.question ||
+
 item.code ||
 
 (
@@ -882,7 +896,7 @@ item.system
 
 ?
 
-item.system+" "+item.number
+item.system+" "+(item.number || item.count)
 
 :
 
@@ -903,7 +917,106 @@ item.system+" "+item.number
 
 
 
+function openAdminModal(content){
 
+
+let old =
+document.getElementById(
+"admin-modal"
+);
+
+
+if(old){
+
+old.remove();
+
+}
+
+
+
+
+let modal =
+document.createElement(
+"div"
+);
+
+
+
+modal.id =
+"admin-modal";
+
+
+
+modal.innerHTML = `
+
+
+<div class="admin-modal-bg"
+
+onclick="closeAdminModal()">
+
+</div>
+
+
+
+<div class="admin-modal-box">
+
+
+<button
+
+class="admin-modal-close"
+
+onclick="closeAdminModal()">
+
+✕
+
+</button>
+
+
+
+${content}
+
+
+
+</div>
+
+
+`;
+
+
+
+document.body.appendChild(
+modal
+);
+
+
+}
+
+
+
+
+
+
+
+
+
+function closeAdminModal(){
+
+
+let modal =
+document.getElementById(
+"admin-modal"
+);
+
+
+
+if(modal){
+
+modal.remove();
+
+}
+
+
+}
 
 
 
@@ -1307,7 +1420,43 @@ ${displayName(item)}
 
 
 
+else if(field.type==="tags"){
 
+
+
+html += `
+
+
+<input
+
+type="text"
+
+id="field-${field.name}"
+
+placeholder="comma,separated,tags"
+
+value="${
+
+Array.isArray(value)
+
+?
+
+value.join(",")
+
+:
+
+value
+
+}"
+
+>
+
+
+`;
+
+
+
+}
 
 
 
@@ -1327,6 +1476,38 @@ type="checkbox"
 id="field-${field.name}"
 
 ${value?"checked":""}
+
+>
+
+
+`;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+else if(field.type==="readonly"){
+
+
+
+html += `
+
+
+<input
+
+readonly
+
+id="field-${field.name}"
+
+value="${value}"
 
 >
 
@@ -1431,15 +1612,9 @@ Save
 
 
 
-document
-
-.getElementById(
-
-"admin-actions"
-
-)
-
-.innerHTML=html;
+openAdminModal(
+html
+);
 
 
 
@@ -1906,7 +2081,49 @@ return;
 
 if(id){
 
+if(
 
+editingId &&
+
+typeof saveVersion==="function"
+
+){
+
+
+
+let old =
+await getRecords(
+activeCollection
+);
+
+
+
+old =
+old.find(
+x=>x.id===editingId
+);
+
+
+
+if(old){
+
+
+saveVersion(
+
+activeCollection,
+
+editingId,
+
+old
+
+);
+
+
+}
+
+
+
+}
 
 await updateRecord(
 
@@ -1929,6 +2146,20 @@ else{
 
 
 
+let reviewCollections=[
+
+"resources",
+"books",
+"events",
+"tools",
+"teaching-materials",
+"question-bank",
+"assignments"
+
+];
+
+
+
 await createRecord(
 
 activeCollection,
@@ -1937,7 +2168,17 @@ activeCollection,
 
 ...data,
 
-status:"active"
+status:
+
+reviewCollections.includes(activeCollection)
+
+?
+
+"approved"
+
+:
+
+"active"
 
 }
 
@@ -1962,6 +2203,10 @@ showToast(
 
 );
 
+
+
+
+closeAdminModal();
 
 
 
@@ -2448,7 +2693,31 @@ String(data.number)
 
 
 
+/*
+Question bank duplicate
+*/
 
+if(activeCollection==="question-bank"){
+
+
+return records.some(x=>
+
+
+x.subject===data.subject
+
+&&
+
+x.question?.toLowerCase()
+
+===
+
+data.question?.toLowerCase()
+
+
+);
+
+
+}
 
 
 
@@ -2502,6 +2771,224 @@ data.name.toLowerCase()
 
 )
 
+
+);
+
+
+
+}
+
+/*
+=========================
+ VERSION VIEWER
+=========================
+*/
+
+
+function showVersions(id){
+
+
+
+if(
+
+typeof getVersions!=="function"
+
+){
+
+
+showToast(
+
+"Version system unavailable",
+
+"error"
+
+);
+
+
+return;
+
+
+}
+
+
+
+
+let versions =
+getVersions(
+
+activeCollection,
+
+id
+
+);
+
+
+
+
+
+
+
+let html = `
+
+
+<div class="card">
+
+
+<h2>
+
+🕘 Version History
+
+</h2>
+
+
+<br>
+
+
+${
+
+versions.length
+
+?
+
+versions.map(v=>`
+
+
+<div class="panel">
+
+
+<div>
+
+
+<b>
+
+${new Date(v.time).toLocaleString()}
+
+</b>
+
+
+<br>
+
+
+${v.user?.name || "System"}
+
+
+</div>
+
+
+
+<button
+
+onclick="restoreVersion('${v.id}')">
+
+Restore
+
+</button>
+
+
+
+</div>
+
+
+`).join("")
+
+
+:
+
+
+"No versions yet"
+
+
+}
+
+
+</div>
+
+
+`;
+
+
+
+
+openAdminModal(html);
+
+
+
+}
+
+async function restoreVersion(
+versionId
+){
+
+
+
+let versions =
+JSON.parse(
+
+localStorage.getItem(
+"versions"
+)
+
+||
+
+"[]"
+
+);
+
+
+
+let version =
+versions.find(
+x=>x.id===versionId
+);
+
+
+
+
+if(!version){
+
+return;
+
+}
+
+
+
+
+
+await updateRecord(
+
+version.collection,
+
+version.contentId,
+
+version.data
+
+);
+
+
+
+
+
+
+
+closeAdminModal();
+
+
+
+
+showToast(
+
+"Version restored",
+
+"success"
+
+);
+
+
+
+
+loadManager(
+
+activeCollection
 
 );
 

@@ -12,25 +12,17 @@ content="width=device-width, initial-scale=1.0">
 
 
 <title>
-
-Library
-
+Library | Pharmora
 </title>
 
 
-<link 
-rel="icon" 
-href="../assets/branding/favicon.svg">
+<link rel="icon" href="../assets/branding/favicon.svg">
 
 
 <link rel="stylesheet" href="../css/variables.css">
-
 <link rel="stylesheet" href="../css/base.css">
-
 <link rel="stylesheet" href="../css/components.css">
-
 <link rel="stylesheet" href="../css/responsive.css">
-
 
 
 <style>
@@ -45,63 +37,65 @@ padding:70px 0;
 }
 
 
-
 .hero h1{
 
-font-size:3.8rem;
+font-size:3.5rem;
 
 }
 
 
 
+.filter-box{
 
-.entry{
+margin-top:30px;
 
-padding:20px;
+}
 
-border-radius:20px;
+
+.filter-grid{
+
+display:grid;
+
+grid-template-columns:
+
+repeat(
+auto-fit,
+minmax(180px,1fr)
+);
+
+gap:15px;
+
+}
+
+
+.filter-grid input,
+.filter-grid select{
+
+width:100%;
+
+padding:14px;
+
+border-radius:15px;
 
 background:var(--surface);
 
 border:1px solid var(--border);
 
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-margin-bottom:12px;
-
-transition:var(--transition);
-
-cursor:pointer;
+color:var(--text);
 
 }
-
-
-
-
-.entry:hover{
-
-border-color:var(--primary);
-
-transform:translateX(5px);
-
-}
-
 
 
 
 .collection{
+
+cursor:pointer;
 
 position:relative;
 
 overflow:hidden;
 
 }
-
-
 
 
 
@@ -135,13 +129,17 @@ opacity:.2;
 
 
 
+.library-block{
+
+margin-bottom:60px;
+
+}
+
+
+
 </style>
 
-
 </head>
-
-
-
 
 
 
@@ -150,15 +148,7 @@ opacity:.2;
 <body>
 
 
-
-
-
-
 <div id="site-header"></div>
-
-
-
-
 
 
 
@@ -167,18 +157,7 @@ opacity:.2;
 
 
 
-
-
-
-
-
-
-
 <section class="container hero">
-
-
-
-
 
 
 <div class="badge">
@@ -189,21 +168,11 @@ opacity:.2;
 
 
 
-
-
-
-
-
 <h1>
-
 
 Open Pharmacy
 
-
 <br>
-
-
-
 
 
 <span style="
@@ -216,60 +185,36 @@ var(--secondary)
 color:transparent;
 ">
 
-
-
 Knowledge Base
 
-
-
 </span>
-
-
 
 
 </h1>
 
 
 
-
-
-
-
-
 <p>
 
-Organized educational resources created by
-students, teachers and contributors.
+Discover notes, books, questions and teaching resources.
 
 </p>
-
-
-
-
-
-
 
 
 
 <div class="search-box">
 
 
+<input
 
-<input 
-
-placeholder="Search notes, subjects, resources..."
+placeholder="Search everything..."
 
 oninput="pharmoraSearch(this.value)"
 
 >
 
 
-
 </div>
-
-
-
-
 
 
 
@@ -282,13 +227,7 @@ class="grid"
 style="margin-top:30px;">
 
 
-
 </div>
-
-
-
-
-
 
 
 
@@ -301,18 +240,7 @@ style="margin-top:30px;">
 
 
 
-
-
-
-
-
-
-
 <section class="container section">
-
-
-
-
 
 
 <h2 class="section-title">
@@ -323,161 +251,283 @@ Explore Library
 
 
 
-
-
-
-
-
-
-
 <div class="grid">
 
 
 
+<div
+class="card collection"
+onclick="filterType('resources')">
+
+
+<h2>📚 Resources</h2>
+
+<p>
+
+Notes, papers and files.
+
+</p>
+
+</div>
+
+
+
+
+
+<div
+class="card collection"
+onclick="filterType('teaching-materials')">
+
+
+<h2>👨‍🏫 Teaching</h2>
+
+<p>
+
+Slides and teacher resources.
+
+</p>
+
+</div>
+
+
+
+
+
+<div
+class="card collection"
+onclick="filterType('question-bank')">
+
+
+<h2>❓ Question Bank</h2>
+
+<p>
+
+MCQ, viva and exams.
+
+</p>
+
+</div>
+
+
+
+
+
+<div
+class="card collection"
+onclick="filterType('assignments')">
+
+
+<h2>📝 Assignments</h2>
+
+<p>
+
+Practice and submissions.
+
+</p>
+
+</div>
+
+
+
+</div>
+
+
+
+</section>
 
 
 
 
 
 
-<div class="card collection">
 
+
+
+<section class="container section">
+
+
+
+<div class="card filter-box">
 
 
 <h2>
 
-📝 Study Notes
+🔎 Filter Materials
 
 </h2>
 
 
+<br>
 
 
-<p>
 
-Subject-wise notes and explanations.
+<div class="filter-grid">
 
-</p>
+
+
+<select id="filter-type">
+
+<option value="">
+
+All Types
+
+</option>
+
+
+<option value="resources">
+
+Resources
+
+</option>
+
+
+<option value="books">
+
+Books
+
+</option>
+
+
+<option value="teaching-materials">
+
+Teaching Material
+
+</option>
+
+
+<option value="question-bank">
+
+Question Bank
+
+</option>
+
+
+<option value="assignments">
+
+Assignments
+
+</option>
+
+
+</select>
+
+
+
+
+
+
+<select id="filter-course">
+
+<option value="">
+
+All Courses
+
+</option>
+
+</select>
+
+
+
+
+
+
+<select id="filter-semester">
+
+<option value="">
+
+All Semesters
+
+</option>
+
+</select>
+
+
+
+
+
+
+<select id="filter-subject">
+
+<option value="">
+
+All Subjects
+
+</option>
+
+</select>
+
+
+
+
+
+<select id="filter-difficulty">
+
+<option value="">
+
+Difficulty
+
+</option>
+
+
+<option>
+
+Beginner
+
+</option>
+
+
+<option>
+
+Intermediate
+
+</option>
+
+
+<option>
+
+Advanced
+
+</option>
+
+
+</select>
+
+
+
+
+
+
+<input
+
+id="filter-tags"
+
+placeholder="Tags"
+
+>
 
 
 
 </div>
 
 
+<br>
 
 
+<button
+
+class="btn btn-primary"
+
+onclick="applyFilters()">
 
 
+Apply Filter
 
 
-
-
-<div class="card collection">
-
-
-
-<h2>
-
-🖥 Presentations
-
-</h2>
-
-
-
-
-<p>
-
-Lecture slides and classroom teaching materials.
-
-</p>
+</button>
 
 
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="card collection">
-
-
-
-<h2>
-
-❓ Question Bank
-
-</h2>
-
-
-
-
-<p>
-
-MCQs, previous papers and examination resources.
-
-</p>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="card collection">
-
-
-
-<h2>
-
-🧪 Practical Files
-
-</h2>
-
-
-
-
-<p>
-
-Laboratory manuals, experiments and records.
-
-</p>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-</div>
-
-
-
 
 
 
@@ -492,17 +542,7 @@ Laboratory manuals, experiments and records.
 
 
 
-
-
-
-
-
-
 <section class="container section">
-
-
-
-
 
 
 <h2 class="section-title">
@@ -514,17 +554,55 @@ Featured Knowledge
 
 
 
+<div class="library-block">
 
+<h3>📚 Resources</h3>
 
-
-
-
-
+<br>
 
 <div
 class="grid"
 id="resources-list">
 
+</div>
+
+</div>
+
+
+
+
+
+
+<div class="library-block">
+
+<h3>📖 Books</h3>
+
+<br>
+
+<div
+class="grid"
+id="books-list">
+
+</div>
+
+</div>
+
+
+
+
+
+
+<div class="library-block">
+
+<h3>👨‍🏫 Teaching Materials</h3>
+
+<br>
+
+<div
+class="grid"
+id="teaching-list">
+
+</div>
 
 </div>
 
@@ -534,16 +612,43 @@ id="resources-list">
 
 
 
+<div class="library-block">
+
+<h3>❓ Question Bank</h3>
+
+<br>
+
+<div
+class="grid"
+id="questions-list">
+
+</div>
+
+</div>
+
+
+
+
+
+
+<div class="library-block">
+
+<h3>📝 Assignments</h3>
+
+<br>
+
+<div
+class="grid"
+id="assignments-list">
+
+</div>
+
+</div>
+
+
+
 
 </section>
-
-
-
-
-
-
-
-
 
 
 
@@ -555,51 +660,24 @@ id="resources-list">
 <section class="container section">
 
 
-
-
-
-
 <div class="card">
-
-
-
-
 
 
 <h2>
 
-🌱 Open Knowledge Library
+🌱 Share Knowledge
 
 </h2>
 
 
-
-
-
-
-
 <p>
 
-The library grows through responsible sharing,
-review and improvement of learning resources.
+Help improve pharmacy education.
 
 </p>
 
 
-
-
-
-
-
-
-
 <br>
-
-
-
-
-
-
 
 
 <a
@@ -609,24 +687,13 @@ href="../contribute/"
 class="btn btn-primary">
 
 
-
-Add Resource
-
+Add Contribution
 
 
 </a>
 
 
-
-
-
-
-
 </div>
-
-
-
-
 
 
 </section>
@@ -634,15 +701,7 @@ Add Resource
 
 
 
-
-
-
-
-
 </main>
-
-
-
 
 
 
@@ -654,13 +713,38 @@ Add Resource
 
 
 
+
+<!-- CORE -->
+
 <script src="../js/app.js"></script>
 
 
 
+
+<!-- SERVICES -->
+
+<script src="../js/services/auth.service.js"></script>
+
 <script src="../js/services/database.service.js"></script>
 
+<script src="../js/services/analytics.service.js"></script>
 
+<script src="../js/services/content.service.js"></script>
+
+
+
+
+
+<!-- SEARCH -->
+
+<script src="../js/search.js"></script>
+
+
+
+
+
+
+<!-- COMPONENTS -->
 
 <script src="../components/layout/header.js"></script>
 
@@ -670,32 +754,118 @@ Add Resource
 
 
 
-<script src="../js/services/analytics.service.js"></script>
-
-
-
-<script src="../js/search.js"></script>
-
-
-
-
-
-<script src="../js/services/content.service.js"></script>
-
-
 
 
 
 <script>
 
 
-renderContent(
+async function loadFilters(){
 
-"resources",
 
-"resources-list"
 
+let courses =
+await getRecords("courses");
+
+
+
+let courseBox =
+document.getElementById(
+"filter-course"
 );
+
+
+
+courses.forEach(c=>{
+
+
+courseBox.innerHTML +=
+
+`
+
+<option value="${c.id}">
+
+${c.name}
+
+</option>
+
+`;
+
+
+});
+
+
+
+}
+
+
+
+
+function filterType(type){
+
+
+
+document
+
+.getElementById(
+"filter-type"
+)
+
+.value=type;
+
+
+
+applyFilters();
+
+
+
+}
+
+
+
+
+
+
+
+
+renderContent(
+"resources",
+"resources-list"
+);
+
+
+
+renderContent(
+"books",
+"books-list"
+);
+
+
+
+renderContent(
+"teaching-materials",
+"teaching-list"
+);
+
+
+
+renderContent(
+"question-bank",
+"questions-list"
+);
+
+
+
+renderContent(
+"assignments",
+"assignments-list"
+);
+
+
+
+
+loadFilters();
+
 
 
 </script>

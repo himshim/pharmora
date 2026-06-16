@@ -6,33 +6,23 @@
 
 <meta charset="UTF-8">
 
-<meta 
+<meta
 name="viewport"
 content="width=device-width, initial-scale=1.0">
 
 
 <title>
-
-Learn
-
+Learn | Pharmora
 </title>
 
 
-<link 
-rel="icon"
-href="../assets/branding/favicon.svg">
+<link rel="icon" href="../assets/branding/favicon.svg">
 
 
 <link rel="stylesheet" href="../css/variables.css">
-
 <link rel="stylesheet" href="../css/base.css">
-
 <link rel="stylesheet" href="../css/components.css">
-
 <link rel="stylesheet" href="../css/responsive.css">
-
-
-
 
 
 <style>
@@ -42,7 +32,7 @@ href="../assets/branding/favicon.svg">
 
 text-align:center;
 
-padding:50px 0;
+padding:60px 0;
 
 }
 
@@ -56,18 +46,25 @@ font-size:3.5rem;
 
 
 
+.learn-block{
 
-.subject{
+margin-bottom:40px;
+
+}
+
+
+
+.learn-item{
 
 padding:20px;
 
-margin-bottom:12px;
+border-radius:20px;
 
 background:var(--surface);
 
 border:1px solid var(--border);
 
-border-radius:20px;
+cursor:pointer;
 
 transition:var(--transition);
 
@@ -75,12 +72,27 @@ transition:var(--transition);
 
 
 
-
-.subject:hover{
+.learn-item:hover{
 
 border-color:var(--primary);
 
-transform:translateX(5px);
+transform:translateY(-5px);
+
+}
+
+
+
+.path-box{
+
+padding:18px;
+
+border-radius:20px;
+
+background:var(--surface);
+
+border:1px solid var(--border);
+
+margin-bottom:25px;
 
 }
 
@@ -96,14 +108,12 @@ transform:translateX(5px);
 
 
 
+
 <body>
 
 
 
-
-
 <div id="site-header"></div>
-
 
 
 
@@ -118,12 +128,7 @@ transform:translateX(5px);
 
 
 
-
-
 <section class="container hero">
-
-
-
 
 
 <div class="badge">
@@ -134,17 +139,12 @@ transform:translateX(5px);
 
 
 
-
-
 <h1>
 
 
 Learn Pharmacy
 
-
 <br>
-
-
 
 
 <span style="
@@ -157,12 +157,9 @@ var(--secondary)
 color:transparent;
 ">
 
-
 Your Way
 
-
 </span>
-
 
 
 </h1>
@@ -170,14 +167,11 @@ Your Way
 
 
 
-
 <p>
 
-Resources organized by course,
-curriculum, semester and subject.
+Explore structured pharmacy education.
 
 </p>
-
 
 
 
@@ -186,11 +180,12 @@ curriculum, semester and subject.
 <div class="search-box">
 
 
-<input 
+<input
 
-placeholder="Search courses, subjects, topics..."
+placeholder="Search courses, subjects, units..."
 
 oninput="pharmoraSearch(this.value)"
+
 
 >
 
@@ -201,8 +196,7 @@ oninput="pharmoraSearch(this.value)"
 
 
 
-
-<div 
+<div
 
 id="search-results"
 
@@ -212,8 +206,6 @@ style="margin-top:30px;">
 
 
 </div>
-
-
 
 
 
@@ -227,18 +219,49 @@ style="margin-top:30px;">
 
 
 
-
-
 <section class="container section">
 
 
 
+<div class="path-box">
+
+
+<b>
+
+Current Path:
+
+</b>
+
+
+<span id="learning-path">
+
+Select course
+
+</span>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<section class="container section learn-block">
+
+
 <h2 class="section-title">
 
-Choose Course
+🎓 Courses
 
 </h2>
-
 
 
 
@@ -252,8 +275,6 @@ id="course-list">
 </div>
 
 
-
-
 </section>
 
 
@@ -264,19 +285,16 @@ id="course-list">
 
 
 
-<section class="container section">
 
 
+<section class="container section learn-block">
 
 
 <h2 class="section-title">
 
-Curriculum Explorer
+📘 Curriculums
 
 </h2>
-
-
-
 
 
 
@@ -287,39 +305,27 @@ class="grid"
 id="curriculum-view">
 
 
-
-
-
 <div class="card">
-
 
 
 <h2>
 
-Select a course
+Choose a course
 
 </h2>
 
 
-
 <p>
 
-Choose a course above to explore curriculum.
+Available curriculums will appear here.
 
 </p>
 
 
-
 </div>
 
 
-
-
-
 </div>
-
-
-
 
 
 </section>
@@ -333,58 +339,128 @@ Choose a course above to explore curriculum.
 
 
 
-<section class="container section">
 
+<section class="container section learn-block">
 
 
 <h2 class="section-title">
 
-Popular Subjects
+📅 Semester / Year
 
 </h2>
 
 
 
+<div
 
+class="grid"
 
-<div class="subject">
+id="semester-view">
 
-💊 Pharmacology
 
 </div>
 
 
+</section>
 
 
 
-<div class="subject">
 
-⚗ Pharmaceutics
+
+
+
+
+
+
+
+
+<section class="container section learn-block">
+
+
+<h2 class="section-title">
+
+🧪 Subjects
+
+</h2>
+
+
+
+<div
+
+class="grid"
+
+id="subject-view">
+
 
 </div>
 
 
+</section>
 
 
 
-<div class="subject">
 
-🧬 Pharmaceutical Chemistry
+
+
+
+
+
+
+
+
+<section class="container section learn-block">
+
+
+<h2 class="section-title">
+
+📄 Units & Chapters
+
+</h2>
+
+
+
+<div
+
+class="grid"
+
+id="unit-view">
+
 
 </div>
 
 
+</section>
 
 
 
-<div class="subject">
 
-🌿 Pharmacognosy
+
+
+
+
+
+
+
+
+<section class="container section learn-block">
+
+
+<h2 class="section-title">
+
+📚 Related Materials
+
+</h2>
+
+
+
+<div
+
+class="grid"
+
+id="learning-materials">
+
 
 </div>
-
-
-
 
 
 </section>
@@ -403,6 +479,7 @@ Popular Subjects
 
 
 
+
 <div id="site-footer"></div>
 
 
@@ -412,32 +489,62 @@ Popular Subjects
 
 
 
+<!-- CORE -->
 
 <script src="../js/app.js"></script>
 
 
-<script src="../js/services/analytics.service.js"></script>
+
+
+
+<!-- SERVICES -->
+
+<script src="../js/services/auth.service.js"></script>
 
 <script src="../js/services/database.service.js"></script>
 
+<script src="../js/services/analytics.service.js"></script>
+
+
+
+
+
+<!-- SEARCH -->
+
+<script src="../js/search.js"></script>
+
+
+
+
+
+<!-- LEARN -->
+
+<script src="../js/services/learn.service.js"></script>
+
+
+
+
+
+
+<!-- COMPONENTS LAST -->
 
 <script src="../components/layout/header.js"></script>
 
 <script src="../components/layout/footer.js"></script>
 
 
-<script src="../js/search.js"></script>
 
 
-<script src="../js/services/learn.service.js"></script>
+
 
 
 <script>
 
+
 loadLearn();
 
-</script>
 
+</script>
 
 
 

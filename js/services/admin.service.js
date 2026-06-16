@@ -57,7 +57,15 @@ await getRecords(collection);
 
 
 
-data.forEach(item=>{
+data
+
+.filter(
+
+x=>!x.deleted
+
+)
+
+.forEach(item=>{
 
 
 
@@ -226,7 +234,21 @@ return;
 }
 
 
+let title =
+document.getElementById(
+"section-title"
+);
 
+
+
+if(title){
+
+
+title.innerHTML =
+"Content Review Queue";
+
+
+}
 
 
 let items =
@@ -307,7 +329,17 @@ pending.map(item=>`
 
 ${contentIcon(item._collection)}
 
-${item.title}
+${
+
+item.title ||
+
+item.question ||
+
+item.name ||
+
+"Untitled"
+
+}
 
 </h3>
 
@@ -456,7 +488,13 @@ books:"📖",
 
 events:"📅",
 
-tools:"🧰"
+tools:"🧰",
+
+"teaching-materials":"👨‍🏫",
+
+"question-bank":"❓",
+
+assignments:"📝"
 
 
 }[type]
@@ -536,20 +574,105 @@ return;
 
 
 
+let html = `
 
-showToast(
 
-`${item.title}
+<div class="card">
 
-${item.description || ""}`,
 
-"info"
+<div class="badge">
+
+${contentIcon(collection)}
+
+${collection}
+
+</div>
+
+
+
+<br><br>
+
+
+
+<h1>
+
+${
+
+item.title ||
+
+item.question ||
+
+"Untitled"
+
+}
+
+</h1>
+
+
+
+
+
+<p>
+
+${
+
+item.description ||
+
+item.answer ||
+
+""
+
+}
+
+</p>
+
+
+
+
+
+<br>
+
+
+
+<p>
+
+
+⭐
+
+${item.difficulty || ""}
+
+
+<br>
+
+
+🏷
+
+${(item.tags || []).join(", ")}
+
+
+</p>
+
+
+
+
+</div>
+
+
+`;
+
+
+
+
+
+openAdminModal(
+
+html
 
 );
 
 
-
 }
+
 
 
 
@@ -566,21 +689,115 @@ id
 
 
 
+let html = `
 
 
-let message =
-prompt(
+<div class="card">
 
-"Comment for contributor"
+
+<h2>
+
+💬 Review Comment
+
+</h2>
+
+
+
+<p>
+
+Send feedback to contributor
+
+</p>
+
+
+
+<br>
+
+
+
+<textarea
+
+id="review-message"
+
+placeholder="Write improvement suggestions, approval notes, or rejection reason..."
+
+></textarea>
+
+
+
+
+
+<br><br>
+
+
+
+<button
+
+class="btn btn-primary"
+
+onclick="saveReviewComment('${collection}','${id}')">
+
+Save Comment
+
+</button>
+
+
+
+</div>
+
+
+`;
+
+
+
+
+openAdminModal(
+
+html
 
 );
 
 
 
+}
 
-if(!message){
+async function saveReviewComment(
+collection,
+id
+){
+
+
+
+let box =
+document.getElementById(
+"review-message"
+);
+
+
+
+if(
+
+!box ||
+
+!box.value.trim()
+
+){
+
+
+
+showToast(
+
+"Write a comment first",
+
+"error"
+
+);
+
+
 
 return;
+
+
 
 }
 
@@ -598,8 +815,11 @@ id
 
 
 
+
 let review =
-item.review || {
+item.review ||
+
+{
 
 comments:[]
 
@@ -609,10 +829,29 @@ comments:[]
 
 
 
+
+
 review.comments.push({
 
 
-message:message,
+message:
+
+box.value.trim(),
+
+
+
+reviewer:
+
+currentUser
+
+?
+
+currentUser()
+
+:
+
+null,
+
 
 
 time:
@@ -622,6 +861,8 @@ new Date()
 
 
 });
+
+
 
 
 
@@ -642,13 +883,40 @@ review:review
 
 );
 
+if(
+typeof logActivity==="function"
+){
+
+
+logActivity(
+
+"comment",
+
+"Review comment added",
+
+{
+collection,
+id
+}
+
+);
+
+
+}
+
+
+
+
+closeAdminModal();
+
+
 
 
 
 
 showToast(
 
-"Comment saved",
+"Comment added",
 
 "success"
 
@@ -691,7 +959,26 @@ status:"approved"
 
 );
 
+if(
+typeof logActivity==="function"
+){
 
+
+logActivity(
+
+"approve",
+
+"Approved content",
+
+{
+collection,
+id
+}
+
+);
+
+
+}
 
 
 
@@ -750,7 +1037,26 @@ status:"rejected"
 );
 
 
+if(
+typeof logActivity==="function"
+){
 
+
+logActivity(
+
+"reject",
+
+"Rejected content",
+
+{
+collection,
+id
+}
+
+);
+
+
+}
 
 
 showToast(
@@ -827,11 +1133,60 @@ return;
 
 
 
-await deleteRecord(
+let item =
+await findContent(
+collection,
+id
+);
+
+
+
+
+if(
+
+typeof saveAudit==="function"
+
+){
+
+
+saveAudit(
+
+"delete",
+
+{
+
+collection:collection,
+
+item:item
+
+}
+
+);
+
+
+}
+
+
+
+
+
+
+await updateRecord(
 
 collection,
 
-id
+id,
+
+{
+
+deleted:true,
+
+deletedAt:
+
+new Date()
+.toISOString()
+
+}
 
 );
 
@@ -857,6 +1212,1396 @@ renderAdminStats();
 
 renderAdminActions();
 
+
+
+
+}
+
+/*
+=========================
+ ADMIN DASHBOARD HOME
+=========================
+*/
+
+
+async function renderAdminHome(){
+
+
+
+let title =
+document.getElementById(
+"section-title"
+);
+
+
+
+if(title){
+
+
+title.innerHTML =
+"Dashboard Overview";
+
+
+}
+
+
+
+
+
+
+let box =
+document.getElementById(
+"admin-actions"
+);
+
+
+
+if(!box){
+
+return;
+
+}
+
+
+
+
+let items =
+await getAllReviewItems();
+
+
+
+
+let users=[];
+
+
+try{
+
+
+users =
+await getRecords(
+"users"
+);
+
+
+}
+
+catch(e){}
+
+
+
+
+let bars=[];
+
+let popular=[];
+
+
+
+
+if(
+
+typeof analyticsBars==="function"
+
+){
+
+
+bars =
+analyticsBars();
+
+
+}
+
+
+
+
+if(
+
+typeof topAnalyticsTargets==="function"
+
+){
+
+
+popular =
+topAnalyticsTargets(
+
+"search"
+
+);
+
+
+}
+
+
+
+let latest =
+items
+
+.sort(
+
+(a,b)=>
+
+new Date(b.createdAt || 0)
+
+-
+
+new Date(a.createdAt || 0)
+
+)
+
+.slice(0,5);
+
+
+
+let activity=[];
+
+
+if(
+typeof getActivities==="function"
+){
+
+activity =
+getActivities(5);
+
+}
+
+
+
+box.innerHTML = `
+
+
+
+<div class="grid">
+
+
+
+<div class="card">
+
+<h2>⚡ Quick Actions</h2>
+
+<br>
+
+
+<button class="btn"
+
+onclick="renderAdminActions()">
+
+📋 Review Queue
+
+</button>
+
+
+<br><br>
+
+
+<button class="btn"
+
+onclick="loadManager('courses')">
+
+🎓 Courses
+
+</button>
+
+
+<br><br>
+
+
+<button class="btn"
+
+onclick="loadManager('notifications')">
+
+🔔 Notifications
+
+</button>
+
+<br><br>
+
+
+<button
+
+class="btn"
+
+onclick="renderTrash()">
+
+🗑 Trash
+
+</button>
+
+<br><br>
+
+
+<button class="btn"
+
+onclick="renderUserManager()">
+
+👥 Users
+
+</button>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+<h2>👥 Community</h2>
+
+
+<br>
+
+
+<h1>
+
+${users.length}
+
+</h1>
+
+
+<p>
+
+Registered Users
+
+</p>
+
+
+</div>
+
+
+
+
+<div class="card">
+
+
+
+<h2>
+
+📈 Platform Insights
+
+</h2>
+
+
+
+<br>
+
+
+
+${
+
+bars.map(x=>`
+
+
+
+<p>
+
+${x.label}
+
+<b style="float:right">
+
+${x.value}
+
+</b>
+
+</p>
+
+
+<div class="analytics-bar">
+
+<div style="width:${x.percent}%">
+
+</div>
+
+</div>
+
+
+
+`).join("")
+
+}
+
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+
+
+<h2>
+
+🔥 Popular Searches
+
+</h2>
+
+
+
+<br>
+
+
+
+
+${
+
+popular.length
+
+?
+
+popular.map(x=>`
+
+<p>
+
+🔎 ${x[0]}
+
+<span style="float:right">
+
+${x[1]}
+
+</span>
+
+</p>
+
+`).join("")
+
+
+:
+
+
+"No searches yet"
+
+
+}
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+🕒 Recent Activity
+
+</h2>
+
+
+<br>
+
+
+
+
+${
+
+latest.length
+
+?
+
+latest.map(item=>`
+
+<div class="panel">
+
+
+<div>
+
+
+<b>
+
+${contentIcon(item._collection)}
+
+${
+
+item.title ||
+
+item.question ||
+
+item.name ||
+
+"Untitled"
+
+}
+
+</b>
+
+
+<br>
+
+
+<small>
+
+${item._collection}
+
+</small>
+
+
+
+</div>
+
+
+<span class="status">
+
+${item.status}
+
+</span>
+
+
+</div>
+
+
+`).join("")
+
+
+:
+
+
+"No activity"
+
+
+}
+
+
+
+
+</div>
+
+<div class="card">
+
+
+<h2>
+
+🕒 Activity Feed
+
+</h2>
+
+
+<br>
+
+
+${
+
+activity.length
+
+?
+
+activity.map(a=>`
+
+<div class="panel">
+
+<div>
+
+<b>
+
+${a.message}
+
+</b>
+
+<br>
+
+<small>
+
+${new Date(a.time).toLocaleString()}
+
+</small>
+
+</div>
+
+
+<span>
+
+${a.action}
+
+</span>
+
+
+</div>
+
+
+`).join("")
+
+
+:
+
+
+"No activity yet"
+
+
+}
+
+
+</div>
+
+`;
+
+
+
+}
+
+/*
+=========================
+ USER CONTROL CENTER
+=========================
+*/
+
+
+async function renderUserManager(){
+
+
+
+let title =
+document.getElementById(
+"section-title"
+);
+
+
+
+if(title){
+
+title.innerHTML =
+"User Control Center";
+
+}
+
+
+
+
+let box =
+document.getElementById(
+"admin-actions"
+);
+
+
+
+if(!box){
+
+return;
+
+}
+
+
+
+
+
+let users=[];
+
+
+
+try{
+
+
+users =
+await getRecords(
+"users"
+);
+
+
+}
+
+catch(e){}
+
+
+
+
+
+
+if(users.length===0){
+
+
+box.innerHTML = `
+
+
+<div class="card">
+
+<h2>No users found</h2>
+
+</div>
+
+
+`;
+
+
+return;
+
+
+}
+
+
+
+
+
+
+
+
+
+box.innerHTML = users.map(user=>`
+
+
+
+<div class="panel">
+
+
+<div>
+
+
+<h2>
+
+👤 ${user.name || "User"}
+
+</h2>
+
+
+<p>
+
+📧 ${user.email || ""}
+
+<br>
+
+🎭 Role:
+<b>${user.role || "student"}</b>
+
+
+<br>
+
+
+🛡 Permissions:
+${
+
+(user.permissions || [])
+
+.join(", ")
+
+|| "Default"
+
+}
+
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+<div>
+
+
+<button
+
+onclick="editUserRole('${user.id}')">
+
+🛡
+
+</button>
+
+
+
+<button
+
+onclick="toggleUserStatus('${user.id}')">
+
+${user.disabled ? "✅" : "🚫"}
+
+</button>
+
+
+</div>
+
+
+
+</div>
+
+
+
+`).join("");
+
+
+
+}
+
+async function editUserRole(id){
+
+
+
+let users =
+await getRecords(
+"users"
+);
+
+
+
+let user =
+users.find(
+x=>x.id===id
+);
+
+
+
+
+if(!user){
+
+return;
+
+}
+
+
+
+
+let html = `
+
+
+<div class="card">
+
+
+<h2>
+
+🛡 Permissions
+
+</h2>
+
+
+
+<br>
+
+
+
+<label>
+
+Role
+
+</label>
+
+
+
+<select id="new-role">
+
+
+${[
+
+"student",
+
+"teacher",
+
+"moderator",
+
+"admin",
+
+"owner"
+
+].map(role=>`
+
+<option
+
+value="${role}"
+
+${
+
+user.role===role
+
+?
+
+"selected"
+
+:
+
+""
+
+}
+
+>
+
+${role}
+
+</option>
+
+`).join("")}
+
+
+</select>
+
+
+
+
+
+
+<br><br>
+
+
+
+
+
+
+${
+
+permissionMatrix.map(p=>`
+
+
+<label>
+
+
+<input
+
+type="checkbox"
+
+class="permission-check"
+
+value="${p.key}"
+
+
+${
+
+(user.permissions || [])
+
+.includes(p.key)
+
+||
+
+(user.permissions || [])
+
+.includes("*")
+
+?
+
+"checked"
+
+:
+
+""
+
+}
+
+
+>
+
+
+${p.label}
+
+
+</label>
+
+
+<br>
+
+
+`).join("")
+
+
+}
+
+
+
+
+
+
+
+<br>
+
+
+
+<button
+
+class="btn btn-primary"
+
+onclick="saveUserRole('${id}')">
+
+
+Save Permissions
+
+
+</button>
+
+
+
+</div>
+
+
+`;
+
+
+
+
+openAdminModal(
+
+html
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+async function saveUserRole(id){
+
+
+
+let role =
+document.getElementById(
+"new-role"
+)
+.value;
+
+
+
+
+
+let permissions = [];
+
+
+
+
+
+if(role==="owner"){
+
+
+permissions=["*"];
+
+
+}
+
+
+
+
+if(role==="admin"){
+
+
+permissions=[
+
+"content.review",
+
+"courses.manage",
+
+"users.manage"
+
+];
+
+
+}
+
+
+
+
+
+await updateRecord(
+
+"users",
+
+id,
+
+{
+
+role,
+
+permissions
+
+}
+
+);
+
+
+
+
+
+
+
+if(
+
+typeof logActivity==="function"
+
+){
+
+
+logActivity(
+
+"user",
+
+"Changed user role",
+
+{
+id,
+role
+}
+
+);
+
+
+}
+
+
+
+
+
+
+closeAdminModal();
+
+
+
+showToast(
+
+"Role updated",
+
+"success"
+
+);
+
+
+
+
+renderUserManager();
+
+
+
+}
+
+async function toggleUserStatus(id){
+
+
+
+let users =
+await getRecords(
+"users"
+);
+
+
+
+let user =
+users.find(
+x=>x.id===id
+);
+
+
+
+
+if(!user){
+
+return;
+
+}
+
+
+
+
+await updateRecord(
+
+"users",
+
+id,
+
+{
+
+disabled:
+
+!user.disabled
+
+}
+
+);
+
+
+
+
+
+
+showToast(
+
+"User updated",
+
+"success"
+
+);
+
+
+
+
+renderUserManager();
+
+
+
+}
+
+/*
+=========================
+ PERMISSION MATRIX
+=========================
+*/
+
+
+const permissionMatrix = [
+
+
+{
+key:"content.review",
+label:"📋 Review Content"
+},
+
+
+{
+key:"courses.manage",
+label:"🎓 Manage Courses"
+},
+
+
+{
+key:"curriculum.manage",
+label:"📘 Manage Curriculum"
+},
+
+
+{
+key:"subjects.manage",
+label:"🧪 Manage Subjects"
+},
+
+
+{
+key:"books.manage",
+label:"📚 Manage Library"
+},
+
+
+{
+key:"events.manage",
+label:"📅 Manage Events"
+},
+
+
+{
+key:"tools.manage",
+label:"🧰 Manage Tools"
+},
+
+
+{
+key:"notifications.manage",
+label:"🔔 Notifications"
+},
+
+
+{
+key:"users.manage",
+label:"👥 Manage Users"
+},
+
+
+{
+key:"analytics.view",
+label:"📈 Analytics"
+}
+
+
+];
+
+/*
+=========================
+ TRASH MANAGER
+=========================
+*/
+
+
+async function renderTrash(){
+
+
+
+let box =
+document.getElementById(
+"admin-actions"
+);
+
+
+
+if(!box){
+
+return;
+
+}
+
+
+
+
+let deleted=[];
+
+
+
+
+for(let collection of reviewCollections){
+
+
+
+let data =
+await getRecords(
+collection
+);
+
+
+
+data
+
+.filter(x=>x.deleted)
+
+.forEach(x=>{
+
+
+deleted.push({
+
+...x,
+
+_collection:collection
+
+});
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+box.innerHTML = deleted.length
+
+?
+
+deleted.map(item=>`
+
+
+
+<div class="panel">
+
+
+<div>
+
+
+<h3>
+
+🗑
+
+${item.title || item.name || "Deleted"}
+
+</h3>
+
+
+
+<small>
+
+${item._collection}
+
+</small>
+
+
+</div>
+
+
+
+<button
+
+onclick="restoreItem('${item._collection}','${item.id}')">
+
+♻️ Restore
+
+</button>
+
+
+
+</div>
+
+
+
+`).join("")
+
+
+:
+
+
+`
+
+<div class="card">
+
+Trash empty
+
+</div>
+
+`;
+
+
+
+}
+
+async function restoreItem(
+collection,
+id
+){
+
+
+
+await updateRecord(
+
+collection,
+
+id,
+
+{
+
+deleted:false,
+
+deletedAt:null
+
+}
+
+);
+
+
+
+
+
+showToast(
+
+"Restored",
+
+"success"
+
+);
+
+
+
+
+renderTrash();
 
 
 

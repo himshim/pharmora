@@ -223,6 +223,510 @@ font-weight:700;
 
 }
 
+/* ======================
+   MODERN ADMIN UI
+====================== */
+
+
+body{
+
+background:
+radial-gradient(
+circle at top,
+rgba(34,211,238,.12),
+transparent 40%
+),
+var(--background);
+
+}
+
+
+
+
+.sidebar{
+
+position:sticky;
+
+top:0;
+
+height:100vh;
+
+backdrop-filter:blur(20px);
+
+}
+
+
+
+.menu div{
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+font-weight:600;
+
+}
+
+
+
+.content{
+
+max-width:1400px;
+
+}
+
+
+
+
+.admin-title{
+
+padding:25px;
+
+border-radius:30px;
+
+background:
+
+linear-gradient(
+135deg,
+rgba(34,211,238,.15),
+rgba(124,58,237,.15)
+);
+
+border:1px solid var(--border);
+
+margin-bottom:25px;
+
+}
+
+
+
+
+
+
+
+/* Dashboard cards */
+
+#admin-stats .card{
+
+
+text-align:center;
+
+transition:.3s;
+
+}
+
+
+#admin-stats .card:hover{
+
+transform:translateY(-5px);
+
+}
+
+
+
+
+
+
+
+/* Admin panels */
+
+.panel{
+
+
+background:
+
+rgba(255,255,255,.04);
+
+
+backdrop-filter:blur(15px);
+
+
+border-radius:22px;
+
+
+transition:.3s;
+
+
+}
+
+
+
+.panel:hover{
+
+
+border-color:var(--primary);
+
+transform:scale(1.01);
+
+
+}
+
+
+
+
+
+
+
+/* Better admin forms */
+
+
+#admin-actions > .card{
+
+
+max-width:800px;
+
+margin:auto;
+
+animation:popup .25s ease;
+
+}
+
+
+
+
+#admin-actions label{
+
+
+display:block;
+
+font-weight:700;
+
+margin-top:18px;
+
+margin-bottom:8px;
+
+}
+
+
+
+
+
+
+
+#admin-actions input,
+
+#admin-actions select,
+
+#admin-actions textarea{
+
+
+width:100%;
+
+padding:15px 18px;
+
+border-radius:16px;
+
+background:var(--surface);
+
+border:1px solid var(--border);
+
+color:var(--text);
+
+font-size:1rem;
+
+}
+
+
+
+
+
+
+#admin-actions textarea{
+
+
+min-height:180px;
+
+resize:vertical;
+
+line-height:1.7;
+
+}
+
+
+
+
+
+
+#admin-actions input:focus,
+
+#admin-actions textarea:focus,
+
+#admin-actions select:focus{
+
+
+outline:none;
+
+border-color:var(--primary);
+
+}
+
+
+
+
+
+
+
+/* Floating form effect */
+
+#admin-actions > .card:has(#admin-save-btn){
+
+
+position:relative;
+
+box-shadow:
+
+0 25px 80px
+
+rgba(0,0,0,.35);
+
+}
+
+
+
+
+
+
+#admin-save-btn{
+
+
+width:100%;
+
+margin-top:25px;
+
+font-size:1.1rem;
+
+}
+
+
+
+
+
+
+
+@keyframes popup{
+
+
+from{
+
+opacity:0;
+
+transform:translateY(20px)
+scale(.96);
+
+}
+
+
+to{
+
+opacity:1;
+
+transform:none;
+
+}
+
+
+}
+
+
+
+
+
+
+
+@media(max-width:800px){
+
+
+.sidebar{
+
+position:relative;
+
+height:auto;
+
+}
+
+
+}
+
+/* ======================
+   ADMIN FLOATING MODAL
+====================== */
+
+
+#admin-modal{
+
+position:fixed;
+
+inset:0;
+
+z-index:9999;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+}
+
+
+
+
+.admin-modal-bg{
+
+position:absolute;
+
+inset:0;
+
+background:
+
+rgba(0,0,0,.65);
+
+backdrop-filter:blur(10px);
+
+}
+
+
+
+
+
+
+.admin-modal-box{
+
+position:relative;
+
+width:min(900px,95%);
+
+max-height:90vh;
+
+overflow:auto;
+
+padding:25px;
+
+border-radius:30px;
+
+background:var(--background);
+
+border:1px solid var(--border);
+
+box-shadow:
+
+0 30px 100px
+
+rgba(0,0,0,.5);
+
+
+animation:
+
+adminPopup .25s ease;
+
+}
+
+
+
+
+
+
+.admin-modal-close{
+
+position:absolute;
+
+right:20px;
+
+top:20px;
+
+border:none;
+
+width:40px;
+
+height:40px;
+
+border-radius:50%;
+
+cursor:pointer;
+
+background:var(--surface);
+
+color:var(--text);
+
+font-size:1.2rem;
+
+}
+
+
+
+
+
+
+@keyframes adminPopup{
+
+
+from{
+
+opacity:0;
+
+transform:
+
+scale(.92)
+
+translateY(20px);
+
+}
+
+
+
+to{
+
+opacity:1;
+
+transform:none;
+
+}
+
+
+}
+
+/* ANALYTICS */
+
+.analytics-bar{
+
+height:10px;
+
+background:var(--surface);
+
+border-radius:20px;
+
+overflow:hidden;
+
+margin:
+
+8px 0 18px;
+
+}
+
+
+
+.analytics-bar div{
+
+height:100%;
+
+border-radius:20px;
+
+background:
+
+linear-gradient(
+
+90deg,
+
+var(--primary),
+
+var(--secondary)
+
+);
+
+}
+
 
 </style>
 
@@ -268,7 +772,11 @@ id="admin-brand">
 <div class="menu">
 
 
+<div onclick="renderAdminHome()">
 
+🏠 Overview
+
+</div>
 
 
 
@@ -457,7 +965,7 @@ onclick="loadManager('notifications')">
 
 <div
 data-permission="users.manage"
-onclick="loadManager('users')">
+onclick="renderUserManager()">
 
 👥 Users
 
@@ -664,6 +1172,14 @@ document
 
 <script src="../js/services/database.service.js"></script>
 
+<script src="../js/services/analytics.service.js"></script>
+
+<script src="../js/services/activity.service.js"></script>
+
+<script src="../js/services/audit.service.js"></script>
+
+<script src="../js/services/version.service.js"></script>
+
 <script src="../js/services/permission.service.js"></script>
 
 
@@ -767,7 +1283,7 @@ await applyPermissions();
 renderAdminStats();
 
 
-renderAdminActions();
+renderAdminHome();
 
 
 
