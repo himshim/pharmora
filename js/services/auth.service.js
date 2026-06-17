@@ -1389,6 +1389,141 @@ return true;
 
 /*
 =========================
+ RESTORE USER
+=========================
+*/
+
+
+function restoreUser(
+userId
+){
+
+
+
+let admin =
+currentUser();
+
+
+
+if(!admin){
+
+return false;
+
+}
+
+
+
+
+
+let users =
+getDemoUsers();
+
+
+
+let user =
+users.find(
+
+x=>x.id===userId
+
+);
+
+
+
+if(!user){
+
+return false;
+
+}
+
+
+
+
+
+// protect owner
+
+if(
+
+user.role==="owner"
+
+){
+
+return false;
+
+}
+
+
+
+
+
+
+// admin cannot restore admins
+
+if(
+
+admin.role!=="owner"
+
+&&
+
+user.role==="admin"
+
+){
+
+return false;
+
+}
+
+
+
+
+
+
+
+delete user.disabled;
+
+
+delete user.disabledReason;
+
+
+delete user.disabledAt;
+
+
+delete user.disabledBy;
+
+
+
+
+
+
+user.restoredAt =
+
+new Date()
+.toISOString();
+
+
+
+user.restoredBy =
+
+admin.id;
+
+
+
+
+
+
+saveDemoUsers(
+users
+);
+
+
+
+return true;
+
+
+
+}
+
+/*
+=========================
  OWNER USER ACTIONS
 =========================
 */

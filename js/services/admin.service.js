@@ -151,10 +151,11 @@ await getAllReviewItems();
 
 
 
-
 let pending =
 items.filter(
+
 x=>x.status==="pending"
+
 ).length;
 
 
@@ -162,8 +163,114 @@ x=>x.status==="pending"
 
 let approved =
 items.filter(
+
 x=>x.status==="approved"
+
 ).length;
+
+
+
+
+
+
+
+let users=[];
+
+
+try{
+
+
+users =
+await getRecords(
+"users"
+);
+
+
+}
+
+catch(e){}
+
+
+
+
+
+
+
+
+let banned =
+
+users.filter(
+
+x=>x.disabled
+
+).length;
+
+
+
+
+
+
+
+
+let verifications=[];
+
+
+try{
+
+
+if(
+
+typeof getVerificationRequests==="function"
+
+){
+
+
+verifications =
+await getVerificationRequests();
+
+
+}
+
+
+}
+
+catch(e){}
+
+
+
+
+
+
+
+
+
+let audits=[];
+
+
+try{
+
+
+if(
+
+typeof getAudit==="function"
+
+){
+
+
+audits =
+getAudit();
+
+
+}
+
+
+}
+
+catch(e){}
+
+
+
+
 
 
 
@@ -173,31 +280,164 @@ x=>x.status==="approved"
 box.innerHTML = `
 
 
-<div class="card">
+<div
+class="card"
+onclick="renderAdminActions()">
 
-<h2>${pending}</h2>
 
-<p>Pending Review</p>
+<h2>
+
+${pending}
+
+</h2>
+
+
+<p>
+
+⏳ Pending Review
+
+</p>
+
 
 </div>
 
 
 
-<div class="card">
 
-<h2>${approved}</h2>
 
-<p>Published</p>
+
+
+
+<div
+class="card"
+onclick="renderAdminActions()">
+
+
+<h2>
+
+${approved}
+
+</h2>
+
+
+<p>
+
+📚 Published
+
+</p>
+
 
 </div>
 
 
 
-<div class="card">
 
-<h2>${items.length}</h2>
 
-<p>Total Content</p>
+
+
+
+<div
+class="card"
+onclick="renderUserManager()">
+
+
+<h2>
+
+${users.length}
+
+</h2>
+
+
+<p>
+
+👥 Users
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div
+class="card"
+onclick="renderVerificationCenter()">
+
+
+<h2>
+
+${verifications.length}
+
+</h2>
+
+
+<p>
+
+✔ Verification Requests
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div
+class="card"
+onclick="renderUserManager()">
+
+
+<h2>
+
+${banned}
+
+</h2>
+
+
+<p>
+
+🚫 Disabled Users
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div
+class="card"
+onclick="renderAuditLogs()">
+
+
+<h2>
+
+${audits.length}
+
+</h2>
+
+
+<p>
+
+🧾 Audit Events
+
+</p>
+
 
 </div>
 
