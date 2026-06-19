@@ -144,14 +144,13 @@ src
 
 if(
 src.includes("database.bundle.js")
+&&
+window.PharmoraDatabaseReady
 ){
 
 
-window.addEventListener(
-"pharmora-database-ready",
-()=>resolve(true),
-{once:true}
-);
+window.PharmoraDatabaseReady
+.then(()=>resolve(true));
 
 
 }

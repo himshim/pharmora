@@ -113,6 +113,53 @@ const file of DB_MODULES
 
 try{
 
+function loadScript(src){
+
+
+return new Promise(
+(resolve,reject)=>{
+
+
+const script =
+document.createElement("script");
+
+
+script.src = src;
+
+
+
+script.onload = ()=>{
+
+console.log(
+"DB ✓",
+src
+);
+
+resolve(true);
+
+};
+
+
+
+
+script.onerror = ()=>{
+
+
+reject(src);
+
+
+};
+
+
+
+
+document.head.appendChild(script);
+
+
+});
+
+
+}
 
 await loadScript(file);
 
@@ -175,4 +222,4 @@ new Event("pharmora-database-ready")
 
 
 
-loadDatabase();
+window.PharmoraDatabaseReady = loadDatabase();
