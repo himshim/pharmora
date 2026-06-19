@@ -6,21 +6,23 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta 
+name="viewport" 
+content="width=device-width, initial-scale=1.0">
 
 
 <title>
-Books
+Books | Pharmora
 </title>
 
 
-<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="/css/variables.css">
 
-<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="/css/base.css">
 
-<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="/css/components.css">
 
-<link rel="stylesheet" href="../css/responsive.css">
+<link rel="stylesheet" href="/css/responsive.css">
 
 
 </head>
@@ -30,12 +32,15 @@ Books
 <body>
 
 
+
 <div id="site-header"></div>
 
 
 
 
+
 <main>
+
 
 
 <section class="container section">
@@ -71,14 +76,18 @@ Subject-wise academic and professional references.
 
 <div 
 class="grid"
-id="books-list">
+id="books-list"
+data-render="content"
+data-type="books">
 
 
 </div>
 
 
 
+
 </section>
+
 
 
 </main>
@@ -86,20 +95,15 @@ id="books-list">
 
 
 
+
 <div id="site-footer"></div>
 
-<script src="/js/pharmora.js"></script>>
 
 
-<script>
 
 
-renderBooks(
-"books-list"
-);
+<script src="/js/pharmora.js"></script>
 
-
-</script>
 
 
 

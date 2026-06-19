@@ -16,13 +16,13 @@ Library | Pharmora
 </title>
 
 
-<link rel="icon" href="../assets/branding/favicon.svg">
+<link rel="icon" href="/assets/branding/favicon.svg">
 
 
-<link rel="stylesheet" href="../css/variables.css">
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/components.css">
-<link rel="stylesheet" href="../css/responsive.css">
+<link rel="stylesheet" href="/css/variables.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/responsive.css">
 
 
 <style>
@@ -52,12 +52,12 @@ margin-top:30px;
 }
 
 
+
 .filter-grid{
 
 display:grid;
 
 grid-template-columns:
-
 repeat(
 auto-fit,
 minmax(180px,1fr)
@@ -66,6 +66,7 @@ minmax(180px,1fr)
 gap:15px;
 
 }
+
 
 
 .filter-grid input,
@@ -84,6 +85,7 @@ border:1px solid var(--border);
 color:var(--text);
 
 }
+
 
 
 
@@ -139,9 +141,8 @@ margin-bottom:60px;
 
 </style>
 
+
 </head>
-
-
 
 
 
@@ -202,6 +203,8 @@ Discover notes, books, questions and teaching resources.
 
 
 
+
+
 <div class="search-box">
 
 
@@ -215,6 +218,7 @@ oninput="pharmoraSearch(this.value)"
 
 
 </div>
+
 
 
 
@@ -251,6 +255,7 @@ Explore Library
 
 
 
+
 <div class="grid">
 
 
@@ -262,13 +267,16 @@ onclick="filterType('resources')">
 
 <h2>📚 Resources</h2>
 
+
 <p>
 
 Notes, papers and files.
 
 </p>
 
+
 </div>
+
 
 
 
@@ -281,13 +289,16 @@ onclick="filterType('teaching-materials')">
 
 <h2>👨‍🏫 Teaching</h2>
 
+
 <p>
 
 Slides and teacher resources.
 
 </p>
 
+
 </div>
+
 
 
 
@@ -300,13 +311,16 @@ onclick="filterType('question-bank')">
 
 <h2>❓ Question Bank</h2>
 
+
 <p>
 
 MCQ, viva and exams.
 
 </p>
 
+
 </div>
+
 
 
 
@@ -319,13 +333,16 @@ onclick="filterType('assignments')">
 
 <h2>📝 Assignments</h2>
 
+
 <p>
 
 Practice and submissions.
 
 </p>
 
+
 </div>
+
 
 
 
@@ -344,7 +361,6 @@ Practice and submissions.
 
 
 <section class="container section">
-
 
 
 <div class="card filter-box">
@@ -366,6 +382,7 @@ Practice and submissions.
 
 
 <select id="filter-type">
+
 
 <option value="">
 
@@ -415,8 +432,8 @@ Assignments
 
 
 
-
 <select id="filter-course">
+
 
 <option value="">
 
@@ -424,8 +441,8 @@ All Courses
 
 </option>
 
-</select>
 
+</select>
 
 
 
@@ -433,14 +450,15 @@ All Courses
 
 <select id="filter-semester">
 
+
 <option value="">
 
 All Semesters
 
 </option>
 
-</select>
 
+</select>
 
 
 
@@ -448,11 +466,13 @@ All Semesters
 
 <select id="filter-subject">
 
+
 <option value="">
 
 All Subjects
 
 </option>
+
 
 </select>
 
@@ -460,7 +480,9 @@ All Subjects
 
 
 
+
 <select id="filter-difficulty">
+
 
 <option value="">
 
@@ -490,6 +512,7 @@ Advanced
 </option>
 
 
+
 </select>
 
 
@@ -508,6 +531,7 @@ placeholder="Tags"
 
 
 </div>
+
 
 
 <br>
@@ -554,19 +578,28 @@ Featured Knowledge
 
 
 
+
 <div class="library-block">
+
 
 <h3>📚 Resources</h3>
 
+
 <br>
+
 
 <div
 class="grid"
-id="resources-list">
+id="resources-list"
+data-render="content"
+data-type="resources">
+
 
 </div>
 
+
 </div>
+
 
 
 
@@ -574,18 +607,26 @@ id="resources-list">
 
 
 <div class="library-block">
+
 
 <h3>📖 Books</h3>
 
+
 <br>
+
 
 <div
 class="grid"
-id="books-list">
+id="books-list"
+data-render="content"
+data-type="books">
+
 
 </div>
 
+
 </div>
+
 
 
 
@@ -593,18 +634,26 @@ id="books-list">
 
 
 <div class="library-block">
+
 
 <h3>👨‍🏫 Teaching Materials</h3>
 
+
 <br>
+
 
 <div
 class="grid"
-id="teaching-list">
+id="teaching-list"
+data-render="content"
+data-type="teaching-materials">
+
 
 </div>
 
+
 </div>
+
 
 
 
@@ -613,18 +662,27 @@ id="teaching-list">
 
 
 <div class="library-block">
+
 
 <h3>❓ Question Bank</h3>
 
+
 <br>
+
 
 <div
 class="grid"
-id="questions-list">
+id="questions-list"
+data-render="content"
+data-type="question-bank">
+
 
 </div>
 
+
 </div>
+
+
 
 
 
@@ -633,15 +691,22 @@ id="questions-list">
 
 <div class="library-block">
 
+
 <h3>📝 Assignments</h3>
+
 
 <br>
 
+
 <div
 class="grid"
-id="assignments-list">
+id="assignments-list"
+data-render="content"
+data-type="assignments">
+
 
 </div>
+
 
 </div>
 
@@ -670,6 +735,7 @@ id="assignments-list">
 </h2>
 
 
+
 <p>
 
 Help improve pharmacy education.
@@ -677,12 +743,14 @@ Help improve pharmacy education.
 </p>
 
 
+
 <br>
+
 
 
 <a
 
-href="../contribute/"
+href="/contribute/"
 
 class="btn btn-primary">
 
@@ -691,6 +759,7 @@ Add Contribution
 
 
 </a>
+
 
 
 </div>
@@ -707,19 +776,14 @@ Add Contribution
 
 
 
+
 <div id="site-footer"></div>
 
 
 
 
 
-
 <script src="/js/pharmora.js"></script>
-
-
-
-
-
 
 
 
@@ -732,8 +796,22 @@ async function loadFilters(){
 
 
 
+if(
+typeof getRecords !== "function"
+){
+
+return;
+
+}
+
+
+
+
 let courses =
-await getRecords("courses");
+await getRecords(
+"courses"
+);
+
 
 
 
@@ -741,6 +819,7 @@ let courseBox =
 document.getElementById(
 "filter-course"
 );
+
 
 
 
@@ -769,6 +848,8 @@ ${c.name}
 
 
 
+
+
 function filterType(type){
 
 
@@ -783,7 +864,14 @@ document
 
 
 
+
+if(
+typeof applyFilters==="function"
+){
+
 applyFilters();
+
+}
 
 
 
@@ -795,44 +883,19 @@ applyFilters();
 
 
 
+window.addEventListener(
 
-renderContent(
-"resources",
-"resources-list"
-);
+"pharmora-ready",
 
-
-
-renderContent(
-"books",
-"books-list"
-);
-
-
-
-renderContent(
-"teaching-materials",
-"teaching-list"
-);
-
-
-
-renderContent(
-"question-bank",
-"questions-list"
-);
-
-
-
-renderContent(
-"assignments",
-"assignments-list"
-);
-
-
+()=>{
 
 
 loadFilters();
+
+
+}
+
+);
 
 
 
@@ -843,5 +906,6 @@ loadFilters();
 
 
 </body>
+
 
 </html>
