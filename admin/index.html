@@ -1164,46 +1164,33 @@ Loading...
 
 
 
+<!-- CORE -->
+<script src="../js/app.js"></script>
+
+
 <script>
-
-
-fetch("../config/site.json")
-
+fetch(appPath("config/site.json"))
 .then(r=>r.json())
-
 .then(site=>{
 
-
 document
-
-.getElementById(
-
-"admin-brand"
-
-)
-
+.getElementById("admin-brand")
 .innerHTML =
-
 "⚕ " + site.name;
 
-
-});
-
-
+})
+.catch(()=>{});
 </script>
 
 
 
+<!-- CORE SERVICES -->
 
-
-
-
-
-
+<script src="../js/services/database.bundle.js"></script>
 
 <script src="../js/services/auth.service.js"></script>
 
-<script src="../js/services/database.service.js"></script>
+<script src="../js/services/storage.service.js"></script>
 
 <script src="../js/services/analytics.service.js"></script>
 
@@ -1218,132 +1205,81 @@ document
 <script src="../js/services/permission.service.js"></script>
 
 
+
+<!-- ADMIN SERVICES -->
+
 <script src="../js/services/admin.service.js"></script>
 
-<script src="../js/components/admin.dashboard.js"></script>
+<script src="../js/services/admin.dashboard.js"></script>
 
-<script src="../js/components/admin.review.js"></script>
+<script src="../js/services/admin.review.js"></script>
 
-<script src="../js/components/admin.reports.js"></script>
+<script src="../js/services/admin.reports.js"></script>
 
-<script src="../js/components/admin.trash.js"></script>
+<script src="../js/services/admin.trash.js"></script>
 
-<script src="../js/services/verification.service.js"></script>
+<script src="../js/services/admin.users.js"></script>
 
-<script src="../js/components/admin.verification.js"></script>
+<script src="../js/services/admin.audit.js"></script>
 
-<script src="../js/components/admin.audit.js"></script>
-
-<script src="../js/components/admin.users.js"></script>
+<script src="../js/services/admin.verification.js"></script>
 
 <script src="../js/services/admin-crud.service.js"></script>
 
-<script src="../js/services/admin-contributor.service.js"></script>
+<script src="../js/services/admin.contributor.service.js"></script>
 
 
+<script src="../js/services/verification.service.js"></script>
 
-<script src="../js/app.js"></script>
 
 
 <script>
 
 
-
-
 async function startAdmin(){
 
 
-
-
-
-if(
-
-typeof requirePermission==="function"
-
-){
-
-
+if(typeof requirePermission==="function"){
 
 let allowed =
-
 await requirePermission(
-
 "content.review"
-
 );
 
 
-
-
-
 if(!allowed){
-
-
 return;
+}
 
 
 }
 
 
 
-}
-
-
-
-
-
-
-
-
-
-
-if(
-
-typeof applyPermissions==="function"
-
-){
-
-
+if(typeof applyPermissions==="function"){
 
 await applyPermissions();
 
-
-
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+if(typeof renderAdminStats==="function"){
 
 renderAdminStats();
 
-
-renderAdminHome();
-
-
-
-
-
 }
 
 
 
+if(typeof renderAdminHome==="function"){
 
+renderAdminHome();
+
+}
+
+
+}
 
 
 
@@ -1352,23 +1288,14 @@ renderAdminHome();
 function loadAdminUser(){
 
 
-
-if(
-
-typeof currentUser!=="function"
-
-){
-
+if(typeof currentUser!=="function"){
 return;
-
 }
-
 
 
 
 let user =
 currentUser();
-
 
 
 
@@ -1379,12 +1306,7 @@ document.getElementById(
 
 
 
-
-if(
-
-box && user
-
-){
+if(box && user){
 
 
 box.innerHTML =
@@ -1411,35 +1333,26 @@ user.role
 }
 
 
-
 }
 
 
 
 
-loadAdminUser();
 
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+loadAdminUser();
 
 startAdmin();
 
+}
 
-
+);
 
 
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </body>
 

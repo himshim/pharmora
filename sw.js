@@ -1,59 +1,45 @@
 /*
  Pharmora Service Worker
- Production Ready
- Network + Cache Strategy
+ Network First + Offline Support
 */
 
 
-
-
-
 const CACHE_NAME =
-"pharmora-v2";
+"pharmora-v3";
 
 
+const OFFLINE_PAGE =
+"./offline.html";
 
 
 
 const CORE_ASSETS = [
 
-
 "./",
 
 "./index.html",
 
-"./offline.html",
-
+OFFLINE_PAGE,
 
 
 "./css/variables.css",
-
 "./css/base.css",
-
 "./css/components.css",
-
 "./css/responsive.css",
 
 
-
 "./js/app.js",
-
 "./js/search.js",
 
 
-
 "./config/site.json",
-
 "./config/navigation.json",
-
 
 
 "./assets/branding/logo.svg",
 
 
-
 "./manifest.json"
-
 
 ];
 
@@ -61,85 +47,54 @@ const CORE_ASSETS = [
 
 
 
-
-
-
-
-/* =========================
-   INSTALL
-========================= */
+/* =====================
+ INSTALL
+===================== */
 
 
 self.addEventListener(
-
 "install",
-
 event=>{
-
 
 
 event.waitUntil(
 
-
-
 caches
 
-.open(
-
-CACHE_NAME
-
-)
+.open(CACHE_NAME)
 
 .then(cache=>{
 
-
 return cache.addAll(
-
 CORE_ASSETS
-
 );
-
 
 })
 
-
-
 );
-
 
 
 self.skipWaiting();
 
 
-
-}
-
-);
+});
 
 
 
 
 
 
-
-
-
-
-/* =========================
-   ACTIVATE
-========================= */
+/* =====================
+ ACTIVATE
+===================== */
 
 
 self.addEventListener(
-
 "activate",
-
 event=>{
 
 
-
 event.waitUntil(
-
 
 
 caches.keys()
@@ -147,9 +102,7 @@ caches.keys()
 .then(keys=>{
 
 
-
 return Promise.all(
-
 
 
 keys
@@ -159,28 +112,20 @@ keys
 .map(key=>caches.delete(key))
 
 
-
 );
-
 
 
 })
 
 
-
 );
-
-
 
 
 
 self.clients.claim();
 
 
-
-}
-
-);
+});
 
 
 
@@ -189,21 +134,14 @@ self.clients.claim();
 
 
 
-
-
-
-/* FETCH */
+/* =====================
+ FETCH
+===================== */
 
 
 self.addEventListener(
 "fetch",
 event=>{
-
-
-/*
-Ignore unsupported requests
-(chrome extensions etc.)
-*/
 
 
 if(
@@ -212,9 +150,7 @@ if(
 
 ){
 
-
 return;
-
 
 }
 
@@ -231,21 +167,34 @@ fetch(event.request)
 .then(response=>{
 
 
+/*
+Only cache successful
+same-origin files
+*/
+
+
+if(
+
+response.ok &&
+
+new URL(event.request.url).origin
+===
+location.origin
+
+){
+
+
 
 let clone =
 response.clone();
 
 
 
+caches
 
-caches.open(
-
-CACHE_NAME
-
-)
+.open(CACHE_NAME)
 
 .then(cache=>{
-
 
 
 cache.put(
@@ -259,9 +208,10 @@ clone
 .catch(()=>{});
 
 
-
 });
 
+
+}
 
 
 
@@ -274,35 +224,29 @@ return response;
 
 
 
-
-
 .catch(()=>{
 
 
+return caches
 
-return caches.match(
-
-event.request
-
-)
+.match(event.request)
 
 
 .then(cached=>{
 
 
+return (
 
-return cached ||
+cached ||
 
 caches.match(
-
 OFFLINE_PAGE
+)
 
 );
 
 
-
 });
-
 
 
 })

@@ -1,132 +1,10 @@
 /*
- Pharmora Database Adapter
- Demo + Cloud Ready
+ Pharmora Database Service Bridge
+
+ Compatibility layer for old services
+
+ Uses Pharmora Data Engine v2
 */
-
-
-
-
-
-let databaseConfig=null;
-
-let dbCache={};
-
-
-
-
-
-
-
-
-
-async function loadDatabaseConfig(){
-
-
-
-if(databaseConfig){
-
-return databaseConfig;
-
-}
-
-
-
-
-
-try{
-
-
-
-databaseConfig =
-await fetch(
-
-appPath(
-"config/database.json"
-)
-
-)
-.then(r=>r.json());
-
-
-
-}
-
-
-
-
-catch(error){
-
-
-
-databaseConfig={
-
-provider:"demo"
-
-};
-
-
-
-}
-
-
-
-
-
-return databaseConfig;
-
-
-
-}
-
-
-
-
-
-
-
-
-
-function resolveCollection(collection){
-
-
-
-
-
-
-if(
-
-databaseConfig
-
-&&
-
-databaseConfig.collections
-
-&&
-
-databaseConfig.collections[collection]
-
-){
-
-
-
-return databaseConfig.collections[collection];
-
-
-
-}
-
-
-
-
-
-
-return collection;
-
-
-
-}
-
-
 
 
 
@@ -136,44 +14,28 @@ return collection;
 
 async function createRecord(
 collection,
-data
+data={}
 ){
 
 
 
+return PharmoraDatabase.create({
 
 
+...data,
 
-const config =
-await loadDatabaseConfig();
-
-
-
-
-collection =
-resolveCollection(
-collection
-);
-
-
-
-
-
-
-
-
-
-if(config.provider==="demo"){
-
-
-
-return demoCreate(
 
 collection,
 
-data
 
-);
+type:
+
+data.type ||
+
+collection
+
+
+});
 
 
 
@@ -187,144 +49,35 @@ data
 
 
 
-if(
 
-config.provider==="supabase"
-
-&&
-
-typeof supabaseCreate==="function"
-
+async function getRecords(
+collection,
+filters={}
 ){
 
 
 
-return supabaseCreate(
+return PharmoraDatabase.find({
+
+
+filters:{
+
 
 collection,
 
-data
 
-);
-
+...filters
 
 
 }
 
 
-
-
-
-
-
-return null;
+});
 
 
 
 }
 
-
-
-
-
-
-
-
-
-async function getRecords(collection){
-
-
-
-
-
-
-const config =
-await loadDatabaseConfig();
-
-
-
-
-
-
-collection =
-resolveCollection(
-collection
-);
-
-
-
-
-
-
-
-
-
-if(config.provider==="demo"){
-
-
-
-
-
-return getLocalCollection(
-
-collection
-
-)
-
-.filter(
-
-item=>item.deleted!==true
-
-);
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-if(
-
-config.provider==="supabase"
-
-&&
-
-typeof supabaseGet==="function"
-
-){
-
-
-
-return supabaseGet(
-
-collection
-
-);
-
-
-
-}
-
-
-
-
-
-
-
-return [];
-
-
-
-}
 
 
 
@@ -342,179 +95,7 @@ updates
 
 
 
-
-
-
-const config =
-await loadDatabaseConfig();
-
-
-
-
-
-
-collection =
-resolveCollection(
-collection
-);
-
-
-
-
-
-
-
-
-
-if(config.provider==="demo"){
-
-
-
-
-
-
-let items =
-getLocalCollection(
-collection
-);
-
-
-
-
-
-
-
-
-let updated=null;
-
-
-
-
-
-
-
-
-
-items =
-
-items.map(item=>{
-
-
-
-
-
-
-if(item.id===id){
-
-
-
-
-
-updated={
-
-
-
-...item,
-
-
-...updates,
-
-
-
-updatedAt:
-
-new Date()
-.toISOString()
-
-
-
-};
-
-
-
-
-
-
-return updated;
-
-
-
-
-
-}
-
-
-
-
-
-
-
-
-return item;
-
-
-
-
-
-
-});
-
-
-
-
-
-
-
-
-
-
-saveLocalCollection(
-
-collection,
-
-items
-
-);
-
-
-
-
-
-
-
-
-return updated;
-
-
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-if(
-
-config.provider==="supabase"
-
-&&
-
-typeof supabaseUpdate==="function"
-
-){
-
-
-
-return supabaseUpdate(
-
-collection,
+return PharmoraDatabase.update(
 
 id,
 
@@ -533,18 +114,6 @@ updates
 
 
 
-return null;
-
-
-
-}
-
-
-
-
-
-
-
 
 
 async function deleteRecord(
@@ -554,36 +123,15 @@ id
 
 
 
+return PharmoraDatabase.remove(
 
-
-
-return updateRecord(
-
-collection,
-
-id,
-
-{
-
-
-deleted:true,
-
-
-
-deletedAt:
-
-new Date()
-.toISOString()
-
-
-}
+id
 
 );
 
 
 
 }
-
 
 
 
@@ -601,29 +149,19 @@ id
 
 
 
-
-
-
-return updateRecord(
-
-collection,
+return PharmoraDatabase.update(
 
 id,
 
 {
 
+metadata:{
 
 deleted:false,
 
+deletedAt:null
 
-deletedAt:null,
-
-
-restoredAt:
-
-new Date()
-.toISOString()
-
+}
 
 }
 
@@ -641,306 +179,24 @@ new Date()
 
 
 
-/*
 
- LOCAL STORAGE ENGINE
+async function exportDatabase(){
 
-*/
 
 
+let data =
+await PharmoraDatabase.find();
 
 
 
+return PharmoraDatabase.backup({
 
-
-function getLocalCollection(collection){
-
-
-
-
-
-
-try{
-
-
-
-
-
-return JSON.parse(
-
-localStorage.getItem(
-
-"db_" + collection
-
-)
-
-||
-
-"[]"
-
-);
-
-
-
-
-
-}
-
-
-
-
-catch(error){
-
-
-
-
-
-return [];
-
-
-
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-
-function saveLocalCollection(
-collection,
-items
-){
-
-
-
-
-
-
-localStorage.setItem(
-
-"db_" + collection,
-
-JSON.stringify(
-
-items
-
-)
-
-);
-
-
-
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-async function demoCreate(
-collection,
-data
-){
-
-
-
-
-
-
-let items =
-getLocalCollection(
-collection
-);
-
-
-
-
-
-
-
-let record={
-
-
-
-
-
-
-id:
-
-crypto.randomUUID(),
-
-
-
-
-
-
-...data,
-
-
-
-
-
-
-
-
-createdAt:
-
-new Date()
-.toISOString(),
-
-
-
-
-
-
-
-
-updatedAt:
-
-new Date()
-.toISOString()
-
-
-
-
-
-
-
-
-};
-
-
-
-
-
-
-
-
-
-items.push(
-record
-);
-
-
-
-
-
-
-
-
-saveLocalCollection(
-
-collection,
-
-items
-
-);
-
-
-
-
-
-
-
-
-
-return record;
-
-
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-function exportDatabase(){
-
-
-
-
-
-
-let backup={};
-
-
-
-
-
-
-
-Object.keys(
-
-localStorage
-
-)
-
-.filter(
-
-key=>key.startsWith("db_")
-
-)
-
-.forEach(key=>{
-
-
-
-
-
-
-backup[key]=
-
-JSON.parse(
-
-localStorage.getItem(key)
-
-);
-
-
-
-
-
+entities:data
 
 });
 
 
 
-
-
-
-
-
-return backup;
-
-
-
-
-
 }
 
 
@@ -952,12 +208,20 @@ return backup;
 
 
 
-function clearDatabaseCache(){
+window.DatabaseService={
 
 
+createRecord,
 
-dbCache={};
+getRecords,
+
+updateRecord,
+
+deleteRecord,
+
+restoreRecord,
+
+exportDatabase
 
 
-
-}
+};
