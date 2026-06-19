@@ -781,9 +781,23 @@ window.addEventListener(
 "pharmora-ready",
 ()=>{
 
+window.addEventListener(
+"pharmora-ready",
+()=>{
+
+if(
+typeof renderContent==="function"
+){
+
 renderContent(
 "tools",
 "tools-list"
+);
+
+}
+
+}
+
 );
 
 });

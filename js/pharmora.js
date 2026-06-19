@@ -244,7 +244,65 @@ new Event(
 );
 
 
+autoRender();
+function autoRender(){
 
+
+
+document
+.querySelectorAll("[data-render]")
+.forEach(el=>{
+
+
+
+let mode =
+el.dataset.render;
+
+
+
+if(
+mode==="content"
+&&
+typeof renderContent==="function"
+){
+
+
+
+renderContent(
+el.dataset.type,
+el.id
+);
+
+
+
+}
+
+
+
+
+if(
+mode==="forum"
+&&
+typeof renderForum==="function"
+){
+
+
+
+renderForum(
+el.id
+);
+
+
+
+}
+
+
+
+});
+
+
+
+}
 
 console.log(
 
