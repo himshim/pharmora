@@ -489,7 +489,7 @@ id="learning-materials">
 
 
 
-<<script src="/js/pharmora.js"></script>
+<script src="/js/pharmora.js"></script>
 
 
 
@@ -504,9 +504,19 @@ id="learning-materials">
 
 <script>
 
+window.addEventListener(
+"pharmora-ready",
+()=>{
+
+if(
+typeof loadLearn==="function"
+){
 
 loadLearn();
 
+}
+
+});
 
 </script>
 
