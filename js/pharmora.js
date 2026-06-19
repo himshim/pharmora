@@ -141,7 +141,30 @@ src
 );
 
 
+
+if(
+src.includes("database.bundle.js")
+){
+
+
+window.addEventListener(
+"pharmora-database-ready",
+()=>resolve(true),
+{once:true}
+);
+
+
+}
+
+
+else{
+
+
 resolve(true);
+
+
+}
+
 
 
 };

@@ -101,36 +101,74 @@ const DB_MODULES = [
 
 async function loadDatabase(){
 
+
+let failed = [];
+
+
+
 for(
-const src of DB_MODULES
+const file of DB_MODULES
 ){
 
-await new Promise((resolve,reject)=>{
 
-let s =
-document.createElement("script");
+try{
 
 
-s.src=src;
+await loadScript(file);
 
-
-s.onload=resolve;
-
-
-s.onerror=reject;
-
-
-document.head.appendChild(s);
-
-
-});
 
 }
 
 
-console.log(
-"Database modules loaded"
+catch(error){
+
+
+
+failed.push(file);
+
+
+console.warn(
+"⚠ Database module skipped:",
+file
 );
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+if(failed.length){
+
+
+console.warn(
+"Database loaded with missing modules:",
+failed
+);
+
+
+}
+
+
+
+console.log(
+"✅ Pharmora Database Bundle Loaded"
+);
+
+
+
+window.dispatchEvent(
+
+new Event("pharmora-database-ready")
+
+);
+
 
 
 }
