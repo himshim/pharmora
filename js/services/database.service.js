@@ -210,7 +210,6 @@ entities:data
 
 window.DatabaseService={
 
-
 createRecord,
 
 getRecords,
@@ -223,5 +222,32 @@ restoreRecord,
 
 exportDatabase
 
-
 };
+
+
+
+
+// Legacy global support
+
+window.createRecord =
+createRecord;
+
+
+window.getRecords =
+getRecords;
+
+
+window.updateRecord =
+updateRecord;
+
+
+window.deleteRecord =
+deleteRecord;
+
+
+window.restoreRecord =
+restoreRecord;
+
+
+window.exportDatabase =
+exportDatabase;
