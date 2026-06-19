@@ -36,7 +36,23 @@ const PHARMORA_MODULES = [
 
 "/js/services/storage.service.js",
 
+
+
+/* Content engines */
+
 "/js/services/content.service.js",
+
+"/js/services/books.service.js",
+
+"/js/services/events.service.js",
+
+"/js/services/resources.service.js",
+
+"/js/services/learn.service.js",
+
+
+
+/* Platform */
 
 "/js/services/features.service.js",
 
@@ -244,9 +260,7 @@ new Event(
 );
 
 
-autoRender();
 function autoRender(){
-
 
 
 document
@@ -254,26 +268,36 @@ document
 .forEach(el=>{
 
 
-
-let mode =
+let type =
 el.dataset.render;
 
 
 
 if(
-mode==="content"
+type==="content"
 &&
 typeof renderContent==="function"
 ){
-
-
 
 renderContent(
 el.dataset.type,
 el.id
 );
 
+}
 
+
+
+
+if(
+type==="books"
+&&
+typeof renderBooks==="function"
+){
+
+renderBooks(
+el.id
+);
 
 }
 
@@ -281,25 +305,35 @@ el.id
 
 
 if(
-mode==="forum"
+type==="events"
+&&
+typeof renderEvents==="function"
+){
+
+renderEvents(
+el.id
+);
+
+}
+
+
+
+
+if(
+type==="forum"
 &&
 typeof renderForum==="function"
 ){
 
-
-
 renderForum(
 el.id
 );
-
-
 
 }
 
 
 
 });
-
 
 
 }
