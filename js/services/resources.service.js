@@ -246,3 +246,15 @@ Open
 
 
 }
+
+/*
+ Export Service
+*/
+
+window.PharmoraResources = {
+
+getResources,
+
+renderResources
+
+};

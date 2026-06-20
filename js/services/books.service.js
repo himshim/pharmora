@@ -187,3 +187,15 @@ View Book
 
 
 }
+
+/*
+ Export Service
+*/
+
+window.PharmoraBooks = {
+
+getBooks,
+
+renderBooks
+
+};
