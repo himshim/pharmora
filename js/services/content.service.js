@@ -8,25 +8,42 @@ const contentNameCache = {};
 async function getPublished(collection){
 
 
-let data =
+let records =
 await getRecords(collection);
 
 
-return data.filter(x=>{
+
+return records.filter(item=>{
+
+
+let published =
+
+item.lifecycle?.status === "published";
+
+
+let approved =
+
+item.moderation?.status === "approved";
+
+
+
+let active =
+
+item.deleted !== true;
+
 
 
 return (
 
-x.lifecycle?.status === "published"
+published
 
 &&
 
-x.moderation?.status === "approved"
+approved
 
 &&
 
-x.deleted !== true
-
+active
 
 );
 

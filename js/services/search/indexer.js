@@ -40,7 +40,7 @@ for(let item of data){
 
 
 /*
- Visibility check
+ Public Search Visibility
  Entity v2 + legacy
 */
 
@@ -51,16 +51,18 @@ item.lifecycle
 
 
 if(
-![
-"published",
-"draft"
-]
-.includes(
-item.lifecycle.status
-)
+
+item.lifecycle.status !== "published"
+
+||
+
+item.moderation?.status !== "approved"
+
 ){
 
+
 continue;
+
 
 }
 
@@ -69,11 +71,14 @@ continue;
 
 
 else if(
-item.status &&
+item.status
+){
+
+
+if(
 ![
 "approved",
-"active",
-"draft"
+"active"
 ]
 .includes(
 item.status
@@ -82,6 +87,9 @@ item.status
 
 
 continue;
+
+
+}
 
 
 }
