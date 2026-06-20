@@ -247,3 +247,42 @@ Open
 
 
 }
+
+/*
+ Export Service
+*/
+
+
+window.PharmoraResources = {
+
+
+getResources:function(){
+
+
+return getResources();
+
+
+},
+
+
+
+
+
+renderResources:function(id){
+
+
+return renderResources(id);
+
+
+}
+
+
+};
+
+
+
+
+
+console.log(
+"✓ PharmoraResources ready"
+);
