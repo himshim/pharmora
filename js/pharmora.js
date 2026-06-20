@@ -221,33 +221,9 @@ const MODULES={
 
 const BACKGROUND=[
 
+"/dist/pharmora.platform.js",
 
-"/js/services/auth.service.js",
-
-"/js/services/storage.service.js",
-
-"/js/services/features.service.js",
-
-"/js/services/analytics.service.js",
-
-"/js/services/activity.service.js",
-
-"/js/services/notification.service.js",
-
-"/js/services/user-notification.service.js",
-
-"/js/services/profile.service.js",
-
-"/js/services/reputation.service.js",
-
-"/js/services/verification.service.js",
-
-"/js/services/permission.service.js",
-
-"/js/services/version.service.js",
-
-"/dist/pharmora.search.js",
-
+"/dist/pharmora.search.js"
 
 ];
 
@@ -255,7 +231,18 @@ const BACKGROUND=[
 
 
 
+const USER=[
 
+"/dist/pharmora.user.js"
+
+];
+
+
+const ADMIN=[
+
+"/dist/pharmora.admin.js"
+
+];
 
 
 
@@ -477,19 +464,46 @@ console.log(
 
 
 
-setTimeout(()=>{
+setTimeout(async()=>{
 
 
-loadMany(
+await loadMany(
 BACKGROUND
 );
 
 
-},800);
 
 
+// logged users only
+
+if(
+localStorage.getItem("pharmora_user")
+){
+
+await loadMany(
+USER
+);
 
 }
+
+
+
+
+// admin pages only
+
+if(
+location.pathname
+.startsWith("/admin")
+){
+
+await loadMany(
+ADMIN
+);
+
+}
+
+
+},800);
 
 
 
