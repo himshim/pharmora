@@ -15,17 +15,16 @@ publish="."
 
 
 # =========================
-# CLEAN 404 HANDLING
+# SPA ROUTING
 # =========================
-
 
 [[redirects]]
 
 from = "/*"
 
-to = "/404.html"
+to = "/index.html"
 
-status = 404
+status = 200
 
 
 
