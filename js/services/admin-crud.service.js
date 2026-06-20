@@ -2127,8 +2127,6 @@ old
 
 await updateRecord(
 
-activeCollection,
-
 id,
 
 data
@@ -2955,8 +2953,6 @@ return;
 
 
 await updateRecord(
-
-version.collection,
 
 version.contentId,
 
