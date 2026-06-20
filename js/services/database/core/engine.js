@@ -1,6 +1,8 @@
 /*
  Pharmora Data Engine
- Core Engine v2
+ Core Engine v2.1
+
+ Provider controlled persistence
 */
 
 
@@ -34,17 +36,24 @@ options={}
 
 
 let entity =
+
 PharmoraEntity.create(
+
 data,
+
 options
+
 );
 
 
 
 
 
+
 return PharmoraProviders
+
 .get()
+
 .create(
 
 collectionFor(entity),
@@ -73,13 +82,19 @@ query={}
 
 
 let records =
+
 await PharmoraProviders
+
 .get()
+
 .find(
 
-"entities"
+"entities",
+
+query
 
 );
+
 
 
 
@@ -107,43 +122,42 @@ query
 
 async function update(
 id,
-updates,
+updates={},
 user=null
 ){
 
 
 
+/*
+ Provider owns:
+ - merging
+ - timestamps
+ - persistence
+
+ because provider has existing entity
+*/
+
+
 return PharmoraProviders
+
 .get()
+
 .update(
 
 "entities",
 
 id,
 
-{
-
-...updates,
-
-
-metadata:
-
-PharmoraMetadata.update(
-
-updates.metadata || {},
+updates,
 
 user
-
-)
-
-
-}
 
 );
 
 
 
 }
+
 
 
 
@@ -154,31 +168,20 @@ user
 
 
 async function remove(
-id,user=null
-){
-
-
-
-return update(
-
-id,
-
+id,user=null)
 {
 
-metadata:{
 
-deleted:true,
 
-deletedAt:
+return PharmoraProviders
 
-new Date()
-.toISOString(),
+.get()
 
-deletedBy:user
+.remove(
 
-}
+"entities",
 
-},
+id,
 
 user
 
@@ -187,6 +190,8 @@ user
 
 
 }
+
+
 
 
 
