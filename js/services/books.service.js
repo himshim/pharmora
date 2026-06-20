@@ -1,9 +1,52 @@
 /*
- Books Service
+ Books Service v2
+
+ Database-first
+ JSON fallback
 */
 
 
 async function getBooks(){
+
+
+
+try{
+
+
+let books =
+await getRecords("books");
+
+
+
+if(
+books &&
+books.length
+){
+
+
+return books;
+
+
+}
+
+
+
+}
+
+catch(e){
+
+
+console.warn(
+"Books database unavailable, using JSON fallback"
+);
+
+
+}
+
+
+
+
+
 
 
 const response =
@@ -12,10 +55,14 @@ await fetch(
 );
 
 
+
 return await response.json();
 
 
+
 }
+
+
 
 
 
@@ -26,8 +73,10 @@ return await response.json();
 async function renderBooks(id){
 
 
+
 const root =
 document.getElementById(id);
+
 
 
 if(!root){
@@ -38,6 +87,8 @@ return;
 
 
 
+
+
 const books =
 await getBooks();
 
@@ -45,8 +96,11 @@ await getBooks();
 
 
 
+
 root.innerHTML =
+
 books.map(book=>`
+
 
 
 <div class="card">
@@ -54,7 +108,7 @@ books.map(book=>`
 
 <h2>
 
-📚 ${book.title}
+📚 ${book.title || ""}
 
 </h2>
 
@@ -62,7 +116,7 @@ books.map(book=>`
 
 <p>
 
-${book.description}
+${book.description || ""}
 
 </p>
 
@@ -74,7 +128,7 @@ ${book.description}
 
 <div class="badge">
 
-${book.category}
+${book.category || ""}
 
 </div>
 
@@ -87,7 +141,7 @@ ${book.category}
 <p>
 
 Author:
-${book.author}
+${book.author || "Unknown"}
 
 </p>
 
@@ -95,15 +149,19 @@ ${book.author}
 
 
 ${
-book.links.buy
+book.links?.buy
+
 ?
+
 `
 
 <br>
 
-<a 
+<a
 class="btn btn-primary"
+
 href="${book.links.buy}"
+
 target="_blank">
 
 View Book
@@ -111,13 +169,17 @@ View Book
 </a>
 
 `
+
 :
+
 ""
+
 }
 
 
 
 </div>
+
 
 
 `).join("");

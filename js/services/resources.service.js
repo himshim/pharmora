@@ -1,9 +1,54 @@
 /*
- Resource Service
+ Resource Service v2
+
+ Database-first
+ JSON fallback
 */
 
 
+
 async function getResources(){
+
+
+
+try{
+
+
+let resources =
+await getRecords("resources");
+
+
+
+if(
+resources &&
+resources.length
+){
+
+
+return resources;
+
+
+}
+
+
+
+}
+
+catch(e){
+
+
+
+console.warn(
+"Resources database unavailable, using JSON fallback"
+);
+
+
+
+}
+
+
+
+
 
 
 return await fetch(
@@ -12,7 +57,11 @@ return await fetch(
 .then(r=>r.json());
 
 
+
 }
+
+
+
 
 
 
@@ -36,6 +85,7 @@ return;
 
 
 
+
 const resources =
 await getResources();
 
@@ -43,10 +93,30 @@ await getResources();
 
 
 
+
 const approved =
-resources.filter(
-r=>r.status==="approved"
+
+resources.filter(r=>{
+
+
+return (
+
+r.status==="approved"
+
+||
+
+r.lifecycle?.status==="published"
+
+||
+
+!r.status
+
 );
+
+
+});
+
+
 
 
 
@@ -54,7 +124,9 @@ r=>r.status==="approved"
 
 
 root.innerHTML =
+
 approved.map(r=>`
+
 
 
 <div class="card">
@@ -62,15 +134,16 @@ approved.map(r=>`
 
 <h2>
 
-📄 ${r.title}
+📄 ${r.title || ""}
 
 </h2>
 
 
 
+
 <p>
 
-${r.description}
+${r.description || ""}
 
 </p>
 
@@ -83,9 +156,10 @@ ${r.description}
 
 <div class="badge">
 
-${r.subject}
+${r.subject || ""}
 
 </div>
+
 
 
 
@@ -95,31 +169,40 @@ ${r.subject}
 
 
 
+
 <p>
 
-${r.course}
+${r.course || ""}
 •
-${r.semester}
+${r.semester || ""}
 •
-${r.unit}
+${r.unit || ""}
 
 </p>
 
 
 
 
+
+
 <p>
 
-👤 ${r.author.name}
+👤 ${
+r.author?.name ||
+r.author ||
+"Unknown"
+}
 
 </p>
+
+
 
 
 
 
 
 ${
-r.file.url
+r.file?.url
 
 ?
 
@@ -128,6 +211,7 @@ r.file.url
 <br>
 
 <a
+
 class="btn btn-primary"
 
 onclick="
@@ -156,8 +240,8 @@ Open
 </div>
 
 
-`).join("");
 
+`).join("");
 
 
 
