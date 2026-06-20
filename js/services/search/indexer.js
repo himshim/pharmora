@@ -39,17 +39,50 @@ for(let item of data){
 
 
 
+/*
+ Visibility check
+ Entity v2 + legacy
+*/
+
+
 if(
+item.lifecycle
+){
 
-item.status &&
 
-!["approved","active"]
-
-.includes(item.status)
-
+if(
+![
+"published",
+"draft"
+]
+.includes(
+item.lifecycle.status
+)
 ){
 
 continue;
+
+}
+
+
+}
+
+
+else if(
+item.status &&
+![
+"approved",
+"active",
+"draft"
+]
+.includes(
+item.status
+)
+){
+
+
+continue;
+
 
 }
 
@@ -84,6 +117,12 @@ item.unit
 
 
 
+let data =
+item.data || {};
+
+
+
+
 let keywords=[
 
 
@@ -95,18 +134,43 @@ item.description,
 
 item.code,
 
+
 item.category,
+
+data.category,
+
 
 item.type,
 
+data.type,
+
+
 item.author?.name,
+
+item.author,
+
+data.author,
+
+
+data.course,
+
+data.semester,
+
+data.subject,
+
+data.unit,
+
 
 ...hierarchy,
 
-...(item.tags || [])
+
+...(item.tags || []),
+
+...(data.tags || [])
 
 
 ]
+
 
 .flat()
 
@@ -131,13 +195,11 @@ let fallbackURL =
 
 ?
 
-appPath(
-`library/view.html?id=${item.id}&type=${source.name}`
-)
+`/library/view.html?id=${item.id}&type=${source.name}`
 
 :
 
-appPath(source.page);
+source.page;
 
 
 
