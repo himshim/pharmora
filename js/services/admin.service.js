@@ -455,7 +455,13 @@ status:"approved",
 
 reviewedBy:
 
-currentUser?.()?.id || null,
+(
+typeof currentUser==="function"
+?
+currentUser()?.id
+:
+null
+),
 
 
 reviewedAt:
@@ -569,7 +575,13 @@ status:"rejected",
 
 reviewedBy:
 
-currentUser?.()?.id || null,
+(
+typeof currentUser==="function"
+?
+currentUser()?.id
+:
+null
+),
 
 
 reviewedAt:
