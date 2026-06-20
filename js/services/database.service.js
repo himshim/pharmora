@@ -10,23 +10,17 @@
 
 
 
-
-
 async function createRecord(
 collection,
 data={}
 ){
 
 
-
 return PharmoraDatabase.create({
-
 
 ...data,
 
-
 collection,
-
 
 type:
 
@@ -38,26 +32,11 @@ collection
 });
 
 
-
 }
 
 
 
 
-let cached =
-PharmoraCache.get(
-type
-);
-
-
-
-if(cached){
-
-
-return cached;
-
-
-}
 
 
 
@@ -70,7 +49,46 @@ filters={}
 
 
 
-return PharmoraDatabase.find({
+let cacheKey =
+
+collection +
+
+JSON.stringify(filters);
+
+
+
+
+
+if(
+typeof PharmoraCache !== "undefined"
+){
+
+
+let cached =
+PharmoraCache.get(
+cacheKey
+);
+
+
+
+if(cached){
+
+return cached;
+
+}
+
+
+}
+
+
+
+
+
+
+
+
+let records =
+await PharmoraDatabase.find({
 
 
 filters:{
@@ -89,15 +107,39 @@ collection,
 
 
 
+
+
+
+
+if(
+typeof PharmoraCache !== "undefined"
+){
+
+
+PharmoraCache.set(
+
+cacheKey,
+
+records
+
+);
+
+
 }
 
 
 
 
-PharmoraCache.set(
-type,
-records
-);
+return records;
+
+
+
+}
+
+
+
+
+
 
 
 
@@ -111,7 +153,8 @@ updates
 
 
 
-return PharmoraDatabase.update(
+let result =
+await PharmoraDatabase.update(
 
 id,
 
@@ -121,8 +164,22 @@ updates
 
 
 
+
+if(
+typeof PharmoraCache !== "undefined"
+){
+
+PharmoraCache.clear();
+
 }
 
+
+
+return result;
+
+
+
+}
 
 
 
@@ -139,16 +196,29 @@ id
 
 
 
-return PharmoraDatabase.remove(
-
+let result =
+await PharmoraDatabase.remove(
 id
-
 );
 
 
 
+
+if(
+typeof PharmoraCache !== "undefined"
+){
+
+PharmoraCache.clear();
+
 }
 
+
+
+return result;
+
+
+
+}
 
 
 
@@ -165,7 +235,8 @@ id
 
 
 
-return PharmoraDatabase.update(
+let result =
+await PharmoraDatabase.update(
 
 id,
 
@@ -185,8 +256,23 @@ deletedAt:null
 
 
 
+
+if(
+typeof PharmoraCache !== "undefined"
+){
+
+PharmoraCache.clear();
+
 }
 
+
+
+
+return result;
+
+
+
+}
 
 
 
@@ -202,6 +288,7 @@ async function exportDatabase(){
 
 let data =
 await PharmoraDatabase.find();
+
 
 
 
@@ -223,8 +310,8 @@ entities:data
 
 
 
-
 window.DatabaseService={
+
 
 createRecord,
 
@@ -238,12 +325,18 @@ restoreRecord,
 
 exportDatabase
 
+
 };
 
 
 
 
+
+
+
+
 // Legacy global support
+
 
 window.createRecord =
 createRecord;
