@@ -118,7 +118,7 @@ const CORE=[
 
 "/js/app.js",
 
-"/js/services/database.bundle.js",
+"/dist/pharmora.database.js",
 
 "/components/layout/header.js",
 
