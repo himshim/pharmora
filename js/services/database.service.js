@@ -1,14 +1,48 @@
 /*
  Pharmora Database Service Bridge
-
- Compatibility layer for old services
-
- Uses Pharmora Data Engine v2
+ v2 Compatibility Layer
 */
 
 
+/* ======================
+ NORMALIZER
+====================== */
+
+function normalizeRecord(item){
+
+return {
+
+...item,
+
+...(item.data || {}),
+
+id:item.id,
+
+type:item.type,
+
+createdAt:
+item.metadata?.createdAt,
+
+updatedAt:
+item.metadata?.updatedAt,
+
+status:
+item.data?.status ||
+item.lifecycle?.status
+
+};
+
+}
 
 
+
+
+
+
+
+/* ======================
+ CREATE
+====================== */
 
 async function createRecord(
 collection,
@@ -23,9 +57,7 @@ return PharmoraDatabase.create({
 collection,
 
 type:
-
 data.type ||
-
 collection
 
 
@@ -40,7 +72,9 @@ collection
 
 
 
-
+/* ======================
+ READ
+====================== */
 
 async function getRecords(
 collection,
@@ -48,80 +82,48 @@ filters={}
 ){
 
 
-
-let cacheKey =
-
-collection +
-
-JSON.stringify(filters);
-
-
-
-
-
-if(
-typeof PharmoraCache !== "undefined"
-){
-
-
-let cached =
-PharmoraCache.get(
-cacheKey
-);
-
-
-
-if(cached){
-
-return cached;
-
-}
-
-
-}
-
-
-
-
-
-
-
-
 let records =
 await PharmoraDatabase.find({
 
-
 filters:{
+type:collection
+}
+
+});
 
 
-collection,
+records =
+records.filter(item=>{
 
 
-...filters
+let flat =
+normalizeRecord(item);
+
+
+for(let key in filters){
+
+
+if(
+flat[key] !== filters[key]
+){
+
+return false;
+
+}
 
 
 }
+
+
+return true;
 
 
 });
 
 
 
-
-
-
-
-if(
-typeof PharmoraCache !== "undefined"
-){
-
-
-PharmoraCache.set(
-
-cacheKey,
-
-records
-
+return records.map(
+normalizeRecord
 );
 
 
@@ -130,20 +132,13 @@ records
 
 
 
-return records;
-
-
-
-}
 
 
 
 
-
-
-
-
-
+/* ======================
+ UPDATE
+====================== */
 
 async function updateRecord(
 collection,
@@ -152,9 +147,7 @@ updates
 ){
 
 
-
-let result =
-await PharmoraDatabase.update(
+return PharmoraDatabase.update(
 
 id,
 
@@ -163,22 +156,6 @@ updates
 );
 
 
-
-
-if(
-typeof PharmoraCache !== "undefined"
-){
-
-PharmoraCache.clear();
-
-}
-
-
-
-return result;
-
-
-
 }
 
 
@@ -188,6 +165,9 @@ return result;
 
 
 
+/* ======================
+ DELETE
+====================== */
 
 async function deleteRecord(
 collection,
@@ -195,27 +175,7 @@ id
 ){
 
 
-
-let result =
-await PharmoraDatabase.remove(
-id
-);
-
-
-
-
-if(
-typeof PharmoraCache !== "undefined"
-){
-
-PharmoraCache.clear();
-
-}
-
-
-
-return result;
-
+return PharmoraDatabase.remove(id);
 
 
 }
@@ -227,6 +187,9 @@ return result;
 
 
 
+/* ======================
+ RESTORE
+====================== */
 
 async function restoreRecord(
 collection,
@@ -234,9 +197,7 @@ id
 ){
 
 
-
-let result =
-await PharmoraDatabase.update(
+return PharmoraDatabase.update(
 
 id,
 
@@ -255,23 +216,6 @@ deletedAt:null
 );
 
 
-
-
-if(
-typeof PharmoraCache !== "undefined"
-){
-
-PharmoraCache.clear();
-
-}
-
-
-
-
-return result;
-
-
-
 }
 
 
@@ -281,15 +225,15 @@ return result;
 
 
 
+/* ======================
+ EXPORT
+====================== */
 
 async function exportDatabase(){
 
 
-
 let data =
 await PharmoraDatabase.find();
-
-
 
 
 return PharmoraDatabase.backup({
@@ -299,7 +243,6 @@ entities:data
 });
 
 
-
 }
 
 
@@ -309,54 +252,30 @@ entities:data
 
 
 
+/* ======================
+ GLOBAL EXPORT
+====================== */
 
 window.DatabaseService={
 
-
 createRecord,
-
 getRecords,
-
 updateRecord,
-
 deleteRecord,
-
 restoreRecord,
-
 exportDatabase
-
 
 };
 
 
+window.createRecord=createRecord;
 
+window.getRecords=getRecords;
 
+window.updateRecord=updateRecord;
 
+window.deleteRecord=deleteRecord;
 
+window.restoreRecord=restoreRecord;
 
-
-// Legacy global support
-
-
-window.createRecord =
-createRecord;
-
-
-window.getRecords =
-getRecords;
-
-
-window.updateRecord =
-updateRecord;
-
-
-window.deleteRecord =
-deleteRecord;
-
-
-window.restoreRecord =
-restoreRecord;
-
-
-window.exportDatabase =
-exportDatabase;
+window.exportDatabase=exportDatabase;
