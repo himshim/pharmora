@@ -267,42 +267,38 @@ const BACKGROUND=[
 
 
 
-async function loadRequiredModules(){
+async function loadRequiredBundles(){
 
 
 
-let needed=new Set();
+let needed =
+new Set();
 
 
 
 
 document
 
-.querySelectorAll("[data-render]")
+.querySelectorAll("[data-requires]")
 
 .forEach(el=>{
 
 
-
-let group =
-MODULES[
-el.dataset.render
-];
+let modules =
+el.dataset.requires
+.split(",");
 
 
 
-if(group){
+modules.forEach(
 
+m=>needed.add(
 
-group.forEach(
+m.trim()
 
-x=>needed.add(x)
+)
 
 );
-
-
-}
-
 
 
 });
@@ -311,9 +307,61 @@ x=>needed.add(x)
 
 
 
+
+for(
+let module of needed
+){
+
+
+
+/*
+ Load service modules
+*/
+
+
+if(
+MODULES[module]
+){
+
+
 await loadMany(
-[...needed]
+
+MODULES[module]
+
 );
+
+
+}
+
+
+
+
+
+
+/*
+ Load generated bundles
+*/
+
+
+if(
+BUNDLES[module]
+){
+
+
+
+await loadMany(
+
+BUNDLES[module]
+
+);
+
+
+
+}
+
+
+
+}
 
 
 
@@ -396,7 +444,19 @@ el.id
 
 }
 
+if(
+type==="books"
+&&
+window.PharmoraBooks
+){
 
+
+PharmoraBooks.renderBooks(
+el.id
+);
+
+
+}
 
 
 
