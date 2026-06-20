@@ -50,18 +50,53 @@ data={}
 ){
 
 
-return PharmoraDatabase.create({
+let user = null;
+
+
+if(
+typeof currentUser === "function"
+){
+
+
+let session =
+currentUser();
+
+
+user =
+session?.id || null;
+
+
+}
+
+
+
+
+return PharmoraDatabase.create(
+
+{
 
 ...data,
 
+
 collection,
+
 
 type:
 data.type ||
 collection
 
 
-});
+},
+
+
+{
+
+user:user
+
+}
+
+
+);
 
 
 }
