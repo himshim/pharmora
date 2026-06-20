@@ -473,3 +473,75 @@ html
 
 
 }
+
+/*
+ Review Service Export
+*/
+
+
+window.PharmoraReview = {
+
+
+getAllReviewItems:function(){
+
+return getAllReviewItems();
+
+},
+
+
+
+renderAdminActions:function(){
+
+return renderAdminActions();
+
+},
+
+
+
+approveContent:function(
+collection,
+id
+){
+
+return approveContent(
+collection,
+id
+);
+
+},
+
+
+
+rejectContent:function(
+collection,
+id
+){
+
+return rejectContent(
+collection,
+id
+);
+
+},
+
+
+
+viewContent:function(
+collection,
+id
+){
+
+return viewContent(
+collection,id
+);
+
+}
+
+
+};
+
+
+
+console.log(
+"✓ PharmoraReview ready"
+);
