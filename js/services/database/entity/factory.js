@@ -25,7 +25,6 @@ let copy = {
 
 
 [
-"type",
 "subtype",
 "title",
 "description",
@@ -60,6 +59,10 @@ options={}
 
 
 let type =
+
+data.collection ||
+
+data.entityType ||
 
 data.type ||
 
