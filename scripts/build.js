@@ -205,3 +205,30 @@ bundle(
 "dist/pharmora.database.js"
 
 );
+
+/*
+ SEARCH ENGINE
+*/
+
+
+bundle(
+[
+
+"js/services/search/config.js",
+
+"js/services/search/relations.js",
+
+"js/services/search/indexer.js",
+
+"js/services/search/ranking.js",
+
+"js/services/search/engine.js",
+
+"js/search.js"
+
+
+],
+
+"dist/pharmora.search.js"
+
+);

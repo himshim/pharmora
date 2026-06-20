@@ -246,7 +246,7 @@ const BACKGROUND=[
 
 "/js/services/version.service.js",
 
-"/js/search.js"
+"/dist/pharmora.search.js",
 
 
 ];
