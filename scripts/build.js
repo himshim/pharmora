@@ -59,10 +59,17 @@ code +=
 
 
 code +=
+
+"\n;\n" +
+
 fs.readFileSync(
 p,
 "utf8"
-);
+)
+
++
+
+"\n;\n";
 
 
 }
