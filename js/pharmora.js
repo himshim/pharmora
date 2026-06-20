@@ -42,6 +42,10 @@ const PHARMORA_MODULES = [
 
 "/js/services/content.service.js",
 
+"/js/services/home.service.js",
+
+"/js/services/home.component.js",
+
 "/js/services/books.service.js",
 
 "/js/services/events.service.js",
@@ -331,12 +335,40 @@ el.id
 
 }
 
+if(
+type==="stats"
+&&
+typeof renderHomeStats==="function"
+){
 
+renderHomeStats(
+el.id
+);
+
+}
+
+
+
+if(
+type==="home-content"
+&&
+typeof renderHomeContent==="function"
+){
+
+renderHomeContent(
+el.id,
+el.dataset.mode
+);
+
+}
 
 });
 
 
 }
+
+autoRender();
+
 
 console.log(
 

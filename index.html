@@ -190,25 +190,10 @@ href="/assets/branding/icon-192.png">
 <div id="site-header"></div>
 
 
-
-
-
 <main>
 
 
-
-
-
-
-<section class="section">
-
-
-<div 
-class="container"
-style="text-align:center;">
-
-
-
+<section class="container hero">
 
 
 <div class="badge">
@@ -218,122 +203,33 @@ style="text-align:center;">
 </div>
 
 
+<h1>
 
-
-
-<h1 style="
-font-size:4.5rem;
-margin-top:30px;
-">
-
-
-The future of
-
-<br>
-
-
-<span style="
-background:linear-gradient(
-90deg,
-var(--primary),
-var(--secondary)
-);
--webkit-background-clip:text;
-color:transparent;
-">
-
-
-pharmacy learning
-
-
-</span>
-
+The Future of Pharmacy Learning
 
 </h1>
 
 
+<p>
 
-
-
-
-<p style="
-max-width:750px;
-margin:25px auto;
-font-size:1.2rem;
-">
-
-
-Open, collaborative, and accessible
-platform connecting pharmacy students,
-teachers, researchers and professionals.
-
+Learn • Research • Share • Grow
 
 </p>
-
-
-
-
 
 
 <div class="search-box">
 
-
 <input
-
-placeholder="Search courses, subjects, topics, resources..."
-
+placeholder="Search Pharmora..."
 oninput="pharmoraSearch(this.value)"
-
 >
 
-
 </div>
-
-
 
 
 <div
 id="search-results"
-class="grid"
-style="margin-top:30px;">
-
-
-</div>
-
-
-
-
-
-
-<a 
-href="auth/register.html"
-class="btn btn-primary">
-
-
-Join Platform
-
-
-</a>
-
-
-
-&nbsp;
-
-
-
-<a 
-href="dashboard/"
-class="btn">
-
-
-Preview Dashboard
-
-
-</a>
-
-
-
-
+class="grid">
 
 </div>
 
@@ -345,34 +241,20 @@ Preview Dashboard
 
 
 
-
-
-
-
-<section class="section">
-
-
-<div class="container">
+<section class="container section">
 
 
 <h2 class="section-title">
 
-Explore Platform
+📊 Platform Growth
 
 </h2>
 
 
-
-
-
-<div 
+<div
 class="grid"
-id="features-list">
-
-
-</div>
-
-
+id="home-stats"
+data-render="stats">
 
 </div>
 
@@ -385,108 +267,21 @@ id="features-list">
 
 
 
-
-
-
-
-<section class="section">
-
-
-<div class="container">
-
+<section class="container section">
 
 
 <h2 class="section-title">
 
-📚 Curriculum Ready
+🔥 Trending
 
 </h2>
 
 
-
-
-
-<div class="grid">
-
-
-
-
-
-
-<div class="card">
-
-
-<h2>
-
-B.Pharm
-
-</h2>
-
-
-<p>
-
-PCI syllabus, NEP curriculum and future revisions.
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-<div class="card">
-
-
-<h2>
-
-D.Pharm
-
-</h2>
-
-
-<p>
-
-Year-wise resources and examination support.
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-<div class="card">
-
-
-<h2>
-
-Future Proof
-
-</h2>
-
-
-<p>
-
-Designed for updates, universities and community expansion.
-
-</p>
-
-
-</div>
-
-
-
-
-
-</div>
-
-
+<div
+class="grid"
+id="trending-content"
+data-render="home-content"
+data-mode="trending">
 
 </div>
 
@@ -499,51 +294,21 @@ Designed for updates, universities and community expansion.
 
 
 
+<section class="container section">
 
 
+<h2 class="section-title">
 
-
-<section class="section">
-
-
-<div class="container">
-
-
-<div class="card">
-
-
-<h2>
-
-📚 Knowledge Library
+✨ Recently Added
 
 </h2>
 
 
-<p>
-
-Verified knowledge base containing articles,
-references and collections.
-
-</p>
-
-
-<br>
-
-
-<a 
-href="library/"
-class="btn btn-primary">
-
-
-Explore Library
-
-
-</a>
-
-
-
-</div>
-
+<div
+class="grid"
+id="latest-content"
+data-render="home-content"
+data-mode="latest">
 
 </div>
 
@@ -555,67 +320,7 @@ Explore Library
 
 
 
-
-
-
-
-<section class="section">
-
-
-<div class="container">
-
-
-<div class="card">
-
-
-<h2>
-
-👨‍🏫 Teacher's Corner
-
-</h2>
-
-
-<p>
-
-Share lectures, templates and improve education collaboratively.
-
-</p>
-
-
-<br>
-
-
-<a 
-href="teach/"
-class="btn btn-primary">
-
-
-Explore Teaching Resources
-
-
-</a>
-
-
-</div>
-
-
-</div>
-
-
-</section>
-
-
-
-
-
-
-
-
-
-<section class="section">
-
-
-<div class="container">
+<section class="container section">
 
 
 <div class="card">
@@ -630,14 +335,9 @@ Explore Teaching Resources
 
 <p>
 
-A transparent community powered learning ecosystem
-built for everyone.
+A collaborative pharmacy ecosystem.
 
 </p>
-
-
-
-</div>
 
 
 </div>
@@ -648,13 +348,7 @@ built for everyone.
 
 
 
-
-
 </main>
-
-
-
-
 
 
 
@@ -662,75 +356,8 @@ built for everyone.
 
 
 
+<script src="/js/pharmora.js"></script>
 
-
-
-<!-- APP CORE -->
-<script src="js/app.js"></script>
-
-
-
-<!-- SERVICES -->
-<script src="js/services/database.service.js"></script>
-
-<script src="js/services/auth.service.js"></script>
-
-<script src="js/services/storage.service.js"></script>
-
-<script src="js/services/analytics.service.js"></script>
-
-
-
-
-
-<!-- COMPONENTS -->
-<script src="components/layout/header.js"></script>
-
-<script src="components/layout/footer.js"></script>
-
-
-
-
-
-<!-- FEATURES -->
-<script src="js/services/features.service.js"></script>
-
-<script src="js/search.js"></script>
-
-
-
-
-
-<script>
-
-
-document.addEventListener(
-
-"DOMContentLoaded",
-
-()=>{
-
-
-if(typeof renderFeatures==="function"){
-
-
-renderFeatures(
-
-"features-list"
-
-);
-
-
-}
-
-
-}
-
-
-);
-
-
-</script>
 
 
 
