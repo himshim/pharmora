@@ -1,62 +1,230 @@
 /*
- Pharmora Global Bootstrap
-
- Single entry point for entire platform
+ Pharmora Bootstrap v2
+ Smart + Lazy + Future Ready
 */
 
 
-const PHARMORA_MODULES = [
+const Pharmora = (()=>{
+
+
+const VERSION="2.0.0";
+
+
+const loaded=new Set();
 
 
 
-/* =====================
- CORE
-===================== */
+
+
+function loadScript(src){
+
+
+src =
+src + "?v=" + VERSION;
+
+
+if(loaded.has(src)){
+
+return Promise.resolve();
+
+}
+
+
+
+return new Promise(resolve=>{
+
+
+const s=document.createElement("script");
+
+
+s.src=src;
+
+
+
+s.onload=()=>{
+
+
+loaded.add(src);
+
+
+console.log(
+"✓",
+src
+);
+
+
+resolve(true);
+
+
+};
+
+
+
+
+s.onerror=()=>{
+
+
+console.warn(
+"Skipped:",
+src
+);
+
+
+resolve(false);
+
+
+};
+
+
+
+document.head.appendChild(s);
+
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+async function loadMany(list){
+
+
+for(const file of list){
+
+
+await loadScript(file);
+
+
+}
+
+
+}
+
+
+
+
+
+
+
+
+const CORE=[
+
 
 "/js/app.js",
 
-
-
-/* =====================
- DATABASE ENGINE
-===================== */
-
 "/js/services/database.bundle.js",
 
+"/components/layout/header.js",
+
+"/components/layout/footer.js"
+
+
+];
 
 
 
 
-/* =====================
- SERVICES
-===================== */
+
+
+
+
+const MODULES={
+
+
+
+
+"home-content":[
+
+"/js/services/content.service.js",
+"/js/services/home.service.js",
+"/js/services/home.component.js"
+
+],
+
+
+
+
+"stats":[
+
+"/js/services/home.service.js",
+"/js/services/home.component.js"
+
+],
+
+
+
+
+
+
+"content":[
+
+"/js/services/content.service.js",
+"/js/services/filter.component.js",
+"/js/services/content.component.js"
+
+],
+
+
+
+
+
+
+
+"books":[
+
+"/js/services/books.service.js"
+
+],
+
+
+
+
+
+
+"events":[
+
+"/js/services/events.service.js"
+
+],
+
+
+
+
+
+
+
+"forum":[
+
+"/js/services/forum.service.js",
+"/js/services/forum.component.js",
+"/js/services/forum.modal.js"
+
+]
+
+
+
+};
+
+
+
+
+
+
+
+
+
+const BACKGROUND=[
 
 
 "/js/services/auth.service.js",
 
 "/js/services/storage.service.js",
-
-
-
-/* Content engines */
-
-"/js/services/content.service.js",
-
-"/js/services/home.service.js",
-
-"/js/services/home.component.js",
-
-"/js/services/books.service.js",
-
-"/js/services/events.service.js",
-
-"/js/services/resources.service.js",
-
-"/js/services/learn.service.js",
-
-
-
-/* Platform */
 
 "/js/services/features.service.js",
 
@@ -78,53 +246,6 @@ const PHARMORA_MODULES = [
 
 "/js/services/version.service.js",
 
-
-
-
-
-
-
-/* =====================
- COMPONENT HELPERS
-===================== */
-
-
-"/js/services/filter.component.js",
-
-"/js/services/content.component.js",
-
-"/js/services/forum.component.js",
-
-"/js/services/forum.modal.js",
-
-
-
-
-
-
-
-/* =====================
- UI COMPONENTS
-===================== */
-
-
-"/components/layout/header.js",
-
-"/components/layout/footer.js",
-
-"/components/notification/notification.js",
-
-
-
-
-
-
-
-/* =====================
- FEATURES
-===================== */
-
-
 "/js/search.js"
 
 
@@ -138,83 +259,56 @@ const PHARMORA_MODULES = [
 
 
 
-function loadPharmoraScript(src){
-
-
-return new Promise(resolve=>{
-
-
-let script =
-document.createElement("script");
-
-
-script.src=src;
+async function loadRequiredModules(){
 
 
 
-script.onload=()=>{
+let needed=new Set();
 
 
-console.log(
-"✓",
-src
+
+
+document
+
+.querySelectorAll("[data-render]")
+
+.forEach(el=>{
+
+
+
+let group =
+MODULES[
+el.dataset.render
+];
+
+
+
+if(group){
+
+
+group.forEach(
+
+x=>needed.add(x)
+
 );
 
 
-
-if(
-src.includes("database.bundle.js")
-&&
-window.PharmoraDatabaseReady
-){
-
-
-window.PharmoraDatabaseReady
-.then(()=>resolve(true));
-
-
 }
-
-
-else{
-
-
-resolve(true);
-
-
-}
-
-
-
-};
-
-
-
-
-script.onerror=()=>{
-
-
-console.warn(
-"Skipped:",
-src
-);
-
-
-resolve(false);
-
-
-};
-
-
-
-
-document.head.appendChild(script);
 
 
 
 });
 
 
+
+
+
+await loadMany(
+[...needed]
+);
+
+
+
 }
 
 
@@ -223,53 +317,18 @@ document.head.appendChild(script);
 
 
 
-
-
-
-async function bootPharmora(){
-
-
-
-console.log(
-
-"⚕ Starting Pharmora..."
-
-);
-
-
-
-
-
-
-for(
-const file of PHARMORA_MODULES
-){
-
-
-await loadPharmoraScript(file);
-
-
-}
-
-
-
-
-
-window.dispatchEvent(
-
-new Event(
-"pharmora-ready"
-)
-
-);
 
 
 function autoRender(){
 
 
+
 document
+
 .querySelectorAll("[data-render]")
+
 .forEach(el=>{
+
 
 
 let type =
@@ -277,48 +336,58 @@ el.dataset.render;
 
 
 
+
+
+if(
+type==="stats"
+&&
+window.renderHomeStats
+){
+
+
+renderHomeStats(el.id);
+
+
+}
+
+
+
+
+if(
+type==="home-content"
+&&
+window.renderHomeContent
+){
+
+
+renderHomeContent(
+el.id,
+el.dataset.mode
+);
+
+
+}
+
+
+
+
+
+
 if(
 type==="content"
 &&
-typeof renderContent==="function"
+window.renderContent
 ){
+
 
 renderContent(
 el.dataset.type,
 el.id
 );
 
-}
-
-
-
-
-if(
-type==="books"
-&&
-typeof renderBooks==="function"
-){
-
-renderBooks(
-el.id
-);
 
 }
 
-
-
-
-if(
-type==="events"
-&&
-typeof renderEvents==="function"
-){
-
-renderEvents(
-el.id
-);
-
-}
 
 
 
@@ -326,58 +395,100 @@ el.id
 if(
 type==="forum"
 &&
-typeof renderForum==="function"
+window.renderForum
 ){
 
-renderForum(
-el.id
-);
 
-}
+renderForum(el.id);
 
-if(
-type==="stats"
-&&
-typeof renderHomeStats==="function"
-){
-
-renderHomeStats(
-el.id
-);
 
 }
 
 
-
-if(
-type==="home-content"
-&&
-typeof renderHomeContent==="function"
-){
-
-renderHomeContent(
-el.id,
-el.dataset.mode
-);
-
-}
 
 });
 
 
+
 }
+
+
+
+
+
+
+
+
+
+async function start(){
+
+
+console.log(
+"⚕ Pharmora v2 starting..."
+);
+
+
+
+await loadMany(
+CORE
+);
+
+
+
+
+
+if(window.PharmoraDatabaseReady){
+
+
+await window.PharmoraDatabaseReady;
+
+
+}
+
+
+
+
+await loadRequiredModules();
+
+
+
 
 autoRender();
 
 
-console.log(
 
-"✅ Pharmora Ready"
+
+window.dispatchEvent(
+
+new Event("pharmora-ready")
 
 );
 
 
 
+
+console.log(
+"⚡ Pharmora Ready"
+);
+
+
+
+
+
+
+
+setTimeout(()=>{
+
+
+loadMany(
+BACKGROUND
+);
+
+
+},800);
+
+
+
 }
 
 
@@ -385,4 +496,23 @@ console.log(
 
 
 
-bootPharmora();
+
+return{
+
+
+start,
+
+loadScript
+
+
+};
+
+
+
+})();
+
+
+
+
+
+Pharmora.start();
