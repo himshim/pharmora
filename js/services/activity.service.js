@@ -1,11 +1,16 @@
 /*
- Pharmora Activity Service
- Platform Timeline
+ Pharmora Activity Service v2
+
+ Database Provider Based
 */
 
 
 
-function logActivity(
+
+
+
+
+async function logActivity(
 action,
 message,
 data={}
@@ -13,29 +18,11 @@ data={}
 
 
 
-let logs =
-JSON.parse(
+return await createRecord(
 
-localStorage.getItem(
-"activity"
-)
+"activity",
 
-||
-
-"[]"
-
-);
-
-
-
-
-
-logs.push({
-
-
-id:
-
-crypto.randomUUID(),
+{
 
 
 action:action,
@@ -44,12 +31,10 @@ action:action,
 message:message,
 
 
-data:data,
-
-
 level:
 
 data.level || "info",
+
 
 
 user:
@@ -65,32 +50,19 @@ currentUser()
 null,
 
 
+
+details:data,
+
+
+
 time:
 
 new Date()
 .toISOString()
 
 
-});
+}
 
-
-
-
-
-
-logs =
-logs.slice(-1000);
-
-
-
-
-
-
-localStorage.setItem(
-
-"activity",
-
-JSON.stringify(logs)
 
 );
 
@@ -107,25 +79,44 @@ JSON.stringify(logs)
 
 
 
-function getActivities(
+async function getActivities(
 limit=20
 ){
 
 
 
-return JSON.parse(
-
-localStorage.getItem(
+let logs =
+await getRecords(
 "activity"
+);
+
+
+
+
+
+return logs
+
+
+.sort((a,b)=>{
+
+
+return new Date(
+
+b.time || b.metadata?.createdAt
+
 )
 
-||
+-
 
-"[]"
+new Date(
 
-)
+a.time || a.metadata?.createdAt
 
-.reverse()
+);
+
+
+})
+
 
 .slice(
 
@@ -148,46 +139,121 @@ limit
 
 
 
-function clearActivities(){
+
+async function clearActivities(){
 
 
 
-localStorage.removeItem(
-
+let logs =
+await getRecords(
 "activity"
-
 );
 
 
 
+
+for(
+let item of logs
+){
+
+
+await deleteRecord(
+item.id
+);
+
+
 }
-function getUserActivities(
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function getUserActivities(
 userId,
 limit=20
 ){
 
 
 
-return getActivities(
-
+let logs =
+await getActivities(
 1000
+);
 
-)
 
-.filter(
 
-x=>x.user?.id===userId
 
-)
+return logs
+
+
+.filter(x=>{
+
+
+return (
+
+x.data?.user?.id===userId
+
+||
+
+x.user?.id===userId
+
+);
+
+
+})
+
 
 .slice(
-
 0,
-
 limit
-
 );
 
 
 
 }
+
+
+
+
+
+
+
+
+
+/*
+ Export
+*/
+
+
+window.PharmoraActivity = {
+
+
+logActivity,
+
+
+getActivities,
+
+
+clearActivities,
+
+
+getUserActivities
+
+
+};
+
+
+
+
+
+console.log(
+"✓ PharmoraActivity ready"
+);
