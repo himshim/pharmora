@@ -41,11 +41,19 @@ await getAllReviewItems();
 
 
 let pending =
-items.filter(
+items.filter(x=>{
 
-x=>x.status==="pending"
+return (
+
+x.moderation?.status==="pending"
+
+||
+
+x.status==="pending"
 
 );
+
+});
 
 
 
@@ -150,7 +158,7 @@ ${item.author?.name || "Unknown"}
 
 🎓
 
-${item.course || "-"}
+${item.data?.course || item.course || "-"}
 
 
 <br>
@@ -158,7 +166,7 @@ ${item.course || "-"}
 
 📘
 
-${item.semester || "-"}
+${item.data?.semester || item.semester || "-"}
 
 
 <br>
@@ -166,7 +174,7 @@ ${item.semester || "-"}
 
 🧪
 
-${item.subject || "-"}
+${item.data?.subject || item.subject || "-"}
 
 
 <br>
@@ -318,6 +326,10 @@ item.question ||
 ${
 
 item.description ||
+
+item.data?.description ||
+
+item.data?.answer ||
 
 item.answer ||
 
