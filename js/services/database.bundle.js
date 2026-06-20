@@ -98,54 +98,53 @@ const DB_MODULES = [
 
 
 
+/*
+ Database script loader
+*/
 
-async function loadDatabase(){
-
-
-let failed = [];
-
-
-
-for(
-const file of DB_MODULES
-){
-
-
-try{
 
 function loadScript(src){
 
 
-return new Promise(
-(resolve,reject)=>{
+return new Promise(resolve=>{
 
 
 const script =
 document.createElement("script");
 
 
-script.src = src;
+script.src =
+src;
 
 
 
-script.onload = ()=>{
+script.onload=()=>{
+
 
 console.log(
 "DB ✓",
 src
 );
 
+
 resolve(true);
+
 
 };
 
 
 
 
-script.onerror = ()=>{
+script.onerror=()=>{
 
 
-reject(src);
+console.warn(
+"DB skipped",
+src
+);
+
+
+resolve(false);
 
 
 };
@@ -156,63 +155,64 @@ reject(src);
 document.head.appendChild(script);
 
 
+
 });
 
 
 }
 
-await loadScript(file);
-
-
-}
-
-
-catch(error){
 
 
 
-failed.push(file);
 
 
-console.warn(
-"⚠ Database module skipped:",
+
+async function loadDatabase(){
+
+
+
+console.time(
+"Database load"
+);
+
+
+
+for(
+const file of DB_MODULES
+){
+
+
+await loadScript(
 file
 );
 
 
-
-}
-
-
-
 }
 
 
 
 
-
-if(failed.length){
-
-
-console.warn(
-"Database loaded with missing modules:",
-failed
+console.timeEnd(
+"Database load"
 );
 
 
-}
 
 
 
 console.log(
-"✅ Pharmora Database Bundle Loaded"
+"✅ Pharmora Database Ready"
 );
+
+
 
 
 
 window.dispatchEvent(
 
-new Event("pharmora-database-ready")
+new Event(
+"pharmora-database-ready"
+)
 
 );
 
@@ -222,4 +222,7 @@ new Event("pharmora-database-ready")
 
 
 
-window.PharmoraDatabaseReady = loadDatabase();
+
+
+window.PharmoraDatabaseReady =
+loadDatabase();
