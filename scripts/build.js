@@ -189,6 +189,8 @@ bundle(
 
 "js/services/database/migration/migration.js",
 
+"js/services/database/migration/seeder.js",
+
 
 "js/services/database/providers/local.provider.js",
 "js/services/database/providers/supabase.provider.js",
