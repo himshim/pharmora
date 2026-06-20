@@ -113,7 +113,7 @@ await loadScript(file);
 
 
 
-CORE:[
+const CORE=[
 
 "/js/app.js",
 
