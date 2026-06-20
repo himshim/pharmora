@@ -267,7 +267,7 @@ const BACKGROUND=[
 
 
 
-async function loadRequiredBundles(){
+async function loadRequiredModules(){
 
 
 
@@ -277,28 +277,39 @@ new Set();
 
 
 
+/*
+Load modules required for rendering
+*/
+
+
 document
 
-.querySelectorAll("[data-requires]")
+.querySelectorAll("[data-render]")
 
 .forEach(el=>{
 
 
-let modules =
-el.dataset.requires
-.split(",");
+
+let module =
+el.dataset.render;
 
 
 
-modules.forEach(
+if(
+MODULES[module]
+){
 
-m=>needed.add(
 
-m.trim()
+MODULES[module]
+.forEach(
 
-)
+file=>needed.add(file)
 
 );
+
+
+}
+
 
 
 });
@@ -308,15 +319,31 @@ m.trim()
 
 
 
-for(
-let module of needed
-){
-
-
 
 /*
- Load service modules
+Load modules required as dependency
 */
+
+
+document
+
+.querySelectorAll("[data-requires]")
+
+.forEach(el=>{
+
+
+
+el.dataset.requires
+
+.split(",")
+
+.forEach(module=>{
+
+
+
+module =
+module.trim();
+
 
 
 if(
@@ -324,9 +351,10 @@ MODULES[module]
 ){
 
 
-await loadMany(
-
 MODULES[module]
+.forEach(
+
+file=>needed.add(file)
 
 );
 
@@ -335,33 +363,24 @@ MODULES[module]
 
 
 
+});
 
 
 
-/*
- Load generated bundles
-*/
+});
 
 
-if(
-BUNDLES[module]
-){
+
+
+
 
 
 
 await loadMany(
 
-BUNDLES[module]
+[...needed]
 
 );
-
-
-
-}
-
-
-
-}
 
 
 
