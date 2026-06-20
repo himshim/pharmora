@@ -195,7 +195,11 @@ const MODULES={
 
 
 
+"resources":[
 
+"/js/services/resources.service.js"
+
+],
 
 
 
