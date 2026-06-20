@@ -8,6 +8,7 @@ const contentNameCache = {};
 async function getPublished(collection){
 
 
+
 let data =
 await getRecords(
 collection
@@ -15,23 +16,36 @@ collection
 
 
 
+
 return data.filter(item=>{
+
 
 return (
 
+
 item.status==="approved"
+
 
 ||
 
-item.status===undefined
+
+item.lifecycle?.status==="published"
+
+
+||
+
+
+!item.status
+
 
 );
+
 
 });
 
 
-}
 
+}
 
 
 

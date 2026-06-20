@@ -98,7 +98,8 @@ let html="";
 for(let item of items){
 
 
-
+let data =
+item.data || {};
 
 
 
@@ -106,7 +107,7 @@ for(let item of items){
 let course =
 await resolveName(
 "courses",
-item.course
+data.course || item.course
 );
 
 
@@ -114,7 +115,7 @@ item.course
 let curriculum =
 await resolveName(
 "curriculums",
-item.curriculum
+data.curriculum || item.curriculum
 );
 
 
@@ -122,7 +123,7 @@ item.curriculum
 let semester =
 await resolveName(
 "semesters",
-item.semester
+data.semester || item.semester
 );
 
 
@@ -130,7 +131,7 @@ item.semester
 let subject =
 await resolveName(
 "subjects",
-item.subject
+data.subject || item.subject
 );
 
 
@@ -138,7 +139,7 @@ item.subject
 let unit =
 await resolveName(
 "units",
-item.unit
+data.unit || item.unit
 );
 
 
@@ -223,7 +224,17 @@ ${description}
 
 
 
-${item.resourceType ? "📂 "+item.resourceType+"<br>" : ""}
+${
+(data.type || item.resourceType)
+
+?
+
+"📂 "+(data.type || item.resourceType)+"<br>"
+
+:
+
+""
+}
 
 
 ${item.materialType ? "👨‍🏫 "+item.materialType+"<br>" : ""}
