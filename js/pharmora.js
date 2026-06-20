@@ -254,6 +254,8 @@ const BACKGROUND=[
 
 "/dist/pharmora.platform.js",
 
+"/dist/pharmora.router.js",
+
 "/dist/pharmora.search.js"
 
 ];

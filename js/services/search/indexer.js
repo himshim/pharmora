@@ -120,7 +120,7 @@ item.author?.name,
 
 
 
-let url =
+let fallbackURL =
 [
 "resources",
 "books",
@@ -138,6 +138,25 @@ appPath(
 :
 
 appPath(source.page);
+
+
+
+
+
+let url =
+
+typeof PharmoraRouter !== "undefined"
+
+?
+
+PharmoraRouter.createURL(
+item,
+source.name
+)
+
+:
+
+fallbackURL;
 
 
 

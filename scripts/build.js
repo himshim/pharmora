@@ -332,3 +332,24 @@ bundle(
 "dist/pharmora.admin.js"
 
 );
+
+/*
+ ROUTER
+*/
+
+
+bundle(
+[
+
+"js/services/router/routes.js",
+
+"js/services/router/router.js",
+
+"js/services/router/resolver.js"
+
+
+],
+
+"dist/pharmora.router.js"
+
+);
