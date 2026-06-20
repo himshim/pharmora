@@ -1,10 +1,54 @@
 /*
  Pharmora Data Engine
- Universal Entity Factory
+ Universal Entity Factory v2
 */
 
 
 const PharmoraEntity = (()=>{
+
+
+const ENTITY_SCHEMA_VERSION = 2;
+
+
+/*
+ Remove duplicated system fields
+ from custom payload
+*/
+function cleanData(data){
+
+
+let copy = {
+
+...data
+
+};
+
+
+[
+"type",
+"subtype",
+"title",
+"description",
+"tags",
+"categories",
+"relations",
+"visibility"
+]
+.forEach(key=>{
+
+delete copy[key];
+
+});
+
+
+return copy;
+
+
+}
+
+
+
+
 
 
 
@@ -17,14 +61,17 @@ options={}
 
 let type =
 
-data.type
-
-||
+data.type ||
 
 "entity";
 
 
 
+
+
+/*
+ Identity
+*/
 
 
 let reference =
@@ -37,23 +84,89 @@ type
 
 
 
+
+
 let entity = {
 
 
 
-// identities
+
+/* =====================
+   SCHEMA
+===================== */
+
+
+schema:{
+
+
+version:
+
+ENTITY_SCHEMA_VERSION,
+
+
+engine:
+
+"PharmoraDB",
+
+
+createdWith:
+
+"entity-factory-v2"
+
+
+},
+
+
+
+
+
+
+
+/* =====================
+   IDENTITY
+===================== */
+
 
 id:
 
 PharmoraUUID.create(),
 
 
+
 ...reference,
 
 
 
+identity:{
 
-// classification
+
+uuid:
+
+null,
+
+
+externalId:
+
+data.externalId || null,
+
+
+legacyId:
+
+data.id || null
+
+
+},
+
+
+
+
+
+
+
+
+/* =====================
+   CLASSIFICATION
+===================== */
 
 
 type,
@@ -66,12 +179,19 @@ data.subtype || null,
 
 
 
-// basic content
+
+
+
+
+/* =====================
+   SEARCHABLE CONTENT
+===================== */
 
 
 title:
 
 data.title || "",
+
 
 
 description:
@@ -83,12 +203,51 @@ data.description || "",
 
 
 
-// relationships
 
 
-relations:
 
-data.relations || [],
+/* =====================
+   CUSTOM ENTITY DATA
+===================== */
+
+
+data:
+
+cleanData(data),
+
+
+
+
+
+
+
+
+
+/* =====================
+   TAXONOMY
+===================== */
+
+
+taxonomy:{
+
+
+tags:
+
+data.tags || [],
+
+
+categories:
+
+data.categories || []
+
+
+},
+
+
+
+/*
+old compatibility
+*/
 
 
 tags:
@@ -105,7 +264,49 @@ data.categories || [],
 
 
 
-// ownership
+
+
+
+/* =====================
+   RELATIONS
+===================== */
+
+
+relations:{
+
+
+parents:[],
+
+
+children:[],
+
+
+linked:
+
+Array.isArray(data.relations)
+
+?
+
+data.relations
+
+:
+
+[]
+
+
+},
+
+
+
+
+
+
+
+
+
+/* =====================
+   OWNERSHIP
+===================== */
 
 
 ownership:
@@ -121,7 +322,11 @@ options.user || null
 
 
 
-// lifecycle
+
+
+/* =====================
+   LIFECYCLE
+===================== */
 
 
 lifecycle:
@@ -133,7 +338,43 @@ PharmoraLifecycle.create(),
 
 
 
-// trust / reputation
+
+
+/* =====================
+   MODERATION
+===================== */
+
+
+moderation:{
+
+
+status:"pending",
+
+
+reviewedBy:null,
+
+
+reviewedAt:null,
+
+
+reports:[],
+
+
+flags:[]
+
+
+},
+
+
+
+
+
+
+
+
+/* =====================
+   TRUST
+===================== */
 
 
 trust:{
@@ -142,19 +383,24 @@ trust:{
 score:0,
 
 
+verified:false,
+
+
 rating:{
+
 
 average:0,
 
+
 count:0
 
+
+}
+
+
 },
 
 
-verified:false
-
-
-},
 
 
 
@@ -162,10 +408,16 @@ verified:false
 
 
 
-// analytics
+/* =====================
+   ANALYTICS
+===================== */
 
 
 analytics:{
+
+
+
+counters:{
 
 
 views:0,
@@ -184,25 +436,9 @@ shares:0
 
 
 
+history:[]
 
 
-
-// permissions
-
-
-access:{
-
-
-visibility:
-
-data.visibility
-
-||
-
-"public",
-
-
-roles:[]
 
 },
 
@@ -211,7 +447,67 @@ roles:[]
 
 
 
-// SEO placeholder
+
+
+
+/* =====================
+   ACCESS CONTROL
+===================== */
+
+
+access:{
+
+
+
+visibility:
+
+data.visibility ||
+
+"public",
+
+
+
+read:[
+
+"*"
+
+],
+
+
+
+write:[
+
+"owner"
+
+],
+
+
+
+moderate:[
+
+"admin"
+
+],
+
+
+
+roles:[]
+
+
+
+},
+
+
+
+
+
+
+
+
+
+/* =====================
+   SEO
+===================== */
 
 
 seo:{
@@ -227,7 +523,12 @@ data.title || null,
 
 description:
 
-data.description || null
+data.description || null,
+
+
+keywords:
+
+[]
 
 
 },
@@ -237,7 +538,12 @@ data.description || null
 
 
 
-// metadata
+
+
+
+/* =====================
+   SYSTEM METADATA
+===================== */
 
 
 metadata:
@@ -246,23 +552,7 @@ PharmoraMetadata.create(
 
 options.user || null
 
-),
-
-
-
-
-
-
-// original custom data
-
-
-data:{
-
-
-...data
-
-
-}
+)
 
 
 
@@ -273,24 +563,52 @@ data:{
 
 
 
+
+
 /*
- apply SEO engine if loaded
+sync identity after UUID creation
+*/
+
+
+entity.identity.uuid =
+
+entity.id;
+
+
+
+
+
+
+
+
+
+/*
+ Apply SEO module if available
 */
 
 
 if(
+
 typeof PharmoraSlug !== "undefined"
+
 ){
+
 
 
 entity =
 
 PharmoraSlug.apply(
+
 entity
+
 );
 
 
+
 }
+
+
+
 
 
 
@@ -312,7 +630,9 @@ return entity;
 
 return {
 
+
 create
+
 
 };
 
