@@ -7,13 +7,9 @@ const RouteResolver=(()=>{
 
 
 
-async function resolve(){
-
-
-
-let path =
-location.pathname;
-
+async function resolve(
+path = location.pathname
+){
 
 
 
@@ -22,6 +18,8 @@ let slug =
 path
 
 .split("/")
+
+.filter(Boolean)
 
 .pop();
 
@@ -37,9 +35,15 @@ let collections=[
 
 "tools",
 
-"events"
+"events",
+
+"profiles",
+
+"users"
 
 ];
+
+
 
 
 
@@ -50,23 +54,47 @@ let c of collections
 ){
 
 
+
 let data =
 await getRecords(c);
 
 
 
+
 let found =
-data.find(x=>
+data.find(x=>{
 
-PharmoraRouter.slug(
 
-x.title || x.name
+let name =
 
-)
+x.title ||
 
-===slug
+x.name ||
+
+x.data?.name ||
+
+x.displayName ||
+
+x.refId ||
+
+"";
+
+
+
+return (
+
+PharmoraRouter.slug(name)
+
+===
+
+slug
 
 );
+
+
+});
+
+
 
 
 
@@ -84,6 +112,7 @@ data:found
 
 
 }
+
 
 
 }
