@@ -20,25 +20,51 @@ collection
 return data.filter(item=>{
 
 
+
+/*
+Entity v2 lifecycle
+*/
+
+
+if(
+item.lifecycle
+){
+
+
 return (
 
+item.lifecycle.status==="published"
+
+||
+
+item.lifecycle.status==="draft"
+
+);
+
+
+}
+
+
+
+
+
+
+
+/*
+Legacy approval system
+*/
+
+
+return (
 
 item.status==="approved"
 
-
 ||
 
-
-item.lifecycle?.status==="published"
-
-
-||
-
-
-!item.status
-
+item.status===undefined
 
 );
+
 
 
 });
