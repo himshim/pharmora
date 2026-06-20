@@ -416,6 +416,7 @@ console.log(
 
 
 
+
 await loadMany(
 CORE
 );
@@ -423,12 +424,11 @@ CORE
 
 
 
-
-if(window.PharmoraDatabaseReady){
-
+if(
+window.PharmoraDatabaseReady
+){
 
 await window.PharmoraDatabaseReady;
-
 
 }
 
@@ -447,7 +447,9 @@ autoRender();
 
 window.dispatchEvent(
 
-new Event("pharmora-ready")
+new Event(
+"pharmora-ready"
+)
 
 );
 
@@ -462,6 +464,9 @@ console.log(
 
 
 
+/*
+ Background loading
+*/
 
 
 setTimeout(async()=>{
@@ -474,36 +479,46 @@ BACKGROUND
 
 
 
-// logged users only
-
 if(
-localStorage.getItem("pharmora_user")
+localStorage.getItem(
+"pharmora_user"
+)
 ){
+
 
 await loadMany(
 USER
 );
 
+
 }
 
 
 
 
-// admin pages only
 
 if(
-location.pathname
-.startsWith("/admin")
+location.pathname.startsWith(
+"/admin"
+)
 ){
+
 
 await loadMany(
 ADMIN
 );
 
+
 }
 
 
+
 },800);
+
+
+
+}
+
 
 
 
@@ -524,6 +539,8 @@ loadScript
 
 
 })();
+
+
 
 
 
