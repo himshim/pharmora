@@ -141,19 +141,60 @@ normalizeRecord
 ====================== */
 
 async function updateRecord(
-collection,
-id,
-updates
+a,
+b,
+c
 ){
+
+
+/*
+ Supports:
+
+ OLD:
+ updateRecord(collection,id,data)
+
+ NEW:
+ updateRecord(id,data)
+*/
+
+
+let id;
+
+let updates;
+
+
+
+if(c !== undefined){
+
+
+id = b;
+
+updates = c;
+
+
+}
+
+
+else{
+
+
+id = a;
+
+updates = b;
+
+
+}
+
 
 
 return PharmoraDatabase.update(
 
 id,
 
-updates
+updates || {}
 
 );
+
 
 
 }
@@ -170,16 +211,25 @@ updates
 ====================== */
 
 async function deleteRecord(
-collection,
-id
+a,
+b
 ){
 
 
-return PharmoraDatabase.remove(id);
+let id =
+
+b || a;
+
+
+
+return PharmoraDatabase.remove(
+
+id
+
+);
 
 
 }
-
 
 
 
