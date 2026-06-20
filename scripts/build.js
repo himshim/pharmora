@@ -309,7 +309,7 @@ bundle(
 bundle(
 [
 
-"js/services/permission.service.js",
+
 
 "js/services/verification.service.js",
 

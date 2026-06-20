@@ -928,12 +928,15 @@ user.id,
 
 {
 
+data:{
+
+...user.data,
 
 disabled:true,
 
+disabledReason:reason
 
-disabledReason:
-reason,
+},
 
 
 disabledAt:
@@ -1028,7 +1031,15 @@ user.id,
 
 {
 
+data:{
+
+...user.data,
+
 disabled:false,
+
+disabledReason:null
+
+},
 
 
 restoredAt:
@@ -1040,6 +1051,7 @@ new Date()
 restoredBy:
 
 admin.id
+
 
 }
 
@@ -1131,8 +1143,13 @@ user.id,
 
 {
 
+data:{
 
-role,
+...user.data,
+
+role:role
+
+},
 
 
 roleUpdatedAt:

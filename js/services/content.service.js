@@ -8,67 +8,30 @@ const contentNameCache = {};
 async function getPublished(collection){
 
 
-
 let data =
-await getRecords(
-collection
-);
+await getRecords(collection);
 
 
-
-
-return data.filter(item=>{
-
-
-
-/*
-Entity v2 lifecycle
-*/
-
-
-if(
-item.lifecycle
-){
+return data.filter(x=>{
 
 
 return (
 
-item.lifecycle.status==="published"
+x.lifecycle?.status === "published"
 
-||
+&&
 
-item.lifecycle.status==="draft"
+x.moderation?.status === "approved"
+
+&&
+
+x.deleted !== true
+
 
 );
-
-
-}
-
-
-
-
-
-
-
-/*
-Legacy approval system
-*/
-
-
-return (
-
-item.status==="approved"
-
-||
-
-item.status===undefined
-
-);
-
 
 
 });
-
 
 
 }
