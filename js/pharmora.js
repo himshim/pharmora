@@ -125,6 +125,8 @@ const CORE=[
 
 "/js/services/permission.service.js",
 
+"/js/services/access.service.js",
+
 "/components/layout/header.js",
 
 "/components/layout/footer.js"
