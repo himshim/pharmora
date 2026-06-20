@@ -213,7 +213,38 @@ const MODULES={
 
 
 
+const BUNDLES={
 
+
+user:[
+
+"/dist/pharmora.user.js"
+
+],
+
+
+admin:[
+
+"/dist/pharmora.admin.js"
+
+],
+
+
+research:[
+
+"/dist/pharmora.research.js"
+
+],
+
+
+career:[
+
+"/dist/pharmora.career.js"
+
+]
+
+
+};
 
 
 
@@ -231,18 +262,6 @@ const BACKGROUND=[
 
 
 
-const USER=[
-
-"/dist/pharmora.user.js"
-
-];
-
-
-const ADMIN=[
-
-"/dist/pharmora.admin.js"
-
-];
 
 
 
@@ -404,7 +423,75 @@ renderForum(el.id);
 
 
 
+async function loadRequiredBundles(){
 
+
+
+let needed =
+new Set();
+
+
+
+
+document
+
+.querySelectorAll("[data-requires]")
+
+.forEach(el=>{
+
+
+let modules =
+el.dataset.requires
+.split(",");
+
+
+
+modules.forEach(
+
+m=>needed.add(
+
+m.trim()
+
+)
+
+);
+
+
+});
+
+
+
+
+
+
+
+for(
+let module of needed
+){
+
+
+
+if(
+BUNDLES[module]
+){
+
+
+await loadMany(
+
+BUNDLES[module]
+
+);
+
+
+}
+
+
+
+}
+
+
+
+}
 
 
 async function start(){
@@ -437,7 +524,7 @@ await window.PharmoraDatabaseReady;
 
 await loadRequiredModules();
 
-
+await loadRequiredBundles();
 
 
 autoRender();
@@ -468,56 +555,15 @@ console.log(
  Background loading
 */
 
+setTimeout(()=>{
 
-setTimeout(async()=>{
 
-
-await loadMany(
+loadMany(
 BACKGROUND
 );
 
 
-
-
-if(
-localStorage.getItem(
-"pharmora_user"
-)
-){
-
-
-await loadMany(
-USER
-);
-
-
-}
-
-
-
-
-
-if(
-location.pathname.startsWith(
-"/admin"
-)
-){
-
-
-await loadMany(
-ADMIN
-);
-
-
-}
-
-
-
 },800);
-
-
-
-}
 
 
 
