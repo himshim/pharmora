@@ -491,7 +491,19 @@ renderForum(el.id);
 
 }
 
+if(
+type==="events"
+&&
+window.PharmoraEvents
+){
 
+
+PharmoraEvents.renderEvents(
+el.id
+);
+
+
+}
 
 });
 

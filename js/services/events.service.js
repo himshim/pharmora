@@ -1,16 +1,45 @@
 /*
- Events Service
+ Events Service v2
+
+ Database-first
+ JSON fallback
 */
 
 
 async function getEvents(){
 
 
-const response =
-await fetch("/data/events.json");
+
+try{
 
 
-return await response.json();
+let events =
+await getRecords("events");
+
+
+
+if(
+events &&
+events.length
+){
+
+
+return events;
+
+
+}
+
+
+
+}
+
+
+catch(e){
+
+
+console.warn(
+"Events database unavailable, using JSON fallback"
+);
 
 
 }
@@ -19,7 +48,31 @@ return await response.json();
 
 
 
+
+
+const response =
+await fetch(
+"/data/events.json"
+);
+
+
+
+return await response.json();
+
+
+
+}
+
+
+
+
+
+
+
+
+
 async function renderEvents(id){
+
 
 
 const root =
@@ -35,6 +88,9 @@ return;
 
 
 
+
+
+
 const events =
 await getEvents();
 
@@ -42,44 +98,63 @@ await getEvents();
 
 
 
+
+
 root.innerHTML =
+
+
 events.map(event=>`
+
+
 
 <div class="card">
 
 
 <h2>
 
-📅 ${event.title}
+📅 ${event.title || ""}
 
 </h2>
 
 
+
 <p>
 
-${event.description}
+${event.description || ""}
 
 </p>
+
+
 
 
 <br>
 
 
+
+
 <div class="badge">
 
-${event.type}
+${event.type || event.category || ""}
 
 </div>
+
+
+
+
 
 
 <br><br>
 
 
+
+
 <small>
 
-${event.date}
+${event.date || ""}
+
 •
-${event.mode}
+
+${event.mode || ""}
 
 </small>
 
@@ -88,8 +163,33 @@ ${event.mode}
 </div>
 
 
+
 `).join("");
 
 
 
 }
+
+
+
+
+
+
+
+
+
+/*
+ Export Service
+*/
+
+
+window.PharmoraEvents = {
+
+
+getEvents,
+
+
+renderEvents
+
+
+};
