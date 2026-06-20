@@ -1,6 +1,8 @@
 /*
  Pharmora Data Engine
- Provider Manager
+ Provider Manager v2
+
+ Safe provider resolver
 */
 
 
@@ -14,11 +16,22 @@ let providers={};
 
 
 
+/* =====================
+   REGISTER PROVIDER
+===================== */
+
 
 function register(
 name,
 provider
 ){
+
+
+if(!name || !provider){
+
+return;
+
+}
 
 
 
@@ -35,16 +48,56 @@ providers[name]=provider;
 
 
 
+/* =====================
+   GET ACTIVE PROVIDER
+===================== */
+
 
 function get(){
 
 
 
-let selected =
+let selected="local";
 
-PharmoraConfig.get(
-"provider"
+
+
+
+try{
+
+
+if(
+typeof PharmoraConfig !== "undefined"
+){
+
+
+selected =
+
+PharmoraConfig.get("provider")
+
+||
+
+"local";
+
+
+}
+
+
+}
+
+
+catch(e){
+
+
+console.warn(
+"Provider config unavailable. Using local."
 );
+
+
+}
+
+
+
+
 
 
 
@@ -55,21 +108,63 @@ providers[selected];
 
 
 
+
+
+
+/*
+Fallback protection
+
+Example:
+config = supabase
+but supabase failed loading
+*/
+
+
 if(!provider){
 
 
-throw Error(
 
-"Database provider missing: "
+console.warn(
 
-+
-
-selected
+"Database provider unavailable:",
+selected,
+"→ fallback local"
 
 );
 
 
+
+provider =
+
+providers.local;
+
+
+
 }
+
+
+
+
+
+
+
+
+if(!provider){
+
+
+
+throw Error(
+
+"No database provider available"
+
+);
+
+
+
+}
+
+
+
 
 
 
@@ -87,10 +182,20 @@ return provider;
 
 
 
+
+/* =====================
+   LIST PROVIDERS
+===================== */
+
+
 function all(){
 
 
-return providers;
+return {
+
+...providers
+
+};
 
 
 }
@@ -105,11 +210,13 @@ return providers;
 
 return {
 
+
 register,
 
 get,
 
 all
+
 
 };
 
@@ -123,9 +230,17 @@ all
 
 
 
-/*
- Register default providers
-*/
+
+
+/* =====================
+   DEFAULT PROVIDERS
+===================== */
+
+
+if(
+typeof PharmoraLocalProvider
+!== "undefined"
+){
 
 
 PharmoraProviders.register(
@@ -137,17 +252,20 @@ PharmoraLocalProvider
 );
 
 
+}
 
-/*
- Register Supabase if available
-*/
+
+
+
+
+
 
 
 if(
 typeof PharmoraSupabaseProvider
-!== 
-"undefined"
+!== "undefined"
 ){
+
 
 
 PharmoraProviders.register(
@@ -157,6 +275,7 @@ PharmoraProviders.register(
 PharmoraSupabaseProvider
 
 );
+
 
 
 }
