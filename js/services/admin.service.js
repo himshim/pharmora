@@ -329,8 +329,6 @@ new Date()
 
 await updateRecord(
 
-collection,
-
 id,
 
 {
@@ -444,13 +442,46 @@ id
 
 await updateRecord(
 
-collection,
-
 id,
 
 {
 
-status:"approved"
+
+moderation:{
+
+
+status:"approved",
+
+
+reviewedBy:
+
+currentUser?.()?.id || null,
+
+
+reviewedAt:
+
+new Date()
+.toISOString()
+
+
+},
+
+
+
+lifecycle:{
+
+
+status:"published",
+
+
+publishedAt:
+
+new Date()
+.toISOString()
+
+
+}
+
 
 }
 
@@ -525,13 +556,30 @@ id
 
 await updateRecord(
 
-collection,
-
 id,
 
 {
 
-status:"rejected"
+
+moderation:{
+
+
+status:"rejected",
+
+
+reviewedBy:
+
+currentUser?.()?.id || null,
+
+
+reviewedAt:
+
+new Date()
+.toISOString()
+
+
+}
+
 
 }
 
@@ -708,18 +756,28 @@ item:item
 
 await updateRecord(
 
-collection,
-
 id,
 
 {
 
 deleted:true,
 
+
 deletedAt:
 
 new Date()
-.toISOString()
+.toISOString(),
+
+
+
+lifecycle:{
+
+
+status:"deleted"
+
+
+}
+
 
 }
 
@@ -855,15 +913,26 @@ id
 
 await updateRecord(
 
-collection,
-
 id,
 
 {
 
+
 deleted:false,
 
-deletedAt:null
+
+deletedAt:null,
+
+
+
+lifecycle:{
+
+
+status:"draft"
+
+
+}
+
 
 }
 
@@ -900,12 +969,29 @@ async function dismissReport(id){
 
 
 await updateRecord(
-"reports",
+
 id,
+
 {
-status:"dismissed",
-reviewedAt:new Date().toISOString()
+
+
+moderation:{
+
+
+status:"dismissed"
+
+
+},
+
+
+reviewedAt:
+
+new Date()
+.toISOString()
+
+
 }
+
 );
 
 if(
@@ -969,23 +1055,59 @@ return;
 
 
 await updateRecord(
-report.collection,
+
 report.contentId,
+
 {
+
+
 deleted:true,
-deletedAt:new Date().toISOString()
+
+
+deletedAt:
+new Date().toISOString(),
+
+
+
+lifecycle:{
+
+
+status:"deleted"
+
+
 }
+
+
+}
+
 );
 
 
 
 await updateRecord(
-"reports",
+
 reportId,
+
 {
-status:"removed",
-reviewedAt:new Date().toISOString()
+
+
+moderation:{
+
+
+status:"removed"
+
+
+},
+
+
+reviewedAt:
+
+new Date()
+.toISOString()
+
+
 }
+
 );
 
 if(
