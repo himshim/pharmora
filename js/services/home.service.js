@@ -85,7 +85,8 @@ try{
 
 
 let data =
-await getRecords(type);
+await getPublished(type);
+
 
 
 result.push(
@@ -115,15 +116,29 @@ return result
 
 .sort((a,b)=>
 
+
 new Date(
-b.createdAt || 0
+
+b.metadata?.createdAt ||
+
+b.createdAt ||
+
+0
+
 )
 
 -
 
 new Date(
-a.createdAt || 0
+
+a.metadata?.createdAt ||
+
+a.createdAt ||
+
+0
+
 )
+
 
 )
 
