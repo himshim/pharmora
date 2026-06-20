@@ -115,17 +115,17 @@ await loadScript(file);
 
 const CORE=[
 
-
 "/js/app.js",
 
 "/dist/pharmora.database.js",
+
+"/js/services/auth.service.js",
 
 "/components/layout/header.js",
 
 "/components/layout/footer.js"
 
-
-];
+]
 
 
 
