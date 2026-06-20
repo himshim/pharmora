@@ -1,6 +1,8 @@
 /*
  Pharmora Data Engine
- Local Storage Provider
+ Local Storage Provider v2
+
+ Cloud-compatible local adapter
 */
 
 
@@ -12,6 +14,12 @@ const PREFIX =
 
 
 
+
+
+
+/* =====================
+   STORAGE HELPERS
+===================== */
 
 
 function key(collection){
@@ -28,7 +36,6 @@ return PREFIX + collection;
 
 
 function read(collection){
-
 
 
 try{
@@ -53,16 +60,20 @@ key(collection)
 catch(e){
 
 
+console.warn(
+"Database read failed",
+collection,
+e
+);
+
+
 return [];
 
 
 }
 
 
-
 }
-
-
 
 
 
@@ -74,6 +85,7 @@ function write(
 collection,
 records
 ){
+
 
 
 localStorage.setItem(
@@ -95,6 +107,118 @@ JSON.stringify(records)
 
 
 
+/* =====================
+   DEEP MERGE ENGINE
+
+   prevents:
+   metadata overwrite
+   analytics loss
+   nested object loss
+===================== */
+
+
+function isObject(value){
+
+
+return (
+
+value &&
+
+typeof value === "object" &&
+
+!Array.isArray(value)
+
+);
+
+
+}
+
+
+
+
+
+
+
+function deepMerge(
+target={},
+source={}
+){
+
+
+let output = {
+
+...target
+
+};
+
+
+
+
+Object.keys(source)
+.forEach(key=>{
+
+
+
+if(
+
+isObject(source[key]) &&
+
+isObject(target[key])
+
+){
+
+
+
+output[key] =
+
+deepMerge(
+
+target[key],
+
+source[key]
+
+);
+
+
+
+}
+
+
+
+else{
+
+
+output[key] =
+source[key];
+
+
+}
+
+
+
+});
+
+
+
+
+
+return output;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================
+   CREATE
+===================== */
+
 
 async function create(
 collection,
@@ -113,8 +237,11 @@ items.push(record);
 
 
 write(
+
 collection,
+
 items
+
 );
 
 
@@ -134,6 +261,11 @@ return record;
 
 
 
+/* =====================
+   FIND
+===================== */
+
+
 async function find(
 collection,
 options={}
@@ -146,47 +278,98 @@ read(collection);
 
 
 
+
+
+/*
+hide deleted records
+*/
+
+
 items =
-items.filter(
 
-item=>
+items.filter(item=>{
 
-!item.metadata?.deleted
+
+return !(
+
+item.metadata?.deleted ||
+
+item.lifecycle?.status === "deleted"
 
 );
 
 
+});
 
-/*
-simple filtering
-*/
+
+
+
+
 
 
 if(options.type){
 
 
+
 items =
+
 items.filter(
 
 x=>x.type===options.type
 
 );
 
+
+
 }
+
+
+
+
 
 
 
 if(options.subtype){
 
 
+
 items =
+
 items.filter(
 
 x=>x.subtype===options.subtype
 
 );
 
+
+
 }
+
+
+
+
+
+
+
+if(options.id){
+
+
+items =
+
+items.filter(
+
+x=>
+
+x.id===options.id ||
+
+x.refId===options.id
+
+);
+
+
+}
+
+
 
 
 
@@ -205,10 +388,16 @@ return items;
 
 
 
+
+/* =====================
+   UPDATE
+===================== */
+
+
 async function update(
 collection,
 id,
-updates
+updates={}
 ){
 
 
@@ -222,41 +411,70 @@ let updated=null;
 
 
 
+
+
+
 items =
 
 items.map(item=>{
 
 
-if(item.id===id || item.refId===id){
 
 
 
-updated={
+if(
+
+item.id===id ||
+
+item.refId===id
+
+){
 
 
-...item,
 
 
-...updates,
 
 
-metadata:
+updated =
+
+deepMerge(
+
+item,
+
+updates
+
+);
+
+
+
+
+
+
+
+
+updated.metadata =
 
 PharmoraMetadata.update(
 
-item.metadata || {}
+updated.metadata || {}
 
-)
+);
 
 
-};
+
+
+
 
 
 
 return updated;
 
 
+
 }
+
+
+
 
 
 
@@ -270,10 +488,17 @@ return item;
 
 
 
+
+
 write(
+
 collection,
+
 items
+
 );
+
+
 
 
 
@@ -290,6 +515,11 @@ return updated;
 
 
 
+
+
+/* =====================
+   SOFT DELETE
+===================== */
 
 
 async function remove(
@@ -307,18 +537,44 @@ id,
 
 {
 
+
+
 metadata:{
 
+
 deleted:true,
+
 
 deletedAt:
 
 new Date()
 .toISOString()
 
-}
+
+},
+
+
+
+
+lifecycle:{
+
+
+status:"deleted",
+
+
+deletedAt:
+
+new Date()
+.toISOString()
+
 
 }
+
+
+
+}
+
+
 
 );
 
@@ -336,6 +592,7 @@ new Date()
 
 return {
 
+
 create,
 
 find,
@@ -343,6 +600,7 @@ find,
 update,
 
 remove
+
 
 };
 
