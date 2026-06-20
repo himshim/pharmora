@@ -44,7 +44,20 @@ collection
 
 
 
+let cached =
+PharmoraCache.get(
+type
+);
 
+
+
+if(cached){
+
+
+return cached;
+
+
+}
 
 
 
@@ -81,7 +94,10 @@ collection,
 
 
 
-
+PharmoraCache.set(
+type,
+records
+);
 
 
 

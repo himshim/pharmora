@@ -194,7 +194,7 @@ bundle(
 "js/services/database/core/engine.js",
 "js/services/database/index.js",
 
-
+"js/services/database/cache/cache.js",
 "js/services/database.service.js",
 "js/services/database/init.js",
 "js/services/database/loader.js"
