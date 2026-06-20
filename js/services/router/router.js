@@ -30,6 +30,22 @@ function createURL(item,type){
 
 
 
+let title =
+
+item.title ||
+
+item.data?.name ||
+
+item.name ||
+
+item.refId ||
+
+item.id;
+
+
+
+
+
 if(type==="books"){
 
 
@@ -37,12 +53,13 @@ return (
 
 "/library/books/" +
 
-slug(item.title)
+slug(title)
 
 );
 
 
 }
+
 
 
 
@@ -54,12 +71,32 @@ return (
 
 "/library/resources/" +
 
-slug(item.title)
+slug(title)
 
 );
 
 
 }
+
+
+
+
+
+
+if(type==="events"){
+
+
+return (
+
+"/events/" +
+
+slug(title)
+
+);
+
+
+}
+
 
 
 
@@ -72,12 +109,41 @@ return (
 
 "/tools/" +
 
-slug(item.title)
+slug(title)
 
 );
 
 
 }
+
+
+
+
+
+
+
+if(
+
+type==="users" ||
+
+type==="profiles"
+
+){
+
+
+return (
+
+"/profile/" +
+
+slug(title)
+
+);
+
+
+}
+
+
+
 
 
 
@@ -92,7 +158,6 @@ item.id
 
 
 }
-
 
 
 
