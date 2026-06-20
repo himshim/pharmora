@@ -37,7 +37,29 @@ return createRecord(
 userId:user.id,
 
 
-displayName:user.name,
+title:
+
+user.data?.name ||
+
+user.name ||
+
+"Pharmora User",
+
+
+displayName:
+
+user.data?.name ||
+
+user.name ||
+
+"Pharmora User",
+
+
+email:
+
+user.data?.email ||
+
+user.email,
 
 
 /*
@@ -110,7 +132,11 @@ contact:{
 
 email:{
 
-value:user.email,
+value:
+
+user.data?.email ||
+
+user.email,
 
 visible:false
 
