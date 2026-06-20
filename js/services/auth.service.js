@@ -1,24 +1,21 @@
 /*
- Pharmora Authentication Adapter
- Demo + Cloud Ready
+ Pharmora Authentication Adapter v2
+ Database Entity Powered
+ Demo + Supabase Ready
 */
-
-
-
 
 
 let authConfig=null;
 
 
-
-
-
-
-
+/*
+=========================
+ CONFIG
+=========================
+*/
 
 
 async function loadAuthConfig(){
-
 
 
 if(authConfig){
@@ -28,31 +25,20 @@ return authConfig;
 }
 
 
-
-
-
 try{
-
 
 
 authConfig =
 await fetch(
-
-appPath(
-"config/auth.json"
-)
-
+"/config/auth.json"
 )
 .then(r=>r.json());
-
 
 
 }
 
 
-
 catch(error){
-
 
 
 authConfig={
@@ -62,17 +48,12 @@ provider:"demo"
 };
 
 
-
 }
-
-
-
 
 
 return authConfig;
 
 
-
 }
 
 
@@ -80,16 +61,14 @@ return authConfig;
 
 
 
-
-
-
+/*
+=========================
+ AUTH ENTRY POINTS
+=========================
+*/
 
 
 async function registerUser(data){
-
-
-
-
 
 
 const config =
@@ -97,26 +76,15 @@ await loadAuthConfig();
 
 
 
-
-
-
-
 if(config.provider==="demo"){
 
 
-
-return demoRegister(
+return await demoRegister(
 data
 );
 
 
-
 }
-
-
-
-
-
 
 
 
@@ -131,29 +99,19 @@ typeof supabaseRegister==="function"
 ){
 
 
-
-return supabaseRegister(
+return await supabaseRegister(
 data
 );
 
 
-
 }
-
-
-
-
-
 
 
 
 return null;
 
 
-
 }
-
-
 
 
 
@@ -170,37 +128,21 @@ password
 
 
 
-
-
-
 const config =
 await loadAuthConfig();
-
-
-
-
 
 
 
 if(config.provider==="demo"){
 
 
-
-return demoLogin(
-
+return await demoLogin(
 email,
-
 password
-
 );
 
 
-
 }
-
-
-
-
 
 
 
@@ -216,30 +158,19 @@ typeof supabaseLogin==="function"
 ){
 
 
-
-return supabaseLogin(
-
+return await supabaseLogin(
 email,
-
 password
-
 );
 
 
-
 }
-
-
-
-
-
 
 
 
 return null;
 
 
-
 }
 
 
@@ -248,56 +179,103 @@ return null;
 
 
 
-
-
+/*
+=========================
+ SESSION
+=========================
+*/
 
 
 
 function currentUser(){
 
 
-
-
-
-
 try{
-
 
 
 return JSON.parse(
 
 localStorage.getItem(
-
 "currentUser"
-
 )
 
 );
 
 
-
 }
-
 
 
 catch(error){
 
 
-
 return null;
 
 
+}
+
 
 }
 
 
 
+
+
+
+
+function setSession(user){
+
+
+let session={
+
+
+id:user.id,
+
+
+name:
+user.data?.name ||
+user.name ||
+user.title,
+
+
+email:
+user.data?.email ||
+user.email,
+
+
+role:
+user.data?.role ||
+user.role ||
+"member"
+
+
+};
+
+
+
+localStorage.setItem(
+
+"currentUser",
+
+JSON.stringify(session)
+
+);
+
+
+
+if(
+typeof clearPermissionCache==="function"
+){
+
+clearPermissionCache();
+
 }
 
 
 
+return session;
 
 
+}
 
 
 
@@ -310,76 +288,31 @@ function logoutUser(){
 
 
 
-
-
-
 localStorage.removeItem(
-
 "currentUser"
-
 );
-
-
-
-
 
 
 
 if(
-
 typeof clearPermissionCache==="function"
-
 ){
-
-
 
 clearPermissionCache();
 
-
-
 }
 
 
 
-
-
-
-
-
-if(typeof showToast==="function"){
-
-
-
-showToast(
-
+showToast?.(
 "Logged out",
-
 "info"
-
 );
-
-
-
-}
-
-
-
-
-
 
 
 
 location.href =
-
-appPath(
-
-"auth/login.html"
-
-);
-
-
-
-
+"/auth/login.html";
 
 
 }
@@ -392,21 +325,18 @@ appPath(
 
 
 
-
+/*
+=========================
+ PROFILE UPDATE
+=========================
+*/
 
 
 async function updateProfile(updates){
 
 
-
-
-
-
 let user =
 currentUser();
-
-
-
 
 
 
@@ -418,36 +348,20 @@ return null;
 
 
 
+await updateRecord(
+user.id,
+updates
+);
 
 
 
-
-user={
-
-
+let updated={
 
 ...user,
 
-
-
-...updates,
-
-
-
-updatedAt:
-
-new Date()
-.toISOString()
-
-
+...updates
 
 };
-
-
-
-
-
-
 
 
 
@@ -455,58 +369,49 @@ localStorage.setItem(
 
 "currentUser",
 
-JSON.stringify(user)
+JSON.stringify(updated)
 
 );
-
-
-
-
-
 
 
 
 showToast?.(
-
 "Profile updated",
-
 "success"
-
 );
 
 
 
-
-
-
-
-
-return user;
-
-
-
-
+return updated;
 
 
 }
 
+
+
+
+
+
+
+
+
+
 /*
 =========================
- REFRESH CURRENT SESSION
+ REFRESH SESSION
 =========================
 */
 
 
-function refreshCurrentUser(){
+async function refreshCurrentUser(){
 
 
-
-let user =
+let session =
 currentUser();
 
 
 
-if(!user){
+if(!session){
 
 return null;
 
@@ -514,17 +419,15 @@ return null;
 
 
 
-
 let users =
-getDemoUsers();
-
+await getDemoUsers();
 
 
 
 let latest =
 users.find(
 
-x=>x.id===user.id
+u=>u.id===session.id
 
 );
 
@@ -532,77 +435,36 @@ x=>x.id===user.id
 
 if(!latest){
 
-return user;
+return session;
 
 }
 
+
+
 if(
 
+latest.data?.disabled ||
 latest.disabled
 
 ){
 
 
-
 logoutUser();
-
 
 
 return null;
 
 
-
 }
 
 
 
-
-let session={
-
-...latest
-
-};
-
-
-
-delete session.password;
-
-
-
-
-
-localStorage.setItem(
-
-"currentUser",
-
-JSON.stringify(session)
-
+return setSession(
+latest
 );
 
 
-
-
-
-if(
-
-typeof clearPermissionCache==="function"
-
-){
-
-clearPermissionCache();
-
 }
-
-
-
-
-return session;
-
-
-
-}
-
-
 
 
 
@@ -613,68 +475,22 @@ return session;
 
 
 /*
-
- DEMO AUTH ENGINE
-
+=========================
+ DATABASE USER STORAGE
+=========================
 */
 
 
+async function getDemoUsers(){
 
 
 
-
-
-
-
-
-function getDemoUsers(){
-
-
-
-
-
-
-try{
-
-
-
-
-
-return JSON.parse(
-
-localStorage.getItem(
-
+return await getRecords(
 "users"
-
-)
-
-||
-
-"[]"
-
 );
 
 
 
-
-
-}
-
-
-
-
-catch(error){
-
-
-
-return [];
-
-
-
-}
-
-
-
 }
 
 
@@ -684,39 +500,20 @@ return [];
 
 
 
+async function saveDemoUsers(){
 
 
 
-
-function saveDemoUsers(users){
-
-
-
-
-
-
-localStorage.setItem(
-
-"users",
-
-JSON.stringify(
-
-users
-
-)
-
+console.warn(
+"saveDemoUsers deprecated - Database v2 active"
 );
 
 
 
-
+return true;
 
 
 }
-
-
-
-
 
 
 
@@ -728,13 +525,9 @@ users
 function cleanEmail(email){
 
 
-
 return email
-
 .trim()
-
 .toLowerCase();
-
 
 
 }
@@ -749,55 +542,43 @@ return email
 
 
 
+/*
+=========================
+ REGISTER
+=========================
+*/
 
 
-function demoRegister(data){
 
-
-
-
-
+async function demoRegister(data){
 
 
 
 let users =
-getDemoUsers();
-
-
-
-
-
+await getDemoUsers();
 
 
 
 let email =
 cleanEmail(
-
 data.email
-
 );
-
-
-
-
-
-
-
 
 
 
 let exists =
 users.find(
 
-u=>u.email===email
+u=>
+
+(
+u.data?.email ||
+u.email
+)
+
+===email
 
 );
-
-
-
-
-
-
 
 
 
@@ -805,26 +586,14 @@ if(exists){
 
 
 
-
-
-
 showToast?.(
-
 "Account already exists",
-
 "error"
-
 );
 
 
 
-
-
-
 return null;
-
-
-
 
 
 }
@@ -833,118 +602,36 @@ return null;
 
 
 
+let user =
+await createRecord(
 
+"users",
 
-
-
-
-
-
-
-let user={
-
-
-
-
-
-
-id:
-
-crypto.randomUUID(),
-
-
-
-
+{
 
 
 name:
-
 data.name.trim(),
 
 
-
-
-
-
-email:email,
-
-
-
-
+email,
 
 
 password:
-
 data.password,
 
 
-
-
-
-
 role:
-
 data.role || "member",
 
 
-
-
-
-
-
 permissions:
-
-data.permissions || [],
-
+data.permissions || []
 
 
-
-
-
-
-
-createdAt:
-
-new Date()
-.toISOString()
-
-
-
-
-
-
-};
-
-
-
-
-
-
-
-
-
-
-users.push(
-
-user
+}
 
 );
-
-
-
-
-
-
-
-
-
-saveDemoUsers(
-
-users
-
-);
-
-
 
 
 
@@ -955,7 +642,11 @@ if(
 typeof createUserProfile==="function"
 ){
 
-createUserProfile(user);
+
+await createUserProfile(
+user
+);
+
 
 }
 
@@ -965,69 +656,24 @@ createUserProfile(user);
 
 
 
-
-let session={
-
-...user
-
-};
-
-
-
-
-
-
-delete session.password;
-
-
-
-
-
-
-
-
-
-localStorage.setItem(
-
-"currentUser",
-
-JSON.stringify(session)
-
+let session =
+setSession(
+user
 );
-
-
-
-
-
-
 
 
 
 
 showToast?.(
-
 "Account created successfully",
-
 "success"
-
 );
-
-
-
-
-
-
-
 
 
 
 return session;
 
 
-
-
-
-
 }
 
 
@@ -1039,29 +685,22 @@ return session;
 
 
 
+/*
+=========================
+ LOGIN
+=========================
+*/
 
 
-
-
-function demoLogin(
+async function demoLogin(
 email,
 password
 ){
 
 
 
-
-
-
-
-
 let users =
-getDemoUsers();
-
-
-
-
-
+await getDemoUsers();
 
 
 
@@ -1071,28 +710,35 @@ cleanEmail(email);
 
 
 
-
-
-
-
-
 let user =
 users.find(
 
 u=>
 
-u.email===email
+(
+
+u.data?.email ||
+u.email
+
+)
+
+===email
+
 
 &&
 
-u.password===password
+
+(
+
+u.data?.password ||
+u.password
+
+)
+
+===password
+
 
 );
-
-
-
-
-
 
 
 
@@ -1101,51 +747,37 @@ u.password===password
 if(!user){
 
 
-
-
-
-
 showToast?.(
-
 "Invalid login details",
-
 "error"
-
 );
-
-
-
-
 
 
 return null;
 
 
-
-
-
 }
+
+
+
+
 
 if(
 
+user.data?.disabled ||
 user.disabled
 
 ){
 
 
-
 showToast?.(
-
 "Account disabled. Contact administrator.",
-
 "error"
-
 );
 
 
 
 return null;
-
 
 
 }
@@ -1155,86 +787,37 @@ return null;
 
 
 
+await updateRecord(
 
+user.id,
 
-
-
-let session={
-
-
-
-
-
-
-...user,
-
-
-
-
-
-
+{
 
 lastLogin:
 
 new Date()
 .toISOString()
 
-
-
-
-
-
-
-};
-
-
-
-
-
-
-
-
-
-
-delete session.password;
-
-
-
-
-
-
-
-
-
-localStorage.setItem(
-
-"currentUser",
-
-JSON.stringify(session)
+}
 
 );
 
 
 
 
+let session =
+setSession(
+user
+);
 
 
 
 
 
 showToast?.(
-
 "Login successful",
-
 "success"
-
 );
-
-
-
-
-
-
 
 
 
@@ -1242,11 +825,15 @@ showToast?.(
 return session;
 
 
-
-
-
-
 }
+
+
+
+
+
+
+
+
 
 /*
 =========================
@@ -1255,7 +842,7 @@ return session;
 */
 
 
-function disableUser(
+async function disableUser(
 userId,
 reason=""
 ){
@@ -1276,18 +863,15 @@ return false;
 
 
 
-
 let users =
-getDemoUsers();
+await getDemoUsers();
 
 
 
 
 let user =
 users.find(
-
 x=>x.id===userId
-
 );
 
 
@@ -1302,27 +886,21 @@ return false;
 
 
 
+let role =
+user.data?.role ||
+user.role;
 
-// nobody disables owner
 
-if(
 
-user.role==="owner"
 
-){
-
+if(role==="owner"){
 
 return false;
-
 
 }
 
 
 
-
-
-
-// admin cannot disable admin
 
 if(
 
@@ -1330,15 +908,11 @@ admin.role!=="owner"
 
 &&
 
-user.role==="admin"
+role==="admin"
 
 ){
 
-
-
 return false;
-
-
 
 }
 
@@ -1348,34 +922,33 @@ return false;
 
 
 
-user.disabled=true;
+await updateRecord(
+
+user.id,
+
+{
 
 
-
-user.disabledReason =
-reason;
+disabled:true,
 
 
+disabledReason:
+reason,
 
-user.disabledAt =
+
+disabledAt:
 
 new Date()
-.toISOString();
+.toISOString(),
 
 
+disabledBy:
+
+admin.id
 
 
-user.disabledBy =
+}
 
-admin.id;
-
-
-
-
-
-
-saveDemoUsers(
-users
 );
 
 
@@ -1384,17 +957,18 @@ users
 return true;
 
 
-
 }
 
-/*
-=========================
- RESTORE USER
-=========================
-*/
 
 
-function restoreUser(
+
+
+
+
+
+
+
+async function restoreUser(
 userId
 ){
 
@@ -1413,19 +987,16 @@ return false;
 
 
 
-
-
 let users =
-getDemoUsers();
+await getDemoUsers();
 
 
 
 let user =
 users.find(
-
 x=>x.id===userId
-
 );
+
 
 
 
@@ -1437,15 +1008,13 @@ return false;
 
 
 
+let role =
+user.data?.role ||
+user.role;
 
 
-// protect owner
 
-if(
-
-user.role==="owner"
-
-){
+if(role==="owner"){
 
 return false;
 
@@ -1453,65 +1022,27 @@ return false;
 
 
 
+await updateRecord(
+
+user.id,
+
+{
+
+disabled:false,
 
 
-
-// admin cannot restore admins
-
-if(
-
-admin.role!=="owner"
-
-&&
-
-user.role==="admin"
-
-){
-
-return false;
-
-}
-
-
-
-
-
-
-
-delete user.disabled;
-
-
-delete user.disabledReason;
-
-
-delete user.disabledAt;
-
-
-delete user.disabledBy;
-
-
-
-
-
-
-user.restoredAt =
+restoredAt:
 
 new Date()
-.toISOString();
+.toISOString(),
 
 
+restoredBy:
 
-user.restoredBy =
+admin.id
 
-admin.id;
+}
 
-
-
-
-
-
-saveDemoUsers(
-users
 );
 
 
@@ -1519,17 +1050,19 @@ users
 return true;
 
 
-
 }
 
-/*
-=========================
- OWNER USER ACTIONS
-=========================
-*/
 
 
-function changeUserRole(
+
+
+
+
+
+
+
+
+async function changeUserRole(
 userId,
 role
 ){
@@ -1549,29 +1082,21 @@ owner.role!=="owner"
 
 ){
 
-
-
 return false;
-
-
 
 }
 
 
 
 
-
 let users =
-getDemoUsers();
-
+await getDemoUsers();
 
 
 
 let user =
 users.find(
-
 x=>x.id===userId
-
 );
 
 
@@ -1584,54 +1109,50 @@ return false;
 
 
 
+let oldRole =
+user.data?.role ||
+user.role;
 
 
-if(
 
-user.role==="owner"
 
-){
-
+if(oldRole==="owner"){
 
 return false;
-
 
 }
 
 
 
 
+await updateRecord(
 
-user.role =
-role;
+user.id,
+
+{
 
 
+role,
 
-user.roleUpdatedAt =
+
+roleUpdatedAt:
 
 new Date()
-.toISOString();
+.toISOString(),
 
 
+roleUpdatedBy:
+
+owner.id
 
 
-user.roleUpdatedBy =
+}
 
-owner.id;
-
-
-
-
-
-saveDemoUsers(
-users
 );
 
 
 
-
 return true;
-
 
 
 }
