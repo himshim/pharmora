@@ -113,7 +113,7 @@ await loadScript(file);
 
 
 
-const CORE=[
+CORE:[
 
 "/js/app.js",
 
@@ -121,12 +121,15 @@ const CORE=[
 
 "/js/services/auth.service.js",
 
+"/js/services/profile.service.js",
+
+"/js/services/permission.service.js",
+
 "/components/layout/header.js",
 
 "/components/layout/footer.js"
 
 ]
-
 
 
 
