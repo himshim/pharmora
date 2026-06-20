@@ -95,9 +95,7 @@ await getResources();
 
 
 const approved =
-
 resources.filter(r=>{
-
 
 return (
 
@@ -113,9 +111,7 @@ r.lifecycle?.status==="published"
 
 );
 
-
 });
-
 
 
 
@@ -125,7 +121,15 @@ r.lifecycle?.status==="published"
 
 root.innerHTML =
 
-approved.map(r=>`
+approved.map(r=>{
+
+
+let data =
+r.data || {};
+
+
+
+return `
 
 
 
@@ -137,7 +141,6 @@ approved.map(r=>`
 📄 ${r.title || ""}
 
 </h2>
-
 
 
 
@@ -154,12 +157,12 @@ ${r.description || ""}
 
 
 
+
 <div class="badge">
 
-${r.subject || ""}
+${data.type || r.type || ""}
 
 </div>
-
 
 
 
@@ -172,14 +175,17 @@ ${r.subject || ""}
 
 <p>
 
-${r.course || ""}
+${data.course || r.course || ""}
+
 •
-${r.semester || ""}
+
+${data.semester || r.semester || ""}
+
 •
-${r.unit || ""}
+
+${data.unit || r.unit || ""}
 
 </p>
-
 
 
 
@@ -188,6 +194,7 @@ ${r.unit || ""}
 <p>
 
 👤 ${
+data.author ||
 r.author?.name ||
 r.author ||
 "Unknown"
@@ -199,9 +206,8 @@ r.author ||
 
 
 
-
-
 ${
+data.file?.url ||
 r.file?.url
 
 ?
@@ -211,17 +217,9 @@ r.file?.url
 <br>
 
 <a
-
 class="btn btn-primary"
 
-onclick="
-trackEvent(
-'resource_download',
-'${r.id}'
-)
-"
-
-href="${r.file.url}">
+href="${data.file?.url || r.file.url}">
 
 Open
 
@@ -240,21 +238,12 @@ Open
 </div>
 
 
+`;
 
-`).join("");
+
+
+}).join("");
 
 
 
 }
-
-/*
- Export Service
-*/
-
-window.PharmoraResources = {
-
-getResources,
-
-renderResources
-
-};

@@ -464,6 +464,20 @@ el.id
 }
 
 if(
+type==="resources"
+&&
+window.PharmoraResources
+){
+
+
+PharmoraResources.renderResources(
+el.id
+);
+
+
+}
+
+if(
 type==="books"
 &&
 window.PharmoraBooks
