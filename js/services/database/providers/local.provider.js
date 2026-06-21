@@ -281,25 +281,25 @@ read(collection);
 
 
 /*
-hide deleted records
+hide deleted records unless requested
 */
 
+if(!options.includeDeleted){
 
 items =
-
 items.filter(item=>{
-
 
 return !(
 
 item.metadata?.deleted ||
 
-item.lifecycle?.status === "deleted"
+item.lifecycle?.status==="deleted"
 
 );
 
-
 });
+
+}
 
 
 
