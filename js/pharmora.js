@@ -408,7 +408,66 @@ await loadMany(
 
 
 
-function autoRender(){
+async function autoRender(){
+
+
+
+if(
+typeof RouteResolver!=="undefined"
+){
+
+
+let route =
+await RouteResolver.resolve();
+
+
+if(route){
+
+
+let main =
+document.querySelector("main");
+
+
+if(main){
+
+
+let item =
+route.data;
+
+
+main.innerHTML = `
+
+<section class="container section">
+
+<h1>${item.title || item.name || item.data?.name}</h1>
+
+<p>${item.description || ""}</p>
+
+<div class="card">
+
+<b>Type:</b> ${route.type}
+
+<br>
+
+<b>ID:</b> ${item.refId || item.id}
+
+</div>
+
+</section>
+
+`;
+
+
+return;
+
+
+}
+
+
+}
+
+
+}
 
 
 
@@ -652,7 +711,7 @@ ROUTER
 );
 
 
-autoRender();
+await autoRender();
 
 
 
