@@ -82,85 +82,53 @@ await getMyNotifications();
 
 
 
-let combined = [
-
-...personal,
-
-...notices
-
-];
+box.innerHTML = `
 
 
+<h3>
+👤 Your Notifications
+</h3>
 
-
-
-
-
-box.innerHTML =
-
-combined.length
-
-?
-
-combined.map(item=>`
-
-
-
-<div class="notice-item">
-
-
-
-<strong>
-
-${item.title}
-
-</strong>
-
-
-
-<p>
-
-${item.message}
-
-</p>
-
-
-
-<small>
 
 ${
-
-item.createdAt ||
-
-item.date ||
-
-""
-
+personal.length
+?
+personal.map(renderNotice).join("")
+:
+"<p>No personal notifications</p>"
 }
 
-</small>
+
+<br>
 
 
-
-</div>
-
-
-
-`).join("")
+<h3>
+📢 Announcements
+</h3>
 
 
+${
+notices.length
+?
+notices.map(renderNotice).join("")
 :
+"<p>No announcements</p>"
+}
 
-
-`
-
-<div class="notice-item">
-
-No notifications
-
-</div>
 
 `;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -178,23 +146,24 @@ No notifications
 function toggleNotifications(){
 
 
-
-document
-
-.getElementById(
-
+let panel =
+document.getElementById(
 "notification-panel"
-
-)
-
-.classList
-
-.toggle(
-
-"show"
-
 );
 
+
+if(!panel){
+
+return;
+
+}
+
+
+panel
+.classList
+.toggle(
+"show"
+);
 
 
 }
@@ -204,7 +173,14 @@ document
 
 
 
+window.addEventListener(
+"pharmora-ready",
+()=>{
+
 loadNotifications();
+
+}
+);
 
 /*
  Global Notification UI API
@@ -320,3 +296,36 @@ return unread.length;
 
 
 };
+
+function renderNotice(item){
+
+
+let data =
+{
+...item,
+...item.data
+};
+
+
+return `
+
+<div class="notice-item">
+
+<strong>
+${data.title}
+</strong>
+
+<p>
+${data.message}
+</p>
+
+<small>
+${data.createdAt || data.date || ""}
+</small>
+
+</div>
+
+`;
+
+
+}
