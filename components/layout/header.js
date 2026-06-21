@@ -170,8 +170,8 @@ let authHTML = `
 
 
 <a
-href="javascript:void(0)"
-onclick="PharmoraNotification.toggle()"
+href="#"
+onclick="event.preventDefault(); PharmoraNotification.toggle();"
 class="notification-link">
 
 🔔${badge}
@@ -346,6 +346,17 @@ Loading updates...
 
 
 loadNoticeTicker();
+
+
+setTimeout(()=>{
+
+if(window.PharmoraNotification){
+
+PharmoraNotification.refresh();
+
+}
+
+},300);
 
 
 }
