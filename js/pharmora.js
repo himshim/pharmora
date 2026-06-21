@@ -193,7 +193,11 @@ const MODULES={
 ],
 
 
+"teach":[
 
+"/js/services/teach.service.js"
+
+],
 
 
 
@@ -494,7 +498,15 @@ loadLearn();
 
 }
 
+if(
+type==="teach"
+&&
+window.loadEducatorPanel
+){
 
+loadEducatorPanel();
+
+}
 
 if(
 type==="content"
