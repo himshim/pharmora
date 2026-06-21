@@ -15,61 +15,19 @@
 function getBasePath(){
 
 
+/*
+ Pharmora v2 SPA routing
+ Always resolve from domain root
 
-let path =
-location.pathname;
-
-
-
-
-
-if(
-
-path.endsWith("/")
-
-&&
-
-path !== "/"
-
-){
+ Works:
+ /
+ /library/books/pharmaceutics
+ /profile/user
+ /events/name
+*/
 
 
-return "../";
-
-
-}
-
-
-
-
-
-
-let depth =
-path
-
-.split("/")
-
-.filter(Boolean)
-
-.length;
-
-
-
-
-
-if(depth>1){
-
-
-return "../";
-
-
-}
-
-
-
-
-return "./";
-
+return "/";
 
 
 }
