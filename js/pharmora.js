@@ -796,4 +796,18 @@ loadScript
 
 
 
+if(
+document.readyState==="loading"
+){
+
+document.addEventListener(
+"DOMContentLoaded",
+()=>Pharmora.start()
+);
+
+}
+else{
+
 Pharmora.start();
+
+}
