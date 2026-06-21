@@ -85,6 +85,30 @@ await getMyNotifications();
 let html = `
 
 
+<div class="notification-head">
+
+<strong>
+🔔 Notifications
+</strong>
+
+
+<span
+class="notification-close"
+onclick="
+this.closest('.notification-panel')
+.classList.remove('show')
+">
+
+×
+
+
+</span>
+
+
+</div>
+
+
+
 <h3>
 👤 Your Notifications
 </h3>
@@ -114,6 +138,19 @@ notices.map(renderNotice).join("")
 :
 "<p>No announcements</p>"
 }
+
+
+<div class="notification-footer">
+
+<a
+class="btn"
+href="/components/notification/">
+
+View all notifications →
+
+</a>
+
+</div>
 
 
 `;
@@ -163,9 +200,20 @@ return;
 }
 
 
-panel.classList.toggle(
-"show"
-);
+document
+.querySelectorAll(".notification-panel")
+.forEach(x=>{
+
+if(x!==panel){
+
+x.classList.remove("show");
+
+}
+
+});
+
+
+panel.classList.toggle("show");
 
 
 }
@@ -315,13 +363,16 @@ return `
 ${data.title}
 </strong>
 
+
 <p>
 ${data.message}
 </p>
 
+
 <small>
 ${data.createdAt || data.date || ""}
 </small>
+
 
 </div>
 
