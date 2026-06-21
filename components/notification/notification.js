@@ -7,14 +7,14 @@ async function loadNotifications(){
 
 
 
-const box =
-document.getElementById(
-"notification-panel"
+const boxes =
+document.querySelectorAll(
+".notification-panel"
 );
 
 
 
-if(!box){
+if(!boxes.length){
 
 return;
 
@@ -82,7 +82,7 @@ await getMyNotifications();
 
 
 
-box.innerHTML = `
+let html = `
 
 
 <h3>
@@ -118,7 +118,11 @@ notices.map(renderNotice).join("")
 
 `;
 
+boxes.forEach(box=>{
 
+box.innerHTML = html;
+
+});
 
 
 
@@ -219,13 +223,11 @@ document
 if(unread.length){
 
 
-let bell =
-document.querySelector(
+document
+.querySelectorAll(
 ".notification-link"
-);
-
-
-if(bell){
+)
+.forEach(bell=>{
 
 
 let badge =
@@ -247,7 +249,7 @@ badge
 );
 
 
-}
+});
 
 
 }
