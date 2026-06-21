@@ -180,13 +180,21 @@ return;
 
 box.innerHTML =
 
-data.map(n=>`
+data.map(n=>{
+
+
+let item =
+{
+...n,
+...n.data
+};
+
+
+return `
 
 
 <div
-
-class="notice-card ${!n.read?"unread":""}"
-
+class="notice-card ${!item.read?"unread":""}"
 >
 
 
@@ -194,64 +202,54 @@ class="notice-card ${!n.read?"unread":""}"
 
 
 <h3>
-
-${n.title}
-
+${item.title}
 </h3>
 
 
 <small>
-
-${new Date(n.createdAt)
+${new Date(
+item.createdAt ||
+item.time ||
+item.metadata?.createdAt
+)
 .toLocaleDateString()}
-
 </small>
 
 
 </div>
 
 
-
 <p>
-
-${n.message}
-
+${item.message}
 </p>
 
 
-
 ${
-
-!n.read
-
+!item.read
 ?
-
 `
 
 <button
-
 class="btn"
+onclick="markRead('${item.id}')">
 
-onclick="markRead('${n.id}')">
-
-Mark read
+✓ Mark read
 
 </button>
 
 `
-
 :
-
 ""
-
 }
-
 
 
 </div>
 
 
-`).join("");
+`;
+
+
+}).join("");
 
 
 
