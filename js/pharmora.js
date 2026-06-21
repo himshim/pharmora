@@ -127,6 +127,8 @@ const CORE=[
 
 "/js/services/access.service.js",
 
+"/js/services/entity.component.js",
+
 "/components/layout/header.js",
 
 "/components/layout/footer.js"
@@ -147,7 +149,6 @@ const MODULES={
 "home-content":[
 
 "/js/services/content.service.js",
-"/js/services/entity.component.js",
 "/js/services/home.service.js",
 "/js/services/home.component.js"
 
@@ -171,8 +172,6 @@ const MODULES={
 "content":[
 
 "/js/services/content.service.js",
-"/js/services/entity.component.js",
-"/js/services/filter.component.js",
 "/js/services/content.component.js"
 
 ],
@@ -213,10 +212,9 @@ const MODULES={
 "forum":[
 
 "/js/services/forum.service.js",
-"/js/services/forum.component.js",
-"/js/services/forum.modal.js"
+"/js/services/forum.component.js"
 
-]
+],
 
 
 
@@ -425,15 +423,9 @@ await RouteResolver.resolve();
 
 if(route){
 
-
-if(route){
-
 await renderEntityPage(route);
 
 return;
-
-}
-
 
 }
 
@@ -498,12 +490,10 @@ type==="content"
 window.renderContent
 ){
 
-
 renderContent(
-el.dataset.type,
-el.id
+el.id,
+el.dataset.type
 );
-
 
 }
 
