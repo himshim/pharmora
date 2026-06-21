@@ -359,7 +359,60 @@ entities:data
 
 
 
+/* ======================
+ IMPORT
+====================== */
 
+async function importDatabase(
+backup
+){
+
+
+if(
+!backup ||
+backup.engine!=="pharmora-data-v2" ||
+!backup.collections ||
+!Array.isArray(
+backup.collections.entities
+)
+){
+
+
+throw new Error(
+"Invalid Pharmora backup"
+);
+
+
+}
+
+
+
+localStorage.setItem(
+
+"pharmora_db_entities",
+
+JSON.stringify(
+backup.collections.entities
+)
+
+);
+
+
+
+return {
+
+success:true,
+
+restored:
+backup.collections.entities.length,
+
+importedAt:
+new Date().toISOString()
+
+};
+
+
+}
 
 
 
@@ -374,7 +427,8 @@ getRecords,
 updateRecord,
 deleteRecord,
 restoreRecord,
-exportDatabase
+exportDatabase,
+importDatabase
 
 };
 
@@ -390,3 +444,5 @@ window.deleteRecord=deleteRecord;
 window.restoreRecord=restoreRecord;
 
 window.exportDatabase=exportDatabase;
+
+window.importDatabase=importDatabase;
