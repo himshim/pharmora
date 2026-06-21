@@ -19,11 +19,8 @@ Notifications
 
 
 <link rel="stylesheet" href="/css/variables.css">
-
 <link rel="stylesheet" href="/css/base.css">
-
 <link rel="stylesheet" href="/css/components.css">
-
 <link rel="stylesheet" href="/css/responsive.css">
 
 
@@ -269,13 +266,17 @@ Mark read
 async function markRead(id){
 
 
-
 await PharmoraNotify.markRead(id);
 
 
+if(window.PharmoraNotification){
+
+await PharmoraNotification.refresh();
+
+}
+
 
 loadPage();
-
 
 
 }
@@ -284,7 +285,23 @@ loadPage();
 
 
 
+window.addEventListener(
+"pharmora-ready",
+()=>{
 loadPage();
+}
+);
+
+
+setTimeout(()=>{
+
+if(window.PharmoraNotify){
+
+loadPage();
+
+}
+
+},1000);
 
 
 </script>
