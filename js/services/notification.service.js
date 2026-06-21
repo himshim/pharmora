@@ -1,14 +1,23 @@
 /*
- Pharmora User Notification Service
+ Pharmora Notification Service v2
+ Entity based
 */
 
 
+const PharmoraNotify = (()=>{
 
-async function sendNotification(
+
+async function send(
 userId,
-data
+data={}
 ){
 
+
+if(!userId){
+
+return null;
+
+}
 
 
 return createRecord(
@@ -17,52 +26,51 @@ return createRecord(
 
 {
 
-userId:userId,
+userId,
 
 
-title:data.title,
+title:
+data.title || "Notification",
 
 
-message:data.message,
+message:
+data.message || "",
 
 
 type:
-
 data.type || "info",
 
 
 read:false,
 
 
+target:
+data.target || null,
+
+
+targetId:
+data.targetId || null,
+
+
 createdAt:
-
-new Date()
-.toISOString()
-
+new Date().toISOString()
 
 }
 
 );
 
 
-
 }
 
 
 
 
 
-
-
-
-
-async function getMyNotifications(){
-
+async function getMine(){
 
 
 let user =
 currentUser();
-
 
 
 if(!user){
@@ -72,34 +80,24 @@ return [];
 }
 
 
-
 let all =
 await getRecords(
 "notifications"
 );
 
 
-
 return all
 
 .filter(
-
 x=>x.userId===user.id
-
 )
 
 .sort(
-
 (a,b)=>
-
 new Date(b.createdAt)
-
 -
-
 new Date(a.createdAt)
-
 );
-
 
 
 }
@@ -109,11 +107,26 @@ new Date(a.createdAt)
 
 
 
+async function unread(){
+
+
+let data =
+await getMine();
+
+
+return data.filter(
+x=>!x.read
+);
+
+
+}
 
 
 
-async function markNotificationRead(id){
 
+
+
+async function markRead(id){
 
 
 return updateRecord(
@@ -123,15 +136,12 @@ return updateRecord(
 id,
 
 {
-
 read:true
-
 }
 
 );
 
 
-
 }
 
 
@@ -139,24 +149,75 @@ read:true
 
 
 
+async function broadcast(data){
 
 
-
-async function unreadNotifications(){
-
-
-
-let list =
-await getMyNotifications();
+let users =
+await getRecords(
+"users"
+);
 
 
+let sent=[];
 
-return list.filter(
 
-x=>!x.read
+for(let u of users){
+
+
+sent.push(
+
+await send(
+u.id,
+data
+)
 
 );
 
 
+}
+
+
+return sent;
+
 
 }
+
+
+
+
+
+
+
+return{
+
+send,
+getMine,
+unread,
+markRead,
+broadcast
+
+};
+
+
+})();
+
+
+
+
+
+// compatibility aliases
+
+const sendNotification =
+PharmoraNotify.send;
+
+
+const getMyNotifications =
+PharmoraNotify.getMine;
+
+
+const unreadNotifications =
+PharmoraNotify.unread;
+
+
+const markNotificationRead =
+PharmoraNotify.markRead;
