@@ -170,7 +170,7 @@ let authHTML = `
 href="${appPath("components/notification/")}"
 class="notification-link">
 
-🔔 ${badge}
+🔔${badge}
 
 </a>
 

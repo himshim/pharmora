@@ -1038,3 +1038,38 @@ animation-duration:15s;
 
 
 }
+
+/* =========================
+   Notification Badge
+========================= */
+
+.notification-link{
+position:relative;
+display:inline-flex;
+align-items:center;
+gap:4px;
+}
+
+
+.notification-dot{
+
+display:inline-flex;
+align-items:center;
+justify-content:center;
+
+min-width:16px;
+height:16px;
+
+padding:2px;
+
+font-size:11px;
+font-weight:700;
+
+border-radius:50%;
+
+background:#e53935;
+color:white;
+
+line-height:1;
+
+}
