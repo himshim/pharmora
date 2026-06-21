@@ -454,12 +454,11 @@ id="unit-view">
 
 
 <div
-
 class="grid"
-
-id="learning-materials">
-
-
+id="learning-materials"
+data-render="content"
+data-requires="content"
+>
 </div>
 
 
@@ -502,23 +501,7 @@ id="learning-materials">
 
 
 
-<script>
 
-window.addEventListener(
-"pharmora-ready",
-()=>{
-
-if(
-typeof loadLearn==="function"
-){
-
-loadLearn();
-
-}
-
-});
-
-</script>
 
 
 

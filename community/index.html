@@ -227,7 +227,13 @@
       <section class="container section">
         <h2 class="section-title">Community Discussions</h2>
 
-        <div class="grid" id="forum-list"></div>
+        <div
+class="grid"
+id="forum-list"
+data-render="forum"
+data-requires="forum"
+>
+</div>
       </section>
 
       <section class="container section">
@@ -280,30 +286,12 @@
     </div>
     <div id="site-footer"></div>
 
-    <
+    
 
 
 <script src="/js/pharmora.js"></script>
 
-    <script>
-      window.addEventListener(
-"pharmora-ready",
-()=>{
 
-
-if(
-typeof renderForum==="function"
-){
-
-
-renderForum();
-
-
-}
-
-
-});
-    </script>
 
     
 
@@ -501,23 +489,7 @@ Welcome ${user.name}
 
         closeQuestionBox();
 
-       window.addEventListener(
-"pharmora-ready",
-()=>{
-
-
-if(
-typeof renderForum==="function"
-){
-
-
-renderForum();
-
-
-}
-
-
-});
+      
       }
     </script>
   </body>
