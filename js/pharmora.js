@@ -259,11 +259,16 @@ career:[
 
 
 
+const ROUTER=[
+
+"/dist/pharmora.router.js"
+
+];
+
+
 const BACKGROUND=[
 
 "/dist/pharmora.platform.js",
-
-"/dist/pharmora.router.js",
 
 "/dist/pharmora.search.js"
 
@@ -641,6 +646,10 @@ await window.PharmoraDatabaseReady;
 await loadRequiredModules();
 
 await loadRequiredBundles();
+
+await loadMany(
+ROUTER
+);
 
 
 autoRender();
