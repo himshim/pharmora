@@ -287,7 +287,7 @@ onclick="toggleMenu()">
 
 
 
-<div class="nav-links desktop-only">
+<div class="nav-links">
 
 ${desktopLinks}
 
@@ -301,7 +301,7 @@ ${desktopAuth}
 
 
 
-<div class="mobile-menu mobile-only">
+<div class="mobile-menu">
 
 ${mobileLinks}
 
