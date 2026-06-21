@@ -17,7 +17,7 @@ document.getElementById(
 
 if(!box){
 
-return;
+return await PharmoraSearchEngine.search(query);
 
 }
 
@@ -46,11 +46,9 @@ query.trim();
 
 if(query.length<2){
 
-
 box.innerHTML="";
 
-return;
-
+return [];
 
 }
 
@@ -142,6 +140,8 @@ No results found
 
 `;
 
+
+return results;
 
 
 };
