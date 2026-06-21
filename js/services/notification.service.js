@@ -88,15 +88,27 @@ await getRecords(
 
 return all
 
-.filter(
-x=>x.userId===user.id
+.filter(x=>
+
+(x.userId || x.data?.userId)
+===
+user.id
+
 )
 
 .sort(
 (a,b)=>
-new Date(b.createdAt)
+new Date(
+b.createdAt ||
+b.data?.createdAt ||
+b.metadata?.createdAt
+)
 -
-new Date(a.createdAt)
+new Date(
+a.createdAt ||
+a.data?.createdAt ||
+a.metadata?.createdAt
+)
 );
 
 
@@ -114,8 +126,10 @@ let data =
 await getMine();
 
 
-return data.filter(
-x=>!x.read
+return data.filter(x=>
+
+!(x.read ?? x.data?.read)
+
 );
 
 
@@ -129,6 +143,25 @@ x=>!x.read
 async function markRead(id){
 
 
+let all =
+await getRecords(
+"notifications"
+);
+
+
+let item =
+all.find(
+x=>x.id===id
+);
+
+
+if(!item){
+
+return null;
+
+}
+
+
 return updateRecord(
 
 "notifications",
@@ -136,7 +169,18 @@ return updateRecord(
 id,
 
 {
+
+read:true,
+
+
+data:{
+
+...(item.data || {}),
+
 read:true
+
+}
+
 }
 
 );
