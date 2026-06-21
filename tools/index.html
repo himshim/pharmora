@@ -675,7 +675,15 @@ Community Tools
 
 class="grid"
 
-id="tools-list">
+id="tools-list"
+
+data-render="content"
+
+data-type="tools"
+
+data-requires="content"
+
+>
 
 
 </div>
@@ -775,34 +783,7 @@ Contribute Tool
 <script src="/js/pharmora.js"></script>
 
 
-<script>
 
-window.addEventListener(
-"pharmora-ready",
-()=>{
-
-window.addEventListener(
-"pharmora-ready",
-()=>{
-
-if(
-typeof renderContent==="function"
-){
-
-renderContent(
-"tools",
-"tools-list"
-);
-
-}
-
-}
-
-);
-
-});
-
-</script>
 
 
 
