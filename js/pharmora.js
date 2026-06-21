@@ -251,6 +251,13 @@ admin:[
 ],
 
 
+"settings":[
+
+"/js/services/settings.service.js"
+
+],
+
+
 research:[
 
 "/dist/pharmora.research.js"
@@ -470,6 +477,18 @@ window.renderHomeStats
 
 renderHomeStats(el.id);
 
+
+}
+
+
+
+if(
+type==="settings"
+&&
+window.loadSettings
+){
+
+loadSettings();
 
 }
 
