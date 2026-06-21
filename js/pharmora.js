@@ -205,6 +205,12 @@ const MODULES={
 
 ],
 
+"settings":[
+
+"/js/services/settings.service.js"
+
+],
+
 "events":[
 
 "/js/services/events.service.js"
@@ -251,11 +257,7 @@ admin:[
 ],
 
 
-"settings":[
 
-"/js/services/settings.service.js"
-
-],
 
 
 research:[
