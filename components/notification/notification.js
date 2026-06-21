@@ -220,12 +220,6 @@ async function(){
 await loadNotifications();
 
 
-let badge =
-document.querySelector(
-".notification-dot"
-);
-
-
 if(
 typeof PharmoraNotify==="undefined"
 ){
@@ -239,22 +233,44 @@ let unread =
 await PharmoraNotify.unread();
 
 
-if(badge){
+
+document
+.querySelectorAll(
+".notification-dot"
+)
+.forEach(x=>x.remove());
+
 
 
 if(unread.length){
+
+
+let bell =
+document.querySelector(
+".notification-link"
+);
+
+
+if(bell){
+
+
+let badge =
+document.createElement(
+"span"
+);
+
+
+badge.className =
+"notification-dot";
 
 
 badge.innerText =
 unread.length;
 
 
-}
-
-else{
-
-
-badge.remove();
+bell.appendChild(
+badge
+);
 
 
 }
