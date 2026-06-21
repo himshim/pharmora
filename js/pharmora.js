@@ -178,7 +178,11 @@ const MODULES={
 
 
 
+"learn":[
 
+"/js/services/learn.service.js"
+
+],
 
 
 
@@ -480,7 +484,15 @@ el.dataset.mode
 }
 
 
+if(
+type==="learn"
+&&
+window.loadLearn
+){
 
+loadLearn();
+
+}
 
 
 
