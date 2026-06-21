@@ -205,19 +205,26 @@ broadcast
 
 
 
-// compatibility aliases
 
-const sendNotification =
+/*
+ Global exports
+*/
+
+window.PharmoraNotify =
+PharmoraNotify;
+
+
+window.sendNotification =
 PharmoraNotify.send;
 
 
-const getMyNotifications =
+window.getMyNotifications =
 PharmoraNotify.getMine;
 
 
-const unreadNotifications =
+window.unreadNotifications =
 PharmoraNotify.unread;
 
 
-const markNotificationRead =
+window.markNotificationRead =
 PharmoraNotify.markRead;
