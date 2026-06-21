@@ -199,7 +199,11 @@ const MODULES={
 
 ],
 
+"dashboard":[
 
+"/js/services/dashboard.service.js"
+
+],
 
 "events":[
 
@@ -549,7 +553,15 @@ el.id
 
 }
 
+if(
+type==="dashboard"
+&&
+window.loadDashboard
+){
 
+loadDashboard();
+
+}
 
 if(
 type==="forum"
