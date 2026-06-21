@@ -143,12 +143,12 @@ notices.map(renderNotice).join("")
 
 
 
-function toggleNotifications(){
+function toggleNotifications(id){
 
 
 let panel =
 document.getElementById(
-"notification-panel"
+id
 );
 
 
@@ -159,9 +159,7 @@ return;
 }
 
 
-panel
-.classList
-.toggle(
+panel.classList.toggle(
 "show"
 );
 
@@ -262,9 +260,9 @@ badge
 
 
 toggle:
-function(){
+function(id){
 
-return toggleNotifications();
+return toggleNotifications(id);
 
 },
 

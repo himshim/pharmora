@@ -1,30 +1,35 @@
 /*
- Pharmora Global Header Component v2
+ Pharmora Global Header Component v2.1
 */
+
 
 async function loadHeader(){
 
+
 const root =
-document.getElementById(
-"site-header"
-);
+document.getElementById("site-header");
+
 
 if(!root){
 return;
 }
 
 
+
 let site={};
 let nav=[];
 
 
+
 try{
+
 
 site =
 await fetch(
 appPath("config/site.json")
 )
 .then(r=>r.json());
+
 
 
 nav =
@@ -36,40 +41,49 @@ appPath("config/navigation.json")
 
 }
 
-catch(error){
+
+catch(e){
+
 
 console.error(
 "Header config failed",
-error
+e
 );
+
 
 site={
 name:"Pharmora",
-logo:"",
-tagline:"Open Pharmacy Learning Network"
+logo:""
 };
 
+
 nav=[];
+
 
 }
 
 
 
+
+
 /*
- NAVIGATION
+ NAV LINKS
 */
+
 
 let desktopLinks="";
 let mobileLinks="";
 
 
+
 nav.forEach(item=>{
 
 
-const url =
+let url =
 appPath(
 item.url.replace(/^\/+/,"")
 );
+
 
 
 desktopLinks += `
@@ -81,6 +95,7 @@ ${item.title}
 `;
 
 
+
 mobileLinks += `
 
 <a href="${url}">
@@ -90,16 +105,18 @@ ${item.title}
 
 `;
 
+
 });
 
 
 
-/*
- AUTH AREA
-*/
 
-let desktopAuth="";
-let mobileAuth="";
+
+
+
+/*
+ USER
+*/
 
 
 let user =
@@ -111,26 +128,32 @@ null;
 
 
 
+let desktopAuth="";
+let mobileAuth="";
+
+
+
 if(user){
+
 
 
 let badge="";
 
 
-if(
-window.PharmoraNotify
-){
 
 try{
 
+
+if(window.PharmoraNotify){
+
+
 let count =
-(
-await PharmoraNotify.unread()
-)
-.length;
+(await PharmoraNotify.unread()).length;
+
 
 
 if(count){
+
 
 badge =
 `
@@ -139,30 +162,35 @@ ${count}
 </span>
 `;
 
+
 }
+
+
+}
+
 
 }catch(e){}
 
-}
 
 
 
-let authHTML = `
+
+function authBlock(id){
+
+
+return `
 
 
 <a href="${appPath("dashboard/")}">
-
 👤 ${user.name || "Profile"}
-
 </a>
 
 
 
 <a href="${appPath("settings/")}">
-
 ⚙ Settings
-
 </a>
+
 
 
 
@@ -171,16 +199,20 @@ let authHTML = `
 
 <a
 href="#"
-onclick="event.preventDefault(); PharmoraNotification.toggle();"
-class="notification-link">
+class="notification-link"
+onclick="
+event.preventDefault();
+PharmoraNotification.toggle('${id}');
+">
 
 🔔${badge}
 
 </a>
 
 
+
 <div
-id="notification-panel"
+id="${id}"
 class="notification-panel">
 
 </div>
@@ -190,9 +222,13 @@ class="notification-panel">
 
 
 
+
 <a
-href="javascript:void(0)"
-onclick="logoutUser()">
+href="#"
+onclick="
+event.preventDefault();
+logoutUser();
+">
 
 🚪 Logout
 
@@ -202,9 +238,23 @@ onclick="logoutUser()">
 `;
 
 
-desktopAuth = authHTML;
+}
 
-mobileAuth = authHTML;
+
+
+
+desktopAuth =
+authBlock(
+"notification-panel-desktop"
+);
+
+
+
+mobileAuth =
+authBlock(
+"notification-panel-mobile"
+);
+
 
 
 }
@@ -214,7 +264,8 @@ mobileAuth = authHTML;
 else{
 
 
-let authHTML = `
+
+let login = `
 
 <a href="${appPath("auth/login.html")}">
 
@@ -225,12 +276,17 @@ let authHTML = `
 `;
 
 
-desktopAuth = authHTML;
 
-mobileAuth = authHTML;
+desktopAuth=login;
+
+mobileAuth=login;
+
 
 
 }
+
+
+
 
 
 
@@ -243,7 +299,9 @@ root.innerHTML = `
 <header class="container">
 
 
+
 <nav class="navbar">
+
 
 
 <a
@@ -257,9 +315,7 @@ site.logo
 `
 <img
 class="site-logo"
-src="${appPath(site.logo)}"
-alt="${site.name} logo"
->
+src="${appPath(site.logo)}">
 `
 :
 "⚕"
@@ -267,13 +323,13 @@ alt="${site.name} logo"
 
 
 <span>
-
 ${site.name}
-
 </span>
 
 
 </a>
+
+
 
 
 
@@ -287,13 +343,18 @@ onclick="toggleMenu()">
 
 
 
+
+
 <div class="nav-links">
+
 
 ${desktopLinks}
 
 ${desktopAuth}
 
+
 </div>
+
 
 
 </nav>
@@ -301,13 +362,18 @@ ${desktopAuth}
 
 
 
+
 <div class="mobile-menu">
+
 
 ${mobileLinks}
 
 ${mobileAuth}
 
+
 </div>
+
+
 
 
 
@@ -338,6 +404,7 @@ Loading updates...
 
 
 
+
 </header>
 
 
@@ -345,18 +412,26 @@ Loading updates...
 
 
 
+
 loadNoticeTicker();
+
+
 
 
 setTimeout(()=>{
 
+
 if(window.PharmoraNotification){
+
 
 PharmoraNotification.refresh();
 
+
 }
 
+
 },300);
+
 
 
 }
@@ -372,163 +447,66 @@ PharmoraNotification.refresh();
 async function loadNoticeTicker(){
 
 
-const notice =
+
+let box =
 document.getElementById(
 "notice-text"
 );
 
 
-if(!notice){
 
+if(!box){
 return;
-
 }
+
+
 
 
 try{
 
 
-let data=[];
 
-
-if(
+let data =
 typeof getRecords==="function"
-){
+?
+await getRecords("notifications")
+:
+[];
+
+
+
 
 data =
-await getRecords(
-"notifications"
+data.filter(x=>
+x.active!==false
 );
 
-}
 
 
 
-let today =
-new Date();
+
+if(!data.length){
 
 
-
-data =
-data.filter(item=>{
-
-
-if(item.active===false){
-
-return false;
-
-}
-
-
-if(item.expiry){
-
-
-let expiry =
-new Date(item.expiry);
-
-
-if(expiry < today){
-
-return false;
-
-}
-
-
-}
-
-
-return true;
-
-
-});
-
-
-
-if(data.length===0){
-
-notice.innerHTML =
+box.innerHTML =
 "No current updates";
+
 
 return;
 
+
 }
 
 
 
 
-data.sort((a,b)=>{
-
-
-let priority={
-
-Urgent:3,
-
-High:2,
-
-Normal:1
-
-};
-
-
-return(
-priority[b.priority] || 0
+box.innerHTML =
+data
+.map(x=>
+`🔔 ${x.title || ""} : ${x.message || ""}`
 )
--
-(
-priority[a.priority] || 0
-);
-
-
-});
-
-
-
-
-
-notice.innerHTML =
-data.map(item=>{
-
-
-let icon={
-
-Urgent:"🚨",
-
-High:"⚠️",
-
-Normal:"🔔"
-
-}[item.priority]
-||
-"🔔";
-
-
-
-let text =
-`${icon} ${item.title} : ${item.message}`;
-
-
-
-if(item.link){
-
-
-return `
-
-<a href="${item.link}">
-${text}
-</a>
-
-`;
-
-}
-
-
-
-return text;
-
-
-})
 .join(
-" &nbsp;&nbsp; • &nbsp;&nbsp; "
+" &nbsp; • &nbsp; "
 );
 
 
@@ -536,24 +514,19 @@ return text;
 }
 
 
-catch(error){
+
+catch(e){
 
 
-console.error(
-"Notification loading failed",
-error
-);
-
-
-notice.innerHTML =
+box.innerHTML =
 "No current updates";
 
 
 }
 
 
-}
 
+}
 
 
 
