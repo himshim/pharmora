@@ -433,15 +433,24 @@ id
 ){
 
 
-
 let item =
 await findContent(
-collection,
-id
+collection,id
 );
+
+
+let user =
+typeof currentUser==="function"
+?
+currentUser()
+:
+null;
+
+
 
 await updateRecord(
 
+collection,
 id,
 
 {
@@ -450,87 +459,78 @@ id,
 moderation:{
 
 
+...item.moderation,
+
+
 status:"approved",
 
-
 reviewedBy:
-
-(
-typeof currentUser==="function"
-?
-currentUser()?.id
-:
-null
-),
-
+user?.id || null,
 
 reviewedAt:
-
-new Date()
-.toISOString()
+new Date().toISOString()
 
 
 },
 
 
-
 lifecycle:{
+
+
+...item.lifecycle,
 
 
 status:"published",
 
-
 publishedAt:
-
-new Date()
-.toISOString()
+new Date().toISOString()
 
 
-}
+},
 
 
-}
-
-);
-
-if(
-typeof logActivity==="function"
-){
+analytics:{
 
 
-logActivity(
+...item.analytics,
 
-"approve",
 
-"Approved content",
+history:[
+
+...(item.analytics?.history || []),
 
 {
-collection,
-id
+
+action:"approved",
+
+by:user?.id || null,
+
+at:new Date().toISOString()
+
+}
+
+]
+
+
+}
+
+
 }
 
 );
-
-
-}
 
 
 
 showToast(
-
 "Approved",
-
 "success"
-
 );
-
 
 
 
 renderAdminStats();
 
 renderAdminActions();
-
 
 
 
@@ -548,20 +548,29 @@ renderAdminActions();
 
 async function rejectContent(
 collection,
-id
+id,
+reason=""
 ){
 
 
 let item =
 await findContent(
-collection,
-id
+collection,id
 );
+
+
+let user =
+typeof currentUser==="function"
+?
+currentUser()
+:
+null;
 
 
 
 await updateRecord(
 
+collection,
 id,
 
 {
@@ -570,24 +579,60 @@ id,
 moderation:{
 
 
+...item.moderation,
+
+
 status:"rejected",
 
+reason:reason,
 
 reviewedBy:
-
-(
-typeof currentUser==="function"
-?
-currentUser()?.id
-:
-null
-),
-
+user?.id || null,
 
 reviewedAt:
+new Date().toISOString()
 
-new Date()
-.toISOString()
+
+},
+
+
+
+lifecycle:{
+
+
+...item.lifecycle,
+
+
+status:"rejected"
+
+
+},
+
+
+
+analytics:{
+
+
+...item.analytics,
+
+
+history:[
+
+...(item.analytics?.history || []),
+
+{
+
+action:"rejected",
+
+reason:reason,
+
+by:user?.id || null,
+
+at:new Date().toISOString()
+
+}
+
+]
 
 
 }
@@ -597,78 +642,36 @@ new Date()
 
 );
 
+
+
 if(
-
-item?.author?.id
-
-&&
-
+item?.author?.id &&
 typeof notifyUser==="function"
-
 ){
-
-
 
 notifyUser(
-
 item.author.id,
-
 {
-
 title:"Submission needs changes",
-
-message:
-
-"Your submission was not approved. Check review comments.",
-
+message:"Your submission was not approved.",
 type:"warning"
-
 }
-
 );
 
-
-
 }
 
-
-if(
-typeof logActivity==="function"
-){
-
-
-logActivity(
-
-"reject",
-
-"Rejected content",
-
-{
-collection,
-id
-}
-
-);
-
-
-}
 
 
 showToast(
-
 "Rejected",
-
 "info"
-
 );
-
 
 
 
 renderAdminStats();
 
 renderAdminActions();
-
 
 
 
