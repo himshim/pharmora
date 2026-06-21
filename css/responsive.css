@@ -1,37 +1,90 @@
 /*
- Pharmora Responsive System
- Mobile first adjustments
+ Pharmora Responsive System v2
+ Mobile + Tablet Optimization
 */
 
 
-/* TABLETS */
+/* =========================
+   TABLET
+   701px - 900px
+========================= */
 
 
-@media (max-width: 900px) {
+@media (max-width:900px){
 
 
-    .nav-links {
+.container{
 
-        display: none;
+width:92%;
 
-    }
+}
+
+
+.section{
+
+padding:
+
+50px 0;
+
+}
+
+
+.grid{
+
+gap:18px;
+
+}
+
+
+.card{
+
+padding:
+
+24px;
+
+}
+
+
+}
+
+
+
+
+/* =========================
+   NAV MOBILE SWITCH
+   Only phones
+========================= */
+
+
+@media (max-width:700px){
+
+
+.nav-links{
+
+display:none;
+
+}
+
 
 .menu-toggle{
 
-
 display:block;
 
+}
+
+
+.navbar{
+
+height:65px;
 
 }
 
 
-    .section {
+.mobile-menu.active{
 
-        padding:
+display:flex;
 
-        45px 0;
-
-    }
+}
 
 
 }
@@ -39,104 +92,219 @@ display:block;
 
 
 
-/* MOBILE */
+/* =========================
+   MOBILE
+========================= */
 
 
-@media (max-width: 600px) {
+@media (max-width:600px){
 
 
-    .container {
 
+.container{
 
-        width: 92%;
+width:92%;
 
+}
 
-    }
 
 
 
-    .navbar {
+.logo{
 
+font-size:
 
-        height: 65px;
+1.4rem;
 
+}
 
-    }
 
+.site-logo{
 
+height:32px;
 
-    .logo {
+}
 
 
-        font-size:
 
-        1.4rem;
 
+h1{
 
-    }
+font-size:
 
+2.4rem !important;
 
+}
 
-    h1 {
 
 
-        font-size:
 
-        2.5rem !important;
+h2{
 
+font-size:
 
-    }
+1.6rem;
 
+}
 
 
-    .grid {
 
 
-        grid-template-columns:
+.grid{
 
-        1fr;
+grid-template-columns:
 
+1fr;
 
-    }
+}
 
 
 
-    .card {
 
+.card{
 
-        padding:
+padding:
 
-        22px;
+22px;
 
+border-radius:
 
-        border-radius:
+24px;
 
-        24px;
+}
 
 
-    }
 
 
+.section{
 
-    .search-box input {
+padding:
 
+40px 0;
 
-        padding:
+}
 
-        15px 20px;
 
 
-    }
 
+.search-box input{
 
+padding:
 
-    .btn {
+15px 20px;
 
+}
 
-        width:100%;
 
 
-    }
+
+.btn{
+
+width:100%;
+
+}
+
+
+
+
+.panel{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+
+
+
+.notice-bar{
+
+font-size:.85rem;
+
+border-radius:20px;
+
+}
+
+
+
+
+}
+
+
+
+/* =========================
+   SMALL PHONES
+========================= */
+
+
+@media(max-width:420px){
+
+
+.logo{
+
+font-size:
+
+1.25rem;
+
+}
+
+
+.site-logo{
+
+height:28px;
+
+}
+
+
+h1{
+
+font-size:
+
+2rem !important;
+
+}
+
+
+.card{
+
+padding:
+
+18px;
+
+}
+
+
+}
+
+
+
+/* =========================
+   NOTIFICATION MOBILE
+========================= */
+
+
+@media(max-width:700px){
+
+
+.notification-link{
+
+display:inline-flex;
+
+align-items:center;
+
+}
+
+
+.notification-dot{
+
+min-width:16px;
+
+height:16px;
+
+font-size:10px;
+
+}
 
 
 }
