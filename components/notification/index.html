@@ -18,13 +18,13 @@ Notifications
 </title>
 
 
-<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="/css/variables.css">
 
-<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="/css/base.css">
 
-<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="/css/components.css">
 
-<link rel="stylesheet" href="../css/responsive.css">
+<link rel="stylesheet" href="/css/responsive.css">
 
 
 <style>
@@ -152,8 +152,7 @@ document.getElementById(
 
 
 let data =
-await getUserNotifications();
-
+await PharmoraNotify.getMine();
 
 
 
@@ -271,7 +270,7 @@ async function markRead(id){
 
 
 
-await readNotification(id);
+await PharmoraNotify.markRead(id);
 
 
 
