@@ -212,12 +212,61 @@ loadNotifications();
 
 window.PharmoraNotification = {
 
-refresh:
-function(){
 
-return loadNotifications();
+refresh:
+async function(){
+
+
+await loadNotifications();
+
+
+let badge =
+document.querySelector(
+".notification-dot"
+);
+
+
+if(
+typeof PharmoraNotify==="undefined"
+){
+
+return;
+
+}
+
+
+let unread =
+await PharmoraNotify.unread();
+
+
+if(badge){
+
+
+if(unread.length){
+
+
+badge.innerText =
+unread.length;
+
+
+}
+
+else{
+
+
+badge.remove();
+
+
+}
+
+
+}
+
 
 },
+
+
+
 
 
 toggle:
@@ -228,8 +277,12 @@ return toggleNotifications();
 },
 
 
+
+
+
 count:
 async function(){
+
 
 if(
 typeof PharmoraNotify==="undefined"
@@ -239,11 +292,15 @@ return 0;
 
 }
 
+
 let unread =
 await PharmoraNotify.unread();
 
+
 return unread.length;
 
+
 }
+
 
 };
