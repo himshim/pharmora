@@ -1076,28 +1076,3 @@ line-height:1;
 
 
 
-
-.desktop-only{
-display:flex;
-}
-
-.mobile-only{
-display:none;
-}
-
-
-@media(max-width:768px){
-
-.desktop-only{
-display:none;
-}
-
-.mobile-only{
-display:none;
-}
-
-.mobile-menu.show{
-display:flex;
-}
-
-}
