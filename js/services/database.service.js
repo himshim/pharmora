@@ -117,14 +117,27 @@ filters={}
 ){
 
 
-let records =
-await PharmoraDatabase.find({
+let query={
 
 filters:{
 type:collection
 }
 
-});
+};
+
+
+if(filters.includeDeleted){
+
+query.includeDeleted=true;
+
+}
+
+
+let records =
+await PharmoraDatabase.find(
+query
+);
+
 
 
 records =
@@ -136,6 +149,11 @@ normalizeRecord(item);
 
 
 for(let key in filters){
+
+
+if(key==="includeDeleted"){
+continue;
+}
 
 
 if(
@@ -291,6 +309,14 @@ id,
 metadata:{
 
 deleted:false,
+
+deletedAt:null
+
+},
+
+lifecycle:{
+
+status:"draft",
 
 deletedAt:null
 
