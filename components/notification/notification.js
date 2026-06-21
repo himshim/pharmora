@@ -205,3 +205,45 @@ document
 
 
 loadNotifications();
+
+/*
+ Global Notification UI API
+*/
+
+window.PharmoraNotification = {
+
+refresh:
+function(){
+
+return loadNotifications();
+
+},
+
+
+toggle:
+function(){
+
+return toggleNotifications();
+
+},
+
+
+count:
+async function(){
+
+if(
+typeof PharmoraNotify==="undefined"
+){
+
+return 0;
+
+}
+
+let unread =
+await PharmoraNotify.unread();
+
+return unread.length;
+
+}
+
+};
