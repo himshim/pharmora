@@ -155,7 +155,12 @@ const MODULES={
 ],
 
 
+"notifications":[
 
+"/js/services/notification.service.js",
+"/components/notification/notification.js"
+
+],
 
 "stats":[
 
