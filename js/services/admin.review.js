@@ -514,15 +514,17 @@ id
 
 rejectContent:function(
 collection,
-id
+id,
+reason
 ){
 
 return rejectContent(
 collection,
-id
+id,
+reason
 );
 
-},
+},,
 
 
 
