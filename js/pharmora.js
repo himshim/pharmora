@@ -147,6 +147,7 @@ const MODULES={
 "home-content":[
 
 "/js/services/content.service.js",
+"/js/services/entity.component.js",
 "/js/services/home.service.js",
 "/js/services/home.component.js"
 
@@ -170,6 +171,7 @@ const MODULES={
 "content":[
 
 "/js/services/content.service.js",
+"/js/services/entity.component.js",
 "/js/services/filter.component.js",
 "/js/services/content.component.js"
 
@@ -424,42 +426,11 @@ await RouteResolver.resolve();
 if(route){
 
 
-let main =
-document.querySelector("main");
+if(route){
 
-
-if(main){
-
-
-let item =
-route.data;
-
-
-main.innerHTML = `
-
-<section class="container section">
-
-<h1>${item.title || item.name || item.data?.name}</h1>
-
-<p>${item.description || ""}</p>
-
-<div class="card">
-
-<b>Type:</b> ${route.type}
-
-<br>
-
-<b>ID:</b> ${item.refId || item.id}
-
-</div>
-
-</section>
-
-`;
-
+await renderEntityPage(route);
 
 return;
-
 
 }
 
