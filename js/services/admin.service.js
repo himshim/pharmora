@@ -519,6 +519,46 @@ at:new Date().toISOString()
 
 );
 
+/*
+ Send approval notification
+*/
+
+if(
+item?.ownership?.ownerId
+&&
+window.PharmoraNotify
+){
+
+
+await PharmoraNotify.send(
+
+item.ownership.ownerId,
+
+{
+
+title:
+"Content approved ✅",
+
+message:
+`Your submission "${item.title || "content"}" is now published.`,
+
+type:
+"success",
+
+target:
+collection,
+
+targetId:
+id
+
+}
+
+);
+
+
+}
+
+
 
 
 showToast(
@@ -644,19 +684,42 @@ at:new Date().toISOString()
 
 
 
+/*
+ Send rejection notification
+*/
+
 if(
-item?.author?.id &&
-typeof notifyUser==="function"
+item?.ownership?.ownerId
+&&
+window.PharmoraNotify
 ){
 
-notifyUser(
-item.author.id,
+
+await PharmoraNotify.send(
+
+item.ownership.ownerId,
+
 {
-title:"Submission needs changes",
-message:"Your submission was not approved.",
-type:"warning"
+
+title:
+"Submission needs changes ⚠️",
+
+message:
+reason || "Your submission was not approved.",
+
+type:
+"warning",
+
+target:
+collection,
+
+targetId:
+id
+
 }
+
 );
+
 
 }
 
