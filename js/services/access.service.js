@@ -41,7 +41,7 @@ let user =
 currentUser();
 
 
-if(!user){
+if(!user || !item){
 
 return false;
 
