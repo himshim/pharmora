@@ -166,13 +166,27 @@ let authHTML = `
 
 
 
-<a 
-href="${appPath("components/notification/")}"
+<div class="notification-wrapper">
+
+
+<a
+href="javascript:void(0)"
+onclick="PharmoraNotification.toggle()"
 class="notification-link">
 
 🔔${badge}
 
 </a>
+
+
+<div
+id="notification-panel"
+class="notification-panel">
+
+</div>
+
+
+</div>
 
 
 
@@ -273,7 +287,7 @@ onclick="toggleMenu()">
 
 
 
-<div class="nav-links">
+<div class="nav-links desktop-only">
 
 ${desktopLinks}
 
@@ -287,7 +301,7 @@ ${desktopAuth}
 
 
 
-<div class="mobile-menu">
+<div class="mobile-menu mobile-only">
 
 ${mobileLinks}
 
