@@ -129,6 +129,10 @@ const CORE=[
 
 "/js/services/entity.component.js",
 
+"/js/services/notification.service.js",
+
+"/components/notification/notification.js",
+
 "/components/layout/header.js",
 
 "/components/layout/footer.js"
@@ -155,12 +159,7 @@ const MODULES={
 ],
 
 
-"notifications":[
 
-"/js/services/notification.service.js",
-"/components/notification/notification.js"
-
-],
 
 "stats":[
 
