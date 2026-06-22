@@ -1,32 +1,23 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
 
 <meta charset="UTF-8">
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
-<title>
-Edit Profile | Pharmora
-</title>
-
+<title>Edit Profile | Pharmora</title>
 
 <link rel="stylesheet" href="/css/variables.css">
 <link rel="stylesheet" href="/css/base.css">
 <link rel="stylesheet" href="/css/components.css">
 <link rel="stylesheet" href="/css/responsive.css">
 
-
 </head>
 
 
 <body>
-
 
 <div id="site-header"></div>
 
@@ -37,59 +28,33 @@ Edit Profile | Pharmora
 <div class="card">
 
 
-<h1>
-✏ Edit Profile
-</h1>
+<h1>✏ Edit Profile</h1>
 
 
+<div id="completion"></div>
 
-<label>
-Display Name
-</label>
 
+<label>Name</label>
 <input id="name">
 
 
-
-<label>
-Avatar URL
-</label>
-
-<input
-id="avatar"
-placeholder="Image URL">
+<label>Avatar URL</label>
+<input id="avatar">
 
 
-
-<label>
-Headline
-</label>
-
-<input
-id="headline"
-placeholder="Clinical Pharmacist | Researcher">
+<label>Headline</label>
+<input id="headline">
 
 
-
-<label>
-About
-</label>
-
+<label>About</label>
 <textarea id="bio"></textarea>
 
 
 
+<h2>Identity</h2>
 
 
-<h2>
-Identity
-</h2>
-
-
-
-<label>
-Profile Types
-</label>
+<label>Profile Types</label>
 
 <input
 id="types"
@@ -97,163 +62,58 @@ placeholder="student, educator, professional">
 
 
 
-<label>
-Specializations
-</label>
+<label>Specializations</label>
 
 <input
-id="specializations"
-placeholder="QA, Pharmacology, Clinical Pharmacy">
+id="specializations">
+
+
+
+<h2>Professional</h2>
+
+
+<label>Position</label>
+<input id="position">
+
+
+<label>Organization</label>
+<input id="organization">
 
 
 
 
+<h2>🌐 Contact</h2>
 
 
-<h2>
-Professional
-</h2>
-
-
-
-<label>
-Position
-</label>
-
-
-<input
-id="position"
-placeholder="Assistant Professor / Pharmacist">
-
-
-<label>
-Organization
-</label>
-
-
-<input
-id="organization"
-placeholder="College / Company">
-
-
-
-
-
-
-<h2>
-✔ Verification
-</h2>
-
-
-<p>
-Request verification to build trust.
-</p>
-
-
-<select id="verifyType">
-
-<option value="educator">
-Educator
-</option>
-
-<option value="professional">
-Professional
-</option>
-
-</select>
-
-
-<input
-id="verifyTitle"
-placeholder="Title">
-
-
-<input
-id="verifyOrg"
-placeholder="Organization">
-
-
-<button
-class="btn"
-onclick="sendVerificationRequest()">
-
-Request Verification ✔
-
-</button>
-
-
-
-
-
-
-
-
-<h2>
-🌐 Contact
-</h2>
-
-
-
-<label>
-LinkedIn
-</label>
-
-
+<label>LinkedIn</label>
 <input id="linkedin">
 
 
-
-<label>
-Website
-</label>
-
-
+<label>Website</label>
 <input id="website">
 
 
 
-
 <label>
-
-<input
-type="checkbox"
-id="linkedinVisible">
-
+<input type="checkbox" id="linkedinVisible">
 Show LinkedIn publicly
-
 </label>
-
 
 
 <label>
-
-<input
-type="checkbox"
-id="websiteVisible">
-
-Show website publicly
-
+<input type="checkbox" id="websiteVisible">
+Show Website publicly
 </label>
-
 
 
 <label>
-
-<input
-type="checkbox"
-id="emailVisible">
-
-Show email publicly
-
+<input type="checkbox" id="emailVisible">
+Show Email publicly
 </label>
-
-
-
 
 
 
 <br><br>
-
 
 
 <button
@@ -272,11 +132,7 @@ Save Profile
 </main>
 
 
-
 <div id="site-footer"></div>
-
-
-
 
 
 <script src="/js/pharmora.js"></script>
@@ -285,14 +141,18 @@ Save Profile
 <script>
 
 
+let originalProfile=null;
+
+
+const $ = id =>
+document.getElementById(id);
+
+
+
 window.addEventListener(
-
 "pharmora-ready",
-
 loadEditor
-
 );
-
 
 
 
@@ -300,96 +160,64 @@ loadEditor
 async function loadEditor(){
 
 
-
-let user =
-currentUser();
-
+let user=currentUser();
 
 
 if(!user){
 
-
 location.href="/auth/login.html";
 
-
 return;
-
 
 }
 
 
 
-
-
 let profile =
-await getProfile(
-user.id
-);
-
-
+await getProfile(user.id);
 
 
 
 if(!profile){
 
-
 profile =
-await createUserProfile(
-user
-);
-
+await createUserProfile(user);
 
 }
 
 
 
+originalProfile =
+profile;
 
 
 
-name.value =
+$("name").value =
 profile.displayName || "";
 
 
-
-avatar.value =
+$("avatar").value =
 profile.avatar?.url || "";
 
 
-
-headline.value =
+$("headline").value =
 profile.headline || "";
 
 
-
-bio.value =
+$("bio").value =
 profile.bio || "";
 
 
 
-
-
-types.value =
-(
-
-profile.types || []
-
-)
+$("types").value =
+(profile.types || [])
 .join(", ");
 
 
 
-
-
-specializations.value =
-(
-
-profile.specializations || []
-
-)
+$("specializations").value =
+(profile.specializations || [])
 .join(", ");
-
-
-
 
 
 
@@ -398,44 +226,131 @@ profile.positions?.[0] || {};
 
 
 
-position.value =
+$("position").value =
 job.title || "";
 
 
-
-organization.value =
+$("organization").value =
 job.organization || "";
 
 
 
-
-
-
-linkedin.value =
+$("linkedin").value =
 profile.contact?.linkedin?.value || "";
 
 
-
-website.value =
+$("website").value =
 profile.contact?.website?.value || "";
 
 
 
-
-
-linkedinVisible.checked =
+$("linkedinVisible").checked =
 profile.contact?.linkedin?.visible || false;
 
 
-
-websiteVisible.checked =
+$("websiteVisible").checked =
 profile.contact?.website?.visible || false;
 
 
-
-emailVisible.checked =
+$("emailVisible").checked =
 profile.contact?.email?.visible || false;
 
+
+
+showCompletion(profile);
+
+
+}
+
+
+
+
+function showCompletion(profile){
+
+
+let total=6;
+let done=0;
+
+
+if(profile.avatar?.url) done++;
+
+if(profile.bio) done++;
+
+if(profile.headline) done++;
+
+if(profile.positions?.length) done++;
+
+if(profile.specializations?.length) done++;
+
+if(profile.verification?.verified) done++;
+
+
+
+let score =
+Math.round(
+(done/total)*100
+);
+
+
+
+$("completion").innerHTML = `
+
+<div class="badge">
+
+Profile ${score}% complete
+
+</div>
+
+<br>
+
+`;
+
+
+
+}
+
+
+
+
+
+
+
+function criticalChanged(){
+
+
+if(
+
+!originalProfile?.verification?.verified
+
+){
+
+return false;
+
+}
+
+
+
+let oldJob =
+originalProfile.positions?.[0] || {};
+
+
+
+return (
+
+originalProfile.displayName
+!==$("name").value
+
+||
+
+oldJob.title
+!==$("position").value
+
+||
+
+oldJob.organization
+!==$("organization").value
+
+);
 
 
 }
@@ -451,25 +366,78 @@ profile.contact?.email?.visible || false;
 async function saveProfile(){
 
 
-let user =
-currentUser();
+
+let user=currentUser();
+
+
+
+let verification =
+originalProfile.verification;
+
+
+
+if(
+criticalChanged()
+){
+
+
+verification={
+
+verified:false,
+
+verifiedTypes:[],
+
+verifiedAt:null,
+
+status:"needs_review",
+
+previousVerified:true
+
+};
+
+
+
+showToast?.(
+
+"Important verified details changed. Verification review required.",
+
+"warning"
+
+);
+
+
+
+}
+
+
+
+
 
 
 let displayName =
-document.getElementById("name").value;
+$("name").value;
+
 
 
 let initials =
+
 displayName
+
 ?
+
 displayName
 .split(" ")
 .map(x=>x[0])
 .join("")
 .substring(0,2)
 .toUpperCase()
+
 :
+
 "PH";
+
+
+
 
 
 
@@ -478,56 +446,44 @@ await updateUserProfile({
 
 
 
-displayName:
 displayName,
 
 
 
 avatar:{
 
+url:$("avatar").value,
 
-url:
-document.getElementById("avatar").value,
-
-
-initials:
 initials
-
 
 },
 
 
 
-
 headline:
-headline.value,
-
+$("headline").value,
 
 
 bio:
-bio.value,
-
+$("bio").value,
 
 
 
 types:
 
-types.value
+$("types").value
 
 .split(",")
 
 .map(x=>x.trim())
 
 .filter(Boolean),
-
-
-
 
 
 
 specializations:
 
-specializations.value
+$("specializations").value
 
 .split(",")
 
@@ -539,61 +495,34 @@ specializations.value
 
 
 
-
-
-positions:
-
-(
-
-position.value ||
-
-organization.value
-
-)
-
-?
-
-[
+positions:[
 
 {
 
-title:
-position.value,
+title:$("position").value,
 
-
-organization:
-organization.value,
-
+organization:$("organization").value,
 
 current:true
 
 }
 
-]
-
-:
-
-[],
+],
 
 
 
+verification,
 
 
 
 contact:{
 
 
-
 linkedin:{
 
+value:$("linkedin").value,
 
-value:
-linkedin.value,
-
-
-visible:
-linkedinVisible.checked
-
+visible:$("linkedinVisible").checked
 
 },
 
@@ -601,14 +530,9 @@ linkedinVisible.checked
 
 website:{
 
+value:$("website").value,
 
-value:
-website.value,
-
-
-visible:
-websiteVisible.checked
-
+visible:$("websiteVisible").checked
 
 },
 
@@ -616,14 +540,9 @@ websiteVisible.checked
 
 email:{
 
+value:user.email,
 
-value:
-user.email,
-
-
-visible:
-emailVisible.checked
-
+visible:$("emailVisible").checked
 
 }
 
@@ -633,96 +552,42 @@ emailVisible.checked
 
 });
 
-
-
-
-
-alert(
-"Profile updated successfully"
-);
-
-
-
-
-location.href =
-
-"/profile.html?id="
-
-+
-
-user.id;
-
-
-
-}
-
-
-
-
-
-
-
-
-
-async function sendVerificationRequest(){
 
 
 
 if(
 
-typeof requestVerification !== "function"
+typeof showToast==="function"
 
 ){
 
-
-alert(
-
-"Verification module unavailable"
-
+showToast(
+"Profile updated successfully",
+"success"
 );
-
-
-return;
-
 
 }
 
 
 
 
-await requestVerification({
 
 
-types:[verifyType.value],
+setTimeout(()=>{
 
 
+location.href=
 
-title:
-
-verifyTitle.value,
-
+"/profile.html?id="+user.id;
 
 
-organization:
-
-verifyOrg.value
-
-
-});
-
-
-
-
-
-alert(
-
-"Verification request sent"
-
-);
+},700);
 
 
 
 }
+
+
 
 
 </script>
