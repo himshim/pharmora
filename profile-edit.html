@@ -19,6 +19,7 @@
 
 <body>
 
+
 <div id="site-header"></div>
 
 
@@ -27,26 +28,43 @@
 
 <div class="card">
 
-
 <h1>✏ Edit Profile</h1>
 
+
+<div id="identity"></div>
 
 <div id="completion"></div>
 
 
-<label>Name</label>
-<input id="name">
+
+<label>
+Display Name
+</label>
+
+<input id="displayName">
 
 
-<label>Avatar URL</label>
+
+<label>
+Avatar URL
+</label>
+
 <input id="avatar">
 
 
-<label>Headline</label>
+
+<label>
+Headline
+</label>
+
 <input id="headline">
 
 
-<label>About</label>
+
+<label>
+About
+</label>
+
 <textarea id="bio"></textarea>
 
 
@@ -54,30 +72,86 @@
 <h2>Identity</h2>
 
 
-<label>Profile Types</label>
+<label>
+Profile Types
+</label>
 
 <input
 id="types"
 placeholder="student, educator, professional">
 
 
+<label>
+Specializations
+</label>
 
-<label>Specializations</label>
+<input id="specializations">
 
-<input
-id="specializations">
+
 
 
 
 <h2>Professional</h2>
 
 
-<label>Position</label>
+<label>
+Position
+</label>
+
 <input id="position">
 
 
-<label>Organization</label>
+
+<label>
+Organization
+</label>
+
 <input id="organization">
+
+
+
+
+
+
+
+<h2>✔ Verification</h2>
+
+
+<div class="card">
+
+
+<b>Professional Verification</b>
+
+
+<p>
+
+Verification is only for:
+
+<br>
+✓ Contributors
+
+<br>
+✓ Educators
+
+<br>
+✓ Healthcare professionals
+
+<br>
+✓ Industry / organization representatives
+
+</p>
+
+
+<p>
+
+Requesting verification only for a badge may restrict future verification access.
+
+</p>
+
+
+</div>
+
+
 
 
 
@@ -85,35 +159,84 @@ id="specializations">
 <h2>🌐 Contact</h2>
 
 
-<label>LinkedIn</label>
+<label>
+LinkedIn
+</label>
+
 <input id="linkedin">
 
 
-<label>Website</label>
+
+<label>
+Website
+</label>
+
 <input id="website">
 
 
 
 <label>
+
 <input type="checkbox" id="linkedinVisible">
-Show LinkedIn publicly
+
+Show LinkedIn
+
 </label>
 
 
+
 <label>
+
 <input type="checkbox" id="websiteVisible">
-Show Website publicly
+
+Show Website
+
 </label>
 
 
+
 <label>
+
 <input type="checkbox" id="emailVisible">
-Show Email publicly
+
+Show Email
+
 </label>
 
 
 
 <br><br>
+
+
+<div
+id="verificationReasonBox"
+style="display:none"
+class="card">
+
+
+<h3>
+⚠ Verification Review Required
+</h3>
+
+
+<p>
+
+You changed verified professional information.
+Please provide reason for admin review.
+
+</p>
+
+
+<textarea
+id="changeReason"
+placeholder="Example: Changed workplace">
+
+</textarea>
+
+
+</div>
+
+
 
 
 <button
@@ -132,16 +255,16 @@ Save Profile
 </main>
 
 
+
 <div id="site-footer"></div>
+
 
 
 <script src="/js/pharmora.js"></script>
 
 
+
 <script>
-
-
-let originalProfile=null;
 
 
 const $ = id =>
@@ -149,10 +272,50 @@ document.getElementById(id);
 
 
 
+let originalProfile=null;
+
+
+
+
 window.addEventListener(
+
 "pharmora-ready",
+
 loadEditor
+
 );
+
+
+
+
+
+
+function notify(msg,type="info"){
+
+
+if(
+
+typeof showToast==="function"
+
+){
+
+showToast(msg,type);
+
+}
+
+else{
+
+console.log(type,msg);
+
+}
+
+
+}
+
+
+
+
+
 
 
 
@@ -160,7 +323,10 @@ loadEditor
 async function loadEditor(){
 
 
-let user=currentUser();
+
+let user =
+currentUser();
+
 
 
 if(!user){
@@ -187,21 +353,57 @@ await createUserProfile(user);
 
 
 
+if(!profile.publicId){
+
+profile.publicId =
+"PH-" +
+
+Math.random()
+.toString(36)
+.substring(2,8)
+.toUpperCase();
+
+}
+
+
+
 originalProfile =
 profile;
 
 
 
-$("name").value =
+
+$("identity").innerHTML=`
+
+<div class="badge">
+
+@${profile.username || "user"}
+
+<br>
+
+ID: ${profile.publicId}
+
+</div>
+
+`;
+
+
+
+
+
+$("displayName").value =
 profile.displayName || "";
+
 
 
 $("avatar").value =
 profile.avatar?.url || "";
 
 
+
 $("headline").value =
 profile.headline || "";
+
 
 
 $("bio").value =
@@ -210,14 +412,16 @@ profile.bio || "";
 
 
 $("types").value =
-(profile.types || [])
+(profile.types||[])
 .join(", ");
+
 
 
 
 $("specializations").value =
-(profile.specializations || [])
+(profile.specializations||[])
 .join(", ");
+
 
 
 
@@ -230,6 +434,7 @@ $("position").value =
 job.title || "";
 
 
+
 $("organization").value =
 job.organization || "";
 
@@ -237,6 +442,7 @@ job.organization || "";
 
 $("linkedin").value =
 profile.contact?.linkedin?.value || "";
+
 
 
 $("website").value =
@@ -248,8 +454,10 @@ $("linkedinVisible").checked =
 profile.contact?.linkedin?.visible || false;
 
 
+
 $("websiteVisible").checked =
 profile.contact?.website?.visible || false;
+
 
 
 $("emailVisible").checked =
@@ -257,7 +465,9 @@ profile.contact?.email?.visible || false;
 
 
 
+
 showCompletion(profile);
+
 
 
 }
@@ -265,39 +475,55 @@ showCompletion(profile);
 
 
 
+
+
+
+
+
 function showCompletion(profile){
 
 
-let total=6;
-let done=0;
+let checks=[
+
+profile.avatar?.url,
+
+profile.bio,
+
+profile.headline,
+
+profile.positions?.length,
+
+profile.specializations?.length,
+
+profile.verification?.verified
+
+];
 
 
-if(profile.avatar?.url) done++;
 
-if(profile.bio) done++;
-
-if(profile.headline) done++;
-
-if(profile.positions?.length) done++;
-
-if(profile.specializations?.length) done++;
-
-if(profile.verification?.verified) done++;
+let done =
+checks.filter(Boolean).length;
 
 
 
-let score =
+let percent =
 Math.round(
-(done/total)*100
+
+done/checks.length*100
+
 );
 
 
 
-$("completion").innerHTML = `
+$("completion").innerHTML=
+
+`
+
+<br>
 
 <div class="badge">
 
-Profile ${score}% complete
+Profile ${percent}% complete
 
 </div>
 
@@ -315,12 +541,16 @@ Profile ${score}% complete
 
 
 
-function criticalChanged(){
+
+
+function verificationChanged(){
 
 
 if(
 
-!originalProfile?.verification?.verified
+!originalProfile
+?.verification
+?.verified
 
 ){
 
@@ -338,7 +568,7 @@ originalProfile.positions?.[0] || {};
 return (
 
 originalProfile.displayName
-!==$("name").value
+!==$("displayName").value
 
 ||
 
@@ -367,43 +597,106 @@ async function saveProfile(){
 
 
 
-let user=currentUser();
-
-
-
-let verification =
-originalProfile.verification;
+let user =
+currentUser();
 
 
 
 if(
-criticalChanged()
+
+verificationChanged()
+
+&&
+
+!$("changeReason").value
+
 ){
 
 
-verification={
-
-verified:false,
-
-verifiedTypes:[],
-
-verifiedAt:null,
-
-status:"needs_review",
-
-previousVerified:true
-
-};
+$("verificationReasonBox")
+.style.display="block";
 
 
+notify(
 
-showToast?.(
-
-"Important verified details changed. Verification review required.",
+"Reason required for verified detail changes",
 
 "warning"
 
 );
+
+
+return;
+
+
+}
+
+
+
+
+
+
+
+
+let verification =
+originalProfile.verification || {};
+
+
+
+
+
+if(
+
+verificationChanged()
+
+){
+
+
+
+verification={
+
+...verification,
+
+
+verified:false,
+
+
+status:"needs_review",
+
+
+previousVerified:true,
+
+
+history:[
+
+...(verification.history || []),
+
+{
+
+
+date:
+
+new Date()
+.toISOString(),
+
+
+reason:
+
+$("changeReason").value,
+
+
+changes:"Verified identity updated",
+
+
+reviewed:false
+
+
+}
+
+]
+
+
+};
 
 
 
@@ -414,35 +707,19 @@ showToast?.(
 
 
 
+
+
 let displayName =
-$("name").value;
-
-
-
-let initials =
-
-displayName
-
-?
-
-displayName
-.split(" ")
-.map(x=>x[0])
-.join("")
-.substring(0,2)
-.toUpperCase()
-
-:
-
-"PH";
-
-
-
-
+$("displayName").value;
 
 
 
 await updateUserProfile({
+
+
+
+publicId:
+originalProfile.publicId,
 
 
 
@@ -452,11 +729,27 @@ displayName,
 
 avatar:{
 
+
 url:$("avatar").value,
 
-initials
+
+initials:
+
+displayName
+
+.split(" ")
+
+.map(x=>x[0])
+
+.join("")
+
+.substring(0,2)
+
+.toUpperCase()
+
 
 },
+
 
 
 
@@ -464,8 +757,10 @@ headline:
 $("headline").value,
 
 
+
 bio:
 $("bio").value,
+
 
 
 
@@ -481,6 +776,7 @@ $("types").value
 
 
 
+
 specializations:
 
 $("specializations").value
@@ -490,7 +786,6 @@ $("specializations").value
 .map(x=>x.trim())
 
 .filter(Boolean),
-
 
 
 
@@ -515,7 +810,9 @@ verification,
 
 
 
+
 contact:{
+
 
 
 linkedin:{
@@ -550,25 +847,21 @@ visible:$("emailVisible").checked
 }
 
 
+
 });
 
 
 
 
-if(
 
-typeof showToast==="function"
 
-){
+notify(
 
-showToast(
 "Profile updated successfully",
+
 "success"
+
 );
-
-}
-
-
 
 
 
