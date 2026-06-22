@@ -378,17 +378,40 @@ await getRecords(
 
 
 
-return (
+let profile =
 
 profiles.find(
 
-x=>x.userId===userId
+x=>
 
-)
+x.userId===userId
 
 ||
 
-null
+x.data?.userId===userId
+
+);
+
+
+
+if(!profile){
+
+return null;
+
+}
+
+
+
+/*
+ DB v2 compatibility
+ merge entity.data into profile root
+*/
+
+return deepMergeProfile(
+
+profile.data || {},
+
+profile
 
 );
 
