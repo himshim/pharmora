@@ -44,6 +44,17 @@ Display Name
 <input id="displayName">
 
 
+<label>
+Username
+</label>
+
+<div>
+@
+<input
+id="username"
+placeholder="username">
+</div>
+
 
 <label>
 Avatar URL
@@ -100,20 +111,21 @@ placeholder="Enter custom role">
 
 
 <label>
-Specialization
+Specializations
 </label>
 
-<select
-id="specializations"
-multiple
-onchange="toggleCustomSpecialization()">
-</select>
+
+<div id="specializationList">
+
+Loading...
+
+</div>
 
 
 <input
 id="customSpecialization"
 style="display:none"
-placeholder="Enter specialization">
+placeholder="Enter custom specialization">
 
 
 
@@ -411,11 +423,12 @@ ID: ${profile.publicId}
 `;
 
 
-
-
-
 $("displayName").value =
 profile.displayName || "";
+
+
+$("username").value =
+profile.username || "";
 
 
 
@@ -447,15 +460,43 @@ let savedSpecs =
 profile.specializations || [];
 
 
-[...$("specializations").options]
-.forEach(option=>{
+document
+.querySelectorAll(".spec-option")
+.forEach(x=>{
 
 
-option.selected =
-savedSpecs.includes(option.value);
+x.checked =
+savedSpecs.includes(
+x.value
+);
 
 
 });
+
+
+let custom =
+savedSpecs.find(
+
+x=>
+!profileTypesConfig.fields.includes(x)
+
+);
+
+
+if(custom){
+
+
+$("customSpecialization").value =
+custom;
+
+
+$("customSpecialization").style.display =
+"block";
+
+
+}
+
+
 
 
 
@@ -554,15 +595,24 @@ ${x}
 
 
 
-$("specializations").innerHTML =
+$("specializationList").innerHTML =
 
 profileTypesConfig.fields
 
 .map(x=>`
 
-<option value="${x}">
+<label>
+
+<input
+type="checkbox"
+class="spec-option"
+value="${x}">
+
 ${x}
-</option>
+
+</label>
+
+<br>
 
 `)
 
@@ -571,9 +621,19 @@ ${x}
 +
 
 `
-<option value="Other">
+
+<label>
+
+<input
+type="checkbox"
+class="spec-option"
+value="Other"
+onchange="toggleCustomSpecialization()">
+
 Other
-</option>
+
+</label>
+
 `;
 
 
@@ -648,17 +708,17 @@ $("positionSelect").value==="Other"
 function toggleCustomSpecialization(){
 
 
-let selected =
+let other =
 
-[...$("specializations").selectedOptions]
+[...document.querySelectorAll(".spec-option")]
 
-.map(x=>x.value);
+.find(x=>x.value==="Other");
 
 
 
 $("customSpecialization").style.display =
 
-selected.includes("Other")
+other?.checked
 
 ?
 
@@ -670,6 +730,8 @@ selected.includes("Other")
 
 
 }
+
+
 
 function showCompletion(profile){
 
@@ -764,7 +826,21 @@ originalProfile.displayName
 ||
 
 oldJob.title
-!==$("position").value
+!==
+
+(
+
+$("positionSelect").value==="Other"
+
+?
+
+$("customPosition").value
+
+:
+
+$("positionSelect").value
+
+)
 
 ||
 
@@ -916,7 +992,12 @@ originalProfile.publicId,
 
 displayName,
 
+username:
 
+$("username")
+.value
+.toLowerCase()
+.replaceAll(" ","-"),
 
 avatar:{
 
@@ -966,21 +1047,23 @@ $("types").value
 
 specializations:
 
-[...$("specializations").selectedOptions]
 
-.map(x=>
+[
 
-x.value==="Other"
+...
 
-?
+[...document.querySelectorAll(".spec-option:checked")]
+
+.map(x=>x.value)
+
+.filter(x=>x!=="Other"),
+
+
 
 $("customSpecialization").value
 
-:
 
-x.value
-
-)
+]
 
 .filter(Boolean),
 
