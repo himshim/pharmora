@@ -1,40 +1,44 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 
 <head>
 
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
 <title>
-Edit Profile - Pharmora
+Edit Profile | Pharmora
 </title>
 
 
-<link
-rel="stylesheet"
-href="css/variables.css">
-
-
-<link
-rel="stylesheet"
-href="css/components.css">
+<link rel="stylesheet" href="/css/variables.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/responsive.css">
 
 
 </head>
 
 
-
 <body>
 
 
+<div id="site-header"></div>
 
-<main class="container">
+
+<main class="container section">
 
 
 <div class="card">
 
 
 <h1>
-Edit Profile
+✏ Edit Profile
 </h1>
 
 
@@ -43,8 +47,17 @@ Edit Profile
 Display Name
 </label>
 
-
 <input id="name">
+
+
+
+<label>
+Avatar URL
+</label>
+
+<input
+id="avatar"
+placeholder="Image URL">
 
 
 
@@ -52,12 +65,9 @@ Display Name
 Headline
 </label>
 
-
 <input
 id="headline"
-placeholder="Example: Clinical Pharmacist | Researcher">
-
-
+placeholder="Clinical Pharmacist | Researcher">
 
 
 
@@ -65,10 +75,15 @@ placeholder="Example: Clinical Pharmacist | Researcher">
 About
 </label>
 
-
 <textarea id="bio"></textarea>
 
 
+
+
+
+<h2>
+Identity
+</h2>
 
 
 
@@ -76,12 +91,9 @@ About
 Profile Types
 </label>
 
-
 <input
 id="types"
 placeholder="student, educator, professional">
-
-
 
 
 
@@ -89,18 +101,23 @@ placeholder="student, educator, professional">
 Specializations
 </label>
 
-
 <input
 id="specializations"
-placeholder="Pharmacology, QA, Clinical Pharmacy">
+placeholder="QA, Pharmacology, Clinical Pharmacy">
 
 
 
+
+
+
+<h2>
+Professional
+</h2>
 
 
 
 <label>
-Current Position
+Position
 </label>
 
 
@@ -109,91 +126,85 @@ id="position"
 placeholder="Assistant Professor / Pharmacist">
 
 
+<label>
+Organization
+</label>
+
 
 <input
 id="organization"
 placeholder="College / Company">
 
 
+
+
+
+
 <h2>
-
 ✔ Verification
-
 </h2>
 
 
 <p>
-
-Verify educator/professional status to build trust.
-
+Request verification to build trust.
 </p>
 
 
 <select id="verifyType">
 
-
 <option value="educator">
-
 Educator
-
 </option>
-
 
 <option value="professional">
-
 Professional
-
 </option>
-
 
 </select>
 
 
-
 <input
-
 id="verifyTitle"
-
-placeholder="Professor / Pharmacist / Manager etc.">
-
+placeholder="Title">
 
 
 <input
-
 id="verifyOrg"
-
-placeholder="College / Company / Hospital">
-
+placeholder="Organization">
 
 
 <button
-
 class="btn"
-
-onclick="sendVerificationRequest()"
-
-type="button">
-
+onclick="sendVerificationRequest()">
 
 Request Verification ✔
-
 
 </button>
 
 
-<br><br>
+
+
+
+
+
+
+<h2>
+🌐 Contact
+</h2>
+
 
 
 <label>
-LinkedIn</label>
+LinkedIn
+</label>
 
 
 <input id="linkedin">
 
+
+
 <label>
-
 Website
-
 </label>
 
 
@@ -201,15 +212,6 @@ Website
 
 
 
-<label>
-
-<input
-type="checkbox"
-id="websiteVisible">
-
-Show website publicly
-
-</label>
 
 <label>
 
@@ -223,6 +225,15 @@ Show LinkedIn publicly
 
 
 
+<label>
+
+<input
+type="checkbox"
+id="websiteVisible">
+
+Show website publicly
+
+</label>
 
 
 
@@ -255,39 +266,32 @@ Save Profile
 
 
 
-
 </div>
-
 
 
 </main>
 
 
 
+<div id="site-footer"></div>
 
 
 
-<script src="js/utils/path.js"></script>
 
 
-<script src="js/services/database.service.js"></script>
-
-
-<script src="js/services/auth.service.js"></script>
-
-
-<script src="js/services/profile.service.js"></script>
-
-<script src="js/services/verification.service.js"></script>
-
-
-
+<script src="/js/pharmora.js"></script>
 
 
 <script>
 
 
-loadEditor();
+window.addEventListener(
+
+"pharmora-ready",
+
+loadEditor
+
+);
 
 
 
@@ -305,12 +309,14 @@ currentUser();
 if(!user){
 
 
-location.href="auth/login.html";
+location.href="/auth/login.html";
 
 
 return;
 
+
 }
+
 
 
 
@@ -323,10 +329,15 @@ user.id
 
 
 
+
 if(!profile){
 
+
 profile =
-await createUserProfile(user);
+await createUserProfile(
+user
+);
+
 
 }
 
@@ -334,8 +345,14 @@ await createUserProfile(user);
 
 
 
+
 name.value =
 profile.displayName || "";
+
+
+
+avatar.value =
+profile.avatar?.url || "";
 
 
 
@@ -350,18 +367,27 @@ profile.bio || "";
 
 
 
+
 types.value =
-(profile.types || [])
+(
+
+profile.types || []
+
+)
 .join(", ");
+
 
 
 
 
 specializations.value =
+(
 
-(profile.specializations || [])
+profile.specializations || []
 
+)
 .join(", ");
+
 
 
 
@@ -383,23 +409,29 @@ job.organization || "";
 
 
 
+
+
 linkedin.value =
 profile.contact?.linkedin?.value || "";
+
+
+
+website.value =
+profile.contact?.website?.value || "";
+
+
 
 
 
 linkedinVisible.checked =
 profile.contact?.linkedin?.visible || false;
 
-website.value =
-
-profile.contact?.website?.value || "";
-
 
 
 websiteVisible.checked =
-
 profile.contact?.website?.visible || false;
+
+
 
 emailVisible.checked =
 profile.contact?.email?.visible || false;
@@ -415,7 +447,14 @@ profile.contact?.email?.visible || false;
 
 
 
+
 async function saveProfile(){
+
+
+
+let user =
+currentUser();
+
 
 
 
@@ -423,13 +462,40 @@ await updateUserProfile({
 
 
 
-displayName:name.value,
+displayName:
+name.value,
 
 
-headline:headline.value,
+
+avatar:{
 
 
-bio:bio.value,
+url:
+avatar.value,
+
+
+initials:
+name.value
+.split(" ")
+.map(x=>x[0])
+.join("")
+.substring(0,2)
+.toUpperCase()
+
+
+},
+
+
+
+
+headline:
+headline.value,
+
+
+
+bio:
+bio.value,
+
 
 
 
@@ -447,6 +513,7 @@ types.value
 
 
 
+
 specializations:
 
 specializations.value
@@ -456,6 +523,7 @@ specializations.value
 .map(x=>x.trim())
 
 .filter(Boolean),
+
 
 
 
@@ -478,10 +546,12 @@ organization.value
 
 {
 
-title:position.value,
+title:
+position.value,
 
 
-organization:organization.value,
+organization:
+organization.value,
 
 
 current:true
@@ -502,43 +572,52 @@ current:true
 contact:{
 
 
+
 linkedin:{
 
 
-value:linkedin.value,
+value:
+linkedin.value,
 
 
-visible:linkedinVisible.checked
+visible:
+linkedinVisible.checked
 
 
 },
+
+
 
 website:{
 
 
-value:website.value,
+value:
+website.value,
 
 
-visible:websiteVisible.checked
+visible:
+websiteVisible.checked
 
 
 },
 
+
+
 email:{
 
 
-value:currentUser().email,
+value:
+user.email,
 
 
-visible:emailVisible.checked
+visible:
+emailVisible.checked
 
 
 }
 
 
-
 }
-
 
 
 });
@@ -548,37 +627,62 @@ visible:emailVisible.checked
 
 
 alert(
-
-"Profile updated"
-
+"Profile updated successfully"
 );
+
 
 
 
 location.href =
 
-"profile.html?id="
+"/profile.html?id="
 
 +
 
-currentUser().id;
+user.id;
 
 
 
 }
 
+
+
+
+
+
+
+
+
 async function sendVerificationRequest(){
+
+
+
+if(
+
+typeof requestVerification !== "function"
+
+){
+
+
+alert(
+
+"Verification module unavailable"
+
+);
+
+
+return;
+
+
+}
+
 
 
 
 await requestVerification({
 
 
-types:[
-
-verifyType.value
-
-],
+types:[verifyType.value],
 
 
 
@@ -593,8 +697,9 @@ organization:
 verifyOrg.value
 
 
-
 });
+
+
 
 
 
@@ -608,11 +713,10 @@ alert(
 
 }
 
+
 </script>
 
 
-
 </body>
-
 
 </html>
