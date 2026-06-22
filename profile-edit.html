@@ -103,7 +103,10 @@ placeholder="Enter custom role">
 Specialization
 </label>
 
-<select id="specializations">
+<select
+id="specializations"
+multiple
+onchange="toggleCustomSpecialization()">
 </select>
 
 
@@ -440,9 +443,19 @@ updatePositionOptions();
 
 
 
-$("specializations").value =
-(profile.specializations||[])
-.join(", ");
+let savedSpecs =
+profile.specializations || [];
+
+
+[...$("specializations").options]
+.forEach(option=>{
+
+
+option.selected =
+savedSpecs.includes(option.value);
+
+
+});
 
 
 
@@ -632,7 +645,31 @@ $("positionSelect").value==="Other"
 
 }
 
+function toggleCustomSpecialization(){
 
+
+let selected =
+
+[...$("specializations").selectedOptions]
+
+.map(x=>x.value);
+
+
+
+$("customSpecialization").style.display =
+
+selected.includes("Other")
+
+?
+
+"block"
+
+:
+
+"none";
+
+
+}
 
 function showCompletion(profile){
 
@@ -927,9 +964,13 @@ $("types").value
 
 
 
-specializations:[
+specializations:
 
-$("specializations").value==="Other"
+[...$("specializations").selectedOptions]
+
+.map(x=>
+
+x.value==="Other"
 
 ?
 
@@ -937,9 +978,11 @@ $("customSpecialization").value
 
 :
 
-$("specializations").value
+x.value
 
-],
+)
+
+.filter(Boolean),
 
 
 
