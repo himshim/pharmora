@@ -1,3 +1,89 @@
+/*
+ Pharmora Dashboard Helpers v2
+ DB entity compatibility layer
+*/
+
+
+function dashboardOwnerId(item){
+
+
+return (
+
+item.userId
+
+||
+
+item.author?.id
+
+||
+
+item.ownership?.ownerId
+
+||
+
+item.data?.userId
+
+||
+
+item.data?.author?.id
+
+||
+
+null
+
+);
+
+
+}
+
+
+
+
+
+function dashboardStatus(item){
+
+
+return (
+
+item.lifecycle?.status
+
+||
+
+item.status
+
+||
+
+item.data?.status
+
+||
+
+"draft"
+
+);
+
+
+}
+
+
+
+
+
+function dashboardUserRoles(user){
+
+
+return [
+
+user?.role,
+
+...(user?.roles || [])
+
+]
+
+.filter(Boolean);
+
+
+}
+
 async function loadContributorDashboard(){
 
 
@@ -146,7 +232,13 @@ uploads.push(
 
 ...data.filter(
 
-x=>x.author?.id===user.id
+x=>
+
+dashboardOwnerId(x)
+
+===
+
+user.id
 
 )
 
@@ -172,7 +264,13 @@ let approved =
 
 uploads.filter(
 
-x=>x.status==="approved"
+x=>
+
+dashboardStatus(x)
+
+===
+
+"approved"
 
 )
 .length;
@@ -185,7 +283,13 @@ let pending =
 
 uploads.filter(
 
-x=>x.status==="pending"
+x=>
+
+dashboardStatus(x)
+
+===
+
+"pending"
 
 )
 .length;
@@ -374,7 +478,7 @@ let cards = `
 
 <div class="card"
 
-onclick="location.href='../profile.html?id='+currentUser().id">
+onclick="openMyProfile()">
 
 
 <h2>
@@ -737,7 +841,8 @@ Platform insights and activity.
 
 if(
 
-user.role==="owner"
+dashboardUserRoles(user)
+.includes("owner")
 
 ||
 
@@ -820,6 +925,350 @@ ${cards}
 
 }
 
+
+async function openMyProfile(){
+
+
+let profile =
+await getProfile(
+currentUser().id
+);
+
+
+if(profile){
+
+location.href =
+
+"../profile.html?id=" +
+
+(
+profile.userId
+||
+currentUser().id
+);
+
+
+}
+
+
+}
+
+
+async function loadDashboardInsights(){
+
+
+let box =
+document.getElementById(
+"dashboard-insights"
+);
+
+
+if(!box){
+
+return;
+
+}
+
+
+
+let user =
+currentUser();
+
+
+if(!user){
+
+return;
+
+}
+
+
+
+let profile =
+await getProfile(
+user.id
+);
+
+
+
+
+
+/*
+ PROFILE COMPLETION
+*/
+
+
+let complete = 0;
+
+
+if(profile?.displayName){
+
+complete += 20;
+
+}
+
+
+if(profile?.bio){
+
+complete += 20;
+
+}
+
+
+if(
+(profile?.types || [])
+.length
+){
+
+complete += 20;
+
+}
+
+
+if(
+(profile?.specializations || [])
+.length
+){
+
+complete += 20;
+
+}
+
+
+if(
+(profile?.positions || [])
+.length
+){
+
+complete += 20;
+
+}
+
+
+
+
+
+/*
+ NOTIFICATIONS
+*/
+
+
+let unread = 0;
+
+
+try{
+
+
+if(window.PharmoraNotify){
+
+
+unread =
+
+(
+await PharmoraNotify.unread()
+)
+
+.length;
+
+
+}
+
+
+}catch(e){}
+
+
+
+
+
+
+
+
+/*
+ ACTIVITY
+*/
+
+
+let activity=[];
+
+
+try{
+
+
+if(
+typeof getProfileActivity==="function"
+){
+
+
+activity =
+await getProfileActivity(
+user.id,
+3
+);
+
+
+}
+
+
+}catch(e){}
+
+
+
+
+
+
+
+box.innerHTML = `
+
+
+
+<div class="card">
+
+
+<h2>
+
+👤 Profile Strength
+
+</h2>
+
+
+<h1>
+
+${complete}%
+
+</h1>
+
+
+<progress
+
+value="${complete}"
+
+max="100">
+
+</progress>
+
+
+<p>
+
+Complete your Pharmora identity.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+🔔 Notifications
+
+</h2>
+
+
+<h1>
+
+${unread}
+
+</h1>
+
+
+<p>
+
+Unread updates
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+⭐ Reputation
+
+</h2>
+
+
+<h1>
+
+${profile?.stats?.reputation || 0}
+
+</h1>
+
+
+<p>
+
+Community points
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+⚡ Activity
+
+</h2>
+
+
+${
+
+activity.length
+
+?
+
+activity.map(a=>`
+
+<p>
+
+${a.message || a.action}
+
+</p>
+
+`)
+.join("")
+
+
+:
+
+"<p>No recent activity</p>"
+
+}
+
+
+</div>
+
+
+
+`;
+
+
+}
+
 window.loadDashboard =
 async function(){
 
@@ -857,9 +1306,33 @@ null;
 
 if(box){
 
+
 box.innerHTML =
+
 "👤 " +
-(user.name || user.email);
+
+(
+
+profile?.displayName
+
+||
+
+profile?.username
+
+||
+
+user.name
+
+||
+
+user.email
+
+||
+
+"User"
+
+);
+
 
 }
 
@@ -867,12 +1340,31 @@ box.innerHTML =
 if(welcome){
 
 welcome.innerHTML =
+
 "Welcome back, "+
-(user.name || "User")+
+
+(
+
+profile?.displayName
+
+||
+
+profile?.username
+
+||
+
+"User"
+
+)
+
++
+
 " 👋";
 
 }
 
+
+await loadDashboardInsights();
 
 await loadContributorDashboard();
 
