@@ -149,39 +149,47 @@ Organization
 
 
 
-<h2>✔ Verification</h2>
+<h2>✔ Verification Center</h2>
 
 
 <div class="card">
 
 
-<b>Professional Verification</b>
+<div id="verificationStatus">
+Loading...
+</div>
+
+
+<div id="verificationApply">
 
 
 <p>
 
 Verification is only for:
 
-<br>
-✓ Contributors
-
-<br>
-✓ Educators
-
-<br>
-✓ Healthcare professionals
-
-<br>
-✓ Industry / organization representatives
+<br>✓ Contributors
+<br>✓ Educators
+<br>✓ Healthcare Professionals
+<br>✓ Industry Representatives
 
 </p>
 
 
 <p>
-
-Requesting verification only for a badge may restrict future verification access.
-
+⚠ Fake verification requests may block future applications.
 </p>
+
+
+<button
+class="btn"
+onclick="applyVerification()">
+
+Apply Verification
+
+</button>
+
+
+</div>
 
 
 </div>
@@ -562,12 +570,64 @@ profile.contact?.email?.visible || false;
 
 showCompletion(profile);
 
+showVerification(profile);
+
+}
+
+
+function showVerification(profile){
+
+
+let box=$("verificationStatus");
+
+
+let v =
+profile.verification || {};
+
+
+
+if(isTrustedAccount()){
+
+
+box.innerHTML=
+
+"👑 Platform trusted account<br>Automatically verified";
+
+
+$("verificationApply")
+.style.display="none";
+
+
+return;
 
 
 }
 
 
 
+box.innerHTML=`
+
+Status:
+${v.status || "Not Applied"}
+
+<br>
+
+Applications:
+${v.attempts || 0}
+
+<br>
+
+Rejected:
+${v.rejections || 0}
+
+<br>
+
+${v.lastRejectedReason || ""}
+
+`;
+
+
+}
 
 
 async function loadProfileTypes(){
@@ -750,6 +810,10 @@ profile.specializations?.length,
 
 profile.verification?.verified
 
+||
+
+isTrustedAccount()
+
 ];
 
 
@@ -792,12 +856,35 @@ Profile ${percent}% complete
 
 
 
+function isTrustedAccount(){
 
+
+let user=currentUser();
+
+
+return (
+
+user?.role==="owner"
+
+||
+
+user?.role==="admin"
+
+);
+
+
+}
 
 
 
 function verificationChanged(){
 
+
+if(isTrustedAccount()){
+
+return false;
+
+}    
 
 if(
 
@@ -854,7 +941,66 @@ oldJob.organization
 
 
 
+async function applyVerification(){
 
+
+let verification =
+originalProfile.verification || {};
+
+
+
+await updateUserProfile({
+
+
+verification:{
+
+
+...verification,
+
+
+status:"pending",
+
+
+attempts:
+
+(verification.attempts || 0)+1,
+
+
+requestedAt:
+
+new Date().toISOString()
+
+
+}
+
+
+});
+
+
+
+notify(
+
+"Verification request submitted",
+
+"success"
+
+);
+
+let updated =
+await getProfile(
+currentUser().id
+);
+
+
+originalProfile =
+updated;
+
+
+showVerification(
+updated
+);
+
+}
 
 
 
@@ -1141,7 +1287,9 @@ visible:$("emailVisible").checked
 });
 
 
-
+window.dispatchEvent(
+new Event("profile-updated")
+);
 
 
 
