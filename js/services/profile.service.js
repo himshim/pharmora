@@ -497,7 +497,86 @@ await updateRecord(
 
 profile.id,
 
-merged
+{
+
+...merged,
+
+
+data:{
+
+...(profile.data || {}),
+
+
+/*
+ Public identity
+*/
+
+displayName:
+merged.displayName,
+
+
+username:
+merged.username,
+
+
+avatar:
+merged.avatar,
+
+
+headline:
+merged.headline,
+
+
+bio:
+merged.bio,
+
+
+
+/*
+ User identity
+*/
+
+types:
+merged.types,
+
+
+specializations:
+merged.specializations,
+
+
+skills:
+merged.skills,
+
+
+
+/*
+ Career
+*/
+
+education:
+merged.education,
+
+
+positions:
+merged.positions,
+
+
+
+/*
+ Contact + trust
+*/
+
+contact:
+merged.contact,
+
+
+verification:
+merged.verification
+
+
+}
+
+}
 
 );
 
