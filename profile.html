@@ -1,25 +1,118 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 
 <head>
 
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
 <title>
-Pharmora Profile
+Profile | Pharmora
 </title>
 
 
-<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="/css/variables.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/responsive.css">
 
-<link rel="stylesheet" href="css/components.css">
+
+<style>
+
+.profile-header{
+
+display:flex;
+gap:25px;
+align-items:center;
+flex-wrap:wrap;
+
+}
+
+
+.avatar{
+
+width:100px;
+height:100px;
+
+border-radius:50%;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:2rem;
+font-weight:bold;
+
+background:var(--surface);
+border:1px solid var(--border);
+
+overflow:hidden;
+
+}
+
+
+.avatar img{
+
+width:100%;
+height:100%;
+object-fit:cover;
+
+}
+
+
+.profile-grid{
+
+display:grid;
+
+grid-template-columns:
+
+repeat(
+auto-fit,
+minmax(250px,1fr)
+);
+
+gap:20px;
+
+}
+
+
+.stat{
+
+text-align:center;
+
+}
+
+
+.activity-item{
+
+padding:12px 0;
+
+border-bottom:
+
+1px solid var(--border);
+
+}
+
+
+</style>
+
 
 </head>
+
 
 
 <body>
 
 
-<main class="container">
+<div id="site-header"></div>
+
+
+<main class="container section">
 
 
 <div id="profile-root">
@@ -32,19 +125,15 @@ Loading profile...
 </main>
 
 
+<div id="site-footer"></div>
 
 
 
 
 
-<script src="js/utils/path.js"></script>
 
-<script src="js/services/database.service.js"></script>
 
-<script src="js/services/profile.service.js"></script>
-
-<script src="js/services/auth.service.js"></script>
-
+<script src="/js/pharmora.js"></script>
 
 
 
@@ -52,7 +141,16 @@ Loading profile...
 <script>
 
 
-loadProfile();
+window.addEventListener(
+
+"pharmora-ready",
+
+loadProfile
+
+);
+
+
+
 
 
 
@@ -60,43 +158,44 @@ async function loadProfile(){
 
 
 
-let root =
+const root =
 document.getElementById(
 "profile-root"
 );
 
 
 
-let params =
+const params =
 new URLSearchParams(
 location.search
 );
 
 
 
-let id =
-params.get(
-"id"
-);
+const id =
+params.get("id");
+
+
 
 
 
 if(!id){
 
 
+root.innerHTML=`
 
-root.innerHTML = `
 
 <div class="card">
 
-Profile not found
+<h2>Profile not found</h2>
 
 </div>
 
+
 `;
 
-return;
 
+return;
 
 
 }
@@ -106,7 +205,9 @@ return;
 
 
 
-let profile =
+
+
+const profile =
 await getPublicProfile(
 id
 );
@@ -114,23 +215,24 @@ id
 
 
 
+
 if(!profile){
 
 
+root.innerHTML=`
 
-root.innerHTML = `
 
 <div class="card">
 
-Profile unavailable
+<h2>Profile unavailable</h2>
 
 </div>
+
 
 `;
 
 
 return;
-
 
 
 }
@@ -142,15 +244,59 @@ return;
 
 
 
-root.innerHTML = `
+
+root.innerHTML=`
 
 
-<div class="card">
+
+<div class="card profile-header">
+
+
+
+<div class="avatar">
+
+
+${
+
+profile.avatar?.url
+
+?
+
+`
+
+<img src="${profile.avatar.url}">
+
+`
+
+:
+
+(
+
+profile.avatar?.initials ||
+
+"PH"
+
+)
+
+}
+
+
+</div>
+
+
+
+
+
+
+
+<div>
 
 
 <h1>
 
-👤 ${profile.displayName}
+
+${profile.displayName || "Pharmora User"}
+
 
 ${
 
@@ -166,58 +312,41 @@ profile.verification?.verified
 
 }
 
+
 </h1>
+
+
 
 
 
 <p>
 
-${profile.headline || ""}
+${profile.headline || "Pharmora Community Member"}
 
 </p>
 
 
 
+
+
+
 <div class="badge">
+
 
 ${
 
-(profile.types || [])
+(profile.types || ["member"])
 
 .join(" • ")
 
+
 }
+
 
 </div>
 
 
 
-
-${
-
-profile.verification?.verified
-
-?
-
-`
-
-<br>
-
-<div class="badge">
-
-✔ Verified
-
-${profile.verification.verifiedTypes.join(", ")}
-
-</div>
-
-`
-
-:
-
-""
-
-}
 
 
 
@@ -229,11 +358,11 @@ profile.contributor?.enabled
 
 `
 
-<br>
+<br><br>
 
 <div class="badge">
 
-🌱 Pharmora Contributor
+🌱 Contributor
 
 </div>
 
@@ -248,10 +377,9 @@ profile.contributor?.enabled
 
 
 
-
 ${
 
-currentUser()?.id === id
+currentUser()?.id===id
 
 ?
 
@@ -263,7 +391,7 @@ currentUser()?.id === id
 
 class="btn btn-primary"
 
-onclick="location.href='profile-edit.html'">
+onclick="location.href='/profile-edit.html'">
 
 ✏ Edit Profile
 
@@ -283,6 +411,20 @@ onclick="location.href='profile-edit.html'">
 
 
 
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="profile-grid">
+
 
 
 
@@ -294,7 +436,7 @@ onclick="location.href='profile-edit.html'">
 
 <h2>
 
-About
+👋 About
 
 </h2>
 
@@ -305,7 +447,7 @@ ${
 
 profile.bio ||
 
-"No bio added yet."
+"No introduction added yet."
 
 }
 
@@ -314,6 +456,61 @@ profile.bio ||
 
 </div>
 
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+⭐ Reputation
+
+</h2>
+
+
+<div class="profile-grid">
+
+
+<div class="stat">
+
+<h2>${profile.stats?.reputation || 0}</h2>
+
+<p>Points</p>
+
+</div>
+
+
+
+<div class="stat">
+
+<h2>${profile.stats?.articles || 0}</h2>
+
+<p>Articles</p>
+
+</div>
+
+
+
+<div class="stat">
+
+<h2>${profile.stats?.answers || 0}</h2>
+
+<p>Answers</p>
+
+</div>
+
+
+
+</div>
+
+
+</div>
 
 
 
@@ -343,7 +540,7 @@ profile.positions.map(job=>`
 
 <p>
 
-<b>${job.title}</b>
+<b>${job.title || ""}</b>
 
 <br>
 
@@ -353,15 +550,16 @@ ${job.organization || ""}
 
 `).join("")
 
+
 :
 
-"No experience added"
+"💼 No professional details shared yet."
+
 
 }
 
 
 </div>
-
 
 
 
@@ -381,15 +579,21 @@ ${job.organization || ""}
 </h2>
 
 
+
 ${
 
-(profile.education || [])
 
-.map(e=>`
+(profile.education || []).length
+
+
+?
+
+
+profile.education.map(e=>`
 
 <p>
 
-${e.course || ""}
+${e.course || e.degree || ""}
 
 ${
 
@@ -408,14 +612,24 @@ e.curriculum
 </p>
 
 
-`)
+`).join("")
 
-.join("")
+
+:
+
+"No education added yet."
+
 
 }
 
 
+
+<br>
+
+
+
 <p>
+
 
 ${
 
@@ -423,13 +637,14 @@ ${
 
 .join(", ")
 
+
 }
+
 
 </p>
 
 
 </div>
-
 
 
 
@@ -444,41 +659,131 @@ ${
 
 <h2>
 
-⭐ Reputation
+🏅 Badges
+
+</h2>
+
+
+${
+
+(profile.badges || []).length
+
+?
+
+profile.badges.join(" ")
+
+:
+
+"No badges earned yet."
+
+}
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+🌐 Contact
 
 </h2>
 
 
 
+${
+
+profile.contact?.email
+
+?
+
+`
+
 <p>
 
-💬 Answers:
-
-${profile.stats?.answers || 0}
-
-<br>
-
-✔ Verified Answers:
-
-${profile.stats?.verifiedAnswers || 0}
-
-<br>
-
-📚 Articles:
-
-${profile.stats?.articles || 0}
-
-<br>
-
-📝 Notes:
-
-${profile.stats?.notes || 0}
+Email:
+${profile.contact.email.value}
 
 </p>
+
+`
+
+:
+
+""
+
+}
+
+
+
+
+${
+
+profile.contact?.linkedin
+
+?
+
+`
+
+<p>
+
+LinkedIn:
+${profile.contact.linkedin.value}
+
+</p>
+
+`
+
+:
+
+""
+
+}
+
+
+
+${
+
+profile.contact?.website
+
+?
+
+`
+
+<p>
+
+Website:
+${profile.contact.website.value}
+
+</p>
+
+`
+
+:
+
+""
+
+}
 
 
 </div>
 
+
+
+
+
+
+
+</div>
 
 
 
@@ -514,93 +819,122 @@ Loading...
 
 
 
-
-
 <div class="card">
 
 
 <h2>
 
-🌐 Contact
+⚡ Recent Activity
 
 </h2>
 
 
-${
+<div id="activity-list">
 
-profile.contact?.linkedin
+Loading...
 
-?
+</div>
 
-`
 
-<p>
+</div>
 
-LinkedIn:
 
-${profile.contact.linkedin.value}
 
-</p>
+`;
 
-`
 
-:
 
-""
+
+
+
+
+
+
+loadContributions(id);
+
+loadActivity(id);
+
+
 
 }
 
 
 
-${
-
-profile.contact?.website
-
-?
-
-`
-
-<p>
-
-Website:
-
-${profile.contact.website.value}
-
-</p>
-
-`
-
-:
-
-""
-
-}
 
 
 
-${
 
-profile.contact?.email
 
-?
 
-`
+async function loadContributions(id){
 
-<p>
 
-Email:
 
-${profile.contact.email.value}
+const box =
+document.getElementById(
+"contribution-list"
+);
 
-</p>
 
-`
 
-:
+if(!box){
 
-""
+return;
 
 }
+
+
+
+const data =
+await getUserContributions(id);
+
+
+
+
+box.innerHTML=`
+
+
+<div class="profile-grid">
+
+
+<div>
+
+<h2>${data.articles.length}</h2>
+
+<p>Articles</p>
+
+</div>
+
+
+
+<div>
+
+<h2>${data.answers.length}</h2>
+
+<p>Answers</p>
+
+</div>
+
+
+
+
+<div>
+
+<h2>${data.notes.length}</h2>
+
+<p>Notes</p>
+
+</div>
+
+
+
+<div>
+
+<h2>${data.uploads.length}</h2>
+
+<p>Uploads</p>
+
+</div>
 
 
 </div>
@@ -610,75 +944,124 @@ ${profile.contact.email.value}
 
 
 
+}
 
 
 
 
 
 
-let contributions =
-await getUserContributions(
-id
-);
 
 
 
-let box =
+async function loadActivity(id){
+
+
+
+const box =
 document.getElementById(
-"contribution-list"
+"activity-list"
+);
+
+
+
+if(!box){
+
+return;
+
+}
+
+
+
+
+
+if(
+
+typeof getProfileActivity !== "function"
+
+){
+
+
+box.innerHTML="No activity yet.";
+
+return;
+
+
+}
+
+
+
+
+
+const activity =
+await getProfileActivity(
+id,
+10
 );
 
 
 
 
-if(box){
+
+if(!activity.length){
 
 
+box.innerHTML=
 
-box.innerHTML = `
+"No recent activity.";
 
-
-<p>
-
-📚 Articles:
-
-${contributions.articles.length}
-
-</p>
-
-
-<p>
-
-💬 Answers:
-
-${contributions.answers.length}
-
-</p>
-
-
-<p>
-
-📝 Notes:
-
-${contributions.notes.length}
-
-</p>
-
-
-`;
-
+return;
 
 
 }
 
 
 
+
+
+box.innerHTML =
+
+activity
+
+.map(a=>`
+
+
+<div class="activity-item">
+
+
+<b>
+
+${a.action || ""}
+
+</b>
+
+
+<br>
+
+
+${a.message || ""}
+
+
+</div>
+
+
+`)
+
+.join("");
+
+
+
 }
+
+
 
 
 </script>
 
 
+
+
 </body>
+
 
 </html>
