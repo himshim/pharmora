@@ -409,9 +409,9 @@ return null;
 
 return deepMergeProfile(
 
-profile.data || {},
+profile,
 
-profile
+profile.data || {}
 
 );
 
