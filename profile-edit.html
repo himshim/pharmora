@@ -451,9 +451,25 @@ profile.contact?.email?.visible || false;
 async function saveProfile(){
 
 
-
 let user =
 currentUser();
+
+
+let displayName =
+document.getElementById("name").value;
+
+
+let initials =
+displayName
+?
+displayName
+.split(" ")
+.map(x=>x[0])
+.join("")
+.substring(0,2)
+.toUpperCase()
+:
+"PH";
 
 
 
@@ -463,7 +479,7 @@ await updateUserProfile({
 
 
 displayName:
-name.value,
+displayName,
 
 
 
@@ -471,16 +487,11 @@ avatar:{
 
 
 url:
-avatar.value,
+document.getElementById("avatar").value,
 
 
 initials:
-name.value
-.split(" ")
-.map(x=>x[0])
-.join("")
-.substring(0,2)
-.toUpperCase()
+initials
 
 
 },
