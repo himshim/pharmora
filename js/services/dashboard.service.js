@@ -1284,6 +1284,10 @@ document.getElementById("dashboard-user");
 let welcome =
 document.getElementById("welcome-title");
 
+let subtitle =
+document.getElementById(
+"dashboard-subtitle"
+);
 
 if(!user){
 
@@ -1363,6 +1367,45 @@ profile?.username
 
 }
 
+
+if(subtitle && profile){
+
+
+let identity = [
+
+...(profile.types || []),
+
+...(profile.specializations || [])
+
+];
+
+
+subtitle.innerHTML =
+
+identity.length
+
+?
+
+identity.join(" • ")
+
+:
+
+"Continue learning, teaching and building knowledge.";
+
+
+
+if(
+profile.verification?.verified
+){
+
+subtitle.innerHTML +=
+
+"<br>✔ Verified Pharmora Member";
+
+}
+
+
+}
 
 await loadDashboardInsights();
 
