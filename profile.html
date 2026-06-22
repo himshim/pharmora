@@ -149,7 +149,47 @@ loadProfile
 
 );
 
+function isMyProfile(profile){
 
+return (
+currentUser()
+&&
+currentUser().id === profile.userId
+);
+
+}
+
+
+
+function platformBadge(profile){
+
+
+let user=currentUser();
+
+
+if(
+user?.id===profile.userId
+){
+
+if(user.role==="owner"){
+
+return "👑 Platform Owner";
+
+}
+
+
+if(user.role==="admin"){
+
+return "🛡 Administrator";
+
+}
+
+}
+
+
+return "";
+
+}
 
 
 
@@ -300,6 +340,14 @@ ${profile.displayName || "Pharmora User"}
 
 ${
 
+platformBadge(profile)
+
+?
+
+" 👑"
+
+:
+
 profile.verification?.verified
 
 ?
@@ -326,7 +374,39 @@ ${profile.headline || "Pharmora Community Member"}
 </p>
 
 
+<p>
 
+@${profile.username || "user"}
+
+<br>
+
+ID:
+${profile.publicId || profile.refId || ""}
+
+</p>
+
+
+${
+
+platformBadge(profile)
+
+?
+
+`
+
+<div class="badge">
+
+${platformBadge(profile)}
+
+</div>
+
+`
+
+:
+
+""
+
+}
 
 
 
@@ -335,7 +415,13 @@ ${profile.headline || "Pharmora Community Member"}
 
 ${
 
-(profile.types || ["member"])
+[
+
+...(profile.types || ["member"]),
+
+...(profile.specializations || [])
+
+]
 
 .join(" • ")
 
@@ -379,7 +465,7 @@ profile.contributor?.enabled
 
 ${
 
-currentUser()?.id===id
+isMyProfile(profile)
 
 ?
 
