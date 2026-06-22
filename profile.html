@@ -1043,7 +1043,7 @@ ${item.createdAt || ""}
 
 <a
 class="btn"
-href="${item.url || "#"}">
+href="${getContributionUrl(item,title)}">
 
 Open →
 
@@ -1054,7 +1054,15 @@ ${
 
 currentUser()
 &&
-currentUser().id === item.userId
+currentUser()
+&&
+(
+currentUser().id===item.userId
+
+||
+
+currentUser().id===item.ownership?.ownerId
+)
 
 ?
 
@@ -1150,7 +1158,69 @@ data.uploads || [],
 
 }
 
+function getContributionUrl(item,type){
 
+
+if(item.url){
+
+return item.url;
+
+}
+
+
+let base="/";
+
+
+switch(
+type.toLowerCase()
+){
+
+
+case "articles":
+
+base="/library/view.html?id=";
+
+break;
+
+
+
+case "notes":
+
+base="/library/view.html?id=";
+
+break;
+
+
+
+case "answers":
+
+base="/community/?answer=";
+
+break;
+
+
+
+case "uploads":
+
+base="/library/view.html?id=";
+
+break;
+
+
+
+default:
+
+base="/library/view.html?id=";
+
+
+}
+
+
+
+return base + item.id;
+
+
+}
 
 
 function editContribution(id){
