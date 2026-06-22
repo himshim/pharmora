@@ -1,120 +1,162 @@
 /*
- Pharmora Profile Service
- Identity + Public Profiles
+ Pharmora Profile Service v2.1
+ Identity + Community Profile Layer
+
+ Rules:
+ - Auth owns login/session
+ - Profile owns public identity
+ - Backend provider independent
 */
+
+
+/* ======================
+ UTILITIES
+====================== */
+
+
+function deepMergeProfile(target={}, source={}){
+
+let output={
+...target
+};
+
+
+for(let key in source){
+
+if(
+
+source[key] &&
+typeof source[key]==="object" &&
+!Array.isArray(source[key])
+
+){
+
+output[key]=deepMergeProfile(
+target[key] || {},
+source[key]
+);
+
+}
+
+else{
+
+output[key]=source[key];
+
+}
+
+}
+
+
+return output;
+
+}
+
+
+
+function createInitials(name=""){
+
+return name
+.split(" ")
+.map(x=>x[0])
+.join("")
+.substring(0,2)
+.toUpperCase()
+||
+"PH";
+
+}
+
+
+
+/* ======================
+ CREATE PROFILE
+====================== */
 
 
 async function createUserProfile(user){
 
 
 if(!user){
+
 return null;
+
 }
-
-
-let profiles =
-await getRecords("profiles");
 
 
 let existing =
-profiles.find(
-x=>x.userId===user.id
-);
+await getProfile(user.id);
 
 
 if(existing){
+
 return existing;
+
 }
 
 
 
-return createRecord(
+let name =
+user.data?.name ||
+user.name ||
+"Pharmora User";
 
-"profiles",
 
-{
+let email =
+user.data?.email ||
+user.email ||
+"";
+
+
+
+let profile={
+
 
 userId:user.id,
 
 
-title:
-
-user.data?.name ||
-
-user.name ||
-
-"Pharmora User",
-
-
-displayName:
-
-user.data?.name ||
-
-user.name ||
-
-"Pharmora User",
-
-
-email:
-
-user.data?.email ||
-
-user.email,
-
-
 /*
- A user can be multiple:
- student + educator
- educator + professional
- etc.
+ Identity
 */
 
-types:[
-"member"
-],
+displayName:name,
 
+username:
+name
+.toLowerCase()
+.replaceAll(" ","-"),
+
+avatar:{
+
+url:"",
+
+initials:createInitials(name)
+
+},
 
 
 headline:"",
 
+bio:"",
 
 
-positions:[
 
 /*
-
-Example:
-
-{
- category:"professional",
- title:"Hospital Pharmacist",
- organization:"ABC Hospital",
- current:true,
- startYear:2024
-}
-
+ User category
 */
+
+types:[
+
+"member"
 
 ],
 
 
 
-education:[
-
 /*
-
-Example:
-
-{
- degree:"B.Pharm",
- institute:"ABC College",
- year:"2026"
-}
-
+ Academic identity
 */
 
-],
-
+education:[],
 
 
 specializations:[],
@@ -123,25 +165,29 @@ specializations:[],
 skills:[],
 
 
-bio:"",
+
+/*
+ Professional identity
+*/
+
+positions:[],
 
 
+
+/*
+ Contact privacy
+*/
 
 contact:{
 
 
 email:{
 
-value:
-
-user.data?.email ||
-
-user.email,
+value:email,
 
 visible:false
 
 },
-
 
 
 linkedin:{
@@ -151,7 +197,6 @@ value:"",
 visible:false
 
 },
-
 
 
 website:{
@@ -168,14 +213,16 @@ visible:false
 
 
 
+/*
+ Trust system
+*/
+
 verification:{
 
 
 verified:false,
 
-
 verifiedTypes:[],
-
 
 verifiedAt:null
 
@@ -184,15 +231,16 @@ verifiedAt:null
 
 
 
+/*
+ Contributor system
+*/
 
 contributor:{
 
 
 enabled:false,
 
-
 approvedAt:null,
-
 
 totalSubmissions:0
 
@@ -202,46 +250,103 @@ totalSubmissions:0
 
 
 
+/*
+ Reputation
+*/
+
 stats:{
 
 
 reputation:0,
 
-
 answers:0,
-
 
 verifiedAnswers:0,
 
-
 articles:0,
 
+notes:0,
 
-notes:0
+uploads:0
 
 
 },
 
 
 
-
 badges:[],
 
+
+preferences:{
+
+
+theme:"system",
+
+notifications:true
+
+
+},
 
 
 
 createdAt:
 
 new Date()
+.toISOString(),
+
+
+updatedAt:
+
+new Date()
 .toISOString()
 
 
+};
+
+
+
+
+let created =
+await createRecord(
+
+"profiles",
+
+profile
+
+);
+
+
+
+
+if(
+
+typeof PharmoraActivity !== "undefined"
+
+){
+
+
+PharmoraActivity.logActivity(
+
+"profile.created",
+
+"Profile created",
+
+{
+
+userId:user.id
 
 }
 
 );
 
 
+}
+
+
+
+
+return created;
+
 
 }
 
@@ -251,13 +356,26 @@ new Date()
 
 
 
+/* ======================
+ GET PRIVATE PROFILE
+====================== */
+
+
 async function getProfile(userId){
+
+
+if(!userId){
+
+return null;
+
+}
 
 
 let profiles =
 await getRecords(
 "profiles"
 );
+
 
 
 return (
@@ -284,12 +402,21 @@ null
 
 
 
-async function updateUserProfile(updates){
 
+/* ======================
+ UPDATE PROFILE
+====================== */
+
+
+async function updateUserProfile(updates={}){
 
 
 let user =
-currentUser();
+typeof currentUser==="function"
+?
+currentUser()
+:
+null;
 
 
 
@@ -310,27 +437,28 @@ user.id
 
 if(!profile){
 
-
 profile =
-await createUserProfile(user);
-
+await createUserProfile(
+user
+);
 
 }
 
 
 
+let merged =
+deepMergeProfile(
 
-return updateRecord(
-
-"profiles",
-
-profile.id,
+profile,
 
 {
 
-...profile,
+...updates,
 
-...updates
+updatedAt:
+
+new Date()
+.toISOString()
 
 }
 
@@ -338,6 +466,52 @@ profile.id,
 
 
 
+
+let updated =
+await updateRecord(
+
+"profiles",
+
+profile.id,
+
+merged
+
+);
+
+
+
+
+
+if(
+
+typeof PharmoraActivity !== "undefined"
+
+){
+
+
+PharmoraActivity.logActivity(
+
+"profile.updated",
+
+"Profile updated",
+
+{
+
+userId:user.id
+
+}
+
+);
+
+
+}
+
+
+
+
+return updated;
+
+
 }
 
 
@@ -349,8 +523,12 @@ profile.id,
 
 
 
-async function getPublicProfile(userId){
+/* ======================
+ PUBLIC PROFILE
+====================== */
 
+
+async function getPublicProfile(userId){
 
 
 let profile =
@@ -372,17 +550,15 @@ structuredClone(profile);
 
 
 
-
-// privacy filtering
+/*
+ Remove private contacts
+*/
 
 
 if(
 
 publicProfile.contact?.email?.visible
-
-!==
-
-true
+!==true
 
 ){
 
@@ -392,14 +568,10 @@ delete publicProfile.contact.email;
 
 
 
-
 if(
 
 publicProfile.contact?.linkedin?.visible
-
-!==
-
-true
+!==true
 
 ){
 
@@ -412,10 +584,7 @@ delete publicProfile.contact.linkedin;
 if(
 
 publicProfile.contact?.website?.visible
-
-!==
-
-true
+!==true
 
 ){
 
@@ -425,8 +594,16 @@ delete publicProfile.contact.website;
 
 
 
-return publicProfile;
 
+/*
+ Never expose preferences
+*/
+
+delete publicProfile.preferences;
+
+
+
+return publicProfile;
 
 
 }
@@ -439,20 +616,25 @@ return publicProfile;
 
 
 
+/* ======================
+ USER CONTRIBUTIONS
+====================== */
+
+
 async function getUserContributions(userId){
 
 
 
-let result = {
+let result={
 
 
 articles:[],
 
-
 answers:[],
 
+notes:[],
 
-notes:[]
+uploads:[]
 
 
 };
@@ -460,9 +642,8 @@ notes:[]
 
 
 
+let collections=[
 
-
-let collections = [
 
 {
 
@@ -488,6 +669,24 @@ name:"notes",
 
 key:"notes"
 
+},
+
+
+{
+
+name:"books",
+
+key:"uploads"
+
+},
+
+
+{
+
+name:"teaching-materials",
+
+key:"uploads"
+
 }
 
 
@@ -498,46 +697,46 @@ key:"notes"
 
 
 
-
-
-for(
-
-let item of collections
-
-){
-
+for(let item of collections){
 
 
 try{
 
 
-
 let data =
-
 await getRecords(
-
 item.name
-
 );
 
 
 
+let mine =
+data.filter(x=>{
 
+return (
 
-result[item.key] =
+x.userId===userId
 
-data.filter(
-
-x=>
+||
 
 x.author?.id===userId
 
 ||
 
-x.userId===userId
+x.ownership?.ownerId===userId
 
 );
 
+});
+
+
+
+
+result[item.key].push(
+
+...mine
+
+);
 
 
 
@@ -546,11 +745,7 @@ x.userId===userId
 catch(e){}
 
 
-
-
 }
-
-
 
 
 
@@ -558,5 +753,87 @@ catch(e){}
 return result;
 
 
+}
+
+
+
+
+
+
+
+
+
+
+/* ======================
+ PROFILE ACTIVITY
+====================== */
+
+
+async function getProfileActivity(
+userId,
+limit=10
+){
+
+
+if(
+
+typeof PharmoraActivity==="undefined"
+
+){
+
+return [];
 
 }
+
+
+
+return await PharmoraActivity
+.getUserActivities(
+
+userId,
+
+limit
+
+);
+
+
+}
+
+
+
+
+
+
+
+
+/* ======================
+ EXPORT
+====================== */
+
+
+window.PharmoraProfile={
+
+
+createUserProfile,
+
+getProfile,
+
+updateUserProfile,
+
+getPublicProfile,
+
+getUserContributions,
+
+getProfileActivity
+
+
+};
+
+
+
+
+console.log(
+
+"✓ PharmoraProfile ready"
+
+);
