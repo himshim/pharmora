@@ -955,12 +955,10 @@ loadActivity(id);
 async function loadContributions(id){
 
 
-
 const box =
 document.getElementById(
 "contribution-list"
 );
-
 
 
 if(!box){
@@ -976,51 +974,171 @@ await getUserContributions(id);
 
 
 
+function renderItems(
+title,
+items,
+icon
+){
 
-box.innerHTML=`
+
+if(!items.length){
+
+return `
+
+<div>
+
+<h3>
+${icon} ${title}
+</h3>
+
+<p>No items yet.</p>
+
+</div>
+
+`;
+
+}
+
+
+
+return `
+
+<div>
+
+<h3>
+
+${icon} ${title}
+(${items.length})
+
+</h3>
+
+
+${
+
+items.map(item=>`
+
+
+<div class="activity-item">
+
+
+<b>
+
+${item.title || "Untitled"}
+
+</b>
+
+
+<br>
+
+
+<small>
+
+${item.createdAt || ""}
+
+</small>
+
+
+<br><br>
+
+
+<a
+class="btn"
+href="${item.url || "#"}">
+
+Open →
+
+</a>
+
+
+${
+
+currentUser()
+&&
+currentUser().id === item.userId
+
+?
+
+`
+
+<button
+class="btn"
+onclick="editContribution('${item.id}')">
+
+Edit
+
+</button>
+
+
+<button
+class="btn"
+onclick="requestDelete('${item.id}')">
+
+Remove
+
+</button>
+
+`
+
+:
+
+""
+
+}
+
+
+</div>
+
+
+`).join("")
+
+}
+
+
+</div>
+
+`;
+
+}
+
+
+
+
+
+box.innerHTML = `
 
 
 <div class="profile-grid">
 
 
-<div>
-
-<h2>${data.articles.length}</h2>
-
-<p>Articles</p>
-
-</div>
+${renderItems(
+"Articles",
+data.articles || [],
+"📄"
+)}
 
 
 
-<div>
-
-<h2>${data.answers.length}</h2>
-
-<p>Answers</p>
-
-</div>
+${renderItems(
+"Answers",
+data.answers || [],
+"💬"
+)}
 
 
 
-
-<div>
-
-<h2>${data.notes.length}</h2>
-
-<p>Notes</p>
-
-</div>
+${renderItems(
+"Notes",
+data.notes || [],
+"📘"
+)}
 
 
 
-<div>
-
-<h2>${data.uploads.length}</h2>
-
-<p>Uploads</p>
-
-</div>
+${renderItems(
+"Uploads",
+data.uploads || [],
+"📦"
+)}
 
 
 </div>
@@ -1035,7 +1153,39 @@ box.innerHTML=`
 
 
 
+function editContribution(id){
 
+
+location.href =
+"/contribute/?edit="+id;
+
+
+}
+
+
+
+
+
+function requestDelete(id){
+
+
+alert(
+
+"Delete request submitted for review."
+
+);
+
+
+/*
+
+Future:
+
+PharmoraReview.requestDelete(id)
+
+*/
+
+
+}
 
 
 
