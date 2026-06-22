@@ -73,19 +73,44 @@ About
 
 
 <label>
-Profile Types
+Profile Type
 </label>
 
-<input
+<select
 id="types"
-placeholder="student, educator, professional">
+onchange="updatePositionOptions()">
+</select>
 
 
 <label>
-Specializations
+Position / Role
 </label>
 
-<input id="specializations">
+<select
+id="positionSelect"
+onchange="toggleCustomPosition()">
+</select>
+
+
+<input
+id="customPosition"
+style="display:none"
+placeholder="Enter custom role">
+
+
+
+<label>
+Specialization
+</label>
+
+<select id="specializations">
+</select>
+
+
+<input
+id="customSpecialization"
+style="display:none"
+placeholder="Enter specialization">
 
 
 
@@ -94,11 +119,6 @@ Specializations
 <h2>Professional</h2>
 
 
-<label>
-Position
-</label>
-
-<input id="position">
 
 
 
@@ -275,7 +295,7 @@ document.getElementById(id);
 let originalProfile=null;
 
 
-
+let profileTypesConfig=null;
 
 window.addEventListener(
 
@@ -370,7 +390,7 @@ Math.random()
 originalProfile =
 profile;
 
-
+await loadProfileTypes();
 
 
 $("identity").innerHTML=`
@@ -476,7 +496,121 @@ showCompletion(profile);
 
 
 
+async function loadProfileTypes(){
 
+
+profileTypesConfig =
+await fetch(
+"/config/profile-types.json"
+)
+.then(r=>r.json());
+
+
+
+$("types").innerHTML =
+Object.keys(profileTypesConfig)
+.filter(x=>x!=="fields")
+.map(x=>`
+
+<option value="${x}">
+${x}
+</option>
+
+`)
+.join("");
+
+
+
+$("specializations").innerHTML =
+
+profileTypesConfig.fields
+
+.map(x=>`
+
+<option value="${x}">
+${x}
+</option>
+
+`)
+
+.join("")
+
++
+
+`
+<option value="Other">
+Other
+</option>
+`;
+
+
+
+updatePositionOptions();
+
+
+}
+
+
+
+
+
+
+function updatePositionOptions(){
+
+
+let type =
+$("types").value;
+
+
+
+let data =
+profileTypesConfig[type];
+
+
+
+$("positionSelect").innerHTML =
+
+
+(data?.suggestions || [])
+
+.map(x=>`
+
+<option value="${x}">
+${x}
+</option>
+
+`)
+
+.join("");
+
+
+updateCustomPosition();
+
+
+}
+
+
+
+
+
+
+function toggleCustomPosition(){
+
+
+$("customPosition").style.display =
+
+$("positionSelect").value==="Other"
+
+?
+
+"block"
+
+:
+
+"none";
+
+
+}
 
 
 
@@ -777,15 +911,19 @@ $("types").value
 
 
 
-specializations:
+specializations:[
+
+$("specializations").value==="Other"
+
+?
+
+$("customSpecialization").value
+
+:
 
 $("specializations").value
 
-.split(",")
-
-.map(x=>x.trim())
-
-.filter(Boolean),
+],
 
 
 
@@ -794,7 +932,17 @@ positions:[
 
 {
 
-title:$("position").value,
+title:
+
+$("positionSelect").value==="Other"
+
+?
+
+$("customPosition").value
+
+:
+
+$("positionSelect").value,
 
 organization:$("organization").value,
 

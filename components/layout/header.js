@@ -131,7 +131,27 @@ null;
 let desktopAuth="";
 let mobileAuth="";
 
+let headerProfile=null;
 
+
+if(user && window.PharmoraProfile){
+
+
+try{
+
+
+headerProfile =
+await PharmoraProfile.getProfile(
+user.id
+);
+
+
+}
+
+catch(e){}
+
+
+}
 
 if(user){
 
@@ -182,7 +202,13 @@ return `
 
 
 <a href="${appPath("dashboard/")}">
-👤 ${user.name || "Profile"}
+👤 ${
+headerProfile?.displayName
+||
+user.name
+||
+"Profile"
+}
 </a>
 
 
@@ -532,3 +558,9 @@ box.innerHTML =
 
 
 loadHeader();
+
+
+window.addEventListener(
+"profile-updated",
+loadHeader
+);
