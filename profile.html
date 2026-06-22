@@ -31,6 +31,17 @@ gap:25px;
 align-items:center;
 flex-wrap:wrap;
 
+padding:25px;
+
+background:
+linear-gradient(
+135deg,
+var(--surface),
+transparent
+);
+
+border-radius:20px;
+
 }
 
 
@@ -53,6 +64,11 @@ border:1px solid var(--border);
 
 overflow:hidden;
 
+box-shadow:
+0 8px 30px rgba(0,0,0,.15);
+
+transition:.3s;
+
 }
 
 
@@ -61,6 +77,12 @@ overflow:hidden;
 width:100%;
 height:100%;
 object-fit:cover;
+
+}
+
+.profile-header:hover .avatar{
+
+transform:scale(1.05);
 
 }
 
@@ -90,11 +112,27 @@ text-align:center;
 
 .activity-item{
 
-padding:12px 0;
+padding:15px;
 
-border-bottom:
+margin:10px 0;
+
+border:
 
 1px solid var(--border);
+
+border-radius:15px;
+
+transition:.2s;
+
+}
+
+
+.activity-item:hover{
+
+transform:translateY(-3px);
+
+box-shadow:
+0 8px 20px rgba(0,0,0,.1);
 
 }
 
@@ -159,35 +197,113 @@ currentUser().id === profile.userId
 
 }
 
+function canSeeUserCode(profile){
 
+
+let user =
+currentUser();
+
+
+if(!user){
+
+return false;
+
+}
+
+
+return (
+
+user.id === profile.userId
+
+||
+
+[
+"owner",
+"admin",
+"moderator"
+]
+.includes(user.role)
+
+||
+
+(user.roles || [])
+.some(r=>
+
+[
+"owner",
+"admin",
+"moderator"
+]
+.includes(r)
+
+)
+
+);
+
+
+}
 
 function platformBadge(profile){
 
 
-let user=currentUser();
+let user =
+currentUser();
 
 
 if(
-user?.id===profile.userId
+!user
+||
+user.id !== profile.userId
 ){
 
-if(user.role==="owner"){
+return "";
+
+}
+
+
+
+let roles = [
+
+user.role,
+
+...(user.roles || [])
+
+];
+
+
+
+if(
+roles.includes("owner")
+){
 
 return "👑 Platform Owner";
 
 }
 
 
-if(user.role==="admin"){
+
+if(
+roles.includes("admin")
+){
 
 return "🛡 Administrator";
 
 }
 
+
+
+if(
+roles.includes("moderator")
+){
+
+return "🛡 Moderator";
+
 }
 
 
+
 return "";
+
 
 }
 
@@ -378,10 +494,26 @@ ${profile.headline || "Pharmora Community Member"}
 
 @${profile.username || "user"}
 
+${
+
+canSeeUserCode(profile)
+
+?
+
+`
+
 <br>
 
-ID:
+🔒 User Code:
 ${profile.publicId || profile.refId || ""}
+
+`
+
+:
+
+""
+
+}
 
 </p>
 
@@ -410,7 +542,7 @@ ${platformBadge(profile)}
 
 
 
-<div class="badge">
+<div>
 
 
 ${
@@ -423,7 +555,17 @@ ${
 
 ]
 
-.join(" • ")
+.map(x=>`
+
+<span class="badge">
+
+${x}
+
+</span>
+
+`)
+
+.join(" ")
 
 
 }
@@ -760,7 +902,27 @@ profile.badges.join(" ")
 
 :
 
-"No badges earned yet."
+`
+
+<div>
+
+🏅
+
+<br>
+
+No badges yet.
+
+<br>
+
+<small>
+
+Contribute to earn achievements.
+
+</small>
+
+</div>
+
+`
 
 }
 
@@ -774,6 +936,20 @@ profile.badges.join(" ")
 
 
 
+
+${
+
+(
+profile.contact?.email?.value
+||
+profile.contact?.linkedin?.value
+||
+profile.contact?.website?.value
+)
+
+?
+
+`
 
 <div class="card">
 
@@ -865,7 +1041,13 @@ ${profile.contact.website.value}
 
 
 
+`
 
+:
+
+""
+
+}
 
 
 
@@ -1052,8 +1234,7 @@ Open →
 
 ${
 
-currentUser()
-&&
+
 currentUser()
 &&
 (
@@ -1314,7 +1495,23 @@ if(!activity.length){
 
 box.innerHTML=
 
-"No recent activity.";
+`
+
+⚡
+
+<br>
+
+No activity yet.
+
+<br>
+
+<small>
+
+Community actions will appear here.
+
+</small>
+
+`;
 
 return;
 
