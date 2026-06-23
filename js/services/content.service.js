@@ -168,4 +168,108 @@ return "";
 }
 
 
+async function getEntity(
+collection,
+id
+){
+
+
+if(
+!collection
+||
+!id
+){
+
+return null;
+
+}
+
+
+try{
+
+
+let data =
+await getRecords(
+collection
+);
+
+
+return (
+
+data.find(
+x=>
+x.id===id
+)
+
+||
+
+null
+
+);
+
+
+}
+
+catch(e){
+
+
+return null;
+
+
+}
+
+
+}
+
+
+async function getRelatedEntities(
+entity,
+type="linked"
+){
+
+
+let relations =
+
+entity?.relations?.[type]
+
+||
+
+[];
+
+
+let results=[];
+
+
+for(
+
+let link
+
+of
+
+relations
+
+){
+
+
+let item =
+await getEntity(
+link.collection,
+link.id
+);
+
+
+if(item){
+
+results.push(item);
+
+}
+
+
+}
+
+
+return results;
+
+
+}
 
