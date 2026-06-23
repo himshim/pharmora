@@ -50,9 +50,17 @@ await getRecords("roles");
 let foundDynamic =
 dynamicRoles.find(
 x=>
-x.role===role
+
+x.id===role
+
 ||
+
+x.role===role
+
+||
+
 x.name===role
+
 );
 
 
@@ -138,22 +146,6 @@ async function userPermissions(){
 
 
 
-/*
- Owner root protection
-*/
-
-
-if(isOwner(user)){
-
-
-cachedPermissions=["*"];
-
-
-return cachedPermissions;
-
-
-}
-
 
 
 if(
@@ -177,7 +169,33 @@ return [];
 let user =
 currentUser();
 
+/*
+ Owner root protection
+*/
 
+if(isOwner(user)){
+
+
+cachedRole =
+"owner";
+
+
+cachedUser =
+user.id;
+
+
+cachedTime =
+Date.now();
+
+
+cachedPermissions =
+["*"];
+
+
+return cachedPermissions;
+
+
+}
 
 
 
