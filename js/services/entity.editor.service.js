@@ -275,17 +275,18 @@ let ignore=[
 "analytics",
 "identity",
 
-"refId",
-"type",
-"subtype",
-"collection",
+"data",
 
-"userId",
+"taxonomy",
+"relations",
 "ownership",
-"access",
+"lifecycle",
+"moderation",
 "trust",
-
+"access",
+"seo",
 "metadata",
+"extensions",
 
 "password",
 
