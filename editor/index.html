@@ -392,64 +392,29 @@ document.getElementById(
 
 
 
-root.innerHTML = `
+let fields =
+editableFields(item)
+
+.map(renderDynamicField)
+
+.join("");
+
+
+
+root.innerHTML=`
 
 
 <h1>
-
-✏ Editing
-
+✏ Dynamic Content Editor
 </h1>
 
 
 <p>
-
 ${item.refId || item.publicId || item.id}
-
 </p>
 
 
-
-<label>
-Title
-</label>
-
-<input
-id="edit-title"
-value="${entityValue(item,"title","")}"
->
-
-
-
-<label>
-Description
-</label>
-
-
-<textarea id="edit-description">
-${entityValue(item,"description","")}
-</textarea>
-
-
-
-<label>
-Tags
-</label>
-
-
-<input
-
-id="edit-tags"
-
-value="${
-
-(item.tags || [])
-
-.join(",")
-
-}"
-
->
+${fields}
 
 
 
@@ -462,10 +427,9 @@ Edit reason
 
 id="edit-reason"
 
-placeholder="Explain why you changed this">
+placeholder="Explain why you changed this"
 
-</textarea>
-
+></textarea>
 
 
 
@@ -478,7 +442,6 @@ onclick="saveEditor()">
 💾 Save Changes
 
 </button>
-
 
 
 <br><br>
@@ -611,41 +574,8 @@ return;
 
 
 
-let changes={
-
-
-title:
-
-document.getElementById(
-"edit-title"
-)
-.value,
-
-
-description:
-
-document.getElementById(
-"edit-description"
-)
-.value,
-
-
-
-tags:
-
-document.getElementById(
-"edit-tags"
-)
-.value
-
-.split(",")
-
-.map(x=>x.trim())
-
-.filter(Boolean)
-
-
-};
+let changes =
+buildChangesFromFields();
 
 
 

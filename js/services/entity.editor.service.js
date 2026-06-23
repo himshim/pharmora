@@ -153,8 +153,6 @@ throw Error(
 
 
 
-
-
 let updated = {
 
 ...entity,
@@ -219,7 +217,25 @@ currentUser()?.id
 };
 
 
+Object.keys(
+updated.data || {}
+)
+.forEach(key=>{
 
+
+if(
+key in changes
+){
+
+
+updated.data[key] =
+changes[key];
+
+
+}
+
+
+});
 
 
 if(
@@ -396,7 +412,12 @@ let value =
 input.value;
 
 
+if(type==="number"){
 
+value =
+Number(value);
+
+}
 
 if(type==="array"){
 
