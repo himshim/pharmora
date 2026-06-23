@@ -153,6 +153,7 @@ const MODULES={
 "home-content":[
 
 "/js/services/content.service.js",
+"/js/services/entity.editor.service.js",
 "/js/services/home.service.js",
 "/js/services/home.component.js"
 
@@ -176,6 +177,7 @@ const MODULES={
 "content":[
 
 "/js/services/content.service.js",
+"/js/services/entity.editor.service.js",
 "/js/services/content.component.js"
 
 ],
