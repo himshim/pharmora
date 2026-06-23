@@ -272,51 +272,39 @@ renderEditor(entity);
 function renderDynamicField(field){
 
 
+let config =
+typeof fieldConfig==="function"
+?
+fieldConfig(field.key)
+:
+{
+label:field.key,
+type:"auto"
+};
+
+
 let value =
 field.value ?? "";
 
 
-/* NULL FIRST */
-if(field.type==="null"){
+
+/*
+ TEXTAREA
+*/
+
+if(
+config.type==="textarea"
+){
 
 return `
 
 <label>
-${field.key}
-</label>
-
-<input
-data-field="${field.key}"
-data-type="null"
-value=""
-placeholder="null"
->
-
-`;
-
-}
-
-
-
-/* OBJECT */
-if(field.type==="object"){
-
-value =
-JSON.stringify(
-field.value,
-null,
-2
-);
-
-return `
-
-<label>
-${field.key}
+${config.label}
 </label>
 
 <textarea
 data-field="${field.key}"
-data-type="${field.type}"
+data-type="string"
 >${value}</textarea>
 
 `;
@@ -325,20 +313,56 @@ data-type="${field.type}"
 
 
 
-/* ARRAY */
-if(field.type==="array"){
+/*
+ SELECT
+*/
+
+if(
+config.type==="select"
+){
 
 return `
 
 <label>
-${field.key}
+${config.label}
 </label>
 
-<input
+<select
 data-field="${field.key}"
-data-type="${field.type}"
-value="${value.join(",")}"
+data-type="string"
 >
+
+${
+
+(config.options || [])
+
+.map(x=>`
+
+<option
+value="${x}"
+${x===value?"selected":""}
+>
+${x}
+</option>
+
+`)
+.join("")
+
+}
+
+${
+config.allowCustom
+?
+`
+<option value="${value}">
+${value}
+</option>
+`
+:
+""
+}
+
+</select>
 
 `;
 
@@ -346,8 +370,112 @@ value="${value.join(",")}"
 
 
 
-/* BOOLEAN */
-if(field.type==="boolean"){
+
+
+/*
+ MULTI SELECT
+*/
+
+if(
+config.type==="multi-select"
+){
+
+
+let selected =
+Array.isArray(value)
+?
+value
+:
+[];
+
+
+let custom =
+selected.filter(
+x=>
+!(config.options||[])
+.includes(x)
+);
+
+
+return `
+
+<label>
+${config.label}
+</label>
+
+
+${
+
+(config.options||[])
+
+.map(x=>`
+
+<label>
+
+<input
+
+type="checkbox"
+
+data-field="${field.key}"
+
+data-type="multi"
+
+value="${x}"
+
+${selected.includes(x)?"checked":""}
+
+>
+
+${x}
+
+</label>
+
+`)
+
+.join("")
+
+}
+
+
+${
+custom.length
+?
+`
+
+<input
+
+data-field="${field.key}"
+
+data-type="array"
+
+value="${custom.join(",")}"
+
+placeholder="Custom"
+
+>
+
+`
+:
+""
+}
+
+`;
+
+}
+
+
+
+
+
+/*
+ BOOLEAN
+*/
+
+if(
+config.type==="boolean"
+||
+field.type==="boolean"
+){
 
 return `
 
@@ -355,12 +483,16 @@ return `
 
 <input
 type="checkbox"
+
 data-field="${field.key}"
-data-type="${field.type}"
-${value ? "checked":""}
+
+data-type="boolean"
+
+${value?"checked":""}
+
 >
 
-${field.key}
+${config.label}
 
 </label>
 
@@ -370,20 +502,93 @@ ${field.key}
 
 
 
-/* STRING / NUMBER fallback */
+
+
+
+/*
+ OBJECT fallback
+*/
+
+if(field.type==="object"){
+
 return `
 
 <label>
-${field.key}
+${config.label}
 </label>
 
-<input
+
+<textarea
+
 data-field="${field.key}"
-data-type="${field.type}"
-value="${value}"
+
+data-type="object"
+
+>${JSON.stringify(value,null,2)}</textarea>
+
+`;
+
+}
+
+
+
+
+
+
+/*
+ ARRAY fallback
+*/
+
+if(field.type==="array"){
+
+return `
+
+<label>
+${config.label}
+</label>
+
+
+<input
+
+data-field="${field.key}"
+
+data-type="array"
+
+value="${value.join(",")}"
+
 >
 
 `;
+
+}
+
+
+
+
+
+/*
+ DEFAULT
+*/
+
+return `
+
+<label>
+${config.label}
+</label>
+
+
+<input
+
+data-field="${field.key}"
+
+data-type="${field.type}"
+
+value="${value}"
+
+>
+
+`;
+
 
 }
 

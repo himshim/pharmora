@@ -163,7 +163,8 @@ const MODULES={
 
 "/js/services/content.service.js",
 
-"/js/services/entity.editor.service.js"
+"/js/services/entity.editor.service.js",
+"/js/services/field.registry.js"
 
 ],
 
@@ -184,6 +185,7 @@ const MODULES={
 
 "/js/services/content.service.js",
 "/js/services/entity.editor.service.js",
+"/js/services/field.registry.js",
 "/js/services/content.component.js"
 
 ],

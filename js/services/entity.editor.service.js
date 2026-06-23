@@ -275,6 +275,18 @@ let ignore=[
 "analytics",
 "identity",
 
+"refId",
+"type",
+"subtype",
+"collection",
+
+"userId",
+"ownership",
+"access",
+"trust",
+
+"metadata",
+
 "password",
 
 "createdAt",
@@ -317,13 +329,14 @@ if(
 !advanced
 &&
 [
-"ownership",
 "permissions",
 "role",
-"access",
+
+"lifecycle",
 "moderation",
-"trust",
-"metadata"
+
+"seo",
+"extensions"
 ]
 .includes(key)
 ){
@@ -426,6 +439,23 @@ Number(value);
 if(type==="null"){
 
 value=null;
+
+}
+
+
+if(type==="multi"){
+
+let checked =
+[...document.querySelectorAll(
+`[data-field="${key}"]:checked`
+)]
+.map(x=>x.value);
+
+
+changes[key]=checked;
+
+
+return;
 
 }
 
