@@ -359,6 +359,13 @@ type:fieldType(entity[key])
 function fieldType(value){
 
 
+if(value===null){
+
+return "null";
+
+}
+
+
 if(Array.isArray(value)){
 
 return "array";
@@ -366,11 +373,7 @@ return "array";
 }
 
 
-if(
-value!==null
-&&
-typeof value==="object"
-){
+if(typeof value==="object"){
 
 return "object";
 
@@ -418,6 +421,14 @@ value =
 Number(value);
 
 }
+
+
+if(type==="null"){
+
+value=null;
+
+}
+
 
 if(type==="array"){
 

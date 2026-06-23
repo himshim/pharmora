@@ -276,11 +276,34 @@ let value =
 field.value ?? "";
 
 
+/* NULL FIRST */
+if(field.type==="null"){
+
+return `
+
+<label>
+${field.key}
+</label>
+
+<input
+data-field="${field.key}"
+data-type="null"
+value=""
+placeholder="null"
+>
+
+`;
+
+}
+
+
+
+/* OBJECT */
 if(field.type==="object"){
 
 value =
 JSON.stringify(
-value,
+field.value,
 null,
 2
 );
@@ -302,6 +325,7 @@ data-type="${field.type}"
 
 
 
+/* ARRAY */
 if(field.type==="array"){
 
 return `
@@ -311,13 +335,9 @@ ${field.key}
 </label>
 
 <input
-
 data-field="${field.key}"
-
 data-type="${field.type}"
-
 value="${value.join(",")}"
-
 >
 
 `;
@@ -326,6 +346,7 @@ value="${value.join(",")}"
 
 
 
+/* BOOLEAN */
 if(field.type==="boolean"){
 
 return `
@@ -333,15 +354,10 @@ return `
 <label>
 
 <input
-
 type="checkbox"
-
 data-field="${field.key}"
-
 data-type="${field.type}"
-
 ${value ? "checked":""}
-
 >
 
 ${field.key}
@@ -354,27 +370,20 @@ ${field.key}
 
 
 
-
+/* STRING / NUMBER fallback */
 return `
 
 <label>
 ${field.key}
 </label>
 
-
 <input
-
 data-field="${field.key}"
-
 data-type="${field.type}"
-
 value="${value}"
-
 >
 
 `;
-
-
 
 }
 
