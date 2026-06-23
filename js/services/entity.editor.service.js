@@ -410,7 +410,29 @@ value
 
 }
 
+if(type==="object"){
 
+
+try{
+
+value =
+JSON.parse(value);
+
+}
+
+catch(e){
+
+
+console.warn(
+"Invalid object:",
+key
+);
+
+
+}
+
+
+}
 
 
 if(type==="boolean"){

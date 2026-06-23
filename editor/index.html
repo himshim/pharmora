@@ -176,7 +176,37 @@ return;
 editingCollection =
 collection;
 
+let blocked=[
 
+"profiles",
+"users",
+"accounts"
+
+];
+
+
+if(
+blocked.includes(collection)
+){
+
+
+root.innerHTML=`
+
+<h2>
+Use Profile Settings
+</h2>
+
+<p>
+This editor is only for content.
+</p>
+
+`;
+
+
+return;
+
+
+}
 
 let entity =
 await loadEditableEntity(
@@ -239,6 +269,114 @@ renderEditor(entity);
 
 
 
+function renderDynamicField(field){
+
+
+let value =
+field.value ?? "";
+
+
+if(field.type==="object"){
+
+value =
+JSON.stringify(
+value,
+null,
+2
+);
+
+return `
+
+<label>
+${field.key}
+</label>
+
+<textarea
+data-field="${field.key}"
+data-type="${field.type}"
+>${value}</textarea>
+
+`;
+
+}
+
+
+
+if(field.type==="array"){
+
+return `
+
+<label>
+${field.key}
+</label>
+
+<input
+
+data-field="${field.key}"
+
+data-type="${field.type}"
+
+value="${value.join(",")}"
+
+>
+
+`;
+
+}
+
+
+
+if(field.type==="boolean"){
+
+return `
+
+<label>
+
+<input
+
+type="checkbox"
+
+data-field="${field.key}"
+
+data-type="${field.type}"
+
+${value ? "checked":""}
+
+>
+
+${field.key}
+
+</label>
+
+`;
+
+}
+
+
+
+
+return `
+
+<label>
+${field.key}
+</label>
+
+
+<input
+
+data-field="${field.key}"
+
+data-type="${field.type}"
+
+value="${value}"
+
+>
+
+`;
+
+
+
+}
 
 
 
