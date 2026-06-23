@@ -184,9 +184,28 @@ reason
 ],
 
 
+relations:{
+
+...(entity.relations || {}),
+
+...(changes.relations || {})
+
+},
+
+
+extensions:{
+
+...(entity.extensions || {}),
+
+...(changes.extensions || {})
+
+},
+
 metadata:{
 
 ...(entity.metadata || {}),
+
+...(changes.metadata || {}),
 
 updatedAt:
 new Date()
