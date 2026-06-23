@@ -159,7 +159,13 @@ const MODULES={
 
 ],
 
+"editor":[
 
+"/js/services/content.service.js",
+
+"/js/services/entity.editor.service.js"
+
+],
 
 
 "stats":[
