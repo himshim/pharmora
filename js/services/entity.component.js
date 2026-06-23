@@ -243,6 +243,22 @@ ${x.snapshot || x.id || x}
 
 }
 
+async function renderEntityFooter(entity){
+
+
+return `
+
+
+${renderEntityRelations(entity)}
+
+
+${await entityActions(entity)}
+
+
+`;
+
+
+}
 
 async function renderEntityPage(route){
 
@@ -276,7 +292,10 @@ route.data
 
 if(route.type==="books"){
 
-return renderBookPage(main,item);
+return await renderBookPage(
+main,
+item
+);
 
 }
 
@@ -284,7 +303,10 @@ return renderBookPage(main,item);
 
 if(route.type==="resources"){
 
-return renderResourcePage(main,item);
+return await renderResourcePage(
+main,
+item
+);
 
 }
 
@@ -292,7 +314,10 @@ return renderResourcePage(main,item);
 
 if(route.type==="profiles"){
 
-return renderProfilePage(main,item);
+return await renderProfilePage(
+main,
+item
+);
 
 }
 
@@ -355,9 +380,7 @@ ${entityValue(item,"description")}
 </p>
 
 
-${renderEntityRelations(item)}
-
-${await entityActions(item)}
+${await renderEntityFooter(item)}
 
 
 </div>
@@ -381,7 +404,7 @@ return true;
 
 
 
-function renderBookPage(main,item){
+async function renderBookPage(main,item){
 
 
 main.innerHTML=`
@@ -420,6 +443,9 @@ ${item.refId}
 </p>
 
 
+${await renderEntityFooter(item)}
+
+
 </div>
 
 </section>
@@ -440,7 +466,7 @@ return true;
 
 
 
-function renderResourcePage(main,item){
+async function renderResourcePage(main,item){
 
 
 main.innerHTML=`
@@ -473,6 +499,9 @@ ${item.lifecycle?.status}
 </p>
 
 
+${await renderEntityFooter(item)}
+
+
 </div>
 
 </section>
@@ -494,7 +523,7 @@ return true;
 
 
 
-function renderProfilePage(main,item){
+async function renderProfilePage(main,item){
 
 
 main.innerHTML=`
@@ -525,6 +554,9 @@ ${item.headline || ""}
 Reputation:
 ${item.stats?.reputation || 0}
 </p>
+
+
+${await renderEntityFooter(item)}
 
 
 </div>
@@ -570,9 +602,8 @@ ${item.title}
 ${item.description || ""}
 </p>
 
-${renderEntityRelations(item)}
+${await renderEntityFooter(item)}
 
-${await entityActions(item)}
 
 
 </div>
