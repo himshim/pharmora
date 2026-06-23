@@ -258,19 +258,70 @@ let ignore=[
 "history",
 "analytics",
 "identity",
+
+"password",
+
 "createdAt",
-"updatedAt"
+"updatedAt",
+"lastLogin"
 
 ];
 
 
+let user =
+currentUser();
+
+
+let advanced =
+user
+&&
+(
+isOwner(user)
+||
+user.role==="admin"
+);
+
+
 return Object.keys(entity)
 
-.filter(
+.filter(key=>{
 
-key=>!ignore.includes(key)
 
-)
+if(
+ignore.includes(key)
+){
+
+return false;
+
+}
+
+
+
+if(
+!advanced
+&&
+[
+"ownership",
+"permissions",
+"role",
+"access",
+"moderation",
+"trust",
+"metadata"
+]
+.includes(key)
+){
+
+return false;
+
+}
+
+
+
+return true;
+
+
+})
 
 .map(key=>({
 
