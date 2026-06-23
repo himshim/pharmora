@@ -300,7 +300,10 @@ return renderProfilePage(main,item);
 
 if(route.type==="events"){
 
-return renderEventPage(main,item);
+return await renderEventPage(
+main,
+item
+);
 
 }
 
@@ -350,6 +353,12 @@ ${entityValue(item,"description")}
 <p>
 <b>ID:</b> ${entityValue(item,"refId",item.id)}
 </p>
+
+
+${renderEntityRelations(item)}
+
+${await entityActions(item)}
+
 
 </div>
 
@@ -538,7 +547,7 @@ return true;
 
 
 
-function renderEventPage(main,item){
+async function renderEventPage(main,item){
 
 
 main.innerHTML=`
