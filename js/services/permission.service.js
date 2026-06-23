@@ -26,11 +26,54 @@ let cachedTime=null;
 async function getPermissions(role){
 
 
+try{
 
+
+/*
+ Future:
+ database roles collection
+*/
+
+
+if(
+typeof getRecords==="function"
+){
 
 
 try{
 
+
+let dynamicRoles =
+await getRecords("roles");
+
+
+let foundDynamic =
+dynamicRoles.find(
+x=>
+x.role===role
+||
+x.name===role
+);
+
+
+if(foundDynamic){
+
+return foundDynamic.permissions || [];
+
+}
+
+
+}catch(e){}
+
+
+}
+
+
+
+
+/*
+ Current fallback
+*/
 
 
 const roles =
@@ -47,12 +90,6 @@ appPath(
 
 
 
-
-
-
-
-
-
 let found =
 
 roles.find(
@@ -60,10 +97,6 @@ roles.find(
 item=>item.role===role
 
 );
-
-
-
-
 
 
 
@@ -79,24 +112,16 @@ found.permissions
 
 
 
-
-
 }
-
 
 
 catch(error){
 
 
-
 return [];
 
 
-
 }
-
-
-
 
 
 }
@@ -113,7 +138,21 @@ async function userPermissions(){
 
 
 
+/*
+ Owner root protection
+*/
 
+
+if(isOwner(user)){
+
+
+cachedPermissions=["*"];
+
+
+return cachedPermissions;
+
+
+}
 
 
 
@@ -215,13 +254,22 @@ Date.now();
 
 
 
-let rolePermissions =
+let rolePermissions=[];
 
-await getPermissions(
 
-user.role
+for(
+let role of normalizeRoles(user)
+){
+
+
+rolePermissions.push(
+
+...(await getPermissions(role))
 
 );
+
+
+}
 
 
 
@@ -629,7 +677,60 @@ return true;
 
 
 
+async function canEntityAction(
+entity,
+action
+){
 
+
+let user =
+currentUser();
+
+
+if(!user){
+
+return false;
+
+}
+
+
+
+if(isOwner(user)){
+
+return true;
+
+}
+
+
+
+if(
+
+entity?.ownership?.ownerId
+===
+user.id
+
+||
+
+entity?.userId
+===
+user.id
+
+){
+
+return true;
+
+}
+
+
+
+return await hasPermission(
+
+"content."+action+".any"
+
+);
+
+
+}
 
 
 
@@ -648,6 +749,48 @@ cachedUser=null;
 
 cachedTime=null;
 
+
+
+}
+
+/*
+ Pharmora Permission Engine v3 helpers
+ Backward compatible
+*/
+
+
+function normalizeRoles(user){
+
+
+if(!user){
+
+return [];
+
+}
+
+
+return [
+
+user.role,
+
+...(user.roles || [])
+
+]
+
+.filter(Boolean);
+
+
+}
+
+
+
+
+function isOwner(user){
+
+
+return normalizeRoles(user)
+
+.includes("owner");
 
 
 }
