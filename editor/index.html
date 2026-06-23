@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Editor | Pharmora
+</title>
+
+
+<link rel="stylesheet" href="/css/variables.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/responsive.css">
+
+
+<style>
+
+.editor-box{
+
+max-width:900px;
+margin:auto;
+
+}
+
+
+input,
+textarea{
+
+width:100%;
+padding:15px;
+
+margin-bottom:15px;
+
+border-radius:15px;
+
+background:var(--surface);
+
+color:var(--text);
+
+border:1px solid var(--border);
+
+}
+
+
+textarea{
+
+min-height:160px;
+
+}
+
+
+.history-item{
+
+padding:12px;
+
+border-bottom:1px solid var(--border);
+
+}
+
+
+</style>
+
+
+</head>
+
+
+
+<body>
+
+
+<div id="site-header"></div>
+
+
+<main class="container section">
+
+
+<div
+id="editor-root"
+class="card editor-box">
+
+Loading editor...
+
+</div>
+
+
+</main>
+
+
+<div id="site-footer"></div>
+
+
+
+<script src="/js/pharmora.js"></script>
+
+
+
+<script>
+
+
+let editingEntity=null;
+
+let editingCollection=null;
+
+
+
+window.addEventListener(
+"pharmora-ready",
+initEditor
+);
+
+
+
+
+async function initEditor(){
+
+
+let root =
+document.getElementById(
+"editor-root"
+);
+
+
+let params =
+new URLSearchParams(
+location.search
+);
+
+
+let id =
+params.get("id");
+
+
+let collection =
+params.get("collection")
+||
+params.get("type");
+
+
+
+if(
+!id ||
+!collection
+){
+
+
+root.innerHTML = `
+
+<h2>
+Invalid editor link
+</h2>
+
+<p>
+Missing collection or id.
+</p>
+
+`;
+
+
+return;
+
+
+}
+
+
+
+editingCollection =
+collection;
+
+
+
+let entity =
+await loadEditableEntity(
+collection,
+id
+);
+
+
+
+if(!entity){
+
+
+root.innerHTML=
+
+`
+<h2>
+Content not found
+</h2>
+`;
+
+return;
+
+}
+
+
+
+
+if(
+!(await canEditEntity(entity))
+){
+
+
+root.innerHTML=
+
+`
+<h2>
+Access denied
+</h2>
+
+<p>
+You cannot edit this item.
+</p>
+`;
+
+return;
+
+}
+
+
+
+editingEntity =
+entity;
+
+
+
+renderEditor(entity);
+
+
+}
+
+
+
+
+
+
+
+
+function renderEditor(item){
+
+
+let root =
+document.getElementById(
+"editor-root"
+);
+
+
+
+root.innerHTML = `
+
+
+<h1>
+
+✏ Editing
+
+</h1>
+
+
+<p>
+
+${item.refId || item.publicId || item.id}
+
+</p>
+
+
+
+<label>
+Title
+</label>
+
+<input
+id="edit-title"
+value="${entityValue(item,"title","")}"
+>
+
+
+
+<label>
+Description
+</label>
+
+
+<textarea id="edit-description">
+${entityValue(item,"description","")}
+</textarea>
+
+
+
+<label>
+Tags
+</label>
+
+
+<input
+
+id="edit-tags"
+
+value="${
+
+(item.tags || [])
+
+.join(",")
+
+}"
+
+>
+
+
+
+<label>
+Edit reason
+</label>
+
+
+<textarea
+
+id="edit-reason"
+
+placeholder="Explain why you changed this">
+
+</textarea>
+
+
+
+
+<button
+
+class="btn btn-primary"
+
+onclick="saveEditor()">
+
+💾 Save Changes
+
+</button>
+
+
+
+<br><br>
+
+
+<h3>
+History
+</h3>
+
+
+<div>
+
+${renderHistory(item)}
+
+</div>
+
+
+`;
+
+
+}
+
+
+
+
+
+
+
+
+
+function renderHistory(item){
+
+
+
+let history =
+item.history || [];
+
+
+
+if(!history.length){
+
+
+return "No edits yet.";
+
+}
+
+
+
+
+return history
+
+.slice()
+
+.reverse()
+
+.map(h=>`
+
+<div class="history-item">
+
+
+<b>
+
+${h.action}
+
+</b>
+
+
+<br>
+
+
+${h.reason || ""}
+
+
+<br>
+
+
+<small>
+
+${h.createdAt || ""}
+
+</small>
+
+
+</div>
+
+
+`)
+
+.join("");
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function saveEditor(){
+
+
+
+let reason =
+document.getElementById(
+"edit-reason"
+)
+.value
+.trim();
+
+
+
+if(!reason){
+
+
+showToast(
+"Reason required",
+"error"
+);
+
+
+return;
+
+
+}
+
+
+
+
+let changes={
+
+
+title:
+
+document.getElementById(
+"edit-title"
+)
+.value,
+
+
+description:
+
+document.getElementById(
+"edit-description"
+)
+.value,
+
+
+
+tags:
+
+document.getElementById(
+"edit-tags"
+)
+.value
+
+.split(",")
+
+.map(x=>x.trim())
+
+.filter(Boolean)
+
+
+};
+
+
+
+
+
+let saved =
+await saveEntityEdit(
+
+editingCollection,
+
+editingEntity.id,
+
+changes,
+
+reason
+
+);
+
+
+
+
+showToast(
+
+"Changes saved",
+
+"success"
+
+);
+
+
+
+editingEntity=saved;
+
+
+
+renderEditor(saved);
+
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
