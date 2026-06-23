@@ -157,6 +157,92 @@ return false;
 
 }
 
+async function entityActions(entity){
+
+
+let html="";
+
+
+if(
+await entityCanEdit(entity)
+){
+
+
+html += `
+
+<br>
+
+<button
+class="btn btn-primary"
+onclick="
+location.href='/editor/?id=${entity.id}'
+">
+
+✏ Edit
+
+</button>
+
+`;
+
+
+}
+
+
+return html;
+
+
+}
+
+
+
+
+
+
+function renderEntityRelations(entity){
+
+
+let links =
+entityRelations(
+entity,
+"linked"
+);
+
+
+if(!links.length){
+
+return "";
+
+}
+
+
+return `
+
+<hr>
+
+<h3>
+🔗 Related
+</h3>
+
+
+${
+
+links.map(x=>`
+
+<div class="badge">
+
+${x.snapshot || x.id || x}
+
+</div>
+
+`).join(" ")
+
+}
+
+`;
+
+
+}
+
 
 async function renderEntityPage(route){
 
@@ -220,7 +306,11 @@ return renderEventPage(main,item);
 
 
 
-return renderDefaultEntity(main,item,route.type);
+return await renderDefaultEntity(
+main,
+item,
+route.type
+);
 
 
 }
@@ -232,7 +322,7 @@ return renderDefaultEntity(main,item,route.type);
 
 
 
-function renderDefaultEntity(main,item,type){
+async function renderDefaultEntity(main,item,type){
 
 
 main.innerHTML=`
@@ -470,6 +560,10 @@ ${item.title}
 <p>
 ${item.description || ""}
 </p>
+
+${renderEntityRelations(item)}
+
+${await entityActions(item)}
 
 
 </div>
