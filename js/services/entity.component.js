@@ -1,7 +1,161 @@
 /*
- Pharmora Entity Component v2
- Universal Detail Renderer
+ Pharmora Entity Core v3
+ Safe compatibility layer
 */
+
+
+function entityValue(
+entity,
+field,
+fallback=""
+){
+
+
+if(!entity){
+
+return fallback;
+
+}
+
+
+return (
+
+entity[field]
+
+??
+
+entity.data?.[field]
+
+??
+
+entity.metadata?.[field]
+
+??
+
+fallback
+
+);
+
+
+}
+
+
+
+
+function normalizeEntity(entity){
+
+
+if(!entity){
+
+return null;
+
+}
+
+
+entity.data =
+entity.data || {};
+
+
+entity.relations =
+entity.relations || {
+parents:[],
+children:[],
+linked:[]
+};
+
+
+entity.metadata =
+entity.metadata || {};
+
+
+entity.history =
+entity.history || [];
+
+
+entity.extensions =
+entity.extensions || {};
+
+
+return entity;
+
+
+}
+
+
+
+
+
+function entityRelations(
+entity,
+type="linked"
+){
+
+
+return (
+
+entity?.relations?.[type]
+
+||
+
+[]
+
+);
+
+
+}
+
+
+
+
+function entityOwner(entity){
+
+
+return (
+
+entity?.ownership?.ownerId
+
+||
+
+entity?.userId
+
+||
+
+entity?.data?.userId
+
+||
+
+null
+
+);
+
+
+}
+
+
+
+
+
+async function entityCanEdit(entity){
+
+
+if(
+typeof canEntityAction==="function"
+){
+
+
+return await canEntityAction(
+entity,
+"edit"
+);
+
+
+}
+
+
+return false;
+
+
+}
 
 
 async function renderEntityPage(route){
@@ -28,7 +182,9 @@ return false;
 
 
 let item =
-route.data;
+normalizeEntity(
+route.data
+);
 
 
 
@@ -86,11 +242,13 @@ main.innerHTML=`
 <div class="card">
 
 <h1>
-${item.title || item.name || item.data?.name || "Untitled"}
+${entityValue(item,"title",
+entityValue(item,"name","Untitled")
+)}
 </h1>
 
 <p>
-${item.description || item.data?.description || ""}
+${entityValue(item,"description")}
 </p>
 
 <hr>
@@ -100,7 +258,7 @@ ${item.description || item.data?.description || ""}
 </p>
 
 <p>
-<b>ID:</b> ${item.refId || item.id}
+<b>ID:</b> ${entityValue(item,"refId",item.id)}
 </p>
 
 </div>
@@ -144,7 +302,7 @@ ${item.title}
 
 
 <p>
-${item.description || item.data?.description || ""}
+${entityValue(item,"description")}
 </p>
 
 
@@ -203,7 +361,7 @@ ${item.title}
 
 
 <p>
-${item.description || item.data?.description || ""}
+${entityValue(item,"description")}
 </p>
 
 
