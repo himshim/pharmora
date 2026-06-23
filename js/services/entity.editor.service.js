@@ -242,3 +242,144 @@ return updated;
 
 
 }
+
+/*
+ Dynamic Field Engine v1
+*/
+
+
+function editableFields(entity){
+
+
+let ignore=[
+
+"id",
+"schema",
+"history",
+"analytics",
+"identity",
+"createdAt",
+"updatedAt"
+
+];
+
+
+return Object.keys(entity)
+
+.filter(
+
+key=>!ignore.includes(key)
+
+)
+
+.map(key=>({
+
+key,
+
+value:entity[key],
+
+type:fieldType(entity[key])
+
+}));
+
+
+}
+
+
+
+
+
+function fieldType(value){
+
+
+if(Array.isArray(value)){
+
+return "array";
+
+}
+
+
+if(
+value!==null
+&&
+typeof value==="object"
+){
+
+return "object";
+
+}
+
+
+return typeof value;
+
+
+}
+
+
+
+
+
+
+function buildChangesFromFields(){
+
+
+let changes={};
+
+
+document
+
+.querySelectorAll("[data-field]")
+
+.forEach(input=>{
+
+
+let key =
+input.dataset.field;
+
+
+let type =
+input.dataset.type;
+
+
+let value =
+input.value;
+
+
+
+
+if(type==="array"){
+
+value =
+value
+.split(",")
+
+.map(x=>x.trim())
+
+.filter(Boolean);
+
+}
+
+
+
+
+if(type==="boolean"){
+
+value =
+input.checked;
+
+}
+
+
+
+
+changes[key]=value;
+
+
+});
+
+
+
+return changes;
+
+
+}
