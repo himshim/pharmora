@@ -194,11 +194,34 @@ collection
 );
 
 
+
 return (
 
-data.find(
-x=>
+data.find(x=>
+
 x.id===id
+
+||
+
+x.userId===id
+
+||
+
+x.data?.userId===id
+
+||
+
+x.ownership?.ownerId===id
+
+||
+
+x.refId===id
+
+||
+
+x.publicId===id
+
+
 )
 
 ||
