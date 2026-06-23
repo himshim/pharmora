@@ -229,7 +229,7 @@ typeof updateRecord==="function"
 
 await updateRecord(
 collection,
-id,
+entity.id,
 updated
 );
 
