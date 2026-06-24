@@ -816,6 +816,41 @@ error.message
 
 };
 
+/* ======================
+   PANEL COMPONENT
+====================== */
+
+
+UI.panel=function({
+left="",
+right=""
+}={}){
+
+
+return `
+
+<div class="panel">
+
+<div>
+
+${left}
+
+</div>
+
+
+<span>
+
+${right}
+
+</span>
+
+</div>
+
+`;
+
+
+};
+
 window.PharmoraUI=UI;
 
 

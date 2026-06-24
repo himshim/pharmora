@@ -64,35 +64,7 @@ action
 }
 
 
-function adminPanel(
-left,
-right=""
-){
 
-
-return `
-
-<div class="panel">
-
-<div>
-
-${left}
-
-</div>
-
-
-<span>
-
-${right}
-
-</span>
-
-</div>
-
-`;
-
-
-}
 
 async function renderAdminStats(){
 
@@ -690,7 +662,9 @@ latest.length
 
 latest.map(item=>
 
-adminPanel(
+PharmoraUI.panel({
+
+left:
 
 `
 
@@ -712,9 +686,9 @@ ${item._collection}
 
 `,
 
-item.status
+right:item.status
 
-)
+})
 
 ).join("")
 
@@ -743,7 +717,9 @@ activity.length
 
 activity.map(a=>
 
-adminPanel(
+PharmoraUI.panel({
+
+left:
 
 `
 
@@ -763,9 +739,9 @@ ${new Date(a.time).toLocaleString()}
 
 `,
 
-a.action
+right:a.action
 
-)
+})
 
 ).join("")
 
