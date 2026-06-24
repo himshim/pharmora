@@ -9,7 +9,7 @@ position:fixed;
 
 inset:0;
 
-background:rgba(0,0,0,.55);
+background:rgba(0,0,0,.60);
 
 display:flex;
 
@@ -17,9 +17,14 @@ align-items:center;
 
 justify-content:center;
 
-z-index:1000;
+z-index:9999;
+
+backdrop-filter:blur(8px);
+
+padding:20px;
 
 }
+
 
 
 .modal{
@@ -32,11 +37,18 @@ padding:25px;
 
 max-width:550px;
 
-width:90%;
+width:100%;
 
 border:1px solid var(--border);
 
+box-shadow:var(--shadow);
+
+animation:
+
+modalOpen .2s ease;
+
 }
+
 
 
 .modal-header,
@@ -53,8 +65,46 @@ gap:15px;
 }
 
 
+
+.modal-body{
+
+margin:20px 0;
+
+}
+
+
+
 .modal-footer{
 
 margin-top:20px;
+
+flex-wrap:wrap;
+
+justify-content:flex-end;
+
+}
+
+
+
+@keyframes modalOpen{
+
+
+from{
+
+opacity:0;
+
+transform:scale(.95);
+
+}
+
+
+to{
+
+opacity:1;
+
+transform:scale(1);
+
+}
+
 
 }
