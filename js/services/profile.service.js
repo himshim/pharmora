@@ -422,7 +422,46 @@ profile.data || {}
 
 
 
+/* ======================
+ VERIFICATION CHANGE CHECK
+====================== */
 
+
+function verificationSensitiveChange(
+oldProfile,
+updates
+){
+
+
+let fields=[
+
+"displayName",
+"education",
+"positions",
+"specializations"
+
+];
+
+
+
+return fields.some(
+
+key=>
+
+updates[key]
+
+&&
+
+JSON.stringify(updates[key])
+
+!==
+
+JSON.stringify(oldProfile[key])
+
+);
+
+
+}
 
 
 
@@ -469,6 +508,60 @@ user
 
 
 
+let verificationReset={};
+
+
+if(
+
+profile.verification?.verified
+
+&&
+
+verificationSensitiveChange(
+profile,
+updates
+)
+
+){
+
+
+verificationReset={
+
+
+verification:{
+
+
+...profile.verification,
+
+
+verified:false,
+
+
+requiresReview:true,
+
+
+previousVerifiedAt:
+
+profile.verification.verifiedAt,
+
+
+changedAt:
+
+new Date()
+.toISOString()
+
+
+}
+
+
+};
+
+
+}
+
+
+
+
 let merged =
 deepMergeProfile(
 
@@ -477,6 +570,10 @@ profile,
 {
 
 ...updates,
+
+
+...verificationReset,
+
 
 updatedAt:
 
