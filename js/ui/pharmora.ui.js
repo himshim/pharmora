@@ -853,6 +853,74 @@ ${right}
 
 };
 
+/*
+=========================
+ SKELETON LOADER
+=========================
+*/
+
+
+UI.skeleton=function(
+count=3
+){
+
+
+return Array(count)
+
+.fill(0)
+
+.map(()=>`
+
+<div class="card skeleton-card">
+
+<div class="skeleton-line big"></div>
+
+<div class="skeleton-line"></div>
+
+<div class="skeleton-line small"></div>
+
+</div>
+
+`)
+
+.join("");
+
+
+};
+
+
+
+
+
+UI.loading=function(
+target,
+count=3
+){
+
+
+let box =
+typeof target==="string"
+
+?
+
+document.getElementById(target)
+
+:
+
+target;
+
+
+
+if(box){
+
+box.innerHTML =
+UI.skeleton(count);
+
+}
+
+
+};
+
 window.PharmoraUI=UI;
 
 

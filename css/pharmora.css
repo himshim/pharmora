@@ -59,6 +59,8 @@ Only import modules.
 @import "./components/loaders.css";
 
 @import "./components/tooltip.css";
+
+@import "./components/skeleton.css";
 /* =====================
    RESPONSIVE LAST
 ===================== */
