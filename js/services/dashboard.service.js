@@ -2,7 +2,76 @@
  Pharmora Dashboard Helpers v2
  DB entity compatibility layer
 */
+/*
+ Dashboard UI helpers
+*/
 
+
+function dashboardCard(
+title,
+body,
+icon="",
+action=""
+){
+
+
+let html =
+PharmoraUI.card({
+
+title:
+
+(icon ? icon+" " : "")
++
+title,
+
+
+body,
+
+actions:""
+
+});
+
+
+if(action){
+
+html =
+html.replace(
+
+'class="card',
+
+`onclick="${action}" class="card`
+
+);
+
+}
+
+
+return html;
+
+
+}
+
+
+
+
+function dashboardStat(
+title,
+value
+){
+
+
+return PharmoraUI.card({
+
+title:value,
+
+body:title,
+
+badge:"Stats"
+
+});
+
+
+}
 
 function dashboardOwnerId(item){
 
@@ -350,51 +419,20 @@ box.innerHTML = `
 
 <div class="grid">
 
+${dashboardStat(
+"Total Uploads",
+uploads.length
+)}
 
+${dashboardStat(
+"Approved",
+approved
+)}
 
-<div class="card">
-
-<h2>
-
-${uploads.length}
-
-</h2>
-
-<p>Total Uploads</p>
-
-</div>
-
-
-
-
-<div class="card">
-
-<h2>
-
-${approved}
-
-</h2>
-
-<p>Approved</p>
-
-</div>
-
-
-
-
-<div class="card">
-
-<h2>
-
-${pending}
-
-</h2>
-
-<p>Reviewing</p>
-
-</div>
-
-
+${dashboardStat(
+"Reviewing",
+pending
+)}
 
 </div>
 
@@ -479,126 +517,50 @@ profile?.types || [];
 
 
 
-let cards = `
-
-<div class="card"
-
-onclick="openMyProfile()">
-
-
-<h2>
-
-👤 My Profile
-
-</h2>
-
-
-<p>
-
-View achievements, reputation and public profile.
-
-</p>
-
-
-</div>
-
-<div class="card"
-onclick="location.href='../learn/'">
-
-
-<h2>
-
-🎓 Learning Center
-
-</h2>
-
-
-<p>
-
-Courses, notes and study resources.
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-<div class="card"
-onclick="location.href='../community/'">
-
-
-<h2>
-
-🌐 Community Q&A
-
-</h2>
-
-
-<p>
-
-Ask questions and help others.
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-<div class="card"
-onclick="location.href='../library/'">
-
-
-<h2>
-
-📚 Library
-
-</h2>
-
-
-<p>
-
-Books, notes and references.
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-<div class="card"
-onclick="location.href='../tools/'">
-
-
-<h2>
-
-🧪 Quick Tools
-
-</h2>
-
-
-<p>
-
-Calculators and pharmacy utilities.
-
-</p>
-
-
-</div>
-
-
-`;
+let cards =
+
+dashboardCard(
+"My Profile",
+"View achievements, reputation and public profile.",
+"👤",
+"openMyProfile()"
+)
+
++
+
+dashboardCard(
+"Learning Center",
+"Courses, notes and study resources.",
+"🎓",
+"location.href='../learn/'"
+)
+
++
+
+dashboardCard(
+"Community Q&A",
+"Ask questions and help others.",
+"🌐",
+"location.href='../community/'"
+)
+
++
+
+dashboardCard(
+"Library",
+"Books, notes and references.",
+"📚",
+"location.href='../library/'"
+)
+
++
+
+dashboardCard(
+"Quick Tools",
+"Calculators and pharmacy utilities.",
+"🧪",
+"location.href='../tools/'"
+);
 
 
 

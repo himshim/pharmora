@@ -210,7 +210,6 @@ ${actions}
 UI.entityCard=function(entity){
 
 
-
 if(!entity){
 
 return "";
@@ -219,7 +218,19 @@ return "";
 
 
 
+let status =
+
+entity.status
+||
+entity.lifecycle?.status
+||
+"";
+
+
+
+
 return UI.card({
+
 
 title:
 
@@ -232,13 +243,17 @@ entity.displayName
 "Untitled",
 
 
+
 body:
 
 entity.description
 ||
 entity.bio
 ||
+entity.headline
+||
 "",
+
 
 
 badge:
@@ -250,7 +265,25 @@ entity.collection
 "",
 
 
+
 actions:
+
+`
+
+${
+
+status ?
+
+UI.badge(status)
+
+:
+
+""
+
+}
+
+
+${
 
 UI.button({
 
@@ -259,6 +292,10 @@ text:"View",
 type:"primary"
 
 })
+
+}
+
+`
 
 
 });
