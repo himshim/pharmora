@@ -1,85 +1,19 @@
 /*
- Pharmora Components
- Reusable UI Elements
+ Pharmora Legacy Components
+
+All components migrated:
+
+layout.css
+navigation.css
+buttons.css
+cards.css
+forms.css
+search.css
+badges.css
+feedback.css
+notification.css
+
+Do not add new styles here.
+
+Kept only for old page compatibility.
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-
-@media(max-width:700px){
-
-
-.nav-links{
-
-display:none;
-
-}
-
-
-.menu-toggle{
-
-display:block;
-
-}
-
-
-.card{
-
-padding:20px;
-
-}
-
-
-.section{
-
-padding:45px 0;
-
-}
-
-
-.notice-bar{
-
-font-size:.85rem;
-
-}
-
-
-#notice-text{
-
-animation-duration:15s;
-
-}
-
-
-}
-
-
-
-

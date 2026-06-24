@@ -1,0 +1,41 @@
+/*
+ Pharmora Tooltips
+*/
+
+
+.tooltip{
+
+position:relative;
+
+cursor:help;
+
+}
+
+
+.tooltip:hover::after{
+
+content:attr(data-tooltip);
+
+position:absolute;
+
+bottom:120%;
+
+left:50%;
+
+transform:translateX(-50%);
+
+background:var(--surface);
+
+border:1px solid var(--border);
+
+padding:8px 12px;
+
+border-radius:12px;
+
+white-space:nowrap;
+
+font-size:.85rem;
+
+z-index:200;
+
+}

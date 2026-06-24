@@ -1,0 +1,77 @@
+/*
+ Pharmora Tables
+*/
+
+
+.table-wrapper{
+
+width:100%;
+overflow-x:auto;
+
+}
+
+
+.table{
+
+width:100%;
+
+border-collapse:collapse;
+
+background:var(--surface);
+
+border-radius:20px;
+
+overflow:hidden;
+
+}
+
+
+.table th,
+.table td{
+
+padding:14px 16px;
+
+border-bottom:1px solid var(--border);
+
+text-align:left;
+
+}
+
+
+.table th{
+
+font-weight:700;
+
+color:var(--primary);
+
+}
+
+
+.table tr:hover{
+
+background:rgba(255,255,255,.04);
+
+}
+
+
+.table-actions{
+
+display:flex;
+
+gap:10px;
+
+}
+
+
+.row-disabled{
+
+opacity:.5;
+
+}
+
+
+.row-active{
+
+font-weight:700;
+
+}
