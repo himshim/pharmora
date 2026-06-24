@@ -29,7 +29,9 @@ Only import modules.
 /*
  Modular v3 components
 */
+
 @import "./components/buttons.css";
+@import "./components/cards.css";
 
 
 /* =====================
