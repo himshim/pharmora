@@ -1002,7 +1002,128 @@ limit
 
 
 
+/* ======================
+ PROFILE COMPLETION
+====================== */
 
+
+function profileCompletion(profile){
+
+
+if(!profile){
+
+return 0;
+
+}
+
+
+let checks=[
+
+profile.displayName,
+
+profile.avatar?.initials,
+
+profile.headline,
+
+profile.bio,
+
+profile.education?.length,
+
+profile.specializations?.length,
+
+profile.skills?.length
+
+];
+
+
+let done =
+checks.filter(Boolean)
+.length;
+
+
+return Math.round(
+
+(done / checks.length) * 100
+
+);
+
+
+}
+
+
+
+
+
+
+
+/* ======================
+ PROFILE TYPE HELPERS
+====================== */
+
+
+function hasProfileType(
+profile,
+type
+){
+
+
+return (
+
+profile?.types || []
+
+)
+.includes(type);
+
+
+}
+
+
+
+
+
+
+
+/* ======================
+ VERIFICATION BADGE
+====================== */
+
+
+function profileBadge(profile){
+
+
+if(
+
+profile?.verification?.verified
+
+){
+
+
+return "✔ Verified";
+
+
+}
+
+
+
+if(
+
+profile?.verification?.requiresReview
+
+){
+
+
+return "⏳ Review Required";
+
+
+}
+
+
+
+return "";
+
+
+
+}
 
 
 /* ======================
@@ -1023,10 +1144,28 @@ getPublicProfile,
 
 getUserContributions,
 
-getProfileActivity
+getProfileActivity,
+
+profileCompletion,
+
+hasProfileType,
+
+profileBadge
 
 
 };
+
+
+
+window.getProfile=getProfile;
+
+window.updateUserProfile=updateUserProfile;
+
+window.getPublicProfile=getPublicProfile;
+
+window.profileCompletion=profileCompletion;
+
+window.profileBadge=profileBadge;
 
 
 
