@@ -39,6 +39,55 @@
     --shadow:
     0 20px 50px rgba(0,0,0,0.35);
 
+    /* =====================
+   Spacing Scale
+===================== */
+
+--space-xs:4px;
+--space-sm:8px;
+--space-md:16px;
+--space-lg:24px;
+--space-xl:40px;
+
+
+/* =====================
+   Typography Scale
+===================== */
+
+--font-xs:12px;
+--font-sm:14px;
+--font-md:16px;
+--font-lg:22px;
+--font-xl:32px;
+
+
+/* =====================
+   Status Colors
+===================== */
+
+--success:#22c55e;
+--warning:#f59e0b;
+--danger:#ef4444;
+--info:#38bdf8;
+
+
+/* =====================
+   Layers
+===================== */
+
+--z-header:100;
+--z-dropdown:500;
+--z-modal:1000;
+--z-toast:2000;
+
+
+/* =====================
+   Accessibility
+===================== */
+
+--focus:
+0 0 0 3px rgba(34,211,238,.35);
+
 }
 
 
