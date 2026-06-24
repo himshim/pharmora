@@ -1,0 +1,39 @@
+/*
+ Pharmora UI Engine v3
+ Central Design Loader
+
+Do not add component styles here.
+Only import modules.
+*/
+
+
+/* =====================
+   CORE
+===================== */
+
+@import "./variables.css";
+@import "./base.css";
+
+
+/* =====================
+   COMPONENTS
+(current compatibility)
+===================== */
+
+/*
+ Temporary compatibility
+*/
+@import "./components.css";
+
+
+/*
+ Modular v3 components
+*/
+@import "./components/buttons.css";
+
+
+/* =====================
+   RESPONSIVE LAST
+===================== */
+
+@import "./responsive.css";

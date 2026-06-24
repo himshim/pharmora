@@ -45,6 +45,10 @@ function dashboardStatus(item){
 
 return (
 
+item.moderation?.status
+
+||
+
 item.lifecycle?.status
 
 ||
@@ -194,13 +198,14 @@ return;
 let collections=[
 
 "resources",
-
 "books",
+"events",
+"jobs",
+"articles",
+"tools",
 
 "teaching-materials",
-
 "question-bank",
-
 "assignments"
 
 ];
@@ -942,9 +947,17 @@ location.href =
 "../profile.html?id=" +
 
 (
-profile.userId
+
+profile.publicId
+
 ||
-currentUser().id
+
+profile.refId
+
+||
+
+profile.id
+
 );
 
 

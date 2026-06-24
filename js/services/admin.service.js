@@ -28,7 +28,25 @@ const reviewCollections = [
 
 
 
+function escapeHtml(text){
 
+return String(
+
+text || ""
+
+)
+
+.replaceAll("&","&amp;")
+
+.replaceAll("<","&lt;")
+
+.replaceAll(">","&gt;")
+
+.replaceAll('"',"&quot;")
+
+.replaceAll("'","&#39;");
+
+}
 
 
 
@@ -270,6 +288,27 @@ id
 );
 
 
+if(!item){
+
+
+showToast(
+
+"Item no longer exists",
+
+"error"
+
+);
+
+
+closeAdminModal();
+
+
+return;
+
+
+}
+
+
 
 
 
@@ -300,7 +339,7 @@ box.value.trim(),
 
 reviewer:
 
-currentUser
+typeof currentUser==="function"
 
 ?
 
@@ -328,6 +367,8 @@ new Date()
 
 
 await updateRecord(
+
+collection,
 
 id,
 
@@ -439,6 +480,21 @@ collection,id
 );
 
 
+if(!item){
+
+showToast(
+
+"Item no longer exists",
+
+"error"
+
+);
+
+return;
+
+}
+
+
 let user =
 typeof currentUser==="function"
 ?
@@ -540,7 +596,7 @@ title:
 "Content approved ✅",
 
 message:
-`Your submission "${item.title || "content"}" is now published.`,
+`Your submission "${escapeHtml(item.title || "content")}" is now published.`,
 
 type:
 "success",
@@ -597,6 +653,21 @@ let item =
 await findContent(
 collection,id
 );
+
+
+if(!item){
+
+showToast(
+
+"Item no longer exists",
+
+"error"
+
+);
+
+return;
+
+}
 
 
 let user =
@@ -705,7 +776,7 @@ title:
 "Submission needs changes ⚠️",
 
 message:
-reason || "Your submission was not approved.",
+escapeHtml(reason) || "Your submission was not approved.",
 
 type:
 "warning",
@@ -833,6 +904,8 @@ item:item
 
 
 await updateRecord(
+
+collection,
 
 id,
 
@@ -991,6 +1064,8 @@ id
 
 await updateRecord(
 
+collection,
+
 id,
 
 {
@@ -1048,10 +1123,11 @@ async function dismissReport(id){
 
 await updateRecord(
 
+"reports",
+
 id,
 
 {
-
 
 moderation:{
 
@@ -1134,10 +1210,11 @@ return;
 
 await updateRecord(
 
+report.collection,
+
 report.contentId,
 
 {
-
 
 deleted:true,
 
@@ -1164,10 +1241,11 @@ status:"deleted"
 
 await updateRecord(
 
+"reports",
+
 reportId,
 
 {
-
 
 moderation:{
 
@@ -1230,4 +1308,3 @@ renderReports();
 
 
 }
-

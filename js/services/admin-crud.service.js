@@ -69,6 +69,13 @@ document.getElementById(
 );
 
 
+if(!area){
+
+return;
+
+}
+
+
 
 
 
@@ -452,7 +459,7 @@ courseHTML += `
 
 <h3>
 
-📂 ${cur.name}
+📂 ${clean(cur.name)}
 
 </h3>
 
@@ -555,9 +562,9 @@ courseHTML += `
 
 <h3>
 
-📂 ${cur.name}
+📂 ${clean(cur.name)}
 
-→ ${sem.name}
+→ ${clean(sem.name)}
 
 </h3>
 
@@ -682,13 +689,13 @@ courseHTML += `
 
 <h3>
 
-📂 ${cur.name}
+📂 ${clean(cur.name)}
 
-→ ${sem.name}
+→ ${clean(sem.name)}
 
 <br>
 
-🧪 ${subject.name}
+🧪 ${clean(subject.name)}
 
 </h3>
 
@@ -740,7 +747,7 @@ html += `
 
 <h2>
 
-📘 ${course.name}
+📘 ${clean(course.name)}
 
 </h2>
 
@@ -858,6 +865,14 @@ text || ""
 
 .replaceAll(
 
+"&",
+
+"&amp;"
+
+)
+
+.replaceAll(
+
 "<",
 
 "&lt;"
@@ -869,6 +884,22 @@ text || ""
 ">",
 
 "&gt;"
+
+)
+
+.replaceAll(
+
+'"',
+
+"&quot;"
+
+)
+
+.replaceAll(
+
+"'",
+
+"&#39;"
 
 );
 
@@ -1115,7 +1146,7 @@ html += `
 
 <label>
 
-${field.label}
+${clean(field.label)}
 
 </label>
 
@@ -1141,7 +1172,7 @@ html += `
 
 id="field-${field.name}"
 
->${value}</textarea>
+>${clean(value)}</textarea>
 
 
 `;
@@ -1185,14 +1216,14 @@ field.options.map(opt=>`
 
 <option
 
-value="${opt}"
+value="${clean(opt)}"
 
 ${value===opt?"selected":""}
 
 >
 
 
-${opt}
+${clean(opt)}
 
 
 </option>
@@ -1249,7 +1280,7 @@ html += `
 
 id="field-${field.name}"
 
-data-depends="${field.dependsOn || ""}"
+data-depends="${clean(field.dependsOn || "")}"
 
 onchange="refreshDependentRelations()"
 
@@ -1273,10 +1304,10 @@ records.map(item=>`
 <option
 
 
-value="${item.id}"
+value="${clean(item.id)}"
 
 
-data-parent="${
+data-parent="${clean(
 
 field.dependsOn
 
@@ -1288,7 +1319,7 @@ field.dependsOn
 
 ""
 
-}"
+)}"
 
 
 ${value===item.id?"selected":""}
@@ -1303,6 +1334,7 @@ ${displayName(item)}
 
 
 </option>
+
 
 
 `).join("")
@@ -1369,7 +1401,7 @@ type="checkbox"
 
 class="field-${field.name}"
 
-value="${item.id}"
+value="${clean(item.id)}"
 
 ${
 
@@ -1435,7 +1467,7 @@ id="field-${field.name}"
 
 placeholder="comma,separated,tags"
 
-value="${
+value="${clean(
 
 Array.isArray(value)
 
@@ -1447,7 +1479,7 @@ value.join(",")
 
 value
 
-}"
+)}"
 
 >
 
@@ -1507,7 +1539,7 @@ readonly
 
 id="field-${field.name}"
 
-value="${value}"
+value="${clean(value)}"
 
 >
 
@@ -1550,13 +1582,12 @@ field.type==="date"
 
 id="field-${field.name}"
 
-value="${value}"
+value="${clean(value)}"
 
 >
 
 
 `;
-
 
 
 }
@@ -2083,8 +2114,6 @@ if(id){
 
 if(
 
-editingId &&
-
 typeof saveVersion==="function"
 
 ){
@@ -2100,7 +2129,7 @@ activeCollection
 
 old =
 old.find(
-x=>x.id===editingId
+x=>x.id===id
 );
 
 
@@ -2112,7 +2141,7 @@ saveVersion(
 
 activeCollection,
 
-editingId,
+id,
 
 old
 
@@ -2126,6 +2155,8 @@ old
 }
 
 await updateRecord(
+
+activeCollection,
 
 id,
 
@@ -2144,7 +2175,25 @@ else{
 
 
 
-let reviewCollections=[
+let moderatedCollections =
+
+(
+
+typeof reviewCollections !== "undefined"
+
+&&
+
+Array.isArray(reviewCollections)
+
+)
+
+?
+
+reviewCollections
+
+:
+
+[
 
 "resources",
 "books",
@@ -2168,7 +2217,7 @@ activeCollection,
 
 status:
 
-reviewCollections.includes(activeCollection)
+moderatedCollections.includes(activeCollection)
 
 ?
 
@@ -2867,7 +2916,7 @@ ${new Date(v.time).toLocaleString()}
 <br>
 
 
-${v.user?.name || "System"}
+${clean(v.user?.name || "System")}
 
 
 </div>
@@ -2953,6 +3002,8 @@ return;
 
 
 await updateRecord(
+
+activeCollection,
 
 version.contentId,
 

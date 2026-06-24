@@ -890,7 +890,7 @@ Available for everyone.
 
 <div id="site-footer"></div>
 
-<<script src="/js/pharmora.js"></script>
+<script src="/js/pharmora.js"></script>
 
 
 
@@ -1618,7 +1618,20 @@ let uploaded=null;
 
 
 
+if(
+typeof uploadFile!=="function"
+){
 
+showToast(
+"Storage unavailable",
+"error"
+);
+
+unlockSubmit();
+
+return;
+
+}
 
 
 
@@ -1744,6 +1757,8 @@ await userPermissions()
 let contribution={
 
 
+userId:user.id,
+
 
 title:title,
 
@@ -1855,6 +1870,7 @@ author:{
 id:user.id,
 
 
+
 name:user.name,
 
 
@@ -1895,20 +1911,16 @@ downloads:0
 
 
 
+moderation:{
+
 status:
 
 (
-
 permissions.includes("*")
-
 ||
-
 permissions.includes("content.autoapprove")
-
 ||
-
 permissions.includes("verified.creator")
-
 )
 
 ?
@@ -1918,6 +1930,31 @@ permissions.includes("verified.creator")
 :
 
 "pending"
+
+},
+
+
+lifecycle:{
+
+status:
+
+(
+permissions.includes("*")
+||
+permissions.includes("content.autoapprove")
+||
+permissions.includes("verified.creator")
+)
+
+?
+
+"published"
+
+:
+
+"draft"
+
+}
 
 
 

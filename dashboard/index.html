@@ -355,7 +355,7 @@ font-size:1.5rem;
 class="brand"
 id="dashboard-brand">
 
-Platform
+⚕ Pharmora
 
 </div>
 
@@ -414,7 +414,11 @@ data-render="dashboard">
 
 placeholder="Search knowledge..."
 
-oninput="pharmoraSearch(this.value)"
+oninput="
+if(typeof pharmoraSearch==='function'){
+pharmoraSearch(this.value)
+}
+"
 
 >
 

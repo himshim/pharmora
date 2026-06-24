@@ -9,11 +9,88 @@ const Pharmora = (()=>{
 
 const VERSION="2.0.0";
 
+const UI=[
+
+"/css/pharmora.css"
+
+];
 
 const loaded=new Set();
 
 
+function loadCSS(src){
 
+
+src =
+src + "?v=" + VERSION;
+
+
+if(
+document.querySelector(
+`link[href="${src}"]`
+)
+){
+
+return Promise.resolve();
+
+}
+
+
+
+return new Promise(resolve=>{
+
+
+const link =
+document.createElement("link");
+
+
+link.rel="stylesheet";
+
+
+link.href=src;
+
+
+
+link.onload=()=>{
+
+
+console.log(
+"✓ css",
+src
+);
+
+
+resolve(true);
+
+
+};
+
+
+
+link.onerror=()=>{
+
+
+console.warn(
+"CSS skipped:",
+src
+);
+
+
+resolve(false);
+
+
+};
+
+
+
+document.head.appendChild(link);
+
+
+
+});
+
+
+}
 
 
 function loadScript(src){
@@ -715,6 +792,15 @@ console.log(
 
 
 
+for(
+let css of UI
+){
+
+await loadCSS(css);
+
+}
+
+
 
 await loadMany(
 CORE
@@ -797,7 +883,9 @@ return{
 
 start,
 
-loadScript
+loadScript,
+
+loadCSS
 
 
 };
