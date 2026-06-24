@@ -1085,6 +1085,28 @@ typeof currentUser==="function"
 ? currentUser()
 : null;
 
+[
+"dashboard-insights",
+"smart-dashboard",
+"contributor-panel",
+"management-panel"
+]
+.forEach(id=>{
+
+if(
+window.PharmoraUI
+&&
+PharmoraUI.loading
+){
+
+PharmoraUI.loading(
+id,
+2
+);
+
+}
+
+});
 
 let box =
 document.getElementById("dashboard-user");
@@ -1206,9 +1228,25 @@ if(
 profile.verification?.verified
 ){
 
+
 subtitle.innerHTML +=
 
 "<br>✔ Verified Pharmora Member";
+
+
+}
+
+
+
+else if(
+profile.verification?.requiresReview
+){
+
+
+subtitle.innerHTML +=
+
+"<br>⚠ Verification requires review";
+
 
 }
 
