@@ -969,13 +969,13 @@ modal.id =
 
 
 modal.className =
-"modal-backdrop";
+"modal-overlay";
 
 
 
 modal.innerHTML = `
 
-<div class="modal-box">
+<div class="modal">
 
 <h2>
 
@@ -991,7 +991,7 @@ ${body}
 </div>
 
 
-<div class="modal-actions">
+<div class="modal-footer">
 
 ${actions}
 
