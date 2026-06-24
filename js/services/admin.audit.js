@@ -1,3 +1,9 @@
+/*
+ Admin Audit Logs
+ Pharmora UI v3
+*/
+
+
 function renderAuditLogs(){
 
 
@@ -11,7 +17,8 @@ document.getElementById(
 
 document.getElementById(
 "section-title"
-).innerHTML =
+)
+.innerHTML =
 "🧾 Audit Logs";
 
 
@@ -36,15 +43,14 @@ if(!logs.length){
 
 
 
-box.innerHTML = `
+box.innerHTML =
 
-<div class="card">
+PharmoraUI.empty(
 
-No audit records yet.
+"No audit records yet."
 
-</div>
+);
 
-`;
 
 
 return;
@@ -58,84 +64,118 @@ return;
 
 
 
+
 box.innerHTML =
 
-logs.map(log=>`
+logs.map(log=>
 
 
-<div class="panel">
+PharmoraUI.card({
 
 
-<div>
+title:
+
+"🧾 " +
+
+(
+log.type ||
+log.action ||
+"Audit Event"
+),
 
 
-<b>
 
-${log.type}
+html:true,
 
-</b>
 
+
+body:
+
+
+PharmoraUI.panel({
+
+left:
+
+`
+
+<b>User</b>
 
 <br>
-
 
 ${
 
 log.user?.name ||
 
+log.admin?.name ||
+
 "System"
 
 }
 
+`,
 
-<br>
+right:
 
+log.time
 
-<small>
+?
 
-${
-
-new Date(log.time)
-
+new Date(
+log.time
+)
 .toLocaleString()
 
-}
+:
 
-</small>
+""
 
-
-</div>
-
+})
 
 
++
 
 
-<div>
+PharmoraUI.panel({
 
+left:
+
+"<b>Details</b>",
+
+
+right:
+
+`
 
 <pre>
 
 ${
 
 JSON.stringify(
-log.data,
+
+log.data ||
+
+log,
+
 null,
+
 2
+
 )
 
 }
 
 </pre>
 
+`
 
-</div>
-
-
-</div>
+})
 
 
-`)
 
+})
+
+
+)
 .join("");
 
 
