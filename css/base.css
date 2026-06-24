@@ -182,3 +182,100 @@ align-items:center;
 gap:10px;
 
 }
+
+
+/* =====================
+   ACCESSIBILITY
+===================== */
+
+
+:focus-visible{
+
+outline:none;
+
+box-shadow:var(--focus);
+
+}
+
+
+
+/* =====================
+   MOBILE EXPERIENCE
+===================== */
+
+
+*{
+
+-webkit-tap-highlight-color:
+transparent;
+
+}
+
+
+
+html{
+
+text-size-adjust:100%;
+
+}
+
+
+
+/* =====================
+   FORM FOUNDATION
+===================== */
+
+
+input,
+textarea,
+select{
+
+font-size:var(--font-md);
+
+}
+
+
+textarea{
+
+resize:vertical;
+
+}
+
+
+
+/* =====================
+   HIDDEN STATES
+===================== */
+
+
+[hidden]{
+
+display:none !important;
+
+}
+
+
+
+/* =====================
+   REDUCED MOTION
+===================== */
+
+
+@media
+(prefers-reduced-motion:reduce){
+
+
+*{
+
+animation-duration:.01ms !important;
+
+animation-iteration-count:1 !important;
+
+scroll-behavior:auto !important;
+
+transition-duration:.01ms !important;
+
+}
+
+
+}
