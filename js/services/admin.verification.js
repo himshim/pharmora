@@ -11,7 +11,8 @@ document.getElementById(
 
 document.getElementById(
 "section-title"
-).innerHTML =
+)
+.innerHTML =
 "✔ Verification Requests";
 
 
@@ -29,15 +30,13 @@ if(!requests.length){
 
 
 
-box.innerHTML = `
+box.innerHTML =
 
-<div class="card">
+PharmoraUI.empty(
 
-No pending verification requests.
+"No pending verification requests."
 
-</div>
-
-`;
+);
 
 
 
@@ -53,122 +52,175 @@ return;
 
 
 
-
 box.innerHTML =
 
-requests.map(req=>`
+requests.map(req=>
 
 
-<div class="panel">
+PharmoraUI.card({
 
 
-<div>
+title:
 
+"👤 " + req.name,
 
-<h3>
 
-${req.name}
+html:true,
 
-</h3>
 
+body:
 
-<p>
+`
 
-${req.email}
+${
 
-</p>
+PharmoraUI.panel({
 
+left:"<b>Email</b>",
 
-<p>
+right:req.email
 
-<b>Type:</b>
+})
 
-${req.types.join(", ")}
+}
 
-</p>
 
+${
 
+PharmoraUI.panel({
 
-<p>
+left:"<b>Type</b>",
 
-<b>Title:</b>
+right:req.types.join(", ")
 
-${req.details?.title || ""}
+})
 
-<br>
+}
 
-<b>Organization:</b>
 
-${req.details?.organization || ""}
+${
 
-</p>
+PharmoraUI.panel({
 
+left:"<b>Title</b>",
 
+right:req.details?.title || ""
 
-<button
+})
 
-class="btn"
+}
 
-onclick="location.href='../profile.html?id=${req.userId}'">
 
+${
 
-👤 View Profile
+PharmoraUI.panel({
 
+left:"<b>Organization</b>",
 
-</button>
+right:req.details?.organization || ""
 
+})
 
-</div>
+}
 
 
+${
 
+PharmoraUI.panel({
 
+left:"<b>Attempt</b>",
 
-<div>
+right:
 
+"#" + (req.attempt || 1)
 
+})
 
-<button
+}
 
-class="btn btn-primary"
 
-onclick="adminApproveVerification('${req.id}')">
+${
 
+PharmoraUI.panel({
 
-✔ Approve
+left:"<b>History</b>",
 
+right:
 
-</button>
+(req.history || [])
 
+.map(h=>
 
+(h.action || "")
 
-<br><br>
++
 
+(h.reason ? " : "+h.reason : "")
 
+)
 
-<button
+.join("<br>")
 
-class="btn"
+||
 
-onclick="adminRejectVerification('${req.id}')">
+"No history"
 
+})
 
-❌ Reject
+}
 
+`,
 
-</button>
 
+actions:
 
 
-</div>
+PharmoraUI.button({
 
+text:"👤 View Profile",
 
+action:
 
-</div>
+`location.href='../profile.html?id=${req.userId}'`
 
+})
 
-`)
 
++
+
+
+PharmoraUI.button({
+
+text:"✔ Approve",
+
+type:"primary",
+
+action:
+
+`adminApproveVerification('${req.id}')`
+
+})
+
+
++
+
+
+PharmoraUI.button({
+
+text:"❌ Reject",
+
+action:
+
+`adminRejectVerification('${req.id}')`
+
+})
+
+
+
+})
+
+
+)
 .join("");
 
 
@@ -247,7 +299,26 @@ async function adminRejectVerification(id){
 
 
 
-await rejectVerification(id);
+let reason =
+prompt(
+"Reason for rejection?"
+);
+
+
+
+if(!reason){
+
+return;
+
+}
+
+
+
+
+await rejectVerification(
+id,
+reason
+);
 
 
 
@@ -267,7 +338,9 @@ saveAudit(
 
 {
 
-request:id
+request:id,
+
+reason:reason
 
 }
 

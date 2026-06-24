@@ -128,6 +128,48 @@ data.proof || null,
 status:"pending",
 
 
+attempt:
+
+existing.filter(
+x=>x.userId===user.id
+).length + 1,
+
+
+history:[
+
+{
+
+action:"submitted",
+
+date:new Date()
+.toISOString()
+
+}
+
+],
+
+
+snapshot:{
+
+
+name:user.name,
+
+email:user.email,
+
+types:data.types || [],
+
+
+details:{
+
+
+title:data.title || "",
+
+organization:data.organization || ""
+
+}
+
+
+},
 
 
 createdAt:
@@ -238,6 +280,29 @@ requestId,
 
 status:"approved",
 
+
+history:[
+
+...(request.history || []),
+
+{
+
+action:"approved",
+
+admin:
+
+currentUser()?.id,
+
+date:
+
+new Date()
+.toISOString()
+
+}
+
+],
+
+
 reviewedAt:
 
 new Date()
@@ -270,8 +335,11 @@ showToast(
 
 
 async function rejectVerification(
-requestId
+requestId,
+reason=""
 ){
+
+
 
 let requests =
 await getRecords(
@@ -282,10 +350,18 @@ await getRecords(
 
 let request =
 requests.find(
-
 x=>x.id===requestId
-
 );
+
+
+
+if(!request){
+
+return;
+
+}
+
+
 
 await updateRecord(
 
@@ -295,9 +371,78 @@ requestId,
 
 {
 
+
 status:"rejected",
 
+
+rejectionReason:
+
+reason || "Not specified",
+
+
+
+history:[
+
+...(request.history || []),
+
+{
+
+action:"rejected",
+
+reason:
+
+reason || "Not specified",
+
+
+admin:
+
+currentUser()?.id,
+
+
+date:
+
+new Date()
+.toISOString()
+
+}
+
+],
+
+
+
 reviewedAt:
+
+new Date()
+.toISOString()
+
+
+}
+
+);
+
+
+
+
+await createRecord(
+
+"verification-logs",
+
+{
+
+targetUser:
+
+request.userId,
+
+
+action:"reject",
+
+
+reason:
+
+reason || "Not specified",
+
+
+createdAt:
 
 new Date()
 .toISOString()
@@ -305,6 +450,10 @@ new Date()
 }
 
 );
+
+
+
+
 
 if(
 
@@ -324,11 +473,20 @@ request.userId,
 
 {
 
-title:"Verification Update",
+title:"Verification rejected",
 
 message:
 
-"Your verification request was not approved. You can update your profile and try again.",
+"Reason: "
+
++
+
+(reason || "Not specified")
+
++
+
+". Update details and submit again.",
+
 
 type:"info"
 
@@ -339,6 +497,8 @@ type:"info"
 
 
 }
+
+
 
 
 showToast(
@@ -635,6 +795,24 @@ new Date()
 
 );
 
+
+
+}
+
+async function verificationHistory(
+userId
+){
+
+
+let logs =
+await getRecords(
+"verification-logs"
+);
+
+
+return logs.filter(
+x=>x.targetUser===userId
+);
 
 
 }
