@@ -509,15 +509,16 @@ type:"success"
 
 }
 
-alert(
+PharmoraUI.confirm({
 
-"User verified as "
+title:"Verification Complete ✔",
 
-+
+message:
+"User verified as " + type,
 
-type
+confirmText:"OK"
 
-);
+});
 
 
 
@@ -605,15 +606,16 @@ type:"info"
 
 }
 
-alert(
+PharmoraUI.confirm({
 
-"Role changed to "
+title:"Role Updated 👑",
 
-+
+message:
+"Role changed to " + role,
 
-role
+confirmText:"OK"
 
-);
+});
 
 
 
@@ -627,11 +629,15 @@ adminFindUser();
 else{
 
 
-alert(
+PharmoraUI.confirm({
 
-"Only owner can do this"
+title:"Permission denied",
 
-);
+message:"Only owner can do this",
+
+confirmText:"OK"
+
+});
 
 
 }
@@ -720,9 +726,15 @@ type:"warning"
 
 }
 
-alert(
-"User banned"
-);
+PharmoraUI.confirm({
+
+title:"User Disabled 🚫",
+
+message:"User banned",
+
+confirmText:"OK"
+
+});
 
 
 adminFindUser();
@@ -734,11 +746,15 @@ adminFindUser();
 else{
 
 
-alert(
+PharmoraUI.confirm({
 
-"Cannot disable this user"
+title:"Failed",
 
-);
+message:"Cannot disable this user",
+
+confirmText:"OK"
+
+});
 
 
 }
@@ -825,11 +841,15 @@ type:"success"
 
 
 
-alert(
+PharmoraUI.confirm({
 
-"User restored"
+title:"Restored 🔓",
 
-);
+message:"User restored",
+
+confirmText:"OK"
+
+});
 
 
 
@@ -845,11 +865,15 @@ else{
 
 
 
-alert(
+PharmoraUI.confirm({
 
-"Cannot restore this user"
+title:"Failed",
 
-);
+message:"Cannot restore this user",
+
+confirmText:"OK"
+
+});
 
 
 
