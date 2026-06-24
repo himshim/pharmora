@@ -30,21 +30,17 @@ const reviewCollections = [
 
 function escapeHtml(text){
 
-return String(
 
-text || ""
+return window.PharmoraUI
 
-)
+?
 
-.replaceAll("&","&amp;")
+PharmoraUI.escape(text)
 
-.replaceAll("<","&lt;")
+:
 
-.replaceAll(">","&gt;")
+String(text || "");
 
-.replaceAll('"',"&quot;")
-
-.replaceAll("'","&#39;");
 
 }
 
@@ -192,9 +188,62 @@ assignments:"📝"
 }
 
 
+function adminButton(
+text,
+action
+){
+
+
+return PharmoraUI.button({
+
+text,
+
+action
+
+});
+
+
+}
+
+/*
+ Admin UI helpers
+*/
+
+
+function adminCard(
+title,
+body,
+icon=""
+){
+
+
+return PharmoraUI.card({
+
+title:
+
+icon+" "+title,
+
+body
+
+});
+
+
+}
 
 
 
+
+function adminBadge(status){
+
+
+return PharmoraUI.badge(
+
+status || "unknown"
+
+);
+
+
+}
 
 
 

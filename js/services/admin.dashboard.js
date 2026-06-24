@@ -1,3 +1,99 @@
+  /*
+ Admin UI Helpers
+*/
+
+
+function adminStatCard(
+title,
+value,
+icon,
+action=""
+){
+
+
+let html =
+PharmoraUI.card({
+
+title:value,
+
+body:
+
+icon+" "+title,
+
+badge:"Admin"
+
+});
+
+
+if(action){
+
+html =
+html.replace(
+
+'class="card',
+
+`onclick="${action}" class="card`
+
+);
+
+}
+
+
+return html;
+
+
+}
+
+
+
+function adminButton(
+text,
+action
+){
+
+
+return PharmoraUI.button({
+
+text,
+
+action
+
+});
+
+
+}
+
+
+function adminPanel(
+left,
+right=""
+){
+
+
+return `
+
+<div class="panel">
+
+<div>
+
+${left}
+
+</div>
+
+
+<span>
+
+${right}
+
+</span>
+
+</div>
+
+`;
+
+
+}
+
 async function renderAdminStats(){
 
 
@@ -151,172 +247,89 @@ catch(e){}
 
 
 
-box.innerHTML = `
+box.innerHTML =
 
+adminStatCard(
 
-<div
-class="card"
-onclick="renderAdminActions()">
+"Pending Review",
 
+pending,
 
-<h2>
+"⏳",
 
-${pending}
+"renderAdminActions()"
 
-</h2>
+)
 
++
 
-<p>
+adminStatCard(
 
-⏳ Pending Review
+"Published",
 
-</p>
+approved,
 
+"📚",
 
-</div>
+"renderAdminActions()"
 
+)
 
++
 
+adminStatCard(
 
+"Users",
 
+users.length,
 
+"👥",
 
+"renderUserManager()"
 
-<div
-class="card"
-onclick="renderAdminActions()">
+)
 
++
 
-<h2>
+adminStatCard(
 
-${approved}
+"Verification Requests",
 
-</h2>
+verifications.length,
 
+"✔",
 
-<p>
+"renderVerificationCenter()"
 
-📚 Published
+)
 
-</p>
++
 
+adminStatCard(
 
-</div>
+"Disabled Users",
 
+banned,
 
+"🚫",
 
+"renderUserManager()"
 
+)
 
++
 
+adminStatCard(
 
+"Audit Events",
 
-<div
-class="card"
-onclick="renderUserManager()">
+audits.length,
 
+"🧾",
 
-<h2>
+"renderAuditLogs()"
 
-${users.length}
-
-</h2>
-
-
-<p>
-
-👥 Users
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-
-<div
-class="card"
-onclick="renderVerificationCenter()">
-
-
-<h2>
-
-${verifications.length}
-
-</h2>
-
-
-<p>
-
-✔ Verification Requests
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-
-<div
-class="card"
-onclick="renderUserManager()">
-
-
-<h2>
-
-${banned}
-
-</h2>
-
-
-<p>
-
-🚫 Disabled Users
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-
-<div
-class="card"
-onclick="renderAuditLogs()">
-
-
-<h2>
-
-${audits.length}
-
-</h2>
-
-
-<p>
-
-🧾 Audit Events
-
-</p>
-
-
-</div>
-
-
-`;
+);
 
 
 
@@ -478,138 +491,97 @@ box.innerHTML = `
 
 
 
-<div class="card">
+${
 
-<h2>⚡ Quick Actions</h2>
+PharmoraUI.card({
 
-<br>
+title:"⚡ Quick Actions",
 
+body:"",
 
-<button class="btn"
+actions:
 
-onclick="renderAdminActions()">
+adminButton(
+"📋 Review Queue",
+"renderAdminActions()"
+)
 
-📋 Review Queue
++
 
-</button>
+adminButton(
+"🎓 Courses",
+"loadManager('courses')"
+)
 
++
 
-<br><br>
+adminButton(
+"🔔 Notifications",
+"loadManager('notifications')"
+)
 
++
 
-<button class="btn"
+adminButton(
+"🌱 Contributor Applications",
+"renderContributorApplications()"
+)
 
-onclick="loadManager('courses')">
++
 
-🎓 Courses
+adminButton(
+"🗑 Trash",
+"renderTrash()"
+)
 
-</button>
++
 
+adminButton(
+"👥 Users",
+"renderUserManager()"
+)
 
-<br><br>
+})
 
+}
 
-<button class="btn"
 
-onclick="loadManager('notifications')">
 
-🔔 Notifications
 
-</button>
 
-<br><br>
-
-
-<button 
-class="btn"
-
-onclick="renderContributorApplications()">
-
-🌱 Contributor Applications
-
-</button>
-
-<br><br>
-
-
-<button
-
-class="btn"
-
-onclick="renderTrash()">
-
-🗑 Trash
-
-</button>
-
-<br><br>
-
-
-<button class="btn"
-
-onclick="renderUserManager()">
-
-👥 Users
-
-</button>
-
-</div>
-
-
-
-
-
-
-
-
-<div class="card">
-
-<h2>👥 Community</h2>
-
-
-<br>
-
-
-<h1>
-
-${users.length}
-
-</h1>
-
-
-<p>
-
-Registered Users
-
-</p>
-
-
-</div>
-
-
-
-
-<div class="card">
-
-
-
-<h2>
-
-📈 Platform Insights
-
-</h2>
-
-
-
-<br>
 
 
 
 ${
 
+PharmoraUI.card({
+
+title:users.length,
+
+body:"👥 Registered Users",
+
+badge:"Community"
+
+})
+
+}
+
+
+
+
+${
+
+PharmoraUI.card({
+
+title:"📈 Platform Insights",
+
+body:
+
+bars.length
+
+?
+
 bars.map(x=>`
-
-
 
 <p>
 
@@ -632,38 +604,29 @@ ${x.value}
 
 </div>
 
-
-
 `).join("")
+
+:
+
+"No analytics"
+
+})
 
 }
 
 
 
-</div>
-
-
-
-
-
-<div class="card">
-
-
-
-<h2>
-
-🔥 Popular Searches
-
-</h2>
-
-
-
-<br>
 
 
 
 
 ${
+
+PharmoraUI.card({
+
+title:"🔥 Popular Searches",
+
+body:
 
 popular.length
 
@@ -685,20 +648,16 @@ ${x[1]}
 
 `).join("")
 
-
 :
-
 
 "No searches yet"
 
+})
 
 }
 
 
 
-</div>
-
-
 
 </div>
 
@@ -713,60 +672,37 @@ ${x[1]}
 
 
 
-
-
-
-
-<div class="card">
-
-
-<h2>
-
-🕒 Recent Activity
-
-</h2>
-
-
-<br>
 
 
 
 
 ${
+
+PharmoraUI.card({
+
+title:"🕒 Recent Activity",
+
+body:
 
 latest.length
 
 ?
 
-latest.map(item=>`
+latest.map(item=>
 
-<div class="panel">
+adminPanel(
 
-
-<div>
-
+`
 
 <b>
 
 ${contentIcon(item._collection)}
 
-${
-
-item.title ||
-
-item.question ||
-
-item.name ||
-
-"Untitled"
-
-}
+${item.title || item.question || item.name || "Untitled"}
 
 </b>
 
-
 <br>
-
 
 <small>
 
@@ -774,61 +710,42 @@ ${item._collection}
 
 </small>
 
+`,
 
+item.status
 
-</div>
+)
 
-
-<span class="status">
-
-${item.status}
-
-</span>
-
-
-</div>
-
-
-`).join("")
-
+).join("")
 
 :
 
-
 "No activity"
 
+})
 
 }
 
 
 
 
-</div>
-
-<div class="card">
-
-
-<h2>
-
-🕒 Activity Feed
-
-</h2>
-
-
-<br>
-
-
 ${
+
+PharmoraUI.card({
+
+title:"🕒 Activity Feed",
+
+body:
 
 activity.length
 
 ?
 
-activity.map(a=>`
+activity.map(a=>
 
-<div class="panel">
+adminPanel(
 
-<div>
+`
 
 <b>
 
@@ -844,32 +761,21 @@ ${new Date(a.time).toLocaleString()}
 
 </small>
 
-</div>
+`,
 
+a.action
 
-<span>
+)
 
-${a.action}
-
-</span>
-
-
-</div>
-
-
-`).join("")
-
+).join("")
 
 :
 
-
 "No activity yet"
 
+})
 
 }
-
-
-</div>
 
 `;
 
