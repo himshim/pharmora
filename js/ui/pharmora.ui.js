@@ -137,7 +137,9 @@ badge="",
 
 actions="",
 
-className=""
+className="",
+
+html=false
 
 }={}){
 
@@ -169,11 +171,11 @@ ${escapeHTML(title)}
 
 
 
-<p>
+<div>
 
-${escapeHTML(body)}
+${html ? body : escapeHTML(body)}
 
-</p>
+</div>
 
 
 

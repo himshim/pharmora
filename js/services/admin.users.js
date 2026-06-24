@@ -21,6 +21,8 @@ PharmoraUI.card({
 
 title:"Find User",
 
+html:true,
+
 body:
 
 `
