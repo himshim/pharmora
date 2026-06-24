@@ -299,10 +299,6 @@ async function adminRejectVerification(id){
 
 
 
-let reason =
-prompt(
-"Reason for rejection?"
-);
 
 
 

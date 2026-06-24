@@ -646,14 +646,28 @@ confirmText:"OK"
 
 }
 
-async function adminDisableUser(id){
+async function adminDisableUserConfirm(
+id,
+reason
+){
 
 
 
-let reason =
-prompt(
-"Reason for ban?"
-);
+return PharmoraUI.prompt({
+
+title:"Disable User 🚫",
+
+message:"Enter reason for disabling this account",
+
+placeholder:"Reason",
+
+confirmText:"Disable",
+
+onConfirm:
+
+`adminDisableUserConfirm('${id}')`
+
+});
 
 
 

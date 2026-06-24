@@ -1097,6 +1097,89 @@ onConfirm
 
 };
 
+UI.prompt=function({
+
+title="Input Required",
+
+message="",
+
+placeholder="",
+
+confirmText="Save",
+
+onConfirm=""
+
+}={}){
+
+
+let id =
+"prompt_" + Date.now();
+
+
+UI.modal({
+
+
+title:title,
+
+
+body:
+
+`
+
+<p>
+
+${escapeHTML(message)}
+
+</p>
+
+
+<br>
+
+
+<input
+
+id="${id}"
+
+placeholder="${escapeHTML(placeholder)}"
+
+autofocus
+
+>
+
+`,
+
+
+actions:
+
+
+UI.button({
+
+text:confirmText,
+
+type:"primary",
+
+action:
+
+`
+
+let value =
+document.getElementById('${id}').value;
+
+
+PharmoraUI.closeModal();
+
+
+${onConfirm}(value);
+
+`
+
+})
+
+
+});
+
+
+};
 window.PharmoraUI=UI;
 
 
