@@ -870,7 +870,7 @@ renderAdminActions();
 
 
 
-async function deleteContent(
+async function deleteContentConfirm(
 collection,
 id
 ){
@@ -880,21 +880,26 @@ id
 
 
 
-let ok =
+return PharmoraUI.confirm({
 
-typeof showConfirm==="function"
 
-?
+title:"Delete Content 🗑",
 
-await showConfirm(
-"Delete permanently?"
-)
 
-:
+message:
 
-confirm(
-"Delete permanently?"
-);
+"This will move the content to trash. Continue?",
+
+
+confirmText:"Delete",
+
+
+onConfirm:
+
+`deleteContentConfirm('${collection}','${id}')`
+
+
+});
 
 
 
