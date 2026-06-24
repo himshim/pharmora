@@ -648,7 +648,136 @@ return items
 
 };
 
+/* ======================
+   STATE ENGINE
+====================== */
 
+
+UI.state={};
+
+
+
+UI.state.loading=function(
+message="Loading..."
+){
+
+
+return `
+
+<div class="card">
+
+${UI.loading()}
+
+<p>${UI.escape(message)}</p>
+
+</div>
+
+`;
+
+};
+
+
+
+
+
+UI.state.error=function(
+message="Something went wrong"
+){
+
+
+return `
+
+<div class="card">
+
+<h3>⚠ Error</h3>
+
+<p>${UI.escape(message)}</p>
+
+</div>
+
+`;
+
+};
+
+
+
+
+
+UI.state.success=function(
+message="Done"
+){
+
+
+return `
+
+<div class="card">
+
+<h3>✅ Success</h3>
+
+<p>${UI.escape(message)}</p>
+
+</div>
+
+`;
+
+};
+
+
+
+
+
+UI.safeRender=async function(
+target,
+loader
+){
+
+
+
+try{
+
+
+UI.render(
+target,
+UI.state.loading()
+);
+
+
+
+let html =
+await loader();
+
+
+
+UI.render(
+target,
+html
+);
+
+
+
+}
+
+catch(error){
+
+
+console.error(error);
+
+
+UI.render(
+target,
+
+UI.state.error(
+error.message
+)
+
+);
+
+
+}
+
+
+
+};
 
 window.PharmoraUI=UI;
 
