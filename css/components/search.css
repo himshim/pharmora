@@ -1,0 +1,40 @@
+
+
+/* =========================
+   SEARCH
+========================= */
+
+
+.search-box{
+
+width:100%;
+
+max-width:700px;
+
+margin:30px auto;
+
+}
+
+
+
+
+
+.search-box input{
+
+border-radius:50px;
+
+font-size:1rem;
+
+padding:18px 24px;
+
+}
+
+
+
+
+
+
+
+
+
+

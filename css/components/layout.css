@@ -1,0 +1,49 @@
+/* =========================
+   CONTAINER
+========================= */
+
+
+.container{
+
+width:min(1200px,90%);
+
+margin:auto;
+
+}
+
+
+
+/* =========================
+   SECTIONS
+========================= */
+
+
+.section{
+
+padding:70px 0;
+
+}
+
+
+
+
+
+.section-title{
+
+font-size:2rem;
+
+margin-bottom:25px;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+

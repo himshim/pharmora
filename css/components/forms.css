@@ -1,0 +1,60 @@
+/* =========================
+   FORMS
+========================= */
+
+
+input,
+textarea,
+select{
+
+width:100%;
+
+padding:14px 16px;
+
+margin-bottom:15px;
+
+border-radius:15px;
+
+background:var(--surface);
+
+border:1px solid var(--border);
+
+color:var(--text);
+
+outline:none;
+
+}
+
+
+
+
+
+textarea{
+
+min-height:140px;
+
+resize:vertical;
+
+}
+
+
+
+
+
+input:focus,
+textarea:focus,
+select:focus{
+
+border-color:var(--primary);
+
+}
+
+
+
+
+
+
+
+
+
+
