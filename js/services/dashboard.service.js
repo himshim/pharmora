@@ -899,51 +899,17 @@ user.id
 */
 
 
-let complete = 0;
+let complete =
 
+typeof profileCompletion==="function"
 
-if(profile?.displayName){
+?
 
-complete += 20;
+profileCompletion(profile)
 
-}
+:
 
-
-if(profile?.bio){
-
-complete += 20;
-
-}
-
-
-if(
-(profile?.types || [])
-.length
-){
-
-complete += 20;
-
-}
-
-
-if(
-(profile?.specializations || [])
-.length
-){
-
-complete += 20;
-
-}
-
-
-if(
-(profile?.positions || [])
-.length
-){
-
-complete += 20;
-
-}
+0;
 
 
 
@@ -1224,14 +1190,25 @@ identity.join(" • ")
 
 
 
-if(
-profile.verification?.verified
-){
+let badge =
+
+typeof profileBadge==="function"
+
+?
+
+profileBadge(profile)
+
+:
+
+"";
+
+
+if(badge){
 
 
 subtitle.innerHTML +=
 
-"<br>✔ Verified Pharmora Member";
+"<br>" + badge;
 
 
 }
