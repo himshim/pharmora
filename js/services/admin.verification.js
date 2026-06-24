@@ -243,14 +243,9 @@ await approveVerification(id);
 
 
 
-
-
 if(
-
 typeof saveAudit==="function"
-
 ){
-
 
 
 saveAudit(
@@ -266,17 +261,19 @@ request:id
 );
 
 
-
 }
 
 
 
+PharmoraUI.confirm({
 
-alert(
+title:"Approved ✔",
 
-"Verification approved"
+message:"Verification approved",
 
-);
+confirmText:"OK"
+
+});
 
 
 
@@ -299,6 +296,43 @@ async function adminRejectVerification(id){
 
 
 
+return PharmoraUI.prompt({
+
+
+title:"Reject Verification ❌",
+
+
+message:
+
+"Enter rejection reason",
+
+
+placeholder:
+
+"Reason",
+
+
+confirmText:"Reject",
+
+
+onConfirm:
+
+`adminRejectVerificationConfirm('${id}')`
+
+
+});
+
+
+
+}
+
+
+
+
+async function adminRejectVerificationConfirm(
+id,
+reason
+){
 
 
 
@@ -310,12 +344,10 @@ return;
 
 
 
-
 await rejectVerification(
 id,
 reason
 );
-
 
 
 
@@ -325,7 +357,6 @@ if(
 typeof saveAudit==="function"
 
 ){
-
 
 
 saveAudit(
@@ -343,17 +374,20 @@ reason:reason
 );
 
 
-
 }
 
 
 
 
-alert(
+PharmoraUI.confirm({
 
-"Verification rejected"
+title:"Rejected",
 
-);
+message:"Verification rejected",
+
+confirmText:"OK"
+
+});
 
 
 
