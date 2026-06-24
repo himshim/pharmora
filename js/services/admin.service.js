@@ -867,7 +867,35 @@ renderAdminActions();
 
 
 
+async function deleteContent(
+collection,
+id
+){
 
+
+return PharmoraUI.confirm({
+
+
+title:"Delete Content 🗑",
+
+
+message:
+
+"This will move the content to trash. Continue?",
+
+
+confirmText:"Delete",
+
+
+onConfirm:
+
+`deleteContentConfirm('${collection}','${id}')`
+
+
+});
+
+
+}
 
 
 async function deleteContentConfirm(
