@@ -80,8 +80,64 @@ searchUserId.value
 
 
 
-let users =
-getDemoUsers();
+let users=[];
+
+
+try{
+
+
+if(
+typeof getRecords==="function"
+){
+
+
+users =
+await getRecords(
+"users"
+);
+
+
+}
+
+
+else{
+
+
+users =
+await getDemoUsers();
+
+
+}
+
+
+}
+catch(e){
+
+
+users=[];
+
+
+}
+
+
+if(
+!Array.isArray(users)
+){
+
+
+users =
+users.data
+
+||
+
+users.records
+
+||
+
+[];
+
+
+}
 
 
 
