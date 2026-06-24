@@ -1,11 +1,12 @@
 /*
- Pharmora Home Renderer
+ Pharmora Home Renderer v2
+
+ Powered by PharmoraUI
 */
 
 
 
 async function renderHomeStats(id){
-
 
 
 let box =
@@ -16,59 +17,63 @@ if(!box)return;
 
 
 
+PharmoraUI.safeRender(
+
+box,
+
+async()=>{
+
 
 let stats =
 await getHomeStats();
 
 
 
-box.innerHTML = `
+return `
+
+<div class="grid">
 
 
-<div class="card">
+${
 
-<h2>${stats.resources}+</h2>
+[
+["Resources",stats.resources],
+["Books",stats.books],
+["Events",stats.events],
+["Members",stats.users]
 
-<p>Resources</p>
+]
+
+.map(x=>
+
+PharmoraUI.card({
+
+title:x[1] + "+",
+
+body:x[0],
+
+badge:"Stats"
+
+})
+
+)
+
+.join("")
+
+
+}
+
 
 </div>
-
-
-
-<div class="card">
-
-<h2>${stats.books}+</h2>
-
-<p>Books</p>
-
-</div>
-
-
-
-<div class="card">
-
-<h2>${stats.events}+</h2>
-
-<p>Events</p>
-
-</div>
-
-
-
-<div class="card">
-
-<h2>${stats.users}+</h2>
-
-<p>Members</p>
-
-</div>
-
 
 `;
 
 
+});
+
 
 }
+
 
 
 
@@ -83,7 +88,6 @@ mode
 ){
 
 
-
 let box =
 document.getElementById(id);
 
@@ -91,6 +95,13 @@ document.getElementById(id);
 if(!box)return;
 
 
+
+
+PharmoraUI.safeRender(
+
+box,
+
+async()=>{
 
 
 let data =
@@ -107,52 +118,18 @@ await getLatestContent();
 
 
 
-box.innerHTML="";
+return PharmoraUI.list(
 
+data,
 
+item=>
 
+PharmoraUI.entityCard(item)
 
-data.forEach(item=>{
-
-
-box.innerHTML += `
-
-
-<div class="card">
-
-
-<div class="badge">
-
-${item._collection}
-
-</div>
-
-
-
-<h2>
-
-${item.title || item.name}
-
-</h2>
-
-
-
-<p>
-
-${item.description || ""}
-
-</p>
-
-
-
-</div>
-
-
-`;
+);
 
 
 });
-
 
 
 }
