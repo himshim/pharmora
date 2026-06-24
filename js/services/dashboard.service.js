@@ -575,31 +575,17 @@ types.includes("educator")
 
 
 
-cards += `
+cards += dashboardCard(
 
+"Teaching Studio",
 
-<div class="card"
-onclick="location.href='../teach/'">
+"Create lectures and educational material.",
 
+"👨‍🏫",
 
-<h2>
+"location.href='../teach/'"
 
-👨‍🏫 Teaching Studio
-
-</h2>
-
-
-<p>
-
-Create lectures and educational material.
-
-</p>
-
-
-</div>
-
-
-`;
+);
 
 
 
@@ -619,31 +605,17 @@ types.includes("professional")
 
 
 
-cards += `
+cards += dashboardCard(
 
+"Professional Corner",
 
-<div class="card"
-onclick="location.href='../community/'">
+"Share experience and answer discussions.",
 
+"💊",
 
-<h2>
+"location.href='../community/'"
 
-💊 Professional Corner
-
-</h2>
-
-
-<p>
-
-Share experience and answer discussions.
-
-</p>
-
-
-</div>
-
-
-`;
+);
 
 
 
@@ -719,32 +691,17 @@ permissions.includes("content.review")
 ){
 
 
-cards += `
+cards += dashboardCard(
 
+"Admin Panel",
 
-<div class="card"
+"Review content and manage platform.",
 
-onclick="location.href='../admin/'">
+"🛡",
 
+"location.href='../admin/'"
 
-<h2>
-
-🛡 Admin Panel
-
-</h2>
-
-
-<p>
-
-Review content and manage platform.
-
-</p>
-
-
-</div>
-
-
-`;
+);
 
 
 }
@@ -768,32 +725,17 @@ permissions.includes("analytics.view")
 ){
 
 
-cards += `
+cards += dashboardCard(
 
+"Analytics",
 
-<div class="card"
+"Platform insights and activity.",
 
-onclick="location.href='../admin/?view=analytics'">
+"📈",
 
+"location.href='../admin/?view=analytics'"
 
-<h2>
-
-📈 Analytics
-
-</h2>
-
-
-<p>
-
-Platform insights and activity.
-
-</p>
-
-
-</div>
-
-
-`;
+);
 
 
 }
@@ -818,32 +760,17 @@ permissions.includes("*")
 ){
 
 
-cards += `
+cards += dashboardCard(
 
+"Owner Console",
 
-<div class="card"
+"System configuration and control.",
 
-onclick="location.href='../admin/?view=owner'">
+"👑",
 
+"location.href='../admin/?view=owner'"
 
-<h2>
-
-👑 Owner Console
-
-</h2>
-
-
-<p>
-
-System configuration and control.
-
-</p>
-
-
-</div>
-
-
-`;
+);
 
 
 }
@@ -1091,155 +1018,61 @@ user.id,
 
 
 
-box.innerHTML = `
+box.innerHTML =
 
 
+dashboardStat(
 
-<div class="card">
+"Profile Strength",
 
+complete + "%"
 
-<h2>
+)
 
-👤 Profile Strength
 
-</h2>
++
 
+dashboardStat(
 
-<h1>
+"Unread updates",
 
-${complete}%
+unread
 
-</h1>
+)
 
 
-<progress
++
 
-value="${complete}"
+dashboardStat(
 
-max="100">
+"Community points",
 
-</progress>
+profile?.stats?.reputation || 0
 
+)
 
-<p>
 
-Complete your Pharmora identity.
++
 
-</p>
+PharmoraUI.card({
 
+title:"⚡ Activity",
 
-</div>
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h2>
-
-🔔 Notifications
-
-</h2>
-
-
-<h1>
-
-${unread}
-
-</h1>
-
-
-<p>
-
-Unread updates
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h2>
-
-⭐ Reputation
-
-</h2>
-
-
-<h1>
-
-${profile?.stats?.reputation || 0}
-
-</h1>
-
-
-<p>
-
-Community points
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h2>
-
-⚡ Activity
-
-</h2>
-
-
-${
+body:
 
 activity.length
 
 ?
 
-activity.map(a=>`
-
-<p>
-
-${a.message || a.action}
-
-</p>
-
-`)
-.join("")
-
+activity
+.map(a=>a.message || a.action)
+.join(" | ")
 
 :
 
-"<p>No recent activity</p>"
+"No recent activity"
 
-}
-
-
-</div>
-
-
-
-`;
+});
 
 
 }
@@ -1393,4 +1226,7 @@ await loadManagementPanel();
 };
 
 
-loadDashboard();
+window.addEventListener(
+"pharmora-ready",
+loadDashboard
+);
