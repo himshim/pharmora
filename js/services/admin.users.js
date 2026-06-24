@@ -1,71 +1,62 @@
 async function renderUserManager(){
 
 
-
 let box =
 document.getElementById(
 "admin-actions"
 );
 
 
-
 document.getElementById(
 "section-title"
-).innerHTML =
+)
+.innerHTML =
 "👥 User Management";
 
 
 
+box.innerHTML =
 
+PharmoraUI.card({
 
-box.innerHTML = `
+title:"Find User",
 
+body:
 
-<div class="card">
-
-
-<h2>
-
-Find User
-
-</h2>
-
+`
 
 <input
 
 id="searchUserId"
 
-placeholder="Search ID, name or email">
+placeholder="Search ID, name or email"
+
+>
 
 
 <br><br>
 
 
-<button
-
-class="btn btn-primary"
-
-onclick="adminFindUser()">
-
-
-Search
-
-
-</button>
-
-
 <div id="found-user"></div>
 
+`,
 
-</div>
+
+actions:
+
+PharmoraUI.button({
+
+text:"Search",
+
+action:"adminFindUser()"
+
+})
 
 
-`;
-
+});
 
 
 }
-
 
 
 
@@ -142,62 +133,62 @@ return;
 
 
 
-box.innerHTML = `
+box.innerHTML =
+
+PharmoraUI.card({
 
 
-<br>
+title:
+
+"👤 " + user.name,
 
 
-<div class="card">
+body:
 
-
-<h2>
-
-👤 ${user.name}
-
-</h2>
-
-
-
-<p>
-
-<b>ID:</b>
-
-<br>
-
-${user.id}
-
-</p>
-
-
-
-<p>
-
-<b>Email:</b>
-
-<br>
-
-${user.email}
-
-</p>
-
-
-
-<p>
-
-<b>Role:</b>
-
-${user.role}
-
-</p>
-
-
-
-<p>
-
-<b>Status:</b>
+`
 
 ${
+
+PharmoraUI.panel({
+
+left:"<b>ID</b><br>"+user.id
+
+})
+
+}
+
+
+${
+
+PharmoraUI.panel({
+
+left:"<b>Email</b><br>"+user.email
+
+})
+
+}
+
+
+${
+
+PharmoraUI.panel({
+
+left:"<b>Role</b>",
+
+right:user.role
+
+})
+
+}
+
+
+${
+
+PharmoraUI.panel({
+
+left:"<b>Status</b>",
+
+right:
 
 user.disabled
 
@@ -209,164 +200,160 @@ user.disabled
 
 "✅ Active"
 
+})
+
 }
 
-</p>
-
-
-
-<p>
-
-<b>Joined:</b>
 
 ${
+
+PharmoraUI.panel({
+
+left:"<b>Joined</b>",
+
+right:
 
 user.createdAt
 
 ?
 
 new Date(user.createdAt)
-
 .toLocaleDateString()
 
 :
 
 "Unknown"
 
+})
+
 }
 
-</p>
+`,
 
 
-
-<button
-
-class="btn"
-
-onclick="navigator.clipboard.writeText('${user.id}')">
-
-📋 Copy ID
-
-</button>
+actions:
 
 
+PharmoraUI.button({
+
+text:"📋 Copy ID",
+
+action:
+
+`navigator.clipboard.writeText('${user.id}')`
+
+})
 
 
-<button
-
-class="btn"
-
-onclick="location.href='../profile.html?id=${user.id}'">
-
-👤 View Profile
-
-</button>
++
 
 
-<br><br>
+PharmoraUI.button({
+
+text:"👤 View Profile",
+
+action:
+
+`location.href='../profile.html?id=${user.id}'`
+
+})
 
 
-
-<button
-
-class="btn"
-
-onclick="adminVerifyUser('${user.id}','educator')">
++
 
 
-✔ Verify Educator
+PharmoraUI.button({
+
+text:"✔ Verify Educator",
+
+action:
+
+`adminVerifyUser('${user.id}','educator')`
+
+})
 
 
-</button>
++
 
 
+PharmoraUI.button({
 
-<button
+text:"✔ Verify Professional",
 
-class="btn"
+action:
 
-onclick="adminVerifyUser('${user.id}','professional')">
+`adminVerifyUser('${user.id}','professional')`
 
-
-✔ Verify Professional
-
-
-</button>
+})
 
 
-
-<br><br>
-
-
-<button
-
-class="btn"
-
-onclick="adminDisableUser('${user.id}')">
++
 
 
-🚫 Ban User
+PharmoraUI.button({
+
+text:"🚫 Ban User",
+
+action:
+
+`adminDisableUser('${user.id}')`
+
+})
 
 
-</button>
-
-<button
-
-class="btn"
-
-onclick="adminRestoreUser('${user.id}')">
++
 
 
-🔓 Restore User
+PharmoraUI.button({
+
+text:"🔓 Restore User",
+
+action:
+
+`adminRestoreUser('${user.id}')`
+
+})
 
 
-</button>
++
 
-${
+(
 
 currentUser().role==="owner"
 
 ?
 
-`
+PharmoraUI.button({
 
-<br><br>
+text:"👑 Make Admin",
 
+action:
 
-<button
+`ownerChangeRole('${user.id}','admin')`
 
-class="btn"
-
-onclick="ownerChangeRole('${user.id}','admin')">
-
-👑 Make Admin
-
-</button>
+})
 
 
++
 
-<button
+PharmoraUI.button({
 
-class="btn"
+text:"⬇ Remove Admin",
 
-onclick="ownerChangeRole('${user.id}','member')">
+action:
 
-⬇ Remove Admin
+`ownerChangeRole('${user.id}','member')`
 
-</button>
-
-`
+})
 
 :
 
 ""
 
-}
+)
 
 
-</div>
-
-`;
+});
 
 
 
