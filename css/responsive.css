@@ -308,3 +308,87 @@ font-size:10px;
 
 
 }
+
+/* =========================
+   PWA SAFE AREAS
+========================= */
+
+
+body{
+
+padding-left:
+env(safe-area-inset-left);
+
+padding-right:
+env(safe-area-inset-right);
+
+}
+
+
+
+/* =========================
+   TOUCH DEVICES
+========================= */
+
+
+@media(pointer:coarse){
+
+
+button,
+.btn,
+a{
+
+min-height:44px;
+
+}
+
+
+}
+
+
+
+/* =========================
+   MOBILE MODALS
+========================= */
+
+
+@media(max-width:600px){
+
+
+.modal,
+.modal-box{
+
+width:94%;
+
+max-height:85vh;
+
+overflow:auto;
+
+}
+
+
+}
+
+
+
+/* =========================
+   LANDSCAPE TABLETS
+========================= */
+
+
+@media(
+max-height:500px
+)
+and
+(orientation:landscape)
+{
+
+
+.section{
+
+padding:25px 0;
+
+}
+
+
+}
