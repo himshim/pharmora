@@ -496,7 +496,157 @@ ${escapeHTML(message)}
 
 
 
+/* ======================
+   RENDER ENGINE
+====================== */
 
+
+UI.render=function(
+target,
+content
+){
+
+
+let element =
+typeof target==="string"
+?
+document.querySelector(target)
+:
+target;
+
+
+
+if(!element){
+
+console.warn(
+"Render target missing",
+target
+);
+
+return false;
+
+}
+
+
+
+element.innerHTML =
+content || "";
+
+
+return true;
+
+
+};
+
+
+
+
+
+
+
+UI.append=function(
+target,
+content
+){
+
+
+let element =
+typeof target==="string"
+?
+document.querySelector(target)
+:
+target;
+
+
+
+if(!element){
+
+return false;
+
+}
+
+
+
+element.insertAdjacentHTML(
+"beforeend",
+content
+);
+
+
+return true;
+
+
+};
+
+
+
+
+
+
+
+
+
+UI.clear=function(
+target
+){
+
+
+let element =
+typeof target==="string"
+?
+document.querySelector(target)
+:
+target;
+
+
+if(element){
+
+element.innerHTML="";
+
+}
+
+
+};
+
+
+
+
+
+
+
+
+
+UI.list=function(
+items=[],
+renderer
+){
+
+
+
+if(
+!items ||
+!items.length
+){
+
+
+return UI.empty(
+"No items found"
+);
+
+
+}
+
+
+
+return items
+
+.map(renderer)
+
+.join("");
+
+
+
+};
 
 
 
