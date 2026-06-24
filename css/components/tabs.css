@@ -44,3 +44,76 @@ font-weight:700;
 padding:20px 0;
 
 }
+
+/* =========================
+   TAB POLISH
+========================= */
+
+
+.tabs{
+
+overflow-x:auto;
+
+scrollbar-width:none;
+
+}
+
+
+.tabs::-webkit-scrollbar{
+
+display:none;
+
+}
+
+
+
+.tab{
+
+transition:var(--transition);
+
+white-space:nowrap;
+
+}
+
+
+.tab:hover{
+
+background:var(--surface-light);
+
+}
+
+
+
+.tab:focus-visible{
+
+outline:none;
+
+box-shadow:var(--focus);
+
+}
+
+
+
+/* MOBILE */
+
+
+@media(max-width:600px){
+
+
+.tabs{
+
+gap:6px;
+
+}
+
+
+.tab{
+
+padding:10px 14px;
+
+font-size:var(--font-sm);
+
+}
+
+
+}

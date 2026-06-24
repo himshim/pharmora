@@ -72,10 +72,119 @@ transform:none;
 
 }
 
+/* =========================
+   BUTTON VARIANTS
+========================= */
+
+
+.btn-secondary{
+
+background:var(--surface-light);
+
+color:var(--text);
+
+border:1px solid var(--border);
+
+}
 
 
 
+.btn-danger{
+
+background:var(--danger);
+
+color:white;
+
+}
 
 
 
+.btn-small{
 
+padding:
+
+8px 14px;
+
+font-size:var(--font-sm);
+
+}
+
+
+
+/* =========================
+   BUTTON STATES
+========================= */
+
+
+.btn.loading{
+
+pointer-events:none;
+
+opacity:.7;
+
+}
+
+
+.btn.loading::after{
+
+content:"";
+
+width:14px;
+
+height:14px;
+
+margin-left:8px;
+
+border-radius:50%;
+
+border:2px solid currentColor;
+
+border-top-color:transparent;
+
+animation:spin .8s linear infinite;
+
+}
+
+
+
+@keyframes spin{
+
+to{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+
+
+/* =========================
+   TOUCH DEVICES
+========================= */
+
+
+@media(hover:hover){
+
+
+.btn:hover{
+
+transform:translateY(-3px);
+
+}
+
+
+}
+
+
+@media(hover:none){
+
+
+.btn:hover{
+
+transform:none;
+
+}
+
+
+}

@@ -29,12 +29,110 @@ padding:18px 24px;
 
 }
 
+/* =========================
+   SEARCH RESULTS
+========================= */
+
+
+.search-results{
+
+max-width:700px;
+
+margin:auto;
+
+display:flex;
+
+flex-direction:column;
+
+gap:var(--space-md);
+
+}
 
 
 
+.search-result{
+
+padding:var(--space-md);
+
+border-radius:var(--radius);
+
+background:var(--surface);
+
+border:1px solid var(--border);
+
+cursor:pointer;
+
+transition:var(--transition);
+
+}
 
 
 
+.search-result:hover{
+
+border-color:var(--primary);
+
+transform:translateY(-2px);
+
+}
 
 
 
+.search-result-title{
+
+font-weight:700;
+
+}
+
+
+
+.search-result-meta{
+
+font-size:var(--font-sm);
+
+color:var(--text-muted);
+
+}
+
+
+
+/* =========================
+   EMPTY SEARCH
+========================= */
+
+
+.search-empty{
+
+padding:var(--space-xl);
+
+text-align:center;
+
+color:var(--text-muted);
+
+}
+
+
+
+/* =========================
+   MOBILE SEARCH
+========================= */
+
+
+@media(max-width:600px){
+
+
+.search-box{
+
+margin:20px auto;
+
+}
+
+
+.search-box input{
+
+padding:15px 18px;
+
+}
+
+
+}

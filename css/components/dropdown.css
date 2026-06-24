@@ -58,3 +58,111 @@ border-radius:12px;
 background:rgba(255,255,255,.06);
 
 }
+
+/* =========================
+   DROPDOWN POLISH
+========================= */
+
+
+.dropdown-menu{
+
+z-index:var(--z-dropdown);
+
+box-shadow:var(--shadow);
+
+animation:
+
+dropdownOpen .18s ease;
+
+}
+
+
+
+@keyframes dropdownOpen{
+
+
+from{
+
+opacity:0;
+
+transform:translateY(-6px);
+
+}
+
+
+to{
+
+opacity:1;
+
+transform:none;
+
+}
+
+
+}
+
+
+
+/* =========================
+   DROPDOWN ITEMS
+========================= */
+
+
+.dropdown-item{
+
+transition:var(--transition);
+
+}
+
+
+.dropdown-item:focus-visible{
+
+outline:none;
+
+box-shadow:var(--focus);
+
+}
+
+
+
+/* =========================
+   MOBILE SAFE
+========================= */
+
+
+@media(max-width:600px){
+
+
+.dropdown-menu{
+
+right:auto;
+
+left:0;
+
+min-width:220px;
+
+}
+
+
+}
+
+
+
+/* =========================
+   MOTION SAFE
+========================= */
+
+
+@media(
+prefers-reduced-motion:reduce
+){
+
+
+.dropdown-menu{
+
+animation:none;
+
+}
+
+
+}

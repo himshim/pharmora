@@ -21,4 +21,79 @@ font-size:.9rem;
 
 }
 
+/* =========================
+   BADGE VARIANTS
+========================= */
 
+
+.badge-success{
+
+color:var(--success);
+
+border-color:var(--success);
+
+}
+
+
+
+.badge-warning{
+
+color:var(--warning);
+
+border-color:var(--warning);
+
+}
+
+
+
+.badge-danger{
+
+color:var(--danger);
+
+border-color:var(--danger);
+
+}
+
+
+
+.badge-info{
+
+color:var(--info);
+
+border-color:var(--info);
+
+}
+
+
+
+/* =========================
+   BADGE SIZE
+========================= */
+
+
+.badge-small{
+
+padding:
+
+4px 10px;
+
+font-size:var(--font-xs);
+
+}
+
+
+
+/* =========================
+   MOBILE SAFE
+========================= */
+
+
+.badge{
+
+align-items:center;
+
+gap:6px;
+
+white-space:nowrap;
+
+}

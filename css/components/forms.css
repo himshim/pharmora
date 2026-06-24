@@ -50,11 +50,118 @@ border-color:var(--primary);
 }
 
 
+/* =========================
+   FORM POLISH
+========================= */
+
+
+input:focus,
+textarea:focus,
+select:focus{
+
+box-shadow:var(--focus);
+
+}
 
 
 
+/* =========================
+   LABELS
+========================= */
+
+
+label{
+
+display:block;
+
+margin-bottom:8px;
+
+font-weight:600;
+
+color:var(--text);
+
+}
 
 
 
+/* =========================
+   PLACEHOLDER
+========================= */
 
 
+::placeholder{
+
+color:var(--text-muted);
+
+}
+
+
+
+/* =========================
+   STATES
+========================= */
+
+
+input.error,
+textarea.error,
+select.error{
+
+border-color:var(--danger);
+
+}
+
+
+input.success,
+textarea.success,
+select.success{
+
+border-color:var(--success);
+
+}
+
+
+
+/* =========================
+   DISABLED
+========================= */
+
+
+input:disabled,
+textarea:disabled,
+select:disabled{
+
+opacity:.6;
+
+cursor:not-allowed;
+
+}
+
+
+
+/* =========================
+   FILE INPUT
+========================= */
+
+
+input[type="file"]{
+
+cursor:pointer;
+
+}
+
+
+input[type="file"]::file-selector-button{
+
+border:0;
+
+border-radius:20px;
+
+padding:8px 14px;
+
+margin-right:10px;
+
+background:var(--primary);
+
+cursor:pointer;
+
+}

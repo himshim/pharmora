@@ -36,14 +36,114 @@ margin-bottom:25px;
 
 }
 
+/* =========================
+   PAGE LAYOUT
+========================= */
+
+
+.page{
+
+min-height:70vh;
+
+}
 
 
 
+/* =========================
+   GRID SYSTEM
+========================= */
+
+
+.grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(260px,1fr)
+);
+
+gap:var(--space-lg);
+
+}
 
 
 
+/* =========================
+   FLEX HELPERS
+========================= */
+
+
+.flex{
+
+display:flex;
+
+gap:var(--space-md);
+
+}
+
+
+.flex-center{
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+}
+
+
+.flex-between{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+}
 
 
 
+/* =========================
+   EMPTY STATES
+========================= */
 
 
+.empty-state{
+
+padding:var(--space-xl);
+
+text-align:center;
+
+color:var(--text-muted);
+
+}
+
+
+
+/* =========================
+   RESPONSIVE SPACING
+========================= */
+
+
+@media(max-width:600px){
+
+
+.section{
+
+padding:45px 0;
+
+}
+
+
+.section-title{
+
+font-size:1.6rem;
+
+}
+
+
+}

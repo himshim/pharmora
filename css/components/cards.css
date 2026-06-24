@@ -179,10 +179,103 @@ margin-bottom:10px;
 }
 
 
+/* =========================
+   CARD POLISH
+========================= */
+
+
+.card{
+
+overflow:hidden;
+
+box-shadow:var(--shadow);
+
+}
+
+
+.card h1,
+.card h2,
+.card h3{
+
+overflow-wrap:anywhere;
+
+}
+
+
+/* =========================
+   INTERACTION SAFETY
+========================= */
+
+
+@media(hover:hover){
+
+
+.card:hover{
+
+transform:translateY(-5px);
+
+}
+
+
+}
+
+
+@media(hover:none){
+
+
+.card:hover{
+
+transform:none;
+
+}
+
+
+}
 
 
 
+/* =========================
+   PANEL RESPONSIVE
+========================= */
+
+
+.panel{
+
+flex-wrap:wrap;
+
+}
+
+
+.panel > *{
+
+min-width:0;
+
+}
 
 
 
+/* =========================
+   SMALL DEVICES
+========================= */
 
+
+@media(max-width:600px){
+
+
+.card{
+
+padding:var(--space-lg);
+
+border-radius:var(--radius);
+
+}
+
+
+.grid{
+
+gap:var(--space-md);
+
+}
+
+
+}

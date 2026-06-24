@@ -220,9 +220,117 @@ box-shadow:var(--shadow);
 
 }
 
+/* =========================
+   FEEDBACK POLISH
+========================= */
+
+
+#toast-container{
+
+z-index:var(--z-toast);
+
+}
 
 
 
+.toast-success{
+
+border-color:var(--success);
+
+}
+
+
+.toast-error{
+
+border-color:var(--danger);
+
+}
+
+
+.toast-warning{
+
+border-color:var(--warning);
+
+}
+
+
+.toast-info{
+
+border-color:var(--info);
+
+}
 
 
 
+/* =========================
+   MOBILE TOAST
+========================= */
+
+
+@media(max-width:600px){
+
+
+#toast-container{
+
+left:15px;
+
+right:15px;
+
+bottom:15px;
+
+}
+
+
+.toast{
+
+width:100%;
+
+min-width:0;
+
+}
+
+
+}
+
+
+
+/* =========================
+   CONFIRM POLISH
+========================= */
+
+
+.confirm-overlay{
+
+z-index:var(--z-modal);
+
+backdrop-filter:blur(8px);
+
+}
+
+
+
+/* =========================
+   MOTION SAFE
+========================= */
+
+
+@media(
+prefers-reduced-motion:reduce
+){
+
+
+#notice-text{
+
+animation:none;
+
+}
+
+
+.toast{
+
+transition:none;
+
+}
+
+
+}

@@ -39,3 +39,76 @@ font-size:.85rem;
 z-index:200;
 
 }
+
+/* =========================
+   TOOLTIP POLISH
+========================= */
+
+
+.tooltip:hover::after{
+
+z-index:var(--z-tooltip);
+
+box-shadow:var(--shadow);
+
+max-width:250px;
+
+white-space:normal;
+
+text-align:center;
+
+animation:
+
+tooltipOpen .15s ease;
+
+}
+
+
+
+@keyframes tooltipOpen{
+
+
+from{
+
+opacity:0;
+
+transform:
+
+translateX(-50%)
+
+translateY(5px);
+
+}
+
+
+to{
+
+opacity:1;
+
+transform:
+
+translateX(-50%)
+
+translateY(0);
+
+}
+
+
+}
+
+
+
+/* TOUCH DEVICES */
+
+
+@media(hover:none){
+
+
+.tooltip:hover::after{
+
+display:none;
+
+}
+
+
+}
