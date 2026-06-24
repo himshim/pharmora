@@ -1,0 +1,513 @@
+/*
+ Pharmora UI Engine v1
+ Framework-free component renderer
+
+Uses:
+ /css/components/*
+*/
+
+
+(function(){
+
+
+const UI={};
+
+
+
+/* ======================
+   UTILITIES
+====================== */
+
+
+function escapeHTML(value){
+
+
+if(value===null || value===undefined){
+
+return "";
+
+}
+
+
+return String(value)
+
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
+
+
+}
+
+
+
+UI.escape =
+escapeHTML;
+
+
+
+
+/* ======================
+   BUTTON
+====================== */
+
+
+UI.button=function({
+
+text="Button",
+
+type="primary",
+
+icon="",
+
+action=""
+
+}={}){
+
+
+return `
+
+<button
+class="btn btn-${type}"
+${action ? `onclick="${action}"` : ""}
+>
+
+${icon}
+
+${escapeHTML(text)}
+
+</button>
+
+`;
+
+
+};
+
+
+
+
+
+
+
+/* ======================
+   BADGE
+====================== */
+
+
+UI.badge=function(
+
+text=""
+
+){
+
+
+return `
+
+<span class="badge">
+
+${escapeHTML(text)}
+
+</span>
+
+`;
+
+
+};
+
+
+
+
+
+
+
+
+/* ======================
+   CARD
+====================== */
+
+
+UI.card=function({
+
+title="",
+
+body="",
+
+badge="",
+
+actions="",
+
+className=""
+
+}={}){
+
+
+return `
+
+
+<div class="card ${className}">
+
+
+${
+
+badge ?
+
+UI.badge(badge)
+
+:
+
+""
+
+}
+
+
+<h3>
+
+${escapeHTML(title)}
+
+</h3>
+
+
+
+<p>
+
+${escapeHTML(body)}
+
+</p>
+
+
+
+<div>
+
+${actions}
+
+</div>
+
+
+
+</div>
+
+
+`;
+
+
+};
+
+
+
+
+
+
+
+
+
+
+/* ======================
+   ENTITY CARD
+====================== */
+
+
+UI.entityCard=function(entity){
+
+
+
+if(!entity){
+
+return "";
+
+}
+
+
+
+return UI.card({
+
+title:
+
+entity.title
+||
+entity.name
+||
+entity.displayName
+||
+"Untitled",
+
+
+body:
+
+entity.description
+||
+entity.bio
+||
+"",
+
+
+badge:
+
+entity.type
+||
+entity.collection
+||
+"",
+
+
+actions:
+
+UI.button({
+
+text:"View",
+
+type:"primary"
+
+})
+
+
+});
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
+/* ======================
+   AVATAR
+====================== */
+
+
+UI.avatar=function({
+
+name="",
+
+url="",
+
+size=""
+
+}={}){
+
+
+let initials =
+name
+.split(" ")
+.map(x=>x[0])
+.join("")
+.substring(0,2)
+.toUpperCase();
+
+
+
+return `
+
+<div class="avatar ${size}">
+
+
+${
+url ?
+
+`<img src="${url}">`
+
+:
+
+initials
+
+}
+
+
+</div>
+
+`;
+
+
+};
+
+
+
+
+
+
+
+
+
+/* ======================
+   TABLE
+====================== */
+
+
+UI.table=function(
+
+items=[]
+
+){
+
+
+if(!items.length){
+
+return `
+
+<div class="empty-state">
+
+No data
+
+</div>
+
+`;
+
+}
+
+
+
+let keys =
+Object.keys(
+items[0]
+)
+.slice(0,5);
+
+
+
+return `
+
+<div class="table-wrapper">
+
+<table class="table">
+
+
+<thead>
+
+<tr>
+
+${
+
+keys.map(
+k=>`<th>${k}</th>`
+)
+.join("")
+
+}
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+
+${
+
+items.map(row=>`
+
+<tr>
+
+${
+
+keys.map(k=>`
+
+<td>
+
+${escapeHTML(row[k])}
+
+</td>
+
+`)
+.join("")
+
+}
+
+</tr>
+
+`)
+.join("")
+
+}
+
+
+</tbody>
+
+
+</table>
+
+</div>
+
+`;
+
+};
+
+
+
+
+
+
+
+
+
+/* ======================
+   LOADING
+====================== */
+
+
+UI.loading=function(){
+
+
+return `
+
+<div class="spinner"></div>
+
+`;
+
+
+};
+
+
+
+
+
+/* ======================
+   EMPTY STATE
+====================== */
+
+
+UI.empty=function(
+
+message="Nothing here"
+
+){
+
+
+return `
+
+<div class="empty-state">
+
+${escapeHTML(message)}
+
+</div>
+
+`;
+
+
+};
+
+
+
+
+
+
+
+
+
+window.PharmoraUI=UI;
+
+
+
+console.log(
+"✓ PharmoraUI ready"
+);
+
+
+
+})();

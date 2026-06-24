@@ -194,6 +194,8 @@ const CORE=[
 
 "/js/app.js",
 
+"/js/ui/pharmora.ui.js",
+
 "/dist/pharmora.database.js",
 
 "/js/services/auth.service.js",
