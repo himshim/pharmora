@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Documents | Pharmora
+</title>
+
+
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
+
+
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
+
+
+</head>
+
+
+<body>
+
+
+<div id="site-header"></div>
+
+
+
+<main>
+
+
+
+
+<!-- HERO -->
+
+
+<section class="container hero">
+
+
+<div class="badge">
+
+📋 Pharmora Documents
+
+</div>
+
+
+<h1>
+
+Pharmacy Documentation Hub
+
+</h1>
+
+
+<p>
+
+Explore SOPs, templates,
+academic formats, regulatory documents
+and professional pharmacy resources.
+
+</p>
+
+
+
+<div class="search-box">
+
+
+<input
+
+placeholder="Search SOPs, templates, documents..."
+
+oninput="pharmoraSearch(this.value)"
+
+>
+
+
+</div>
+
+
+
+<div
+
+id="search-results"
+
+class="grid">
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- DOCUMENT TYPES -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Document Categories
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+📋 SOP Library
+
+</h2>
+
+
+<p>
+
+Standard operating procedures
+for laboratory and industry.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🧾 Formats
+
+</h2>
+
+
+<p>
+
+Registers, records,
+logsheets and templates.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🏭 GMP Documents
+
+</h2>
+
+
+<p>
+
+Quality documents,
+manufacturing and compliance files.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🎓 Academic Documents
+
+</h2>
+
+
+<p>
+
+Lesson plans, reports,
+assignments and academic formats.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🔬 Research Documents
+
+</h2>
+
+
+<p>
+
+Protocols, thesis formats
+and research templates.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+📑 Regulatory
+
+</h2>
+
+
+<p>
+
+Guidelines, submissions
+and regulatory references.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- QUALITY WORKFLOW -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Documentation Workflow
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+
+<div class="card">
+
+<h3>✍ Create</h3>
+
+<p>
+Prepare document.
+</p>
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+<h3>🔍 Review</h3>
+
+<p>
+Verify information.
+</p>
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+<h3>✅ Approve</h3>
+
+<p>
+Controlled release.
+</p>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+<h3>📚 Maintain</h3>
+
+<p>
+Version control.
+</p>
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- DATABASE -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+📂 Document Repository
+
+</h2>
+
+
+
+
+<div
+
+class="grid"
+
+id="documents-list"
+
+data-render="documents"
+
+data-requires="documents">
+
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- CONNECTION -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Connected Systems
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+
+<a
+
+href="../industry/"
+
+class="card">
+
+
+<h3>
+
+🏭 Industry
+
+</h3>
+
+
+<p>
+
+QA/QC and GMP concepts.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+
+href="../research/"
+
+class="card">
+
+
+<h3>
+
+🔬 Research
+
+</h3>
+
+
+<p>
+
+Scientific documentation.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+
+href="../practicals/"
+
+class="card">
+
+
+<h3>
+
+🧪 Practicals
+
+</h3>
+
+
+<p>
+
+Laboratory records.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+<!-- CONTRIBUTE -->
+
+
+<section class="container section">
+
+
+<div class="card glass">
+
+
+
+<span class="badge">
+
+Open Documentation
+
+</span>
+
+
+
+
+<h2>
+
+🌱 Share Templates
+
+</h2>
+
+
+
+<p>
+
+Contribute SOPs, academic formats,
+industry templates and professional
+documents.
+
+</p>
+
+
+
+
+<br>
+
+
+
+<a
+
+href="../contribute/"
+
+class="btn btn-primary">
+
+
+Upload Document
+
+
+</a>
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+</main>
+
+
+
+
+
+<div id="site-footer"></div>
+
+
+
+
+<script src="../js/pharmora.js"></script>
+
+
+
+
+</body>
+
+
+</html>
