@@ -12,88 +12,27 @@ content="width=device-width, initial-scale=1.0">
 
 
 <title>
-Prescription Abbreviations | Pharmora
+Pharmaceutical Abbreviations | Pharmora
 </title>
 
 
-<link rel="icon" href="../assets/branding/favicon.svg">
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
 
 
-<link rel="stylesheet" href="../css/variables.css">
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/components.css">
-
-
-<style>
-
-
-.item{
-
-display:flex;
-
-justify-content:space-between;
-
-padding:18px;
-
-margin-bottom:12px;
-
-border-radius:18px;
-
-background:var(--surface);
-
-border:1px solid var(--border);
-
-}
-
-
-
-.code{
-
-font-weight:bold;
-
-color:var(--primary);
-
-}
-
-
-
-</style>
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
 
 
 </head>
 
 
-
-
-
 <body>
 
 
-
-
-
-<header class="container">
-
-
-<nav class="navbar">
-
-
-<a href="../" class="logo">
-
-⚕ Pharmora
-
-</a>
-
-
-</nav>
-
-
-</header>
-
-
-
-
-
+<div id="site-header"></div>
 
 
 
@@ -101,34 +40,41 @@ color:var(--primary);
 
 
 
-
+<!-- HERO -->
 
 <section class="container section">
 
 
+<div class="card glass">
 
-<div class="badge">
 
-📖 Reference
+<span class="badge">
 
-</div>
+📖 Pharmacy Reference
 
+</span>
+
+
+<br><br>
 
 
 <h1>
 
-Prescription Abbreviations
+Pharmaceutical Abbreviation Dictionary
 
 </h1>
 
 
-
 <p>
 
-Commonly used prescription and pharmacy abbreviations.
+Search commonly used prescription,
+pharmacopoeial, analytical and pharmaceutical
+industry abbreviations.
 
 </p>
 
+
+</div>
 
 
 </section>
@@ -137,114 +83,587 @@ Commonly used prescription and pharmacy abbreviations.
 
 
 
-
-
+<!-- SEARCH -->
 
 
 <section class="container section">
 
 
+<div class="card">
 
-<div class="item">
 
-<span class="code">OD</span>
+<input
 
-<span>Once Daily</span>
+id="searchBox"
+
+placeholder="Search abbreviation, meaning or category..."
+
+oninput="filterItems()"
+
+>
+
 
 </div>
-
-
-
-
-
-<div class="item">
-
-<span class="code">BD / BID</span>
-
-<span>Twice Daily</span>
-
-</div>
-
-
-
-
-
-<div class="item">
-
-<span class="code">TDS / TID</span>
-
-<span>Three Times Daily</span>
-
-</div>
-
-
-
-
-
-<div class="item">
-
-<span class="code">QID</span>
-
-<span>Four Times Daily</span>
-
-</div>
-
-
-
-
-
-<div class="item">
-
-<span class="code">SOS</span>
-
-<span>If Required</span>
-
-</div>
-
-
-
-
-
-<div class="item">
-
-<span class="code">HS</span>
-
-<span>At Bedtime</span>
-
-</div>
-
-
-
-
-
-<div class="item">
-
-<span class="code">STAT</span>
-
-<span>Immediately</span>
-
-</div>
-
-
-
-
-
-<div class="item">
-
-<span class="code">PRN</span>
-
-<span>As Needed</span>
-
-</div>
-
-
-
-
 
 
 </section>
 
 
+
+
+
+
+
+<!-- ABBREVIATIONS -->
+
+
+<section class="container section">
+
+
+<div class="grid">
+
+
+
+
+
+
+<!-- PRESCRIPTION -->
+
+
+<div class="card item">
+
+
+<span class="badge">Prescription</span>
+
+<h2>OD</h2>
+
+<p>Once Daily</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Prescription</span>
+
+<h2>BD / BID</h2>
+
+<p>Twice Daily</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Prescription</span>
+
+<h2>TDS / TID</h2>
+
+<p>Three Times Daily</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Prescription</span>
+
+<h2>SOS / PRN</h2>
+
+<p>Use when required / As needed</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Prescription</span>
+
+<h2>STAT</h2>
+
+<p>Immediately</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Prescription</span>
+
+<h2>HS</h2>
+
+<p>At bedtime</p>
+
+</div>
+
+
+
+
+
+
+
+<!-- ROUTES -->
+
+
+<div class="card item">
+
+<span class="badge">Route</span>
+
+<h2>PO</h2>
+
+<p>By mouth / Oral administration</p>
+
+</div>
+
+
+
+<div class="card item">
+
+<span class="badge">Route</span>
+
+<h2>IV</h2>
+
+<p>Intravenous administration</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Route</span>
+
+<h2>IM</h2>
+
+<p>Intramuscular administration</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Route</span>
+
+<h2>SC / SQ</h2>
+
+<p>Subcutaneous administration</p>
+
+</div>
+
+
+
+
+
+
+
+<!-- DOSAGE -->
+
+
+<div class="card item">
+
+<span class="badge">Dosage Form</span>
+
+<h2>TAB</h2>
+
+<p>Tablet</p>
+
+</div>
+
+
+
+<div class="card item">
+
+<span class="badge">Dosage Form</span>
+
+<h2>CAP</h2>
+
+<p>Capsule</p>
+
+</div>
+
+
+
+<div class="card item">
+
+<span class="badge">Dosage Form</span>
+
+<h2>INJ</h2>
+
+<p>Injection</p>
+
+</div>
+
+
+
+
+
+
+
+
+<!-- PHARMACOPOEIA -->
+
+
+<div class="card item">
+
+<span class="badge">Pharmacopoeia</span>
+
+<h2>IP</h2>
+
+<p>Indian Pharmacopoeia</p>
+
+</div>
+
+
+
+<div class="card item">
+
+<span class="badge">Pharmacopoeia</span>
+
+<h2>USP</h2>
+
+<p>United States Pharmacopeia</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Pharmacopoeia</span>
+
+<h2>BP</h2>
+
+<p>British Pharmacopoeia</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Pharmacopoeia</span>
+
+<h2>Ph.Eur.</h2>
+
+<p>European Pharmacopoeia</p>
+
+</div>
+
+
+
+
+
+
+
+<!-- INDUSTRY -->
+
+
+<div class="card item">
+
+<span class="badge">Industry</span>
+
+<h2>GMP</h2>
+
+<p>Good Manufacturing Practice</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Industry</span>
+
+<h2>GLP</h2>
+
+<p>Good Laboratory Practice</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Industry</span>
+
+<h2>SOP</h2>
+
+<p>Standard Operating Procedure</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Industry</span>
+
+<h2>BMR</h2>
+
+<p>Batch Manufacturing Record</p>
+
+</div>
+
+
+
+
+
+
+
+
+<!-- ANALYSIS -->
+
+
+<div class="card item">
+
+<span class="badge">Analysis</span>
+
+<h2>HPLC</h2>
+
+<p>High Performance Liquid Chromatography</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Analysis</span>
+
+<h2>UPLC</h2>
+
+<p>Ultra Performance Liquid Chromatography</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Analysis</span>
+
+<h2>GC</h2>
+
+<p>Gas Chromatography</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Analysis</span>
+
+<h2>LOD</h2>
+
+<p>Limit of Detection</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Analysis</span>
+
+<h2>LOQ</h2>
+
+<p>Limit of Quantification</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Analysis</span>
+
+<h2>ICH</h2>
+
+<p>International Council for Harmonisation</p>
+
+</div>
+
+
+
+
+
+
+<!-- PHARMA -->
+
+
+<div class="card item">
+
+<span class="badge">Pharmacy</span>
+
+<h2>API</h2>
+
+<p>Active Pharmaceutical Ingredient</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Safety</span>
+
+<h2>ADR</h2>
+
+<p>Adverse Drug Reaction</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Quality</span>
+
+<h2>QA</h2>
+
+<p>Quality Assurance</p>
+
+</div>
+
+
+
+
+<div class="card item">
+
+<span class="badge">Quality</span>
+
+<h2>QC</h2>
+
+<p>Quality Control</p>
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- NOTE -->
+
+
+<section class="container section">
+
+
+<div class="card glass">
+
+
+<h2>
+
+⚠ Learning Note
+
+</h2>
+
+
+<p>
+
+Medical and pharmaceutical abbreviations may vary
+between countries and organizations. Always verify
+official standards when required.
+
+</p>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- RELATED -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Related References
+
+</h2>
+
+
+<div class="grid">
+
+
+<a
+class="card"
+href="drug-classes.html">
+
+<h3>💊 Drug Classes</h3>
+
+</a>
+
+
+
+<a
+class="card"
+href="formulas.html">
+
+<h3>📚 Formula Library</h3>
+
+</a>
+
+
+
+<a
+class="card"
+href="laboratory.html">
+
+<h3>🔬 Laboratory Toolkit</h3>
+
+</a>
+
+
+</div>
+
+
+</section>
 
 
 
@@ -254,9 +673,64 @@ Commonly used prescription and pharmacy abbreviations.
 
 
 
+<div id="site-footer"></div>
+
+
+
+
+
+<script src="../js/pharmora.js"></script>
+
+
+
+
+
+<script>
+
+
+function filterItems(){
+
+
+let q =
+document
+.getElementById("searchBox")
+.value
+.toLowerCase();
+
+
+
+document
+
+.querySelectorAll(".item")
+
+.forEach(card=>{
+
+
+card.style.display =
+
+card.innerText
+.toLowerCase()
+.includes(q)
+
+?
+
+""
+
+:
+
+"none";
+
+
+});
+
+
+}
+
+
+</script>
+
 
 
 </body>
-
 
 </html>
