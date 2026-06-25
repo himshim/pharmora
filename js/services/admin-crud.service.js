@@ -2963,13 +2963,17 @@ openAdminModal(html);
 }
 
 async function restoreVersion(
-versionId
+versionId,
+id
 ){
 
 
 
 let versions =
-await getVersions(activeCollection);
+await getVersions(
+activeCollection,
+id
+);
 
 
 
