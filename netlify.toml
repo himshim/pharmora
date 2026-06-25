@@ -15,17 +15,17 @@ publish="."
 
 
 # =========================
-# SPA ROUTING
+# 404 HANDLING
+# Static Multi Page App
 # =========================
 
 [[redirects]]
 
 from = "/*"
 
-to = "/index.html"
+to = "/404.html"
 
-status = 200
-
+status = 404
 
 
 
