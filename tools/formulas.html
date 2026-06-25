@@ -12,87 +12,27 @@ content="width=device-width, initial-scale=1.0">
 
 
 <title>
-Formula Sheet | Pharmora
+Formula Library | Pharmora
 </title>
 
 
-<link rel="icon" href="../assets/branding/favicon.svg">
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
 
 
-<link rel="stylesheet" href="../css/variables.css">
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/components.css">
-
-
-<style>
-
-
-.formula{
-
-padding:20px;
-
-margin-bottom:15px;
-
-border-radius:20px;
-
-background:var(--surface);
-
-border:1px solid var(--border);
-
-}
-
-
-
-.equation{
-
-margin-top:10px;
-
-font-size:1.2rem;
-
-color:var(--primary);
-
-}
-
-
-
-</style>
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
 
 
 </head>
 
 
-
-
-
-
 <body>
 
 
-
-
-
-<header class="container">
-
-
-<nav class="navbar">
-
-
-<a href="../" class="logo">
-
-⚕ Pharmora
-
-</a>
-
-
-</nav>
-
-
-</header>
-
-
-
-
-
+<div id="site-header"></div>
 
 
 
@@ -101,22 +41,28 @@ color:var(--primary);
 
 
 
+<!-- HERO -->
 
 
 <section class="container section">
 
 
-<div class="badge">
+<div class="card glass">
 
-⚗ Reference
 
-</div>
+<span class="badge">
 
+📚 Reference Library
+
+</span>
+
+
+<br><br>
 
 
 <h1>
 
-Pharmaceutical Formula Sheet
+Pharmaceutical Formula Library
 
 </h1>
 
@@ -124,12 +70,15 @@ Pharmaceutical Formula Sheet
 
 <p>
 
-Important calculations used in pharmacy.
+Essential pharmacy, analysis,
+laboratory and clinical calculation formulas.
 
 </p>
 
 
 
+</div>
+
 
 </section>
 
@@ -139,32 +88,92 @@ Important calculations used in pharmacy.
 
 
 
+<!-- SEARCH -->
 
 
 <section class="container section">
 
 
+<div class="card">
+
+
+<input
+
+id="formulaSearch"
+
+placeholder="Search formulas..."
+
+oninput="filterFormula()"
+
+>
+
+
+</div>
+
+
+</section>
 
 
 
 
 
 
-<div class="formula">
 
 
-<h2>
+<!-- FORMULAS -->
+
+
+<section class="container section">
+
+
+<div
+class="grid"
+id="formulaList">
+
+
+
+
+
+
+<div class="card formula">
+
+
+<span class="badge">
+
+🧪 Pharmaceutics
+
+</span>
+
+
+<h3>
 
 Dilution Equation
 
-</h2>
+</h3>
 
 
-<div class="equation">
+<h2>
 
 C₁V₁ = C₂V₂
 
-</div>
+</h2>
+
+
+<p>
+
+Used for preparation of diluted solutions
+from concentrated stock solutions.
+
+</p>
+
+
+<a
+href="dilution.html"
+class="btn">
+
+Open Calculator
+
+</a>
 
 
 </div>
@@ -177,25 +186,51 @@ C₁V₁ = C₂V₂
 
 
 
-<div class="formula">
+
+<div class="card formula">
+
+
+<span class="badge">
+
+⚗ Analysis
+
+</span>
+
+
+<h3>
+
+Percentage Strength
+
+</h3>
 
 
 <h2>
 
-Percentage Strength (% w/v)
+% w/v = W/V ×100
 
 </h2>
 
 
+<p>
 
-<div class="equation">
+Determines concentration of pharmaceutical solutions.
 
-(Weight of solute ÷ Volume) × 100
+</p>
+
+
+<a
+href="concentration.html"
+class="btn">
+
+Open Calculator
+
+</a>
+
+
 
 </div>
 
 
-</div>
 
 
 
@@ -204,55 +239,50 @@ Percentage Strength (% w/v)
 
 
 
+<div class="card formula">
 
-<div class="formula">
+
+<span class="badge">
+
+💊 Clinical
+
+</span>
 
 
-<h2>
+<h3>
 
 Dose Calculation
 
-</h2>
-
-
-
-<div class="equation">
-
-Dose = Body Weight × Dose/kg
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-<div class="formula">
+</h3>
 
 
 <h2>
 
-BMI
+Dose = Weight × mg/kg
 
 </h2>
 
 
+<p>
 
-<div class="equation">
+Used for body weight based dosing calculations.
 
-Weight(kg) ÷ Height²(m)
+</p>
+
+
+<a
+href="dose.html"
+class="btn">
+
+Open Calculator
+
+</a>
+
+
 
 </div>
 
 
-</div>
 
 
 
@@ -261,26 +291,300 @@ Weight(kg) ÷ Height²(m)
 
 
 
+<div class="card formula">
 
 
-<div class="formula">
+<span class="badge">
+
+📏 Health
+
+</span>
+
+
+<h3>
+
+Body Mass Index
+
+</h3>
 
 
 <h2>
+
+BMI = kg / m²
+
+</h2>
+
+
+<p>
+
+Relationship between body weight and height.
+
+</p>
+
+
+<a
+href="bmi.html"
+class="btn">
+
+BMI Tool
+
+</a>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card formula">
+
+
+<span class="badge">
+
+🔬 Analysis
+
+</span>
+
+
+<h3>
+
+Assay Percentage
+
+</h3>
+
+
+<h2>
+
+Actual / Standard ×100
+
+</h2>
+
+
+<p>
+
+Used in pharmaceutical quality control testing.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="card formula">
+
+
+<span class="badge">
+
+🔬 Validation
+
+</span>
+
+
+<h3>
+
+Recovery Percentage
+
+</h3>
+
+
+<h2>
+
+Recovered / Added ×100
+
+</h2>
+
+
+<p>
+
+Accuracy calculation during method validation.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="card formula">
+
+
+<span class="badge">
+
+⚗ Laboratory
+
+</span>
+
+
+<h3>
+
+Percentage Error
+
+</h3>
+
+
+<h2>
+
+Error / True Value ×100
+
+</h2>
+
+
+<p>
+
+Determines analytical deviation.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card formula">
+
+
+<span class="badge">
+
+🧪 Chemistry
+
+</span>
+
+
+<h3>
+
+Molarity
+
+</h3>
+
+
+<h2>
+
+Moles / Volume(L)
+
+</h2>
+
+
+<p>
+
+Used for preparing molar solutions.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card formula">
+
+
+<span class="badge">
+
+💧 Physical Pharmacy
+
+</span>
+
+
+<h3>
 
 Density
 
+</h3>
+
+
+<h2>
+
+Mass / Volume
+
 </h2>
 
 
+<p>
 
-<div class="equation">
+Relationship between mass and occupied volume.
 
-Density = Mass ÷ Volume
+</p>
+
+
 
 </div>
 
 
+
+
+
+
+
+
+
+<div class="card formula">
+
+
+<span class="badge">
+
+⚗ Validation
+
+</span>
+
+
+<h3>
+
+LOD
+
+</h3>
+
+
+<h2>
+
+3.3 σ / S
+
+</h2>
+
+
+<p>
+
+Limit of detection in analytical method validation.
+
+</p>
+
+
+
 </div>
 
 
@@ -288,12 +592,169 @@ Density = Mass ÷ Volume
 
 
 
+
+
+
+<div class="card formula">
+
+
+<span class="badge">
+
+⚗ Validation
+
+</span>
+
+
+<h3>
+
+LOQ
+
+</h3>
+
+
+<h2>
+
+10 σ / S
+
+</h2>
+
+
+<p>
+
+Limit of quantification in analytical validation.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card formula">
+
+
+<span class="badge">
+
+💊 Biopharmaceutics
+
+</span>
+
+
+<h3>
+
+Half Life
+
+</h3>
+
+
+<h2>
+
+t½ = 0.693 / K
+
+</h2>
+
+
+<p>
+
+Time required for drug concentration to reduce by half.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+</div>
 
 
 
 </section>
 
 
+
+
+
+
+
+
+
+<!-- RELATED -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Calculation Tools
+
+</h2>
+
+
+
+<div class="grid">
+
+
+<a
+class="card"
+href="laboratory.html">
+
+<h3>
+
+🔬 Laboratory Toolkit
+
+</h3>
+
+</a>
+
+
+
+<a
+class="card"
+href="dilution.html">
+
+<h3>
+
+🧪 Dilution Calculator
+
+</h3>
+
+</a>
+
+
+
+<a
+class="card"
+href="concentration.html">
+
+<h3>
+
+⚗ Concentration Calculator
+
+</h3>
+
+</a>
+
+
+
+
+</div>
+
+
+
+</section>
 
 
 
@@ -304,7 +765,67 @@ Density = Mass ÷ Volume
 
 
 
-</body>
+<div id="site-footer"></div>
 
+
+
+
+
+
+<script src="../js/pharmora.js"></script>
+
+
+
+
+
+<script>
+
+
+function filterFormula(){
+
+
+let query =
+document
+.getElementById("formulaSearch")
+.value
+.toLowerCase();
+
+
+
+
+document
+
+.querySelectorAll(".formula")
+
+.forEach(card=>{
+
+
+card.style.display =
+
+card.innerText
+.toLowerCase()
+.includes(query)
+
+?
+
+""
+
+:
+
+"none";
+
+
+});
+
+
+}
+
+
+
+</script>
+
+
+
+</body>
 
 </html>
