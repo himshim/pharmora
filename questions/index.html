@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Question Bank | Pharmora
+</title>
+
+
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
+
+
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
+
+
+</head>
+
+
+<body>
+
+
+<div id="site-header"></div>
+
+
+
+
+<main>
+
+
+
+
+
+<!-- HERO -->
+
+
+<section class="container hero">
+
+
+<div class="badge">
+
+❓ Pharmora Questions
+
+</div>
+
+
+
+<h1>
+
+Pharmacy Question Bank
+
+</h1>
+
+
+
+<p>
+
+Practice MCQs, short answers,
+long questions and exam preparation
+resources.
+
+</p>
+
+
+
+
+<div class="search-box">
+
+
+<input
+
+placeholder="Search questions, subjects, topics..."
+
+oninput="pharmoraSearch(this.value)"
+
+>
+
+
+</div>
+
+
+
+
+<div
+
+id="search-results"
+
+class="grid">
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- QUESTION TYPES -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Question Categories
+
+</h2>
+
+
+
+
+<div class="grid">
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+☑ MCQs
+
+</h2>
+
+
+<p>
+
+Practice objective questions
+for exams and revision.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+✍ Short Answers
+
+</h2>
+
+
+<p>
+
+Prepare concise theoretical
+answers.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+📄 Long Answers
+
+</h2>
+
+
+<p>
+
+Detailed explanations and
+university style answers.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🎤 Viva Questions
+
+</h2>
+
+
+<p>
+
+Prepare for practical and oral
+examinations.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🏆 Competitive Exams
+
+</h2>
+
+
+<p>
+
+GPAT, pharmacist exams
+and entrance preparation.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🧪 Practical Questions
+
+</h2>
+
+
+<p>
+
+Laboratory and experiment based
+learning.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- SUBJECT AREAS -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Pharmacy Subjects
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+<div class="card">
+
+💊 Pharmaceutics
+
+</div>
+
+
+
+<div class="card">
+
+⚗ Pharmaceutical Analysis
+
+</div>
+
+
+
+<div class="card">
+
+🧬 Pharmacology
+
+</div>
+
+
+
+<div class="card">
+
+🧪 Medicinal Chemistry
+
+</div>
+
+
+
+<div class="card">
+
+🌿 Pharmacognosy
+
+</div>
+
+
+
+<div class="card">
+
+🏭 Industrial Pharmacy
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+<!-- DATABASE QUESTIONS -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+📚 Question Library
+
+</h2>
+
+
+
+
+<div
+
+class="grid"
+
+id="questions-list"
+
+data-render="question-bank"
+
+data-requires="question-bank">
+
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- STUDY FLOW -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Smart Preparation Flow
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+
+<div class="card">
+
+<h3>📘 Learn</h3>
+
+<p>
+Understand concepts.
+</p>
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+<h3>❓ Practice</h3>
+
+<p>
+Attempt questions.
+</p>
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+<h3>📊 Review</h3>
+
+<p>
+Identify weak areas.
+</p>
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+<h3>🏆 Improve</h3>
+
+<p>
+Prepare confidently.
+</p>
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- LINKS -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Related Learning
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+<a
+
+class="card"
+
+href="../learn/">
+
+
+<h3>
+
+🎓 Learn
+
+</h3>
+
+
+<p>
+
+Study pharmacy subjects.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+
+class="card"
+
+href="../books/">
+
+
+<h3>
+
+📚 Books
+
+</h3>
+
+
+<p>
+
+Find reference material.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+
+class="card"
+
+href="../practicals/">
+
+
+<h3>
+
+🧪 Practicals
+
+</h3>
+
+
+<p>
+
+Prepare laboratory exams.
+
+</p>
+
+
+</a>
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- CONTRIBUTE -->
+
+
+<section class="container section">
+
+
+<div class="card glass">
+
+
+<span class="badge">
+
+Community Question Bank
+
+</span>
+
+
+
+<h2>
+
+🌱 Add Questions
+
+</h2>
+
+
+
+<p>
+
+Teachers and students can contribute
+verified questions and explanations.
+
+</p>
+
+
+
+<br>
+
+
+
+
+<a
+
+href="../contribute/"
+
+class="btn btn-primary">
+
+
+Submit Question
+
+
+</a>
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+</main>
+
+
+
+
+
+<div id="site-footer"></div>
+
+
+
+
+
+<script src="../js/pharmora.js"></script>
+
+
+
+
+</body>
+
+
+</html>
