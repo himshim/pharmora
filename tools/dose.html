@@ -16,61 +16,17 @@ Dose Calculator | Pharmora
 </title>
 
 
-<link rel="icon" href="../assets/branding/favicon.svg">
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
 
 
-<link rel="stylesheet" href="../css/variables.css">
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/components.css">
-<link rel="stylesheet" href="../css/responsive.css">
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
 
-
-<style>
-
-
-.calculator{
-
-max-width:600px;
-
-margin:auto;
-
-}
-
-
-input{
-
-width:100%;
-
-padding:15px;
-
-margin-bottom:15px;
-
-border-radius:15px;
-
-border:1px solid var(--border);
-
-background:var(--surface);
-
-color:var(--text);
-
-}
-
-
-.result{
-
-font-size:2rem;
-
-margin-top:20px;
-
-}
-
-
-
-</style>
 
 </head>
-
-
 
 
 
@@ -78,47 +34,7 @@ margin-top:20px;
 <body>
 
 
-
-
-
-
-<header class="container">
-
-
-<nav class="navbar">
-
-
-<a href="./" class="logo">
-
-
-⚕ Pharmora
-
-
-</a>
-
-
-
-<div class="nav-links">
-
-
-<a href="../learn/">Learn</a>
-
-<a href="./">Tools</a>
-
-
-</div>
-
-
-
-</nav>
-
-
-</header>
-
-
-
-
-
+<div id="site-header"></div>
 
 
 
@@ -129,21 +45,23 @@ margin-top:20px;
 
 
 
+<!-- HERO -->
+
 
 <section class="container section">
 
 
-<div class="calculator card">
+<div class="card glass">
 
 
+<span class="badge">
 
-<div class="badge">
+💊 Pharmacy Tool
 
-💊 Calculator
-
-</div>
+</span>
 
 
+<br><br>
 
 
 <h1>
@@ -153,17 +71,62 @@ Dose Calculator
 </h1>
 
 
-
-
 <p>
 
-Educational dose calculation tool.
+Calculate body-weight based medication doses
+for pharmacy learning and educational purposes.
 
 </p>
 
 
+</div>
 
 
+</section>
+
+
+
+
+
+
+
+
+
+<!-- CALCULATOR -->
+
+
+<section class="container section">
+
+
+
+<div class="grid">
+
+
+
+
+
+<div class="card">
+
+
+
+<h2>
+
+🧮 Calculate Dose
+
+</h2>
+
+
+
+<br>
+
+
+
+
+<label>
+
+Patient Weight (kg)
+
+</label>
 
 
 <input
@@ -172,11 +135,23 @@ type="number"
 
 id="weight"
 
-placeholder="Patient weight (kg)">
+min="0"
+
+step="0.1"
+
+placeholder="Example: 70"
+
+>
 
 
 
 
+
+<label>
+
+Dose Strength (mg/kg)
+
+</label>
 
 
 <input
@@ -185,7 +160,57 @@ type="number"
 
 id="dose"
 
-placeholder="Dose (mg/kg)">
+min="0"
+
+step="0.01"
+
+placeholder="Example: 5"
+
+>
+
+
+
+
+
+<label>
+
+Frequency per day
+
+</label>
+
+
+<select id="frequency">
+
+
+<option value="1">
+
+Once daily
+
+</option>
+
+
+<option value="2">
+
+Twice daily
+
+</option>
+
+
+<option value="3">
+
+Three times daily
+
+</option>
+
+
+<option value="4">
+
+Four times daily
+
+</option>
+
+
+</select>
 
 
 
@@ -196,26 +221,82 @@ placeholder="Dose (mg/kg)">
 
 class="btn btn-primary"
 
-onclick="calculateDose()">
+onclick="calculateDose()"
 
+>
 
-
-Calculate
-
-
+Calculate Dose
 
 </button>
 
 
 
+</div>
 
 
 
-<div
 
-class="result"
 
-id="result">
+
+
+
+<!-- RESULT -->
+
+
+<div class="card glass">
+
+
+
+<span class="badge badge-success">
+
+Result
+
+</span>
+
+
+
+<br><br>
+
+
+
+
+<h2 id="singleDose">
+
+-- mg
+
+</h2>
+
+
+
+<p>
+
+Single dose amount
+
+</p>
+
+
+
+<br>
+
+
+
+
+<h3 id="dailyDose">
+
+-- mg/day
+
+</h3>
+
+
+
+
+<p>
+
+Total daily dose
+
+</p>
+
+
 
 
 </div>
@@ -235,11 +316,190 @@ id="result">
 
 
 
+
+
+
+
+
+<!-- EDUCATION -->
+
+
+<section class="container section">
+
+
+<div class="grid">
+
+
+
+
+
+<div class="card">
+
+
+
+<h3>
+
+📘 Formula
+
+</h3>
+
+
+<p>
+
+Dose = Patient Weight × Dose per kg
+
+</p>
+
+
+<p>
+
+Daily Dose = Single Dose × Frequency
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+
+<h3>
+
+⚠ Educational Note
+
+</h3>
+
+
+<p>
+
+This calculator is for pharmacy education.
+Always verify clinical doses using official
+drug references and guidelines.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- RELATED -->
+
+
+<section class="container section">
+
+
+
+<h2 class="section-title">
+
+Explore More Tools
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+<a
+class="card"
+href="dilution.html">
+
+<h3>
+
+🧪 Dilution Calculator
+
+</h3>
+
+</a>
+
+
+
+
+
+<a
+class="card"
+href="concentration.html">
+
+<h3>
+
+⚗ Concentration Calculator
+
+</h3>
+
+</a>
+
+
+
+
+
+<a
+class="card"
+href="formulas.html">
+
+<h3>
+
+📚 Formula Sheet
+
+</h3>
+
+</a>
+
+
+
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
 </main>
 
 
 
 
+
+<div id="site-footer"></div>
+
+
+
+
+
+
+<script src="../js/pharmora.js"></script>
 
 
 
@@ -253,41 +513,119 @@ function calculateDose(){
 
 
 
-const weight =
+let weight =
+parseFloat(
+document.getElementById("weight").value
+);
+
+
+
+let dose =
+parseFloat(
+document.getElementById("dose").value
+);
+
+
+
+let frequency =
+parseInt(
+document.getElementById("frequency").value
+);
+
+
+
+
+
+let single =
 document.getElementById(
-"weight"
-).value;
+"singleDose"
+);
 
 
 
-const dose =
+let daily =
 document.getElementById(
-"dose"
-).value;
+"dailyDose"
+);
 
 
 
 
 
-const total =
-weight*dose;
+
+if(
+
+!weight ||
+
+!dose ||
+
+weight <=0 ||
+
+dose <=0
+
+){
 
 
 
-
-
-document.getElementById(
-"result"
-).innerHTML =
-
-
-total ?
-
-total+" mg"
-
-:
-
+single.innerHTML =
 "Enter values";
+
+
+
+daily.innerHTML =
+"-- mg/day";
+
+
+
+return;
+
+
+
+}
+
+
+
+
+
+
+
+
+let calculated =
+weight * dose;
+
+
+
+let totalDaily =
+calculated * frequency;
+
+
+
+
+
+
+
+
+single.innerHTML =
+
+calculated.toFixed(2)
+
++
+
+" mg";
+
+
+
+
+
+
+daily.innerHTML =
+
+totalDaily.toFixed(2)
+
++
+
+" mg/day";
+
 
 
 
@@ -296,9 +634,8 @@ total+" mg"
 
 
 
+
 </script>
-
-
 
 
 
