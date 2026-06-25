@@ -642,3 +642,12 @@ create
 
 
 })();
+
+
+
+/*
+ Export Entity Factory
+*/
+
+window.PharmoraEntity =
+PharmoraEntity;
