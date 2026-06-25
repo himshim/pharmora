@@ -65,31 +65,29 @@ new Date()
 ====================== */
 
 
-async function getVersions(
-collection,
-id
-){
-
-
-let versions =
-await getRecords(
-"versions"
-);
-
-
-
 return versions
 
 .filter(x=>{
 
 
-let v =
-x.data?.data ||
-x.data ||
-x;
+let possible=[
+
+x,
+
+x.data,
+
+x.data?.data,
+
+x.metadata,
+
+x.payload
+
+];
 
 
-return (
+return possible.some(v=>
+
+v &&
 
 v.collection===collection
 
@@ -101,33 +99,6 @@ v.contentId===id
 
 
 })
-
-.sort((a,b)=>
-
-new Date(
-(
-b.data?.time ||
-b.time ||
-b.createdAt ||
-0
-)
-)
-
--
-
-new Date(
-(
-a.data?.time ||    
-a.time ||
-a.createdAt ||
-0
-)
-)
-
-);
-
-
-}
 
 
 
