@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+News | Pharmora
+</title>
+
+
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
+
+
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
+
+
+</head>
+
+
+
+<body>
+
+
+
+<div id="site-header"></div>
+
+
+
+
+<main>
+
+
+
+
+
+<!-- HERO -->
+
+
+<section class="container hero">
+
+
+<div class="badge">
+
+📰 Pharmora Updates
+
+</div>
+
+
+
+<h1>
+
+Pharmacy News & Knowledge Updates
+
+</h1>
+
+
+
+<p>
+
+Stay updated with pharmacy education,
+research, industry developments and
+professional opportunities.
+
+</p>
+
+
+
+
+<div class="search-box">
+
+
+<input
+
+placeholder="Search news, updates, announcements..."
+
+oninput="pharmoraSearch(this.value)"
+
+>
+
+
+</div>
+
+
+
+
+<div
+
+id="search-results"
+
+class="grid">
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- NEWS AREAS -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Update Categories
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🎓 Academic Updates
+
+</h2>
+
+
+<p>
+
+University notices,
+curriculum updates and
+education announcements.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🏛 Regulatory Updates
+
+</h2>
+
+
+<p>
+
+Pharmacy regulations,
+guidelines and professional notices.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🔬 Research Highlights
+
+</h2>
+
+
+<p>
+
+Scientific discoveries,
+publications and innovations.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+💊 Drug Updates
+
+</h2>
+
+
+<p>
+
+New medicines,
+approvals and safety information.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🏭 Industry News
+
+</h2>
+
+
+<p>
+
+Manufacturing,
+quality and pharma business updates.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+💼 Career Alerts
+
+</h2>
+
+
+<p>
+
+Jobs, exams,
+training and opportunities.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+<!-- DATABASE NEWS -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+🔥 Latest Updates
+
+</h2>
+
+
+
+
+<div
+
+class="grid"
+
+id="news-list"
+
+data-render="news"
+
+data-requires="news">
+
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- UPDATE FLOW -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Knowledge Cycle
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+🔍 Discover
+
+</h3>
+
+
+<p>
+
+Find important updates.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+📚 Learn
+
+</h3>
+
+
+<p>
+
+Understand the impact.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+🌐 Discuss
+
+</h3>
+
+
+<p>
+
+Share with community.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+🚀 Apply
+
+</h3>
+
+
+<p>
+
+Use knowledge professionally.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- CONNECTED -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Related Areas
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+
+
+<a
+
+href="../research/"
+
+class="card">
+
+
+<h3>
+
+🔬 Research
+
+</h3>
+
+
+<p>
+
+Scientific knowledge.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+
+href="../industry/"
+
+class="card">
+
+
+<h3>
+
+🏭 Industry
+
+</h3>
+
+
+<p>
+
+Professional updates.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+
+href="../community/"
+
+class="card">
+
+
+<h3>
+
+🌐 Community
+
+</h3>
+
+
+<p>
+
+Discuss updates.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- CONTRIBUTE -->
+
+
+<section class="container section">
+
+
+<div class="card glass">
+
+
+<span class="badge">
+
+Community Updates
+
+</span>
+
+
+
+<h2>
+
+🌱 Share Pharmacy Updates
+
+</h2>
+
+
+
+
+<p>
+
+Submit educational,
+research and professional
+updates for the pharmacy community.
+
+</p>
+
+
+
+
+
+<br>
+
+
+
+<a
+
+href="../contribute/"
+
+class="btn btn-primary">
+
+
+Submit Update
+
+
+</a>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+</main>
+
+
+
+
+
+
+<div id="site-footer"></div>
+
+
+
+
+
+<script src="../js/pharmora.js"></script>
+
+
+
+
+</body>
+
+</html>
