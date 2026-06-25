@@ -2232,77 +2232,14 @@ permissions.includes("content.submit")
 ){
 
 
-
-gateway.innerHTML = `
-
-
-<div class="card status-card">
-
-
-<div class="contributor-badge">
-
-⭐ Contributor Access
-
-</div>
-
-
-<br><br>
-
-
-<h2>
-
-Welcome ${user.name}
-
-</h2>
-
-
-<p>
-
-Create resources and build your Pharmora reputation.
-
-</p>
-
-
-<br>
-
-
-<div class="grid">
-
-
-<div class="card">
-
-📚 Upload Content
-
-</div>
-
-
-<div class="card">
-
-🛡 Quality Reviewed
-
-</div>
-
-
-<div class="card">
-
-⭐ Earn Trust
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-`;
-
+gateway.style.display="none";
 
 
 studio.style.display="block";
 
+
 loadContributionOptions();
+
 
 return;
 
