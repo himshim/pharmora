@@ -12,86 +12,27 @@ content="width=device-width, initial-scale=1.0">
 
 
 <title>
-Laboratory Calculations | Pharmora
+Laboratory Toolkit | Pharmora
 </title>
 
 
-<link rel="icon" href="../assets/branding/favicon.svg">
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
 
 
-<link rel="stylesheet" href="../css/variables.css">
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/components.css">
-
-
-
-<style>
-
-
-.calc{
-
-padding:20px;
-
-margin-bottom:15px;
-
-border-radius:20px;
-
-background:var(--surface);
-
-border:1px solid var(--border);
-
-}
-
-
-
-.info{
-
-margin-top:10px;
-
-color:var(--text-muted);
-
-}
-
-
-
-</style>
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
 
 
 </head>
 
 
-
-
-
-
 <body>
 
 
-
-
-
-<header class="container">
-
-
-<nav class="navbar">
-
-
-<a href="../" class="logo">
-
-⚕ Pharmora
-
-</a>
-
-
-</nav>
-
-
-</header>
-
-
-
-
-
+<div id="site-header"></div>
 
 
 
@@ -99,39 +40,266 @@ color:var(--text-muted);
 
 
 
-
-
+<!-- HERO -->
 
 
 <section class="container section">
 
 
+<div class="card glass">
 
-<div class="badge">
 
-🧪 Laboratory
+<span class="badge">
+
+🔬 Analytical Tool
+
+</span>
+
+
+<br><br>
+
+
+<h1>
+
+Laboratory Toolkit
+
+</h1>
+
+
+<p>
+
+Pharmaceutical analysis and laboratory
+calculation utilities for students,
+research and quality control.
+
+</p>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- CALCULATOR -->
+
+
+<section class="container section">
+
+
+<div class="grid">
+
+
+
+<div class="card">
+
+
+<h2>
+
+🧪 Calculation
+
+</h2>
+
+
+<br>
+
+
+
+<label>
+
+Select Calculation
+
+</label>
+
+
+<select id="mode">
+
+
+<option value="molarity">
+
+Molarity
+
+</option>
+
+
+<option value="normality">
+
+Normality
+
+</option>
+
+
+<option value="ppm">
+
+PPM
+
+</option>
+
+
+<option value="error">
+
+Percentage Error
+
+</option>
+
+
+<option value="assay">
+
+Assay %
+
+</option>
+
+
+<option value="recovery">
+
+Recovery %
+
+</option>
+
+
+</select>
+
+
+
+
+
+
+<label>
+
+Value 1
+
+</label>
+
+
+<input
+id="value1"
+type="number"
+step="0.001"
+placeholder="Enter first value">
+
+
+
+
+
+
+<label>
+
+Value 2
+
+</label>
+
+
+<input
+id="value2"
+type="number"
+step="0.001"
+placeholder="Enter second value">
+
+
+
+
+
+
+
+<label>
+
+Volume (if required)
+
+</label>
+
+
+<input
+id="volume"
+type="number"
+step="0.001"
+placeholder="Optional volume">
+
+
+
+
+
+
+<button
+class="btn btn-primary"
+onclick="calculateLab()">
+
+Calculate
+
+</button>
+
+
+
+
+
+<button
+class="btn"
+onclick="resetLab()">
+
+Reset
+
+</button>
+
+
+
 
 </div>
 
 
 
-<h1>
-
-Laboratory Calculations
-
-</h1>
 
 
 
-<p>
 
-Common calculations used in pharmacy laboratories.
+
+<!-- RESULT -->
+
+
+<div class="card glass">
+
+
+<span class="badge badge-success">
+
+Result
+
+</span>
+
+
+
+<br><br>
+
+
+
+<h2 id="result">
+
+Awaiting input
+
+</h2>
+
+
+
+<p id="explain">
+
+Choose calculation and enter values.
 
 </p>
 
 
 
 
+</div>
+
+
+
+</div>
+
+
 </section>
 
 
@@ -141,62 +309,94 @@ Common calculations used in pharmacy laboratories.
 
 
 
+
+
+<!-- FORMULAS -->
 
 
 <section class="container section">
 
 
 
+<h2 class="section-title">
+
+📘 Laboratory Formulas
+
+</h2>
+
+
+
+<div class="grid">
 
 
 
 
-<div class="calc">
+
+<div class="card">
 
 
-<h2>
+<h3>
 
 Molarity
 
-</h2>
+</h3>
 
 
+<p>
 
-<div class="info">
+Moles of solute ÷ Volume (L)
 
-Moles of solute ÷ Volume of solution (L)
+</p>
+
 
 </div>
 
 
-</div>
 
 
 
 
+<div class="card">
 
 
-
-
-
-<div class="calc">
-
-
-<h2>
+<h3>
 
 Normality
 
-</h2>
+</h3>
 
 
+<p>
 
-<div class="info">
+Gram equivalents ÷ Volume (L)
 
-Gram equivalents ÷ Volume of solution (L)
+</p>
+
 
 </div>
 
 
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+PPM
+
+</h3>
+
+
+<p>
+
+mg of solute ÷ Litre of solution
+
+</p>
+
+
 </div>
 
 
@@ -205,54 +405,71 @@ Gram equivalents ÷ Volume of solution (L)
 
 
 
+<div class="card">
+
+
+<h3>
+
+Assay %
+
+</h3>
+
+
+<p>
+
+Observed value ÷ Standard value × 100
+
+</p>
+
+
+</div>
 
 
 
-<div class="calc">
 
 
-<h2>
+
+
+<div class="card">
+
+
+<h3>
+
+Recovery %
+
+</h3>
+
+
+<p>
+
+Recovered amount ÷ Added amount × 100
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
 
 Percentage Error
 
-</h2>
+</h3>
 
 
+<p>
 
-<div class="info">
+Observed − True value ÷ True value ×100
 
-(Observed - True value) ÷ True value × 100
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-<div class="calc">
-
-
-<h2>
-
-Serial Dilution
-
-</h2>
-
-
-
-<div class="info">
-
-Stepwise dilution of solution concentration.
-
-</div>
+</p>
 
 
 </div>
@@ -262,40 +479,144 @@ Stepwise dilution of solution concentration.
 
 
 
-
-
-
-
-<div class="calc">
-
-
-<h2>
-
-Parts Per Million (PPM)
-
-</h2>
-
-
-
-<div class="info">
-
-mg of solute ÷ L of solution
-
 </div>
-
-
-</div>
-
-
-
-
-
 
 
 
 </section>
 
 
+
+
+
+
+
+
+
+
+<!-- APPLICATIONS -->
+
+
+<section class="container section">
+
+
+<div class="card glass">
+
+
+<h2>
+
+⚗ Applications
+
+</h2>
+
+
+<p>
+
+✓ Pharmaceutical Analysis
+
+<br>
+
+✓ HPLC / UV method preparation
+
+<br>
+
+✓ Quality Control laboratories
+
+<br>
+
+✓ Volumetric analysis
+
+<br>
+
+✓ Validation calculations
+
+</p>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- RELATED -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Related Tools
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+<a
+href="dilution.html"
+class="card">
+
+<h3>
+
+🧪 Dilution Calculator
+
+</h3>
+
+</a>
+
+
+
+
+
+<a
+href="concentration.html"
+class="card">
+
+<h3>
+
+⚗ Concentration Calculator
+
+</h3>
+
+</a>
+
+
+
+
+
+
+<a
+href="formulas.html"
+class="card">
+
+<h3>
+
+📚 Formula Sheet
+
+</h3>
+
+</a>
+
+
+
+</div>
+
+
+</section>
 
 
 
@@ -304,6 +625,290 @@ mg of solute ÷ L of solution
 </main>
 
 
+
+
+
+<div id="site-footer"></div>
+
+
+
+
+
+<script src="../js/pharmora.js"></script>
+
+
+
+
+
+
+<script>
+
+
+
+function calculateLab(){
+
+
+
+let mode =
+document.getElementById("mode").value;
+
+
+
+let a =
+parseFloat(
+document.getElementById("value1").value
+);
+
+
+
+let b =
+parseFloat(
+document.getElementById("value2").value
+);
+
+
+
+let v =
+parseFloat(
+document.getElementById("volume").value
+);
+
+
+
+
+let result =
+document.getElementById("result");
+
+
+
+let explain =
+document.getElementById("explain");
+
+
+
+
+
+
+if(!a || !b){
+
+
+result.innerHTML =
+"Invalid input";
+
+
+explain.innerHTML =
+"Please enter required values";
+
+
+return;
+
+
+}
+
+
+
+
+let answer;
+
+
+
+
+
+if(mode==="molarity"){
+
+
+if(!v)return;
+
+
+answer =
+(a/b)/v;
+
+
+result.innerHTML =
+answer.toFixed(4)+" M";
+
+
+explain.innerHTML =
+"(Weight / Molecular weight) / Volume";
+
+
+}
+
+
+
+
+
+
+if(mode==="normality"){
+
+
+if(!v)return;
+
+
+answer =
+(a/b)/v;
+
+
+
+result.innerHTML =
+answer.toFixed(4)+" N";
+
+
+
+explain.innerHTML =
+"(Weight / Equivalent weight) / Volume";
+
+
+}
+
+
+
+
+
+
+if(mode==="ppm"){
+
+
+answer =
+a/b;
+
+
+
+result.innerHTML =
+answer.toFixed(2)+" ppm";
+
+
+
+explain.innerHTML =
+"mg/L concentration";
+
+
+}
+
+
+
+
+
+
+
+
+if(mode==="error"){
+
+
+answer =
+((a-b)/b)*100;
+
+
+
+result.innerHTML =
+answer.toFixed(2)+" %";
+
+
+
+explain.innerHTML =
+"Percentage analytical error";
+
+
+}
+
+
+
+
+
+
+
+if(mode==="assay"){
+
+
+
+answer =
+(a/b)*100;
+
+
+
+result.innerHTML =
+answer.toFixed(2)+" %";
+
+
+
+explain.innerHTML =
+"Calculated assay percentage";
+
+
+}
+
+
+
+
+
+
+
+
+if(mode==="recovery"){
+
+
+
+answer =
+(a/b)*100;
+
+
+
+result.innerHTML =
+answer.toFixed(2)+" %";
+
+
+
+explain.innerHTML =
+"Method validation recovery";
+
+
+}
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+function resetLab(){
+
+
+
+[
+"value1",
+"value2",
+"volume"
+
+]
+
+.forEach(
+
+id=>
+
+document.getElementById(id).value=""
+
+);
+
+
+
+document.getElementById("result").innerHTML =
+
+"Awaiting input";
+
+
+
+}
+
+
+
+</script>
 
 
 
