@@ -6,27 +6,27 @@
 
 <meta charset="UTF-8">
 
-<meta 
-name="viewport" 
+<meta
+name="viewport"
 content="width=device-width, initial-scale=1.0">
 
 
 <title>
-Books | Pharmora
+Books Library | Pharmora
 </title>
 
 
-<link rel="stylesheet" href="/css/variables.css">
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
 
-<link rel="stylesheet" href="/css/base.css">
 
-<link rel="stylesheet" href="/css/components.css">
-
-<link rel="stylesheet" href="/css/responsive.css">
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
 
 
 </head>
-
 
 
 <body>
@@ -43,41 +43,68 @@ Books | Pharmora
 
 
 
-<section class="container section">
+
+
+<!-- HERO -->
+
+
+<section class="container hero">
+
 
 
 <div class="badge">
 
-📚 Books
+📚 Pharmora Books
 
 </div>
 
 
 
+
 <h1>
 
-Recommended Pharmacy Books
+Pharmacy Knowledge Library
 
 </h1>
 
 
 
+
 <p>
 
-Subject-wise academic and professional references.
+Discover academic textbooks,
+reference books and professional
+pharmacy learning resources.
 
 </p>
 
 
 
-<br><br>
+
+
+<div class="search-box">
+
+
+<input
+
+placeholder="Search books, authors, subjects..."
+
+oninput="pharmoraSearch(this.value)"
+
+>
+
+
+</div>
+
+
 
 
 
 <div
-class="grid"
-id="books-list"
-data-render="books">
+
+id="search-results"
+
+class="grid">
 
 
 </div>
@@ -89,7 +116,543 @@ data-render="books">
 
 
 
+
+
+
+
+
+
+<!-- CATEGORIES -->
+
+
+<section class="container section">
+
+
+
+<h2 class="section-title">
+
+📘 Explore Subjects
+
+</h2>
+
+
+
+
+
+<div class="grid">
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+💊 Pharmaceutics
+
+</h2>
+
+
+<p>
+
+Dosage forms, drug delivery,
+industrial pharmacy and formulation science.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+⚗ Pharmaceutical Analysis
+
+</h2>
+
+
+
+<p>
+
+Analytical methods, validation,
+QA/QC and instrumentation.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🧪 Medicinal Chemistry
+
+</h2>
+
+
+<p>
+
+Drug design, SAR,
+chemistry and synthesis.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🧬 Pharmacology
+
+</h2>
+
+
+
+<p>
+
+Drug action, therapeutics
+and clinical applications.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🌿 Pharmacognosy
+
+</h2>
+
+
+
+<p>
+
+Natural products,
+herbal medicines and phytochemistry.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🏭 Industrial Pharmacy
+
+</h2>
+
+
+<p>
+
+Manufacturing, GMP,
+regulatory and production references.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- ACADEMIC FINDER -->
+
+
+<section class="container section">
+
+
+<div class="card glass">
+
+
+
+<span class="badge">
+
+Academic Mapping
+
+</span>
+
+
+
+
+<h2>
+
+🎓 Find Books by Learning Path
+
+</h2>
+
+
+
+
+<p>
+
+Books can be organized by course,
+curriculum, semester, subject and topic.
+
+</p>
+
+
+
+
+
+<br>
+
+
+
+
+
+<div class="grid">
+
+
+
+<div class="card">
+
+B.Pharm
+
+</div>
+
+
+
+<div class="card">
+
+D.Pharm
+
+</div>
+
+
+
+<div class="card">
+
+M.Pharm
+
+</div>
+
+
+
+<div class="card">
+
+Research
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- DATABASE BOOKS -->
+
+
+<section class="container section">
+
+
+
+<h2 class="section-title">
+
+📖 Recommended Books
+
+</h2>
+
+
+
+
+<div
+
+class="grid"
+
+id="books-list"
+
+data-render="books">
+
+
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- QUALITY -->
+
+
+<section class="container section">
+
+
+<div class="grid">
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+🎯 Student Friendly
+
+</h3>
+
+
+
+<p>
+
+Find references according to
+pharmacy subjects and learning needs.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+👨‍🏫 Educator Supported
+
+</h3>
+
+
+<p>
+
+Teachers can recommend
+trusted academic resources.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+🔬 Professional
+
+</h3>
+
+
+<p>
+
+Support for industry,
+analysis and research references.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- CONTRIBUTE -->
+
+
+<section class="container section">
+
+
+
+<div class="card glass">
+
+
+
+
+<span class="badge">
+
+Open Library
+
+</span>
+
+
+
+
+<h2>
+
+🌱 Improve the Book Library
+
+</h2>
+
+
+
+
+<p>
+
+Suggest textbooks, references,
+open resources and pharmacy
+learning materials.
+
+</p>
+
+
+
+
+<br>
+
+
+
+
+<a
+
+href="../contribute/"
+
+class="btn btn-primary">
+
+
+Suggest Book
+
+
+</a>
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
 </main>
+
+
+
 
 
 
@@ -101,7 +664,9 @@ data-render="books">
 
 
 
-<script src="/js/pharmora.js"></script>
+
+
+<script src="../js/pharmora.js"></script>
 
 
 
