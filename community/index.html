@@ -1,315 +1,720 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
 
-    <title>Community</title>
+<meta charset="UTF-8">
 
-    <link rel="icon" href="../assets/branding/favicon.svg" />
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="../css/variables.css" />
 
-    <link rel="stylesheet" href="../css/base.css" />
+<title>
+Community | Pharmora
+</title>
 
-    <link rel="stylesheet" href="../css/components.css" />
 
-    <link rel="stylesheet" href="../css/responsive.css" />
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
 
-    <style>
-      .hero {
-        text-align: center;
 
-        padding: 70px 0;
-      }
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
 
-      .hero h1 {
-        font-size: 3.8rem;
-      }
 
-      .question {
-        padding: 22px;
+</head>
 
-        margin-bottom: 15px;
 
-        border-radius: 20px;
 
-        background: var(--surface);
+<body>
 
-        border: 1px solid var(--border);
 
-        transition: var(--transition);
-      }
+<div id="site-header"></div>
 
-      .question:hover {
-        border-color: var(--primary);
 
-        transform: translateY(-4px);
-      }
 
-      .question-info {
-        margin-top: 12px;
 
-        color: var(--text-muted);
+<main>
 
-        font-size: 0.9rem;
-      }
 
-      .tag {
-        display: inline-block;
 
-        padding: 5px 12px;
 
-        border-radius: 20px;
 
-        background: var(--surface-light);
+<!-- HERO -->
 
-        color: var(--primary);
 
-        margin-top: 12px;
+<section class="container hero">
 
-        font-size: 0.8rem;
-      }
 
-      .contributor {
-        display: flex;
+<div class="badge">
 
-        justify-content: space-between;
+🌐 Pharmora Community
 
-        align-items: center;
-
-        padding: 18px;
-
-        border-radius: 18px;
-
-        background: var(--surface);
-
-        border: 1px solid var(--border);
-
-        margin-bottom: 12px;
-
-        transition: var(--transition);
-      }
-
-      .contributor:hover {
-        border-color: var(--primary);
-      }
-      .community-modal {
-        position: fixed;
-
-        inset: 0;
-
-        background: rgba(0, 0, 0, 0.65);
-
-        display: none;
-
-        align-items: center;
-
-        justify-content: center;
-
-        z-index: 999;
-      }
-
-      .community-box {
-        width: min(600px, 90%);
-
-        padding: 30px;
-
-        border-radius: 25px;
-
-        background: var(--surface);
-
-        border: 1px solid var(--border);
-      }
-
-      .community-box textarea,
-      .community-box input,
-      .community-box select {
-        width: 100%;
-
-        margin-top: 10px;
-
-        padding: 15px;
-
-        border-radius: 15px;
-
-        background: var(--background);
-
-        color: var(--text);
-
-        border: 1px solid var(--border);
-      }
-    </style>
-  </head>
-
-  <body>
-    <div id="site-header"></div>
-
-    <main>
-      <section class="container hero">
-        <div class="badge">🌐 Community</div>
-
-        <h1>
-          Learn Together
-
-          <br />
-
-          <span
-            style="
-              background: linear-gradient(
-                90deg,
-                var(--primary),
-                var(--secondary)
-              );
-              -webkit-background-clip: text;
-              color: transparent;
-            "
-          >
-            Grow Together
-          </span>
-        </h1>
-
-        <p>
-          Ask questions, discuss concepts, share resources and improve pharmacy
-          education collaboratively.
-        </p>
-
-        <br />
-
-        <button class="btn btn-primary" onclick="openQuestionBox()">
-          Ask Question
-        </button>
-
-        <div class="search-box" style="margin-top: 30px">
-          <input
-            placeholder="Search discussions, subjects, resources..."
-            oninput="pharmoraSearch(this.value)"
-          />
-        </div>
-
-        <div id="search-results" class="grid" style="margin-top: 30px"></div>
-      </section>
-
-      <section class="container section" id="community-profile"></section>
-
-      <section class="container section">
-        <h2 class="section-title">Discussion Spaces</h2>
-
-        <div class="grid">
-          <div class="card">
-            <h2>❓ Ask Doubts</h2>
-
-            <p>Ask questions and learn with the community.</p>
-          </div>
-
-          <div class="card">
-            <h2>⭐ Verified Answers</h2>
-
-            <p>Responses reviewed by educators and contributors.</p>
-          </div>
-
-          <div class="card">
-            <h2>📚 Knowledge Sharing</h2>
-
-            <p>Share notes, explanations and references.</p>
-          </div>
-
-          <div class="card">
-            <h2>🏆 Contributors</h2>
-
-            <p>Recognizing people building open education.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="container section">
-        <h2 class="section-title">Community Discussions</h2>
-
-        <div
-class="grid"
-id="forum-list"
-data-render="forum"
-data-requires="forum"
->
 </div>
-      </section>
-
-      <section class="container section">
-        <h2 class="section-title">Community Contributors</h2>
-
-        <div class="contributor">
-          <span> 👨‍🏫 Educators </span>
-
-          <span> Share expertise </span>
-        </div>
-
-        <div class="contributor">
-          <span> 🌱 Contributors </span>
-
-          <span> Improve platform </span>
-        </div>
-
-        <div class="contributor">
-          <span> 🎓 Students </span>
-
-          <span> Learn and discuss </span>
-        </div>
-      </section>
-    </main>
-    <div class="community-modal" id="question-modal">
-      <div class="community-box">
-        <h2>💬 Ask Question</h2>
-
-        <input id="question-title" placeholder="Question title" />
-
-        <textarea id="question-text" placeholder="Explain your question">
-        </textarea>
-
-        <select id="question-category">
-          <option>Study Help</option>
-
-          <option>Exam</option>
-
-          <option>Teaching</option>
-
-          <option>Career</option>
-        </select>
-
-        <br /><br />
-
-        <button class="btn btn-primary" onclick="submitQuestion()">Post</button>
-
-        <button class="btn" onclick="closeQuestionBox()">Cancel</button>
-      </div>
-    </div>
-    <div id="site-footer"></div>
-
-    
-
-
-<script src="/js/pharmora.js"></script>
 
 
 
-    
 
-    <script>
-      async function loadCommunityProfile() {
-        let box = document.getElementById("community-profile");
+<h1>
 
-        if (!box) {
-          return;
-        }
+Connect Pharmacy Minds
 
-        let user = typeof currentUser === "function" ? currentUser() : null;
+</h1>
 
-        if (!user) {
-          box.innerHTML = `
+
+
+
+<p>
+
+Ask questions, discuss concepts,
+share knowledge and build an
+open pharmacy education ecosystem.
+
+</p>
+
+
+
+<br>
+
+
+
+
+<button
+
+class="btn btn-primary"
+
+onclick="openQuestionBox()">
+
+
+Ask Question
+
+
+</button>
+
+
+
+
+
+<div class="search-box">
+
+
+<input
+
+placeholder="Search discussions, subjects, resources..."
+
+oninput="pharmoraSearch(this.value)"
+
+>
+
+
+</div>
+
+
+
+
+
+<div
+
+id="search-results"
+
+class="grid">
+
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- USER COMMUNITY PROFILE -->
+
+
+<section
+
+class="container section"
+
+id="community-profile">
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- COMMUNITY AREAS -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+💬 Discussion Spaces
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+❓ Doubt Forum
+
+</h2>
+
+
+<p>
+
+Ask pharmacy questions and
+learn with others.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🧪 Research Discussion
+
+</h2>
+
+
+<p>
+
+Discuss projects, papers,
+methods and innovations.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+👨‍🏫 Educator Circle
+
+</h2>
+
+
+<p>
+
+Teaching strategies and
+academic collaboration.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+💼 Career Space
+
+</h2>
+
+
+<p>
+
+Industry, jobs, higher studies
+and professional growth.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+<!-- FORUM DATABASE -->
+
+
+<section class="container section">
+
+
+
+<h2 class="section-title">
+
+🔥 Latest Discussions
+
+</h2>
+
+
+
+
+
+<div
+
+class="grid"
+
+id="forum-list"
+
+data-render="forum"
+
+data-requires="forum">
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+<!-- COMMUNITY ROLES -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+🏆 Community Roles
+
+</h2>
+
+
+
+
+<div class="grid">
+
+
+
 
 
 <div class="card">
+
+
+<h3>
+
+🎓 Learners
+
+</h3>
+
+
+<p>
+
+Ask, explore and grow.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+⭐ Contributors
+
+</h3>
+
+
+
+<p>
+
+Improve pharmacy knowledge.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+👨‍🏫 Verified Educators
+
+</h3>
+
+
+
+<p>
+
+Guide students and review content.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+💊 Professionals
+
+</h3>
+
+
+<p>
+
+Share industry experience.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+<!-- QUESTION MODAL -->
+
+
+<div
+
+id="question-modal"
+
+class="modal">
+
+
+<div class="card glass">
+
+
+
+<h2>
+
+💬 Ask Question
+
+</h2>
+
+
+
+<input
+
+id="question-title"
+
+placeholder="Question title"
+
+>
+
+
+
+<textarea
+
+id="question-text"
+
+placeholder="Explain your question">
+
+
+</textarea>
+
+
+
+
+
+
+<select id="question-category">
+
+
+<option>
+
+Study Help
+
+</option>
+
+
+
+<option>
+
+Pharmacology
+
+</option>
+
+
+
+<option>
+
+Pharmaceutics
+
+</option>
+
+
+
+<option>
+
+Pharmaceutical Analysis
+
+</option>
+
+
+
+<option>
+
+Research
+
+</option>
+
+
+
+<option>
+
+Career
+
+</option>
+
+
+
+<option>
+
+Industry
+
+</option>
+
+
+
+</select>
+
+
+
+
+<br><br>
+
+
+
+<button
+
+class="btn btn-primary"
+
+onclick="submitQuestion()">
+
+
+Post
+
+
+</button>
+
+
+
+
+<button
+
+class="btn"
+
+onclick="closeQuestionBox()">
+
+
+Cancel
+
+
+</button>
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+</main>
+
+
+
+
+
+
+
+<div id="site-footer"></div>
+
+
+
+
+
+
+<script src="../js/pharmora.js"></script>
+
+
+
+
+
+
+
+<script>
+
+
+
+
+
+async function loadCommunityProfile(){
+
+
+
+let box =
+
+document.getElementById(
+
+"community-profile"
+
+);
+
+
+
+
+let user =
+
+typeof currentUser==="function"
+
+?
+
+currentUser()
+
+:
+
+null;
+
+
+
+
+
+
+
+
+if(!user){
+
+
+
+box.innerHTML = `
+
+
+<div class="card glass">
 
 
 <h2>
@@ -321,8 +726,8 @@ data-requires="forum"
 
 <p>
 
-Create an account to contribute,
-ask questions and build reputation.
+Create an account to ask,
+answer and contribute.
 
 </p>
 
@@ -333,7 +738,9 @@ class="btn btn-primary"
 
 href="../auth/login.html">
 
-Join
+
+Join Community
+
 
 </a>
 
@@ -343,28 +750,98 @@ Join
 
 `;
 
-          return;
-        }
 
-        let permissions = await userPermissions();
 
-        let badge = "🎓 Member";
-
-        if (permissions.includes("*")) {
-          badge = "👑 Owner";
-        } else if (user.role === "educator") {
-          badge = "👨‍🏫 Verified Educator";
-        } else if (user.role === "professional") {
-          badge = "💊 Professional";
-        } else if (permissions.includes("content.submit")) {
-          badge = "⭐ Contributor";
-        }
-
-        box.innerHTML = `
+return;
 
 
 
-<div class="card">
+}
+
+
+
+
+
+
+
+
+
+let permissions =
+
+await userPermissions();
+
+
+
+
+
+
+let badge="🎓 Member";
+
+
+
+
+if(
+
+permissions.includes("*")
+
+){
+
+badge="👑 Owner";
+
+}
+
+
+
+else if(
+
+user.role==="educator"
+
+){
+
+badge="👨‍🏫 Verified Educator";
+
+}
+
+
+
+else if(
+
+user.role==="professional"
+
+){
+
+badge="💊 Professional";
+
+}
+
+
+
+else if(
+
+permissions.includes(
+
+"content.submit"
+
+)
+
+){
+
+badge="⭐ Contributor";
+
+}
+
+
+
+
+
+
+
+
+
+box.innerHTML = `
+
+
+<div class="card glass">
 
 
 <h2>
@@ -381,11 +858,8 @@ Welcome ${user.name}
 </p>
 
 
-<br>
-
 
 <div class="grid">
-
 
 
 <div class="card">
@@ -395,13 +869,11 @@ Welcome ${user.name}
 </div>
 
 
-
 <div class="card">
 
 💬 Help Learners
 
 </div>
-
 
 
 <div class="card">
@@ -411,86 +883,314 @@ Welcome ${user.name}
 </div>
 
 
-
-
 </div>
 
 
-
 </div>
-
 
 
 `;
-      }
 
-      loadCommunityProfile();
 
-      function openQuestionBox() {
-        let user = currentUser();
 
-        if (!user) {
-          showToast(
-            "Please login to ask questions",
+}
 
-            "error",
-          );
 
-          location.href = "../auth/login.html";
 
-          return;
-        }
 
-        document.getElementById("question-modal").style.display = "flex";
-      }
 
-      function closeQuestionBox() {
-        document.getElementById("question-modal").style.display = "none";
-      }
 
-      document.addEventListener(
-        "keydown",
 
-        (e) => {
-          if (e.key === "Escape") {
-            closeQuestionBox();
-          }
-        },
-      );
 
-      async function submitQuestion() {
-        let title = document.getElementById("question-title").value.trim();
 
-        let text = document.getElementById("question-text").value.trim();
+function openQuestionBox(){
 
-        let category = document.getElementById("question-category").value;
 
-        if (!title || !text) {
-          showToast(
-            "Complete question first",
 
-            "error",
-          );
+let user = currentUser();
 
-          return;
-        }
 
-        await createQuestion({
-          title: title,
 
-          description: text,
+if(!user){
 
-          category: category,
-        });
 
-        document.getElementById("question-title").value = "";
 
-        document.getElementById("question-text").value = "";
+showToast(
 
-        closeQuestionBox();
+"Login required",
 
-      
-      }
-    </script>
-  </body>
+"error"
+
+);
+
+
+
+location.href =
+
+"../auth/login.html";
+
+
+
+return;
+
+
+
+}
+
+
+
+
+
+
+document
+
+.getElementById(
+
+"question-modal"
+
+)
+
+.style.display="flex";
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function closeQuestionBox(){
+
+
+
+document
+
+.getElementById(
+
+"question-modal"
+
+)
+
+.style.display="none";
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function submitQuestion(){
+
+
+
+
+
+let title =
+
+document
+
+.getElementById(
+
+"question-title"
+
+)
+
+.value.trim();
+
+
+
+
+
+let text =
+
+document
+
+.getElementById(
+
+"question-text"
+
+)
+
+.value.trim();
+
+
+
+
+
+let category =
+
+document
+
+.getElementById(
+
+"question-category"
+
+)
+
+.value;
+
+
+
+
+
+
+
+
+
+if(
+
+!title ||
+
+!text
+
+){
+
+
+
+showToast(
+
+"Complete question first",
+
+"error"
+
+);
+
+
+
+return;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+await createQuestion({
+
+
+
+title:title,
+
+description:text,
+
+category:category
+
+
+
+});
+
+
+
+
+
+
+
+
+document
+
+.getElementById(
+
+"question-title"
+
+)
+
+.value="";
+
+
+
+
+document
+
+.getElementById(
+
+"question-text"
+
+)
+
+.value="";
+
+
+
+
+
+
+
+closeQuestionBox();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+document.addEventListener(
+
+"keydown",
+
+e=>{
+
+
+if(e.key==="Escape"){
+
+closeQuestionBox();
+
+}
+
+
+}
+
+);
+
+
+
+
+
+
+
+
+
+window.addEventListener(
+
+"pharmora-ready",
+
+loadCommunityProfile
+
+);
+
+
+
+
+
+</script>
+
+
+
+
+
+</body>
+
+
 </html>
