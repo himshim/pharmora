@@ -218,3 +218,12 @@ remove
 
 
 })();
+
+
+
+/*
+ Export Engine
+*/
+
+window.PharmoraDB =
+PharmoraDB;
