@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Drug Database | Pharmora
+</title>
+
+
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
+
+
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
+
+
+</head>
+
+
+<body>
+
+
+<div id="site-header"></div>
+
+
+
+
+<main>
+
+
+
+
+<!-- HERO -->
+
+
+<section class="container hero">
+
+
+<div class="badge">
+
+🧬 Pharmora Drugs
+
+</div>
+
+
+
+<h1>
+
+Pharmaceutical Drug Knowledge Database
+
+</h1>
+
+
+
+<p>
+
+Explore medicines, mechanisms,
+therapeutic uses, safety information
+and pharmaceutical knowledge.
+
+</p>
+
+
+
+
+<div class="search-box">
+
+
+<input
+
+placeholder="Search drug, class, mechanism..."
+
+oninput="pharmoraSearch(this.value)"
+
+>
+
+
+</div>
+
+
+
+
+<div
+
+id="search-results"
+
+class="grid">
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- DRUG KNOWLEDGE -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Explore Drug Information
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+💊 Drug Profile
+
+</h2>
+
+
+<p>
+
+Name, category,
+classification and basic information.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+⚙ Mechanism of Action
+
+</h2>
+
+
+<p>
+
+Understand how drugs produce
+therapeutic effects.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🏥 Therapeutic Uses
+
+</h2>
+
+
+
+<p>
+
+Clinical indications and
+important applications.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+⚠ Safety Information
+
+</h2>
+
+
+<p>
+
+Adverse effects,
+warnings and precautions.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🔄 Interactions
+
+</h2>
+
+
+<p>
+
+Drug-drug and drug-food
+interaction learning.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🧪 Pharmaceutical Data
+
+</h2>
+
+
+<p>
+
+Formulations, dosage forms
+and chemical information.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- THERAPEUTIC AREAS -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Therapeutic Categories
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+
+<div class="card">
+
+💓 Cardiovascular Drugs
+
+</div>
+
+
+
+<div class="card">
+
+🧠 CNS Drugs
+
+</div>
+
+
+
+<div class="card">
+
+🦠 Antibiotics
+
+</div>
+
+
+
+<div class="card">
+
+💉 Endocrine Drugs
+
+</div>
+
+
+
+<div class="card">
+
+🫁 Respiratory Drugs
+
+</div>
+
+
+
+<div class="card">
+
+🧬 Anticancer Drugs
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- DATABASE DRUGS -->
+
+
+<section class="container section">
+
+
+
+<h2 class="section-title">
+
+💊 Drug Library
+
+</h2>
+
+
+
+
+
+<div
+
+class="grid"
+
+id="drugs-list"
+
+data-render="drugs"
+
+data-requires="drugs">
+
+
+</div>
+
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- LEARNING CONNECTION -->
+
+
+<section class="container section">
+
+
+
+<h2 class="section-title">
+
+Connected Learning
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+
+
+<a
+
+class="card"
+
+href="../tools/drug-classes.html">
+
+
+<h3>
+
+💊 Drug Classes
+
+</h3>
+
+
+
+<p>
+
+Learn medicine classifications.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+
+class="card"
+
+href="../learn/">
+
+
+<h3>
+
+🎓 Learn Pharmacology
+
+</h3>
+
+
+
+<p>
+
+Study subjects and concepts.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+
+class="card"
+
+href="../research/">
+
+
+<h3>
+
+🔬 Drug Research
+
+</h3>
+
+
+
+<p>
+
+Explore pharmaceutical research.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- CONTRIBUTE -->
+
+
+<section class="container section">
+
+
+<div class="card glass">
+
+
+
+<span class="badge">
+
+Community Knowledge
+
+</span>
+
+
+
+
+<h2>
+
+🌱 Improve Drug Database
+
+</h2>
+
+
+
+
+<p>
+
+Contribute verified drug information,
+educational notes and references.
+
+</p>
+
+
+
+
+<br>
+
+
+
+<a
+
+href="../contribute/"
+
+class="btn btn-primary">
+
+
+Add Drug Information
+
+
+</a>
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+</main>
+
+
+
+
+
+
+<div id="site-footer"></div>
+
+
+
+
+
+<script src="../js/pharmora.js"></script>
+
+
+
+
+</body>
+
+
+</html>
