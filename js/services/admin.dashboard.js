@@ -66,7 +66,7 @@ action
 
 
 
-async async function renderAdminStats(){
+async function renderAdminStats(){
 
 
 
