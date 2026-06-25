@@ -1,57 +1,35 @@
 /*
- Pharmora Audit Service
- Recovery + History
+ Pharmora Audit Service v2
+ Database Provider Based
 */
 
 
+/* ======================
+ SAVE AUDIT
+====================== */
 
-function saveAudit(
+
+async function saveAudit(
 type,
-data
+data={}
 ){
 
 
-let logs =
-JSON.parse(
-
-localStorage.getItem(
-"audit"
-)
-
-||
-
-"[]"
-
-);
+let entry={
 
 
+type,
 
 
-
-logs.push({
-
-
-id:
-
-crypto.randomUUID(),
-
-
-type:type,
-
-
-data:data,
+data,
 
 
 user:
 
 typeof currentUser==="function"
-
 ?
-
 currentUser()
-
 :
-
 null,
 
 
@@ -61,28 +39,19 @@ new Date()
 .toISOString()
 
 
-});
+};
 
 
 
-
-
-logs =
-logs.slice(-300);
-
-
-
-
-localStorage.setItem(
+return await createRecord(
 
 "audit",
 
-JSON.stringify(logs)
+entry
 
 );
 
 
-
 }
 
 
@@ -92,48 +61,109 @@ JSON.stringify(logs)
 
 
 
+/* ======================
+ GET AUDIT
+====================== */
 
-function getAudit(){
+
+async function getAudit(){
 
 
-
-return JSON.parse(
-
-localStorage.getItem(
+let logs =
+await getRecords(
 "audit"
+);
+
+
+return logs
+
+.sort((a,b)=>
+
+new Date(
+b.time ||
+b.createdAt ||
+0
 )
 
-||
+-
 
-"[]"
-
+new Date(
+a.time ||
+a.createdAt ||
+0
 )
-
-.reverse();
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-function clearAudit(){
-
-
-
-localStorage.removeItem(
-
-"audit"
 
 );
 
 
+}
+
+
+
+
+
+
+
+
+/* ======================
+ CLEAR AUDIT
+====================== */
+
+
+async function clearAudit(){
+
+
+let logs =
+await getRecords(
+"audit"
+);
+
+
+
+for(let log of logs){
+
+
+await deleteRecord(
+
+"audit",
+
+log.id
+
+);
+
 
 }
+
+
+
+return true;
+
+
+}
+
+
+
+
+
+
+
+/*
+ Export
+*/
+
+
+window.saveAudit =
+saveAudit;
+
+
+window.getAudit =
+getAudit;
+
+
+window.clearAudit =
+clearAudit;
+
+
+console.log(
+"✓ PharmoraAudit service ready"
+);
