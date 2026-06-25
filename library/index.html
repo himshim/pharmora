@@ -16,134 +16,17 @@ Library | Pharmora
 </title>
 
 
-<link rel="icon" href="/assets/branding/favicon.svg">
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
 
 
-<link rel="stylesheet" href="/css/variables.css">
-<link rel="stylesheet" href="/css/base.css">
-<link rel="stylesheet" href="/css/components.css">
-<link rel="stylesheet" href="/css/responsive.css">
-
-
-<style>
-
-
-.hero{
-
-text-align:center;
-
-padding:70px 0;
-
-}
-
-
-.hero h1{
-
-font-size:3.5rem;
-
-}
-
-
-
-.filter-box{
-
-margin-top:30px;
-
-}
-
-
-
-.filter-grid{
-
-display:grid;
-
-grid-template-columns:
-repeat(
-auto-fit,
-minmax(180px,1fr)
-);
-
-gap:15px;
-
-}
-
-
-
-.filter-grid input,
-.filter-grid select{
-
-width:100%;
-
-padding:14px;
-
-border-radius:15px;
-
-background:var(--surface);
-
-border:1px solid var(--border);
-
-color:var(--text);
-
-}
-
-
-
-
-.collection{
-
-cursor:pointer;
-
-position:relative;
-
-overflow:hidden;
-
-}
-
-
-
-.collection::before{
-
-content:"";
-
-position:absolute;
-
-width:120px;
-
-height:120px;
-
-right:-40px;
-
-top:-40px;
-
-border-radius:50%;
-
-background:
-
-linear-gradient(
-135deg,
-var(--primary),
-var(--secondary)
-);
-
-opacity:.2;
-
-}
-
-
-
-.library-block{
-
-margin-bottom:60px;
-
-}
-
-
-
-</style>
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
 
 
 </head>
-
 
 
 <body>
@@ -153,9 +36,13 @@ margin-bottom:60px;
 
 
 
-
 <main>
 
+
+
+
+
+<!-- HERO -->
 
 
 <section class="container hero">
@@ -163,7 +50,7 @@ margin-bottom:60px;
 
 <div class="badge">
 
-📚 Library
+📚 Pharmora Library
 
 </div>
 
@@ -171,25 +58,7 @@ margin-bottom:60px;
 
 <h1>
 
-Open Pharmacy
-
-<br>
-
-
-<span style="
-background:linear-gradient(
-90deg,
-var(--primary),
-var(--secondary)
-);
--webkit-background-clip:text;
-color:transparent;
-">
-
-Knowledge Base
-
-</span>
-
+Open Pharmacy Knowledge Repository
 
 </h1>
 
@@ -197,7 +66,9 @@ Knowledge Base
 
 <p>
 
-Discover notes, books, questions and teaching resources.
+Explore notes, books, questions,
+teaching resources and professional
+pharmacy knowledge.
 
 </p>
 
@@ -210,7 +81,7 @@ Discover notes, books, questions and teaching resources.
 
 <input
 
-placeholder="Search everything..."
+placeholder="Search notes, books, subjects, resources..."
 
 oninput="pharmoraSearch(this.value)"
 
@@ -226,9 +97,7 @@ oninput="pharmoraSearch(this.value)"
 
 id="search-results"
 
-class="grid"
-
-style="margin-top:30px;">
+class="grid">
 
 
 </div>
@@ -242,6 +111,11 @@ style="margin-top:30px;">
 
 
 
+
+
+
+
+<!-- COLLECTIONS -->
 
 
 <section class="container section">
@@ -249,10 +123,9 @@ style="margin-top:30px;">
 
 <h2 class="section-title">
 
-Explore Library
+Explore Collections
 
 </h2>
-
 
 
 
@@ -260,17 +133,30 @@ Explore Library
 
 
 
+
+
+
+
 <div
-class="card collection"
+
+class="card glass"
+
 onclick="filterType('resources')">
 
 
-<h2>📚 Resources</h2>
+
+<h2>
+
+📚 Resources
+
+</h2>
+
 
 
 <p>
 
-Notes, papers and files.
+Notes, articles, files and
+student learning material.
 
 </p>
 
@@ -282,19 +168,63 @@ Notes, papers and files.
 
 
 
+
+
 <div
-class="card collection"
+
+class="card glass"
+
+onclick="filterType('books')">
+
+
+
+<h2>
+
+📖 Books
+
+</h2>
+
+
+
+<p>
+
+Reference books and pharmacy
+reading materials.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div
+
+class="card glass"
+
 onclick="filterType('teaching-materials')">
 
 
-<h2>👨‍🏫 Teaching</h2>
+<h2>
+
+👨‍🏫 Teaching Material
+
+</h2>
 
 
 <p>
 
-Slides and teacher resources.
+Lectures, presentations and
+educator resources.
 
 </p>
+
 
 
 </div>
@@ -304,22 +234,36 @@ Slides and teacher resources.
 
 
 
+
+
+
 <div
-class="card collection"
+
+class="card glass"
+
 onclick="filterType('question-bank')">
 
 
-<h2>❓ Question Bank</h2>
+<h2>
+
+❓ Question Bank
+
+</h2>
+
 
 
 <p>
 
-MCQ, viva and exams.
+MCQs, exams, viva and
+practice questions.
 
 </p>
 
 
 </div>
+
+
+
 
 
 
@@ -327,21 +271,60 @@ MCQ, viva and exams.
 
 
 <div
-class="card collection"
+
+class="card glass"
+
 onclick="filterType('assignments')">
 
 
-<h2>📝 Assignments</h2>
+<h2>
+
+📝 Assignments
+
+</h2>
+
 
 
 <p>
 
-Practice and submissions.
+Academic activities and
+student submissions.
 
 </p>
 
 
 </div>
+
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🧪 Practical Library
+
+</h2>
+
+
+<p>
+
+Experiments, SOPs and laboratory
+guides.
+
+</p>
+
+
+
+</div>
+
+
 
 
 
@@ -360,15 +343,18 @@ Practice and submissions.
 
 
 
+<!-- FILTER -->
+
+
 <section class="container section">
 
 
-<div class="card filter-box">
+<div class="card">
 
 
 <h2>
 
-🔎 Filter Materials
+🔎 Smart Filters
 
 </h2>
 
@@ -377,7 +363,8 @@ Practice and submissions.
 
 
 
-<div class="filter-grid">
+
+<div class="grid">
 
 
 
@@ -432,6 +419,8 @@ Assignments
 
 
 
+
+
 <select id="filter-course">
 
 
@@ -443,6 +432,9 @@ All Courses
 
 
 </select>
+
+
+
 
 
 
@@ -464,6 +456,9 @@ All Semesters
 
 
 
+
+
+
 <select id="filter-subject">
 
 
@@ -475,6 +470,8 @@ All Subjects
 
 
 </select>
+
+
 
 
 
@@ -512,8 +509,9 @@ Advanced
 </option>
 
 
-
 </select>
+
+
 
 
 
@@ -529,12 +527,14 @@ placeholder="Tags"
 >
 
 
-
 </div>
 
 
 
+
+
 <br>
+
 
 
 <button
@@ -544,10 +544,11 @@ class="btn btn-primary"
 onclick="applyFilters()">
 
 
-Apply Filter
+Apply Filters
 
 
 </button>
+
 
 
 
@@ -566,7 +567,11 @@ Apply Filter
 
 
 
+<!-- DATABASE CONTENT -->
+
+
 <section class="container section">
+
 
 
 <h2 class="section-title">
@@ -579,20 +584,24 @@ Featured Knowledge
 
 
 
-<div class="library-block">
 
 
-<h3>📚 Resources</h3>
 
+<h3>
 
-<br>
+📚 Resources
+
+</h3>
+
 
 
 <div
+
 class="grid"
+
 id="resources-list"
+
 data-render="resources">
-</div>
 
 
 </div>
@@ -603,53 +612,58 @@ data-render="resources">
 
 
 
-<div class="library-block">
 
+<h3>
 
-<h3>📖 Books</h3>
+📖 Books
 
+</h3>
 
-<br>
 
 
 <div
+
 class="grid"
+
 id="books-list"
+
 data-render="content"
+
 data-type="books">
 
 
 </div>
 
 
-</div>
 
 
 
 
 
 
+<h3>
 
-<div class="library-block">
+👨‍🏫 Teaching Materials
+
+</h3>
 
 
-<h3>👨‍🏫 Teaching Materials</h3>
-
-
-<br>
 
 
 <div
+
 class="grid"
+
 id="teaching-list"
+
 data-render="content"
+
 data-type="teaching-materials">
 
 
 </div>
 
 
-</div>
 
 
 
@@ -657,52 +671,52 @@ data-type="teaching-materials">
 
 
 
+<h3>
 
-<div class="library-block">
+❓ Question Bank
+
+</h3>
 
 
-<h3>❓ Question Bank</h3>
-
-
-<br>
 
 
 <div
+
 class="grid"
+
 id="questions-list"
+
 data-render="content"
+
 data-type="question-bank">
 
 
 </div>
 
 
-</div>
 
 
 
 
 
 
+<h3>
 
+📝 Assignments
 
-<div class="library-block">
+</h3>
 
-
-<h3>📝 Assignments</h3>
-
-
-<br>
 
 
 <div
+
 class="grid"
+
 id="assignments-list"
+
 data-render="content"
+
 data-type="assignments">
-
-
-</div>
 
 
 </div>
@@ -719,25 +733,43 @@ data-type="assignments">
 
 
 
+
+<!-- CONTRIBUTION -->
+
+
 <section class="container section">
 
 
-<div class="card">
+<div class="card glass">
+
+
+
+<span class="badge">
+
+Open Knowledge
+
+</span>
+
+
 
 
 <h2>
 
-🌱 Share Knowledge
+🌱 Share Pharmacy Knowledge
 
 </h2>
 
 
 
+
 <p>
 
-Help improve pharmacy education.
+Contribute notes, books, questions,
+teaching resources and professional
+experience.
 
 </p>
+
 
 
 
@@ -747,12 +779,12 @@ Help improve pharmacy education.
 
 <a
 
-href="/contribute/"
+href="../contribute/"
 
 class="btn btn-primary">
 
 
-Add Contribution
+Contribute
 
 
 </a>
@@ -762,7 +794,10 @@ Add Contribution
 </div>
 
 
+
 </section>
+
+
 
 
 
@@ -780,7 +815,8 @@ Add Contribution
 
 
 
-<script src="/js/pharmora.js"></script>
+
+<script src="../js/pharmora.js"></script>
 
 
 
@@ -789,12 +825,15 @@ Add Contribution
 <script>
 
 
+
 async function loadFilters(){
 
 
 
 if(
+
 typeof getRecords !== "function"
+
 ){
 
 return;
@@ -805,16 +844,22 @@ return;
 
 
 let courses =
+
 await getRecords(
+
 "courses"
+
 );
 
 
 
 
 let courseBox =
+
 document.getElementById(
+
 "filter-course"
+
 );
 
 
@@ -823,17 +868,15 @@ document.getElementById(
 courses.forEach(c=>{
 
 
+
 courseBox.innerHTML +=
 
-`
-
-<option value="${c.id}">
+`<option value="${c.id}">
 
 ${c.name}
 
-</option>
+</option>`;
 
-`;
 
 
 });
@@ -847,32 +890,37 @@ ${c.name}
 
 
 
+
 function filterType(type){
 
 
 
 document
 
-.getElementById(
-"filter-type"
-)
+.getElementById("filter-type")
 
-.value=type;
+.value = type;
+
 
 
 
 
 if(
-typeof applyFilters==="function"
+
+typeof applyFilters === "function"
+
 ){
+
 
 applyFilters();
 
-}
-
-
 
 }
+
+
+
+}
+
 
 
 
@@ -884,20 +932,13 @@ window.addEventListener(
 
 "pharmora-ready",
 
-()=>{
-
-
-loadFilters();
-
-
-}
+loadFilters
 
 );
 
 
 
 </script>
-
 
 
 
