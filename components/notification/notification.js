@@ -1,10 +1,11 @@
 /*
- Notification Component
+ Pharmora Notification Component v3
+ Responsive Notification UI
+ Compatible with PharmoraNotification API
 */
 
 
 async function loadNotifications(){
-
 
 
 const boxes =
@@ -13,20 +14,14 @@ document.querySelectorAll(
 );
 
 
-
 if(!boxes.length){
-
 return;
-
 }
 
 
 
-
-
 let notices=[];
-
-
+let personal=[];
 
 
 
@@ -35,46 +30,40 @@ try{
 
 notices =
 await fetch(
-
-appPath(
-"config/notices.json"
+appPath("config/notices.json")
 )
-
-)
-
 .then(r=>r.json());
 
 
 }
+catch(e){
 
-catch(e){}
+notices=[];
 
-
-
-
-
-
-
-let personal=[];
+}
 
 
 
-if(
 
-typeof getMyNotifications==="function"
+try{
 
-){
 
+if(typeof getMyNotifications==="function"){
 
 
 personal =
 await getMyNotifications();
 
 
-
 }
 
 
+}
+catch(e){
+
+personal=[];
+
+}
 
 
 
@@ -87,8 +76,11 @@ let html = `
 
 <div class="notification-head">
 
+
 <strong>
+
 🔔 Notifications
+
 </strong>
 
 
@@ -101,7 +93,6 @@ this.closest('.notification-panel')
 
 ×
 
-
 </span>
 
 
@@ -109,72 +100,129 @@ this.closest('.notification-panel')
 
 
 
-<h3>
-👤 Your Notifications
-</h3>
+
+
+
+<div class="badge">
+
+👤 Personal
+
+</div>
+
+
+<br><br>
+
 
 
 ${
 personal.length
+
 ?
+
 personal.map(renderNotice).join("")
+
 :
-"<p>No personal notifications</p>"
+
+`
+
+<div class="empty-state">
+
+No personal notifications
+
+</div>
+
+`
+
 }
+
+
+
+
+
 
 
 <br>
 
 
-<h3>
-📢 Announcements
-</h3>
+
+
+
+
+<div class="badge">
+
+📢 Platform Updates
+
+</div>
+
+
+
+<br><br>
+
+
 
 
 ${
 notices.length
+
 ?
+
 notices.map(renderNotice).join("")
+
 :
-"<p>No announcements</p>"
+
+`
+
+<div class="empty-state">
+
+No announcements
+
+</div>
+
+`
+
 }
+
+
+
+
+
+
 
 
 <div class="notification-footer">
 
-<a
-class="btn"
-href="/components/notification/">
 
-View all notifications →
+<a
+class="btn btn-primary btn-small"
+href="${appPath("notifications/")}
+>
+
+View all →
 
 </a>
+
 
 </div>
 
 
 `;
 
+
+
+
+
+
 boxes.forEach(box=>{
 
-box.innerHTML = html;
+
+box.innerHTML=html;
+
 
 });
 
 
 
-
-
-
-
-
-
-
-
-
-
 }
-
 
 
 
@@ -187,10 +235,10 @@ box.innerHTML = html;
 function toggleNotifications(id){
 
 
+
 let panel =
-document.getElementById(
-id
-);
+document.getElementById(id);
+
 
 
 if(!panel){
@@ -200,23 +248,44 @@ return;
 }
 
 
+
+
 document
-.querySelectorAll(".notification-panel")
-.forEach(x=>{
 
-if(x!==panel){
+.querySelectorAll(
+".notification-panel"
+)
 
-x.classList.remove("show");
+.forEach(item=>{
+
+
+if(item!==panel){
+
+
+item.classList.remove(
+"show"
+);
+
 
 }
+
 
 });
 
 
-panel.classList.toggle("show");
+
+
+
+panel.classList.toggle(
+"show"
+);
+
 
 
 }
+
+
+
 
 
 
@@ -224,58 +293,118 @@ panel.classList.toggle("show");
 
 
 window.addEventListener(
+
 "pharmora-ready",
+
 ()=>{
+
 
 loadNotifications();
 
+
 }
+
 );
 
+
+
+
+
+
+
+
+
+
+
 /*
- Global Notification UI API
+ Global Notification API
 */
 
-window.PharmoraNotification = {
+
+window.PharmoraNotification={
+
+
 
 
 refresh:
+
+
 async function(){
+
 
 
 await loadNotifications();
 
 
+
+
 if(
+
 typeof PharmoraNotify==="undefined"
+
 ){
 
+
 return;
+
 
 }
 
 
-let unread =
+
+
+
+let unread=[];
+
+
+
+try{
+
+
+unread =
 await PharmoraNotify.unread();
+
+
+}
+catch(e){
+
+unread=[];
+
+}
+
+
+
 
 
 
 document
+
 .querySelectorAll(
 ".notification-dot"
 )
-.forEach(x=>x.remove());
+
+.forEach(dot=>dot.remove());
+
+
+
+
 
 
 
 if(unread.length){
 
 
+
 document
+
 .querySelectorAll(
 ".notification-link"
 )
-.forEach(bell=>{
+
+.forEach(link=>{
+
+
+
 
 
 let badge =
@@ -284,35 +413,49 @@ document.createElement(
 );
 
 
+
+
 badge.className =
 "notification-dot";
+
 
 
 badge.innerText =
 unread.length;
 
 
-bell.appendChild(
+
+
+link.appendChild(
 badge
 );
+
 
 
 });
 
 
+
 }
 
 
+
 },
+
+
 
 
 
 
 
 toggle:
+
+
 function(id){
 
+
 return toggleNotifications(id);
+
 
 },
 
@@ -320,63 +463,139 @@ return toggleNotifications(id);
 
 
 
+
+
 count:
+
+
 async function(){
 
 
+
 if(
+
 typeof PharmoraNotify==="undefined"
+
 ){
+
 
 return 0;
 
+
 }
+
+
+
+
+try{
+
 
 
 let unread =
 await PharmoraNotify.unread();
 
 
+
 return unread.length;
+
 
 
 }
 
 
+catch(e){
+
+
+return 0;
+
+
+}
+
+
+
+}
+
+
+
 };
+
+
+
+
+
+
+
+
+
 
 function renderNotice(item){
 
 
-let data =
-{
+
+let data={
+
 ...item,
+
 ...item.data
+
 };
+
+
 
 
 return `
 
+
+
 <div class="notice-item">
 
+
+
 <strong>
-${data.title}
+
+${data.title || "Notification"}
+
 </strong>
 
 
+
+
 <p>
-${data.message}
+
+${data.message || ""}
+
 </p>
 
 
+
+
 <small>
-${data.createdAt || data.date || ""}
+
+${
+
+data.createdAt
+
+||
+
+data.date
+
+||
+
+""
+
+}
+
 </small>
+
+
 
 
 </div>
 
+
+
 `;
+
 
 
 }
