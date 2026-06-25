@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Practicals | Pharmora
+</title>
+
+
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
+
+
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
+
+
+</head>
+
+
+
+<body>
+
+
+
+<div id="site-header"></div>
+
+
+
+
+
+<main>
+
+
+
+
+
+<!-- HERO -->
+
+
+<section class="container hero">
+
+
+<div class="badge">
+
+🧪 Pharmora Practicals
+
+</div>
+
+
+
+<h1>
+
+Pharmacy Laboratory Learning Hub
+
+</h1>
+
+
+
+<p>
+
+Explore experiments, procedures,
+calculations and practical learning
+resources for pharmacy education.
+
+</p>
+
+
+
+
+<div class="search-box">
+
+
+<input
+
+placeholder="Search experiments, subjects, methods..."
+
+oninput="pharmoraSearch(this.value)"
+
+>
+
+
+</div>
+
+
+
+
+<div
+
+id="search-results"
+
+class="grid">
+
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- LAB AREAS -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Laboratory Areas
+
+</h2>
+
+
+
+
+<div class="grid">
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+⚗ Pharmaceutical Analysis
+
+</h2>
+
+
+<p>
+
+Assays, titrations, HPLC,
+UV spectroscopy and validation experiments.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+💊 Pharmaceutics
+
+</h2>
+
+
+
+<p>
+
+Tablet, capsule, emulsion,
+suspension and formulation practicals.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🧪 Pharmaceutical Chemistry
+
+</h2>
+
+
+
+<p>
+
+Synthesis, identification tests
+and chemical analysis.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🌿 Pharmacognosy
+
+</h2>
+
+
+
+<p>
+
+Microscopy, extraction,
+evaluation and herbal studies.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🧬 Pharmacology
+
+</h2>
+
+
+<p>
+
+Experimental models,
+simulations and drug action studies.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🔬 Instrumentation
+
+</h2>
+
+
+<p>
+
+HPLC, UV, dissolution,
+calibration and instrument handling.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- PRACTICAL WORKFLOW -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Experiment Structure
+
+</h2>
+
+
+
+
+<div class="grid">
+
+
+
+
+
+
+<div class="card">
+
+<h3>🎯 Aim</h3>
+
+<p>
+Experiment objective.
+</p>
+
+</div>
+
+
+
+
+
+<div class="card">
+
+<h3>📘 Principle</h3>
+
+<p>
+Scientific background.
+</p>
+
+</div>
+
+
+
+
+
+
+<div class="card">
+
+<h3>🧾 Requirements</h3>
+
+<p>
+Chemicals and apparatus.
+</p>
+
+</div>
+
+
+
+
+
+
+<div class="card">
+
+<h3>🧪 Procedure</h3>
+
+<p>
+Stepwise experiment method.
+</p>
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+<h3>📊 Calculation</h3>
+
+<p>
+Formula and analysis.
+</p>
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+<h3>✅ Result</h3>
+
+<p>
+Observation and conclusion.
+</p>
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- DATABASE PRACTICALS -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+📚 Practical Library
+
+</h2>
+
+
+
+
+
+<div
+
+class="grid"
+
+id="practicals-list"
+
+data-render="practicals"
+
+data-requires="practicals">
+
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+<!-- TOOLS CONNECTION -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Related Laboratory Tools
+
+</h2>
+
+
+
+
+<div class="grid">
+
+
+
+
+
+
+
+<a
+
+class="card"
+
+href="../tools/laboratory.html">
+
+
+<h3>
+
+🔬 Laboratory Toolkit
+
+</h3>
+
+
+<p>
+
+Calculations and analytical utilities.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+
+class="card"
+
+href="../tools/formulas.html">
+
+
+<h3>
+
+📚 Formula Library
+
+</h3>
+
+
+
+<p>
+
+Important pharmaceutical formulas.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+
+class="card"
+
+href="../research/">
+
+
+<h3>
+
+🔬 Research Hub
+
+</h3>
+
+
+
+<p>
+
+Convert practical knowledge
+into research.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- CONTRIBUTE -->
+
+
+<section class="container section">
+
+
+<div class="card glass">
+
+
+<span class="badge">
+
+Open Laboratory
+
+</span>
+
+
+
+
+<h2>
+
+🌱 Share Experiments
+
+</h2>
+
+
+
+<p>
+
+Contribute practical manuals,
+procedures, observations and
+laboratory knowledge.
+
+</p>
+
+
+
+
+
+<br>
+
+
+
+
+<a
+
+href="../contribute/"
+
+class="btn btn-primary">
+
+
+Add Practical
+
+
+</a>
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+</main>
+
+
+
+
+
+
+
+
+<div id="site-footer"></div>
+
+
+
+
+
+
+
+
+<script src="../js/pharmora.js"></script>
+
+
+
+
+
+</body>
+
+
+</html>
