@@ -23,14 +23,11 @@ return await createRecord(
 
 {
 
-
 collection,
-
 
 contentId:id,
 
-
-data:oldData,
+snapshot:oldData,
 
 
 user:
@@ -87,7 +84,9 @@ return versions
 
 
 let v =
-x.data || x;
+x.data?.data ||
+x.data ||
+x;
 
 
 return (
