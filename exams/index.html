@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Exams | Pharmora
+</title>
+
+
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
+
+
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
+
+
+</head>
+
+
+
+<body>
+
+
+
+<div id="site-header"></div>
+
+
+
+
+<main>
+
+
+
+
+
+<!-- HERO -->
+
+
+<section class="container hero">
+
+
+<div class="badge">
+
+🏆 Pharmora Exams
+
+</div>
+
+
+
+<h1>
+
+Pharmacy Exam Preparation Hub
+
+</h1>
+
+
+
+<p>
+
+Prepare for university examinations,
+competitive exams and professional
+pharmacy assessments.
+
+</p>
+
+
+
+
+<div class="search-box">
+
+
+<input
+
+placeholder="Search exams, subjects, questions..."
+
+oninput="pharmoraSearch(this.value)"
+
+>
+
+
+</div>
+
+
+
+
+<div
+
+id="search-results"
+
+class="grid">
+
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- EXAM CATEGORIES -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Exam Categories
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🎓 University Exams
+
+</h2>
+
+
+<p>
+
+Semester exams, previous papers,
+important questions and preparation.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🏆 GPAT
+
+</h2>
+
+
+<p>
+
+Graduate Pharmacy Aptitude Test
+preparation resources.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🔬 NIPER Entrance
+
+</h2>
+
+
+<p>
+
+Advanced pharmacy entrance
+preparation pathway.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+💊 Pharmacist Exams
+
+</h2>
+
+
+<p>
+
+Government pharmacist and
+licensing exam preparation.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🏛 Drug Inspector
+
+</h2>
+
+
+<p>
+
+Regulatory and inspector
+exam preparation.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🧪 Practical Exams
+
+</h2>
+
+
+<p>
+
+Viva, experiments and laboratory
+exam preparation.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- PREPARATION FLOW -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Preparation Roadmap
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+
+<div class="card">
+
+<h3>
+
+1️⃣ Syllabus
+
+</h3>
+
+<p>
+
+Understand exam pattern.
+
+</p>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+<h3>
+
+2️⃣ Learn
+
+</h3>
+
+<p>
+
+Study important concepts.
+
+</p>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+<h3>
+
+3️⃣ Practice
+
+</h3>
+
+<p>
+
+Solve questions and tests.
+
+</p>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+<h3>
+
+4️⃣ Analyze
+
+</h3>
+
+<p>
+
+Improve weak areas.
+
+</p>
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- DATABASE EXAMS -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+📚 Exam Resources
+
+</h2>
+
+
+
+
+<div
+
+class="grid"
+
+id="exams-list"
+
+data-render="exams"
+
+data-requires="exams">
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- CONNECTED MODULES -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Study Resources
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+
+<a
+
+class="card"
+
+href="../learn/">
+
+
+<h3>
+
+🎓 Learn
+
+</h3>
+
+
+<p>
+
+Study subjects.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+
+class="card"
+
+href="../questions/">
+
+
+<h3>
+
+❓ Questions
+
+</h3>
+
+
+<p>
+
+Practice question bank.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+
+class="card"
+
+href="../tests/">
+
+
+<h3>
+
+📝 Tests
+
+</h3>
+
+
+<p>
+
+Attempt practice tests.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+<a
+
+class="card"
+
+href="../books/">
+
+
+<h3>
+
+📚 Books
+
+</h3>
+
+
+<p>
+
+Reference material.
+
+</p>
+
+
+</a>
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- CONTRIBUTE -->
+
+
+<section class="container section">
+
+
+<div class="card glass">
+
+
+<span class="badge">
+
+Community Preparation
+
+</span>
+
+
+
+
+<h2>
+
+🌱 Share Exam Resources
+
+</h2>
+
+
+
+
+<p>
+
+Contribute previous papers,
+questions, notes and preparation
+strategies.
+
+</p>
+
+
+
+
+<br>
+
+
+
+
+<a
+
+href="../contribute/"
+
+class="btn btn-primary">
+
+
+Add Resource
+
+
+</a>
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+</main>
+
+
+
+
+
+
+<div id="site-footer"></div>
+
+
+
+
+
+<script src="../js/pharmora.js"></script>
+
+
+
+
+</body>
+
+
+</html>
