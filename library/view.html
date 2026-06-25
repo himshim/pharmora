@@ -12,45 +12,18 @@ content="width=device-width, initial-scale=1.0">
 
 
 <title>
-Content | Pharmora
+Resource | Pharmora
 </title>
 
 
-<link rel="icon" href="../assets/branding/favicon.svg">
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
 
 
-<link rel="stylesheet" href="../css/variables.css">
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/components.css">
-<link rel="stylesheet" href="../css/responsive.css">
-
-
-<style>
-
-
-.meta{
-
-line-height:2;
-
-margin-top:20px;
-
-}
-
-
-.action-box{
-
-margin-top:30px;
-
-display:flex;
-
-gap:15px;
-
-flex-wrap:wrap;
-
-}
-
-
-</style>
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
 
 
 </head>
@@ -65,21 +38,30 @@ flex-wrap:wrap;
 
 
 
-<main class="container section">
+<main>
+
+
+<section class="container section">
 
 
 <div
-class="card"
+
+class="card glass"
+
 id="resource-view">
 
 
-Loading...
+Loading resource...
 
 
 </div>
 
 
+</section>
+
+
 </main>
+
 
 
 
@@ -92,8 +74,8 @@ Loading...
 
 
 
-<!-- CORE -->
-<script src="/js/pharmora.js"></script>
+<script src="../js/pharmora.js"></script>
+
 
 
 
@@ -103,10 +85,13 @@ Loading...
 <script>
 
 
+
 function icon(type){
 
 
+
 return {
+
 
 resources:"📚",
 
@@ -123,7 +108,9 @@ tools:"🧰",
 assignments:"📝"
 
 
+
 }[type] || "📄";
+
 
 
 }
@@ -134,9 +121,14 @@ assignments:"📝"
 
 
 
+
+
 async function resolveName(
+
 collection,
+
 id
+
 ){
 
 
@@ -149,17 +141,33 @@ return "";
 
 
 
+
 let data =
-await getRecords(
-collection
-);
+
+await getRecords(collection);
+
 
 
 
 let item =
+
 data.find(
-x=>x.id===id
+
+x =>
+
+x.id === id
+
+||
+
+x.refId === id
+
+||
+
+x.publicId === id
+
 );
+
+
 
 
 
@@ -184,6 +192,7 @@ item.code ||
 "";
 
 
+
 }
 
 
@@ -198,24 +207,30 @@ async function loadResource(){
 
 
 
+
+
 let params =
+
 new URLSearchParams(
+
 location.search
+
 );
+
+
 
 
 
 let id =
-params.get(
-"id"
-);
+
+params.get("id");
+
 
 
 
 let collection =
-params.get(
-"type"
-)
+
+params.get("type")
 
 ||
 
@@ -227,27 +242,51 @@ params.get(
 
 
 
-
 let items =
+
 await getRecords(
+
 collection
+
 );
+
+
+
+
 
 
 
 let item =
+
 items.find(
-x=>x.id===id
+
+x =>
+
+x.id === id
+
+||
+
+x.refId === id
+
+||
+
+x.publicId === id
+
 );
+
+
+
 
 
 
 
 let box =
-document.getElementById(
-"resource-view"
-);
 
+document.getElementById(
+
+"resource-view"
+
+);
 
 
 
@@ -257,12 +296,31 @@ document.getElementById(
 if(!item){
 
 
-box.innerHTML=
 
-"<h2>Content not found</h2>";
+box.innerHTML = `
+
+
+<h1>
+
+Content Not Found
+
+</h1>
+
+
+<p>
+
+This resource may have been removed
+or is unavailable.
+
+</p>
+
+
+`;
+
 
 
 return;
+
 
 
 }
@@ -280,20 +338,84 @@ item.status
 
 &&
 
-item.status!=="approved"
+item.status !== "approved"
 
 ){
 
 
-box.innerHTML=
 
-"<h2>⏳ Content awaiting review</h2>";
+box.innerHTML = `
+
+
+<h1>
+
+⏳ Awaiting Review
+
+</h1>
+
+
+<p>
+
+This contribution is waiting for approval.
+
+</p>
+
+
+`;
+
 
 
 return;
 
 
+
 }
+
+
+
+
+
+
+
+
+
+
+let title =
+
+item.title
+
+||
+
+item.question
+
+||
+
+item.name
+
+||
+
+"Untitled";
+
+
+
+
+
+
+let description =
+
+item.description
+
+||
+
+item.instructions
+
+||
+
+item.answer
+
+||
+
+"";
 
 
 
@@ -315,6 +437,9 @@ id;
 
 
 
+
+
+
 let newView =
 
 !sessionStorage.getItem(
@@ -322,6 +447,9 @@ let newView =
 viewKey
 
 );
+
+
+
 
 
 
@@ -340,7 +468,10 @@ newView ? 1 : 0
 
 
 
+
+
 if(newView){
+
 
 
 sessionStorage.setItem(
@@ -352,40 +483,50 @@ viewKey,
 );
 
 
-}
-
-
-
-
-
-
 
 await updateRecord(
 
 collection,
 
-id,
+item.id,
 
 {
 
+
 stats:{
+
 
 ...(item.stats || {}),
 
+
 views:views
 
+
 }
+
 
 }
 
 );
 
 
+
+}
+
+
+
+
+
+
+
+
+
 if(
 
-typeof trackEvent==="function"
+typeof trackEvent === "function"
 
 ){
+
 
 
 trackEvent(
@@ -397,6 +538,7 @@ title
 );
 
 
+
 }
 
 
@@ -404,75 +546,75 @@ title
 
 
 
+
+
+
 let course =
+
 await resolveName(
+
 "courses",
+
 item.course
+
 );
+
+
 
 
 
 let curriculum =
+
 await resolveName(
+
 "curriculums",
+
 item.curriculum
+
 );
+
+
 
 
 
 let semester =
+
 await resolveName(
+
 "semesters",
+
 item.semester
+
 );
+
+
 
 
 
 let subject =
+
 await resolveName(
+
 "subjects",
+
 item.subject
+
 );
+
+
 
 
 
 let unit =
+
 await resolveName(
+
 "units",
+
 item.unit
+
 );
 
-
-
-
-
-
-
-
-let title =
-
-item.title ||
-
-item.question ||
-
-item.name ||
-
-"Untitled";
-
-
-
-
-
-
-let description =
-
-item.description ||
-
-item.instructions ||
-
-item.answer ||
-
-"";
 
 
 
@@ -485,13 +627,14 @@ box.innerHTML = `
 
 
 
-<div class="badge">
+
+<span class="badge">
 
 ${icon(collection)}
 
 ${collection}
 
-</div>
+</span>
 
 
 
@@ -501,11 +644,13 @@ ${collection}
 
 
 
+
 <h1>
 
 ${title}
 
 </h1>
+
 
 
 
@@ -523,43 +668,31 @@ ${description}
 
 
 
-<div class="meta">
 
-
-
-${item.author?.name ? "👤 "+item.author.name+"<br>" : ""}
-
-
-
-${item.resourceType ? "📂 Type: "+item.resourceType+"<br>" : ""}
-
-
-${item.materialType ? "👨‍🏫 Material: "+item.materialType+"<br>" : ""}
-
-
-${item.questionType ? "❓ Question: "+item.questionType+"<br>" : ""}
-
-
-${item.difficulty ? "⭐ Difficulty: "+item.difficulty+"<br>" : ""}
-
-
-
-${item.publisher ? "🏢 Publisher: "+item.publisher+"<br>" : ""}
-
-
-${item.edition ? "📕 Edition: "+item.edition+"<br>" : ""}
-
-
-${item.isbn ? "🔢 ISBN: "+item.isbn+"<br>" : ""}
+<div class="grid">
 
 
 
 
+
+
+<div class="card">
+
+
+<h3>
+
+📘 Academic Details
+
+</h3>
+
+
+
+<p>
 
 
 ${course ? "🎓 "+course+"<br>" : ""}
 
-${curriculum ? "📘 "+curriculum+"<br>" : ""}
+${curriculum ? "📚 "+curriculum+"<br>" : ""}
 
 ${semester ? "📅 "+semester+"<br>" : ""}
 
@@ -568,24 +701,108 @@ ${subject ? "🧪 "+subject+"<br>" : ""}
 ${unit ? "📄 "+unit+"<br>" : ""}
 
 
+</p>
+
+
+
+</div>
 
 
 
 
 
-${
 
-(item.tags || []).length
 
-?
 
-"🏷 "+item.tags.join(", ")
 
-:
 
-""
+<div class="card">
 
-}
+
+
+<h3>
+
+ℹ Resource Details
+
+</h3>
+
+
+
+<p>
+
+
+${item.author?.name ? "👤 "+item.author.name+"<br>" : ""}
+
+
+${item.resourceType ? "📂 "+item.resourceType+"<br>" : ""}
+
+
+${item.materialType ? "👨‍🏫 "+item.materialType+"<br>" : ""}
+
+
+${item.questionType ? "❓ "+item.questionType+"<br>" : ""}
+
+
+${item.difficulty ? "⭐ "+item.difficulty+"<br>" : ""}
+
+
+${item.publisher ? "🏢 "+item.publisher+"<br>" : ""}
+
+
+${item.edition ? "📕 "+item.edition+"<br>" : ""}
+
+
+${item.isbn ? "🔢 "+item.isbn+"<br>" : ""}
+
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+<div class="card">
+
+
+
+<h3>
+
+📊 Statistics
+
+</h3>
+
+
+
+<p>
+
+👁 ${views} views
+
+
+</p>
 
 
 
@@ -601,29 +818,22 @@ ${
 <br>
 
 
-<p>
-
-👁 ${views} views
-
-</p>
 
 
 
-
-
-
-
-
-
-<div class="action-box">
 
 
 
 ${
 
-item.content?.link || item.link
+item.content?.link
+
+||
+
+item.link
 
 ?
+
 
 `
 
@@ -650,33 +860,6 @@ Open Resource
 
 
 
-${
-
-item.content?.file
-
-?
-
-`
-
-<div class="badge">
-
-📎 ${item.content.file.name}
-
-</div>
-
-`
-
-:
-
-""
-
-}
-
-
-
-</div>
-
-
 `;
 
 
@@ -693,19 +876,27 @@ window.openContent = async function(){
 
 
 
+
 await updateRecord(
 
 collection,
 
-id,
+item.id,
 
 {
 
+
 stats:{
+
+
 
 ...(item.stats || {}),
 
+
+
 views:views,
+
+
 
 downloads:
 
@@ -715,15 +906,26 @@ downloads:
 
 1
 
+
+
 }
+
+
 
 }
 
 );
 
+
+
+
+
+
+
+
 if(
 
-typeof trackEvent==="function"
+typeof trackEvent === "function"
 
 ){
 
@@ -746,9 +948,13 @@ title
 
 
 
+
+
 window.open(
 
-item.content?.link ||
+item.content?.link
+
+||
 
 item.link,
 
@@ -762,6 +968,9 @@ item.link,
 
 
 
+
+
+
 }
 
 
@@ -772,7 +981,13 @@ item.link,
 
 
 
-loadResource();
+window.addEventListener(
+
+"pharmora-ready",
+
+loadResource
+
+);
 
 
 
@@ -780,6 +995,9 @@ loadResource();
 
 
 
+
+
 </body>
+
 
 </html>
