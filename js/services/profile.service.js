@@ -913,6 +913,39 @@ limit
 ====================== */
 
 
+/*
+ Direct v2 exports
+*/
+
+window.createUserProfile =
+createUserProfile;
+
+
+window.getProfile =
+getProfile;
+
+
+window.updateUserProfile =
+updateUserProfile;
+
+
+window.getPublicProfile =
+getPublicProfile;
+
+
+window.getUserContributions =
+getUserContributions;
+
+
+window.getProfileActivity =
+getProfileActivity;
+
+
+
+/*
+ Namespace export
+*/
+
 window.PharmoraProfile={
 
 
@@ -930,7 +963,6 @@ getProfileActivity
 
 
 };
-
 
 
 
