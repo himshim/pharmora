@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Tests | Pharmora
+</title>
+
+
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
+
+
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
+
+
+</head>
+
+
+
+<body>
+
+
+
+<div id="site-header"></div>
+
+
+
+
+<main>
+
+
+
+
+
+<!-- HERO -->
+
+
+<section class="container hero">
+
+
+<div class="badge">
+
+📝 Pharmora Tests
+
+</div>
+
+
+
+<h1>
+
+Practice • Evaluate • Improve
+
+</h1>
+
+
+
+<p>
+
+Attempt pharmacy quizzes, subject tests,
+competitive exam practice and track your
+learning progress.
+
+</p>
+
+
+
+
+
+<div class="search-box">
+
+
+<input
+
+placeholder="Search tests, subjects, topics..."
+
+oninput="pharmoraSearch(this.value)"
+
+>
+
+
+</div>
+
+
+
+<div
+
+id="search-results"
+
+class="grid">
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- TEST MODES -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Practice Modes
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+⚡ Quick Practice
+
+</h2>
+
+
+<p>
+
+Random questions for fast
+revision and concept checking.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+⏱ Timed Tests
+
+</h2>
+
+
+
+<p>
+
+Exam-like tests with duration,
+timer and scoring.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🎯 Subject Tests
+
+</h2>
+
+
+
+<p>
+
+Practice according to subject,
+semester and units.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🏆 Competitive Mode
+
+</h2>
+
+
+<p>
+
+GPAT, pharmacist exams,
+NIPER and entrance preparation.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🧪 Practical Viva
+
+</h2>
+
+
+<p>
+
+Prepare practical and laboratory
+oral examinations.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+📚 Revision Mode
+
+</h2>
+
+
+
+<p>
+
+Strengthen weak concepts through
+focused practice.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- DATABASE TESTS -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+🔥 Available Tests
+
+</h2>
+
+
+
+
+
+<div
+
+class="grid"
+
+id="tests-list"
+
+data-render="tests"
+
+data-requires="tests">
+
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- TEST FLOW -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Learning Analytics Flow
+
+</h2>
+
+
+
+
+<div class="grid">
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+1️⃣ Attempt
+
+</h3>
+
+
+<p>
+
+Take quizzes and tests.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+2️⃣ Analyze
+
+</h3>
+
+
+<p>
+
+Review answers and performance.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+3️⃣ Improve
+
+</h3>
+
+
+<p>
+
+Focus on weak topics.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+4️⃣ Master
+
+</h3>
+
+
+<p>
+
+Build exam confidence.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- FUTURE DASHBOARD -->
+
+
+<section class="container section">
+
+
+
+<div class="card glass">
+
+
+
+<span class="badge">
+
+Coming Intelligence
+
+</span>
+
+
+
+
+<h2>
+
+📊 Personal Progress Tracking
+
+</h2>
+
+
+
+<p>
+
+Future Pharmora profiles will support
+scores, attempts, achievements and
+learning analytics.
+
+</p>
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- CONNECT -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Connected Resources
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+
+<a
+
+class="card"
+
+href="../questions/">
+
+
+<h3>
+
+❓ Question Bank
+
+</h3>
+
+
+<p>
+
+Explore all questions.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+
+class="card"
+
+href="../learn/">
+
+
+<h3>
+
+🎓 Learn
+
+</h3>
+
+
+<p>
+
+Study before testing.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+
+class="card"
+
+href="../books/">
+
+
+<h3>
+
+📚 Books
+
+</h3>
+
+
+<p>
+
+Improve preparation.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- CONTRIBUTE -->
+
+
+<section class="container section">
+
+
+<div class="card glass">
+
+
+<span class="badge">
+
+Educator Powered
+
+</span>
+
+
+
+
+<h2>
+
+🌱 Create Practice Tests
+
+</h2>
+
+
+
+<p>
+
+Educators can contribute quizzes,
+MCQs and assessments for learners.
+
+</p>
+
+
+
+<br>
+
+
+
+
+<a
+
+href="../contribute/"
+
+class="btn btn-primary">
+
+
+Create Test
+
+
+</a>
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+</main>
+
+
+
+
+
+
+<div id="site-footer"></div>
+
+
+
+
+
+<script src="../js/pharmora.js"></script>
+
+
+
+
+</body>
+
+
+</html>
