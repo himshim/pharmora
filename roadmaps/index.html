@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Roadmaps | Pharmora
+</title>
+
+
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
+
+
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
+
+
+</head>
+
+
+<body>
+
+
+<div id="site-header"></div>
+
+
+
+<main>
+
+
+
+
+<!-- HERO -->
+
+
+<section class="container hero">
+
+
+<div class="badge">
+
+🗺 Pharmora Roadmaps
+
+</div>
+
+
+<h1>
+
+Your Pharmacy Growth Path
+
+</h1>
+
+
+<p>
+
+Follow structured learning,
+research and career pathways
+designed for pharmacy students
+and professionals.
+
+</p>
+
+
+
+<div class="search-box">
+
+
+<input
+
+placeholder="Search roadmap, skills, careers..."
+
+oninput="pharmoraSearch(this.value)"
+
+>
+
+
+</div>
+
+
+<div
+id="search-results"
+class="grid">
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- CAREER ROADMAPS -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Career Roadmaps
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+⚗ Become QC Analyst
+
+</h2>
+
+
+<p>
+
+Learn analytical chemistry,
+HPLC, validation and laboratory skills.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🛡 Become QA Professional
+
+</h2>
+
+
+<p>
+
+Master GMP, documentation,
+audits and quality systems.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🔬 Become Researcher
+
+</h2>
+
+
+<p>
+
+Learn literature review,
+experiments, data analysis
+and publications.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+👨‍🏫 Become Educator
+
+</h2>
+
+
+<p>
+
+Build teaching,
+academic and mentoring skills.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+📋 Regulatory Career
+
+</h2>
+
+
+<p>
+
+Understand guidelines,
+submissions and approvals.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+🧬 Pharmacovigilance
+
+</h2>
+
+
+<p>
+
+Learn drug safety,
+ADR reporting and medical review.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- SKILL PATH -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Learning Journey
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+
+
+
+<div class="card">
+
+<h3>
+
+1️⃣ Foundation
+
+</h3>
+
+<p>
+
+Understand pharmacy basics.
+
+</p>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+<h3>
+
+2️⃣ Specialize
+
+</h3>
+
+<p>
+
+Choose your interest area.
+
+</p>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+<h3>
+
+3️⃣ Practice
+
+</h3>
+
+<p>
+
+Develop practical skills.
+
+</p>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+<h3>
+
+4️⃣ Build Career
+
+</h3>
+
+<p>
+
+Apply skills professionally.
+
+</p>
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- DATABASE ROADMAPS -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+📚 Available Roadmaps
+
+</h2>
+
+
+
+
+<div
+
+class="grid"
+
+id="roadmaps-list"
+
+data-render="roadmaps"
+
+data-requires="roadmaps">
+
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- CONNECT MODULES -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Build Your Path
+
+</h2>
+
+
+
+
+<div class="grid">
+
+
+
+
+
+<a
+
+href="../learn/"
+
+class="card">
+
+
+<h3>
+
+🎓 Learn
+
+</h3>
+
+
+<p>
+
+Start fundamentals.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+
+href="../practicals/"
+
+class="card">
+
+
+<h3>
+
+🧪 Practice
+
+</h3>
+
+
+<p>
+
+Develop lab skills.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+
+href="../industry/"
+
+class="card">
+
+
+<h3>
+
+🏭 Industry
+
+</h3>
+
+
+<p>
+
+Understand pharma work.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+
+href="../jobs/"
+
+class="card">
+
+
+<h3>
+
+💼 Careers
+
+</h3>
+
+
+<p>
+
+Find opportunities.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- CONTRIBUTION -->
+
+
+<section class="container section">
+
+
+<div class="card glass">
+
+
+<span class="badge">
+
+Community Guidance
+
+</span>
+
+
+<h2>
+
+🌱 Create Learning Paths
+
+</h2>
+
+
+
+<p>
+
+Educators and professionals can
+share career guidance and structured
+learning paths.
+
+</p>
+
+
+
+<br>
+
+
+
+<a
+
+href="../contribute/"
+
+class="btn btn-primary">
+
+
+Add Roadmap
+
+
+</a>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+</main>
+
+
+
+
+<div id="site-footer"></div>
+
+
+
+
+<script src="../js/pharmora.js"></script>
+
+
+
+</body>
+
+</html>
