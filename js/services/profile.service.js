@@ -727,11 +727,54 @@ return updated;
 ====================== */
 
 
-async function getPublicProfile(userId){
+async function getPublicProfile(id){
 
 
 let profile =
-await getProfile(userId);
+await getProfile(id);
+
+
+
+/*
+ Public URL support
+ publicId / profileId / username
+*/
+
+
+if(!profile){
+
+
+let profiles =
+await getRecords(
+"profiles"
+);
+
+
+
+profile =
+profiles.find(
+
+x=>
+
+x.publicId===id
+
+||
+
+x.id===id
+
+||
+
+x.userId===id
+
+||
+
+x.username===id
+
+);
+
+
+}
+
 
 
 
@@ -746,6 +789,7 @@ return null;
 
 let publicProfile =
 structuredClone(profile);
+
 
 
 
@@ -794,11 +838,14 @@ delete publicProfile.contact.website;
 
 
 
+
 /*
  Never expose preferences
 */
 
+
 delete publicProfile.preferences;
+
 
 
 
