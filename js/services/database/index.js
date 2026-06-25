@@ -283,3 +283,12 @@ restore:restoreBackup
 
 
 })();
+
+
+
+/*
+ Export Database API
+*/
+
+window.PharmoraDatabase =
+PharmoraDatabase;
