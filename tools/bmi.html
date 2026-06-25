@@ -12,96 +12,27 @@ content="width=device-width, initial-scale=1.0">
 
 
 <title>
-BMI Calculator | Pharmora
+BMI & Health Calculator | Pharmora
 </title>
 
 
-<link rel="icon" href="../assets/branding/favicon.svg">
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
 
 
-<link rel="stylesheet" href="../css/variables.css">
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/components.css">
-
-
-<style>
-
-
-.calculator{
-
-max-width:600px;
-
-margin:auto;
-
-}
-
-
-
-input{
-
-width:100%;
-
-padding:15px;
-
-margin-bottom:15px;
-
-border-radius:15px;
-
-background:var(--surface);
-
-color:var(--text);
-
-border:1px solid var(--border);
-
-}
-
-
-
-.result{
-
-font-size:1.8rem;
-
-margin-top:20px;
-
-}
-
-
-</style>
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
 
 
 </head>
 
 
-
-
-
 <body>
 
 
-
-
-<header class="container">
-
-
-<nav class="navbar">
-
-
-<a href="../" class="logo">
-
-⚕ Pharmora
-
-</a>
-
-
-</nav>
-
-
-</header>
-
-
-
-
-
+<div id="site-header"></div>
 
 
 
@@ -109,44 +40,87 @@ margin-top:20px;
 
 
 
+<!-- HERO -->
+
 
 <section class="container section">
 
 
-
-<div class="calculator card">
-
+<div class="card glass">
 
 
+<span class="badge">
 
-<div class="badge">
+📏 Clinical Tool
 
-📏 Health Tool
-
-</div>
-
+</span>
 
 
+<br><br>
 
 
 <h1>
 
-BMI Calculator
+BMI & Health Calculator
 
 </h1>
 
 
-
-
-
 <p>
 
-Calculate Body Mass Index
+Calculate Body Mass Index, health category
+and body surface area for clinical learning.
 
 </p>
 
 
+</div>
 
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- CALCULATOR -->
+
+
+<section class="container section">
+
+
+<div class="grid">
+
+
+
+
+
+<div class="card">
+
+
+
+<h2>
+
+🧮 Enter Details
+
+</h2>
+
+
+
+<br>
+
+
+
+
+<label>
+
+Weight (kg)
+
+</label>
 
 
 
@@ -156,11 +130,22 @@ type="number"
 
 id="weight"
 
-placeholder="Weight (kg)">
+step="0.1"
+
+placeholder="Example: 70"
+
+>
 
 
 
 
+
+
+<label>
+
+Height (cm)
+
+</label>
 
 
 
@@ -170,8 +155,11 @@ type="number"
 
 id="height"
 
-placeholder="Height (cm)">
+step="0.1"
 
+placeholder="Example: 170"
+
+>
 
 
 
@@ -183,13 +171,11 @@ placeholder="Height (cm)">
 
 class="btn btn-primary"
 
-onclick="calculateBMI()">
+onclick="calculateBMI()"
 
+>
 
-
-Calculate BMI
-
-
+Calculate
 
 </button>
 
@@ -197,14 +183,19 @@ Calculate BMI
 
 
 
+<button
+
+class="btn"
+
+onclick="resetBMI()"
+
+>
+
+Reset
+
+</button>
 
 
-
-<div
-
-id="result"
-
-class="result">
 
 
 
@@ -212,6 +203,375 @@ class="result">
 
 
 
+
+
+
+
+
+
+<!-- RESULT -->
+
+
+
+<div class="card glass">
+
+
+
+<span class="badge badge-success">
+
+Result
+
+</span>
+
+
+
+<br><br>
+
+
+
+
+<h2 id="bmiResult">
+
+Awaiting input
+
+</h2>
+
+
+
+
+<h3 id="category">
+
+-
+
+</h3>
+
+
+
+
+
+<p id="bsa">
+
+Body Surface Area: -
+
+</p>
+
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- BMI SCALE -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+BMI Categories
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+<div class="card">
+
+<h3>
+
+Underweight
+
+</h3>
+
+
+<p>
+
+BMI below 18.5
+
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+<h3>
+
+Normal Weight
+
+</h3>
+
+
+<p>
+
+BMI 18.5 - 24.9
+
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+<h3>
+
+Overweight
+
+</h3>
+
+
+<p>
+
+BMI 25 - 29.9
+
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+<h3>
+
+Obesity
+
+</h3>
+
+
+<p>
+
+BMI 30 or higher
+
+</p>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- EDUCATION -->
+
+
+<section class="container section">
+
+
+<div class="grid">
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+📘 BMI Formula
+
+</h3>
+
+
+<p>
+
+BMI = Weight(kg) / Height²(m)
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+💊 Pharmacy Relevance
+
+</h3>
+
+
+
+<p>
+
+Body weight and surface area may influence
+clinical dose calculations and pharmacokinetic
+considerations.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+📐 BSA Formula
+
+</h3>
+
+
+
+<p>
+
+Mosteller Method:
+
+<br>
+
+√((Height × Weight) / 3600)
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- RELATED -->
+
+
+<section class="container section">
+
+
+
+<h2 class="section-title">
+
+Related Tools
+
+</h2>
+
+
+
+
+<div class="grid">
+
+
+
+<a
+class="card"
+href="dose.html">
+
+<h3>
+
+💊 Dose Calculator
+
+</h3>
+
+</a>
+
+
+
+
+
+<a
+class="card"
+href="formulas.html">
+
+<h3>
+
+📚 Formula Library
+
+</h3>
+
+</a>
+
+
+
+
+
+<a
+class="card"
+href="laboratory.html">
+
+<h3>
+
+🔬 Laboratory Toolkit
+
+</h3>
+
+</a>
 
 
 
@@ -231,12 +591,19 @@ class="result">
 
 
 
+<div id="site-footer"></div>
+
+
+
+
+
+<script src="../js/pharmora.js"></script>
+
+
 
 
 
 <script>
-
-
 
 
 function calculateBMI(){
@@ -244,31 +611,59 @@ function calculateBMI(){
 
 
 let weight =
-
-document.getElementById(
-"weight"
-).value;
-
-
+parseFloat(
+document.getElementById("weight").value
+);
 
 
 
 let height =
-
-document.getElementById(
-"height"
-).value / 100;
-
+parseFloat(
+document.getElementById("height").value
+);
 
 
+
+
+
+if(
+
+!weight ||
+
+!height ||
+
+weight<=0 ||
+
+height<=0
+
+){
+
+
+document.getElementById("bmiResult").innerHTML =
+"Invalid input";
+
+
+return;
+
+
+}
+
+
+
+
+
+
+let heightMeter =
+height/100;
 
 
 
 let bmi =
-
 weight /
-
-(height * height);
+(
+heightMeter *
+heightMeter
+);
 
 
 
@@ -279,22 +674,17 @@ let status="";
 
 
 
-
 if(bmi < 18.5){
 
 status="Underweight";
 
 }
 
-
-
 else if(bmi < 25){
 
-status="Normal";
+status="Normal Weight";
 
 }
-
-
 
 else if(bmi < 30){
 
@@ -302,11 +692,9 @@ status="Overweight";
 
 }
 
-
-
 else{
 
-status="Obese";
+status="Obesity";
 
 }
 
@@ -316,36 +704,91 @@ status="Obese";
 
 
 
+let bsa =
 
-document.getElementById(
-"result"
-).innerHTML =
+Math.sqrt(
+
+(height * weight) / 3600
+
+);
 
 
 
-bmi ?
 
-"BMI: "+
 
-bmi.toFixed(2)
+
+
+document.getElementById("bmiResult").innerHTML =
+
+"BMI: " +
+
+bmi.toFixed(2);
+
+
+
+
+
+
+document.getElementById("category").innerHTML =
+
+status;
+
+
+
+
+
+
+document.getElementById("bsa").innerHTML =
+
+"Body Surface Area: "
 
 +
 
-"<br>"+
+bsa.toFixed(2)
 
-status
++
 
-
-
-:
-
-"Enter values";
+" m²";
 
 
 
 
 }
 
+
+
+
+
+
+
+
+function resetBMI(){
+
+
+
+document.getElementById("weight").value="";
+
+
+document.getElementById("height").value="";
+
+
+
+document.getElementById("bmiResult").innerHTML =
+"Awaiting input";
+
+
+
+document.getElementById("category").innerHTML =
+"-";
+
+
+
+document.getElementById("bsa").innerHTML =
+"Body Surface Area: -";
+
+
+
+}
 
 
 
@@ -354,7 +797,7 @@ status
 
 
 
-
 </body>
+
 
 </html>
