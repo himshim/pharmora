@@ -2925,7 +2925,7 @@ ${clean(v.user?.name || "System")}
 
 <button
 
-onclick="restoreVersion('${v.id}')">
+onclick="restoreVersion('${v.id}','${id}')">
 
 Restore
 
