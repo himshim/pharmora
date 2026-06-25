@@ -286,9 +286,7 @@ bundle(
 
 "js/services/analytics.service.js",
 
-"js/services/activity.service.js",
-
-"js/services/version.service.js"
+"js/services/activity.service.js"
 
 ],
 
