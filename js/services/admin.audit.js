@@ -4,7 +4,7 @@
 */
 
 
-function renderAuditLogs(){
+async function renderAuditLogs(){
 
 
 
@@ -29,7 +29,7 @@ typeof getAudit==="function"
 
 ?
 
-getAudit()
+await getAudit()
 
 :
 
