@@ -1068,29 +1068,38 @@ loadDynamicSchema();
 async function loadDynamicSchema(){
 
 
-let type =
+let selector =
 document.getElementById(
 "contribution-type"
-)
-.value;
+);
 
 
+if(!selector){
 
-if(
-window.PharmoraSchema
-){
+return;
+
+}
+
+
+if(!window.PharmoraSchema){
+
+console.warn(
+"Schema engine waiting"
+);
+
+return;
+
+}
+
 
 
 await PharmoraSchema.render(
 
-type,
+selector.value,
 
 "schema-fields"
 
 );
-
-
-}
 
 
 }
@@ -2646,7 +2655,14 @@ loadContributorAccess();
 
 
 
+document.addEventListener(
+"pharmora-ready",
+()=>{
+
 loadContributorAccess();
+
+}
+);
 
 
 </script>
