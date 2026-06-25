@@ -57,3 +57,5 @@ return {
 
 
 })();
+
+window.PharmoraUUID = PharmoraUUID;
