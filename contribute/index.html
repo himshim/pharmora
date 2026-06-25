@@ -1623,10 +1623,8 @@ return;
 
 
 let collection =
-document.querySelector(
-
-"input[name='ctype']:checked"
-
+document.getElementById(
+"contribution-type"
 )
 .value;
 
@@ -1770,6 +1768,41 @@ await userPermissions()
 (user.permissions || []);
 
 
+let schemaData = {};
+
+if(window.PharmoraSchema){
+
+schemaData =
+PharmoraSchema.collect(
+"schema-fields"
+);
+
+}
+
+let errors =
+PharmoraSchema.validate(
+collection,
+schemaData
+);
+
+
+if(errors.length){
+
+
+showToast(
+errors[0],
+"error"
+);
+
+
+unlockSubmit();
+
+
+return;
+
+
+}
+
 let contribution={
 
 
@@ -1803,7 +1836,10 @@ content:{
 file:uploaded,
 
 
-link:link
+link:link,
+
+
+fields:schemaData
 
 
 },
@@ -2592,14 +2628,30 @@ loadContributorAccess();
 
 
 
-document.addEventListener(
-"pharmora-ready",
-()=>{
+function startContributorPage(){
+
+
+if(
+typeof currentUser !== "function"
+){
+
+setTimeout(
+startContributorPage,
+100
+);
+
+return;
+
+}
+
 
 loadContributorAccess();
 
+
 }
-);
+
+
+startContributorPage();
 
 
 </script>

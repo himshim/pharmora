@@ -1,466 +1,261 @@
 /*
  Pharmora Field Registry v2
+ --------------------------
+ Global field definitions and content schemas (v2).
+ This file defines all canonical fields (PharmoraFields) and content schemas,
+ using window.PharmoraSchema.register() for each type.
 
- Universal schema definitions
+ **Global Fields**:
+  - title, description, tags, file, link, author, moderation (common to all types)
+  - subject, course, unit, drug, instrument, organization (common references)
+
+ **Fallback**: fieldConfig() returns a default config if key is missing.
+ **Helper**: build(keys) creates field entries from an array of keys.
+
+ Schemas remove common fields; each type schema only lists its type-specific fields.
 */
 
 
-(function(){
-
-
-
-/* =====================
- FIELD LIBRARY
-===================== */
-
-
-window.PharmoraFields={
-
-
-
-title:{
-label:"Title",
-type:"text",
-required:true
-},
-
-
-
-description:{
-label:"Description",
-type:"textarea"
-},
-
-
-
-summary:{
-label:"Summary",
-type:"textarea",
-required:true
-},
-
-
-
-tags:{
-label:"Tags",
-type:"chips",
-allowCustom:true
-},
-
-
-
-references:{
-label:"References",
-type:"textarea"
-},
-
-
-
-file:{
-label:"Attachment",
-type:"file"
-},
-
-
-
-subject:{
-label:"Subject",
-type:"reference",
-collection:"subjects"
-},
-
-
-
-course:{
-label:"Course",
-type:"reference",
-collection:"courses"
-},
-
-
-
-drug:{
-label:"Drug",
-type:"reference",
-collection:"drugs",
-allowSuggest:true
-},
-
-
-
-instrument:{
-label:"Instrument",
-type:"reference",
-collection:"instruments",
-allowSuggest:true
-},
-
-
-
-organization:{
-label:"Organization",
-type:"reference",
-collection:"organizations",
-allowSuggest:true
-}
-
-
-
+// Global field definitions (universal fields)
+window.PharmoraFields = {
+  title: {
+    label: "Title",
+    type: "text",
+    required: true
+  },
+  description: {
+    label: "Description",
+    type: "textarea"
+  },
+  tags: {
+    label: "Tags",
+    type: "chips",
+    allowCustom: true
+  },
+  file: {
+    label: "Attachment",
+    type: "file"
+  },
+  link: {
+    label: "Link",
+    type: "url"
+  },
+  author: {
+    label: "Author",
+    type: "text"
+  },
+  moderation: {
+    label: "Moderation Notes",
+    type: "textarea"
+  },
+  // Common reference fields
+  subject: {
+    label: "Subject",
+    type: "reference",
+    collection: "subjects"
+  },
+  course: {
+    label: "Course",
+    type: "reference",
+    collection: "courses"
+  },
+  unit: {
+    label: "Unit",
+    type: "reference",
+    collection: "units"
+  },
+  drug: {
+    label: "Drug",
+    type: "reference",
+    collection: "drugs",
+    allowSuggest: true
+  },
+  instrument: {
+    label: "Instrument",
+    type: "reference",
+    collection: "instruments",
+    allowSuggest: true
+  },
+  organization: {
+    label: "Organization",
+    type: "reference",
+    collection: "organizations",
+    allowSuggest: true
+  }
 };
 
-
-
-
-
-
-
-/* =====================
- HELPER
-===================== */
-
-
-window.fieldConfig=function(key){
-
-
-return (
-
-PharmoraFields[key]
-
-||
-
-{
-key,
-label:key,
-type:"text",
-allowCustom:true
-}
-
-);
-
-
+// Fallback for unknown fields
+window.fieldConfig = function(key) {
+  return (
+    window.PharmoraFields[key] ||
+    { key: key, label: key, type: "text", allowCustom: true }
+  );
 };
 
+// Helper: build schema fields list from an array of keys
+function build(keys) {
+  return keys.map(k => Object.assign({ key: k }, window.fieldConfig(k)));
+}
 
+// Queue for schemas if PharmoraSchema is not loaded
+window._pendingSchemas = window._pendingSchemas || [];
 
-
-
-
-
-
-
+// Helper to register or queue schemas
+function defineSchema(type, schema) {
+  if (window.PharmoraSchema && typeof window.PharmoraSchema.register === "function") {
+    window.PharmoraSchema.register(type, schema);
+  } else {
+    window._pendingSchemas.push({ type, schema });
+  }
+}
 
 /* =====================
- REGISTER CONTENT TYPES
+   CONTENT SCHEMAS (type-specific fields only)
+   Common fields (title, description, etc.) are omitted here.
 ===================== */
 
-
-function build(keys){
-
-
-return keys.map(k=>({
-
-key:k,
-
-...fieldConfig(k)
-
-}));
-
-
-}
-
-
-
-
-
-
-
-
-if(window.PharmoraSchema){
-
-
-
-
-
-/* Research */
-
-
-PharmoraSchema.register(
-
-"research",
-
-{
-
-version:1,
-
-
-fields:build([
-
-"title",
-
-"summary",
-
-"subject",
-
-"drug",
-
-"instrument",
-
-"organization",
-
-"references"
-
-])
-
-
-}
-
-);
-
-
-
-
-
-
-
-
-
-
-/* Drugs */
-
-
-PharmoraSchema.register(
-
-"drugs",
-
-{
-
-version:1,
-
-
-fields:[
-
-
-...build([
-"title"
-]),
-
-
-
-{
-key:"drugClass",
-label:"Drug Class",
-type:"reference",
-collection:"drugClasses",
-required:true
-},
-
-
-{
-key:"mechanism",
-label:"Mechanism of Action",
-type:"textarea"
-},
-
-
-
-{
-key:"uses",
-label:"Uses",
-type:"textarea"
-},
-
-
-
-{
-key:"adverseEffects",
-label:"Adverse Effects",
-type:"textarea"
-}
-
-
-
-]
-
-
-}
-
-);
-
-
-
-
-
-
-
-
-
-
-/* Documents */
-
-
-PharmoraSchema.register(
-
-"documents",
-
-{
-
-version:1,
-
-fields:build([
-
-"title",
-
-"summary",
-
-"organization",
-
-"references",
-
-"file"
-
-])
-
-}
-
-);
-
-
-
-
-
-
-
-
-
-/* Jobs */
-
-
-PharmoraSchema.register(
-
-"jobs",
-
-{
-
-version:1,
-
-
-fields:[
-
-
-...build([
-"title",
-"organization"
-]),
-
-
-
-{
-key:"qualification",
-label:"Qualification",
-type:"text"
-},
-
-
-
-{
-key:"experience",
-label:"Experience",
-type:"number"
-},
-
-
-
-{
-key:"applyLink",
-label:"Apply Link",
-type:"url"
-}
-
-
-
-]
-
-
-}
-
-);
-
-
-
-
-
-
-
-
-
-/* Practicals */
-
-
-PharmoraSchema.register(
-
-"practicals",
-
-{
-
-version:1,
-
-fields:[
-
-
-...build([
-"title",
-"subject"
-]),
-
-
-
-{
-key:"aim",
-label:"Aim",
-type:"textarea",
-required:true
-},
-
-
-
-{
-key:"procedure",
-label:"Procedure",
-type:"textarea"
-},
-
-
-
-{
-key:"result",
-label:"Result",
-type:"textarea"
-}
-
-
-]
-
-
-}
-
-);
-
-
-
-
-
-
-console.log(
-
-"✓ Field Registry Loaded"
-
-);
-
-
-
-}
-
-
-
-
-})();
+defineSchema("research", {
+  version: 1,
+  fields: [
+    ...build(["subject", "drug", "instrument", "organization"]),
+    { key: "references", label: "References", type: "textarea" },
+    { key: "doi", label: "DOI", type: "text", placeholder: "Digital Object Identifier" }
+  ]
+});
+
+defineSchema("drugs", {
+  version: 1,
+  fields: [
+    {
+      key: "drugClass",
+      label: "Drug Class",
+      type: "reference",
+      collection: "drugClasses",
+      required: true
+    },
+    { key: "mechanism", label: "Mechanism of Action", type: "textarea" },
+    { key: "uses", label: "Uses", type: "textarea" },
+    { key: "adverseEffects", label: "Adverse Effects", type: "textarea" }
+  ]
+});
+
+defineSchema("documents", {
+  version: 1,
+  fields: [
+    { key: "organization", label: "Organization", type: "reference", collection: "organizations" },
+    { key: "revision", label: "Revision", type: "text" },
+    { key: "fileLink", label: "Document Link", type: "url" }
+  ]
+});
+
+defineSchema("jobs", {
+  version: 1,
+  fields: [
+    { key: "organization", label: "Company/Organization", type: "reference", collection: "organizations" },
+    { key: "qualification", label: "Qualification", type: "text" },
+    { key: "experience", label: "Experience (years)", type: "number" },
+    { key: "applyLink", label: "Apply Link", type: "url" }
+  ]
+});
+
+defineSchema("practicals", {
+  version: 1,
+  fields: [
+    { key: "subject", label: "Subject", type: "reference", collection: "subjects" },
+    { key: "aim", label: "Aim", type: "textarea", required: true },
+    { key: "procedure", label: "Procedure", type: "textarea" },
+    { key: "result", label: "Result", type: "textarea" }
+  ]
+});
+
+defineSchema("questions", {
+  version: 1,
+  fields: [
+    { key: "subject", label: "Subject", type: "reference", collection: "subjects" },
+    { key: "question", label: "Question Text", type: "textarea", required: true },
+    { key: "answer", label: "Answer", type: "text" },
+    { key: "explanation", label: "Explanation (optional)", type: "textarea" }
+  ]
+});
+
+defineSchema("tests", {
+  version: 1,
+  fields: [
+    { key: "subject", label: "Subject", type: "reference", collection: "subjects" },
+    { key: "totalQuestions", label: "Total Questions", type: "number" },
+    { key: "duration", label: "Duration (minutes)", type: "number" }
+  ]
+});
+
+defineSchema("resources", {
+  version: 1,
+  fields: [
+    { key: "subject", label: "Subject", type: "reference", collection: "subjects" },
+    { key: "unit", label: "Unit", type: "reference", collection: "units" }
+  ]
+});
+
+defineSchema("books", {
+  version: 1,
+  fields: [
+    { key: "publisher", label: "Publisher", type: "text" },
+    { key: "isbn", label: "ISBN", type: "text" },
+    { key: "year", label: "Year", type: "number" }
+  ]
+});
+
+defineSchema("industry", {
+  version: 1,
+  fields: [
+    { key: "sector", label: "Industry Sector", type: "text" },
+    { key: "organization", label: "Company", type: "reference", collection: "organizations" }
+  ]
+});
+
+defineSchema("roadmaps", {
+  version: 1,
+  fields: [
+    { key: "course", label: "Course", type: "reference", collection: "courses" },
+    { key: "semester", label: "Semester", type: "text" }
+  ]
+});
+
+defineSchema("certifications", {
+  version: 1,
+  fields: [
+    { key: "organization", label: "Issuing Organization", type: "reference", collection: "organizations" },
+    { key: "validity", label: "Validity Period", type: "text" }
+  ]
+});
+
+defineSchema("news", {
+  version: 1,
+  fields: [
+    { key: "source", label: "News Source", type: "text" },
+    { key: "date", label: "Date", type: "date" }
+  ]
+});
+
+defineSchema("events", {
+  version: 1,
+  fields: [
+    { key: "date", label: "Event Date", type: "date" },
+    { key: "location", label: "Location", type: "text" },
+    { key: "organization", label: "Organizer", type: "reference", collection: "organizations" }
+  ]
+});
+
+// Register any queued schemas once the schema engine is ready
+document.addEventListener("pharmora-ready", function() {
+  if (window._pendingSchemas) {
+    window._pendingSchemas.forEach(item => {
+      window.PharmoraSchema.register(item.type, item.schema);
+    });
+    window._pendingSchemas = [];
+  }
+});
+
+console.log("✓ Field Registry Loaded");
+
+// Example: Define a new content schema below using defineSchema()
+// defineSchema("myType", { version: 1, fields: build(["field1","field2"]) });
