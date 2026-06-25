@@ -227,3 +227,5 @@ create
 
 
 })();
+
+window.PharmoraReference = PharmoraReference;

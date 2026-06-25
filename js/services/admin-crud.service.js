@@ -2832,7 +2832,7 @@ data.name.toLowerCase()
 */
 
 
-function showVersions(id){
+async function showVersions(id){
 
 
 
@@ -2861,7 +2861,7 @@ return;
 
 
 let versions =
-getVersions(
+await getVersions(
 
 activeCollection,
 
@@ -2969,17 +2969,7 @@ versionId
 
 
 let versions =
-JSON.parse(
-
-localStorage.getItem(
-"versions"
-)
-
-||
-
-"[]"
-
-);
+await getVersions(activeCollection);
 
 
 

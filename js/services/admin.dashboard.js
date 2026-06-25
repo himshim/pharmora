@@ -66,7 +66,7 @@ action
 
 
 
-async function renderAdminStats(){
+async async function renderAdminStats(){
 
 
 
@@ -200,7 +200,7 @@ typeof getAudit==="function"
 
 
 audits =
-getAudit();
+await getAudit();
 
 
 }

@@ -208,3 +208,5 @@ all
 
 
 })();
+
+window.PharmoraRegistry = PharmoraRegistry;
