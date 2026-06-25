@@ -2238,11 +2238,96 @@ typeof userPermissions==="function"
 
 ?
 
-await userPermissions()
+await userPermissions().catch(()=>[])
 
 :
 
 [];
+
+
+
+
+
+/*
+ACCESS CHECK
+Owner/Admin always allowed
+*/
+
+
+let roles = [
+
+user.role,
+
+user.type,
+
+user.accountType,
+
+user.position
+
+]
+
+.map(x=>String(x || "").toLowerCase());
+
+
+
+
+
+let isOwner =
+
+roles.includes("owner")
+
+||
+
+roles.includes("admin")
+
+||
+
+roles.includes("superadmin");
+
+
+
+
+
+let isContributor =
+
+permissions.includes("*")
+
+||
+
+permissions.includes("content.submit")
+
+||
+
+permissions.includes("admin")
+
+||
+
+permissions.includes("owner");
+
+
+
+
+
+console.log(
+
+"Contributor Access Debug",
+
+{
+
+user,
+
+permissions,
+
+roles,
+
+isOwner,
+
+isContributor
+
+}
+
+);
+
 
 
 
@@ -2259,11 +2344,9 @@ ALREADY CONTRIBUTOR
 
 if(
 
-permissions.includes("*")
+isOwner ||
 
-||
-
-permissions.includes("content.submit")
+isContributor
 
 ){
 
