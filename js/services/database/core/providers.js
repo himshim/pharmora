@@ -279,3 +279,10 @@ PharmoraSupabaseProvider
 
 
 }
+
+/*
+ Export Provider Manager
+*/
+
+window.PharmoraProviders =
+PharmoraProviders;
