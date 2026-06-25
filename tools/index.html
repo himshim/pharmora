@@ -12,157 +12,28 @@ content="width=device-width, initial-scale=1.0">
 
 
 <title>
-
-Tools
-
+Pharmora Tools
 </title>
 
 
-<link 
-rel="icon" 
+<link
+rel="icon"
 href="../assets/branding/favicon.svg">
 
 
-<link rel="stylesheet" href="../css/variables.css">
-
-<link rel="stylesheet" href="../css/base.css">
-
-<link rel="stylesheet" href="../css/components.css">
-
-<link rel="stylesheet" href="../css/responsive.css">
-
-
-
-
-
-<style>
-
-
-.hero{
-
-text-align:center;
-
-padding:70px 0;
-
-}
-
-
-
-.hero h1{
-
-font-size:3.8rem;
-
-}
-
-
-
-
-
-.tool{
-
-position:relative;
-
-overflow:hidden;
-
-cursor:pointer;
-
-}
-
-
-
-
-
-.tool::after{
-
-content:"";
-
-position:absolute;
-
-width:80px;
-
-height:80px;
-
-right:-25px;
-
-bottom:-25px;
-
-border-radius:50%;
-
-background:
-
-linear-gradient(
-135deg,
-var(--primary),
-var(--secondary)
-);
-
-opacity:.25;
-
-}
-
-
-
-
-
-
-.reference{
-
-padding:20px;
-
-border-radius:20px;
-
-background:var(--surface);
-
-border:1px solid var(--border);
-
-display:flex;
-
-justify-content:space-between;
-
-margin-bottom:12px;
-
-transition:var(--transition);
-
-cursor:pointer;
-
-}
-
-
-
-
-
-
-.reference:hover{
-
-border-color:var(--primary);
-
-transform:translateX(5px);
-
-}
-
-
-
-</style>
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
 
 
 </head>
-
-
-
-
 
 
 <body>
 
 
 
-
-
-
 <div id="site-header"></div>
-
-
-
 
 
 
@@ -175,67 +46,34 @@ transform:translateX(5px);
 
 
 
-
+<!-- HERO -->
 
 
 <section class="container hero">
 
 
 
-
-
-
 <div class="badge">
 
-🧪 Tools
+🧪 Pharmora Toolkit
 
 </div>
 
 
 
-
-
-
 <h1>
 
-Smart Pharmacy
-
-<br>
-
-
-
-
-
-<span style="
-background:linear-gradient(
-90deg,
-var(--primary),
-var(--secondary)
-);
--webkit-background-clip:text;
-color:transparent;
-">
-
-
-Utilities
-
-
-</span>
-
-
-
+Pharmacy Tools & References
 
 </h1>
 
 
 
-
-
-
-
 <p>
 
-Fast, simple and open pharmacy utilities for learning and teaching.
+Professional calculators, laboratory utilities,
+and pharmacy knowledge resources for learning,
+teaching and research.
 
 </p>
 
@@ -243,34 +81,19 @@ Fast, simple and open pharmacy utilities for learning and teaching.
 
 
 
-
-
-
-<div
-class="search-box"
-style="margin-top:30px;">
-
-
-
-
+<div class="search-box">
 
 
 <input
 
-placeholder="Search calculators, formulas, subjects..."
+placeholder="Search calculators, formulas, drug references..."
 
 oninput="pharmoraSearch(this.value)"
 
 >
 
 
-
-
-
 </div>
-
-
-
 
 
 
@@ -280,16 +103,10 @@ oninput="pharmoraSearch(this.value)"
 
 id="search-results"
 
-class="grid"
-
-style="margin-top:30px;">
-
+class="grid">
 
 
 </div>
-
-
-
 
 
 
@@ -304,24 +121,198 @@ style="margin-top:30px;">
 
 
 
-
-
+<!-- CALCULATORS -->
 
 
 <section class="container section">
 
 
 
-
-
 <h2 class="section-title">
 
-Calculators
+🧮 Calculators
 
 </h2>
 
 
 
+
+
+<div class="grid">
+
+
+
+
+
+
+<a
+class="card glass"
+href="dose.html">
+
+
+<span class="badge">
+
+Clinical
+
+</span>
+
+
+<h2>
+
+💊 Dose Calculator
+
+</h2>
+
+
+<p>
+
+Calculate weight-based medication doses
+and daily dose requirements.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+class="card glass"
+href="dilution.html">
+
+
+<span class="badge">
+
+Laboratory
+
+</span>
+
+
+<h2>
+
+🧪 Dilution Calculator
+
+</h2>
+
+
+<p>
+
+Prepare solutions using C₁V₁ = C₂V₂
+dilution calculations.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+class="card glass"
+href="concentration.html">
+
+
+<span class="badge">
+
+Analysis
+
+</span>
+
+
+<h2>
+
+⚗ Concentration Calculator
+
+</h2>
+
+
+<p>
+
+Calculate % strength, ppm and
+analytical concentrations.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+
+
+<a
+class="card glass"
+href="bmi.html">
+
+
+<span class="badge">
+
+Health
+
+</span>
+
+
+<h2>
+
+📏 BMI & BSA Calculator
+
+</h2>
+
+
+<p>
+
+Calculate BMI, body category and
+clinical body surface area.
+
+</p>
+
+
+</a>
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- PROFESSIONAL REFERENCES -->
+
+
+<section class="container section">
+
+
+
+<h2 class="section-title">
+
+📚 Pharmacy Knowledge Tools
+
+</h2>
 
 
 
@@ -336,17 +327,21 @@ Calculators
 
 
 
-<div
+<a
+class="card"
+href="laboratory.html">
 
-class="card tool"
 
-onclick="location.href='dose.html'">
+<span class="badge">
 
+QC / PAQA
+
+</span>
 
 
 <h2>
 
-💊 Dose Calculator
+🔬 Laboratory Toolkit
 
 </h2>
 
@@ -354,13 +349,14 @@ onclick="location.href='dose.html'">
 
 <p>
 
-Medication dose calculation assistant.
+Molarity, normality, assay,
+recovery and validation calculations.
 
 </p>
 
 
 
-</div>
+</a>
 
 
 
@@ -369,35 +365,72 @@ Medication dose calculation assistant.
 
 
 
+<a
+class="card"
+href="formulas.html">
+
+
+<span class="badge">
+
+Reference
+
+</span>
+
+
+<h2>
+
+📚 Formula Library
+
+</h2>
+
+
+<p>
+
+Essential pharmaceutical,
+clinical and analytical formulas.
+
+</p>
 
 
 
-<div
+</a>
 
-class="card tool"
 
-onclick="location.href='dilution.html'">
+
+
+
+
+
+
+<a
+class="card"
+href="drug-classes.html">
+
+
+<span class="badge">
+
+Pharmacology
+
+</span>
 
 
 
 <h2>
 
-🧪 Dilution Calculator
+💊 Drug Classification
 
 </h2>
 
 
-
 <p>
 
-Calculate dilution and preparation values.
+Explore therapeutic classes
+and common medicine categories.
 
 </p>
 
 
-
-</div>
-
+</a>
 
 
 
@@ -406,73 +439,34 @@ Calculate dilution and preparation values.
 
 
 
+<a
+class="card"
+href="abbreviations.html">
 
 
+<span class="badge">
 
-<div
+Dictionary
 
-class="card tool"
-
-onclick="location.href='concentration.html'">
-
+</span>
 
 
 <h2>
 
-⚗ Concentration Calculator
+📖 Abbreviations
 
 </h2>
 
 
-
 <p>
 
-Percentage strength, molarity and conversions.
+Prescription, pharmacopoeia,
+industry and QC abbreviations.
 
 </p>
 
 
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-<div
-
-class="card tool"
-
-onclick="location.href='bmi.html'">
-
-
-
-<h2>
-
-📏 Health Calculations
-
-</h2>
-
-
-
-<p>
-
-Common healthcare calculation tools.
-
-</p>
-
-
-
-</div>
-
-
+</a>
 
 
 
@@ -480,8 +474,6 @@ Common healthcare calculation tools.
 
 
 </div>
-
-
 
 
 
@@ -497,48 +489,66 @@ Common healthcare calculation tools.
 
 
 
-
+<!-- PLATFORM FEATURES -->
 
 
 <section class="container section">
 
 
-
-
-
-
 <h2 class="section-title">
 
-Reference Library
+⚙ Built for Pharmacy Learning
 
 </h2>
 
 
 
+<div class="grid">
+
+
+
+<div class="card">
+
+
+<h3>
+
+🎓 Students
+
+</h3>
+
+
+<p>
+
+Quick calculations and references
+for pharmacy coursework.
+
+</p>
+
+
+</div>
 
 
 
 
 
 
-<div
 
-class="reference"
-
-onclick="location.href='abbreviations.html'">
+<div class="card">
 
 
+<h3>
 
-Prescription Abbreviations
+🧑‍🏫 Educators
+
+</h3>
 
 
+<p>
 
-<span>
+Teaching utilities and classroom
+ready pharmacy resources.
 
-→
-
-</span>
-
+</p>
 
 
 </div>
@@ -550,27 +560,22 @@ Prescription Abbreviations
 
 
 
+<div class="card">
 
 
+<h3>
 
-<div
+🔬 Professionals
 
-class="reference"
-
-onclick="location.href='drug-classes.html'">
-
+</h3>
 
 
-Drug Classification
+<p>
 
+Analytical and pharmaceutical
+reference helpers.
 
-
-<span>
-
-→
-
-</span>
-
+</p>
 
 
 </div>
@@ -579,72 +584,7 @@ Drug Classification
 
 
 
-
-
-
-
-
-
-<div
-
-class="reference"
-
-onclick="location.href='formulas.html'">
-
-
-
-Pharmaceutical Formula Sheet
-
-
-
-<span>
-
-→
-
-</span>
-
-
-
 </div>
-
-
-
-
-
-
-
-
-
-
-
-<div
-
-class="reference"
-
-onclick="location.href='laboratory.html'">
-
-
-
-Laboratory Calculations
-
-
-
-<span>
-
-→
-
-</span>
-
-
-
-</div>
-
-
-
-
-
-
-
 
 
 </section>
@@ -659,15 +599,19 @@ Laboratory Calculations
 
 
 
+<!-- COMMUNITY DATABASE TOOLS -->
+
 
 <section class="container section">
 
 
+
 <h2 class="section-title">
 
-Community Tools
+🌱 Community Tools
 
 </h2>
+
 
 
 
@@ -681,56 +625,64 @@ data-render="content"
 
 data-type="tools"
 
-data-requires="content"
-
->
+data-requires="content">
 
 
 </div>
 
 
 
+
 </section>
+
+
+
+
+
+
+
+
+
+
+<!-- CONTRIBUTE -->
+
 
 <section class="container section">
 
 
+<div class="card glass">
 
 
 
-<div class="card">
+<span class="badge">
 
+Open Source
 
+</span>
 
 
 
 
 <h2>
 
-🌱 Improve Tools
+Improve Pharmora Tools
 
 </h2>
 
 
 
 
-
-
 <p>
 
-Suggest formulas, calculators and useful utilities.
+Suggest calculators, formulas,
+references and educational utilities.
 
 </p>
 
 
 
 
-
-
 <br>
-
-
-
 
 
 
@@ -741,15 +693,10 @@ href="../contribute/"
 class="btn btn-primary">
 
 
-
 Contribute Tool
 
 
-
 </a>
-
-
-
 
 
 
@@ -758,11 +705,7 @@ Contribute Tool
 
 
 
-
-
 </section>
-
-
 
 
 
@@ -780,17 +723,10 @@ Contribute Tool
 <div id="site-footer"></div>
 
 
-<script src="/js/pharmora.js"></script>
 
 
 
-
-
-
-
-
-
-
+<script src="../js/pharmora.js"></script>
 
 
 
