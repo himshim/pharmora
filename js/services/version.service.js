@@ -65,6 +65,19 @@ new Date()
 ====================== */
 
 
+async function getVersions(
+collection,
+id
+){
+
+
+let versions =
+await getRecords(
+"versions"
+);
+
+
+
 return versions
 
 .filter(x=>{
@@ -85,6 +98,7 @@ x.payload
 ];
 
 
+
 return possible.some(v=>
 
 v &&
@@ -99,6 +113,43 @@ v.contentId===id
 
 
 })
+
+
+.sort((a,b)=>{
+
+
+let bt =
+b.data?.time ||
+b.data?.data?.time ||
+b.time ||
+b.createdAt ||
+0;
+
+
+let at =
+a.data?.time ||
+a.data?.data?.time ||
+a.time ||
+a.createdAt ||
+0;
+
+
+
+return (
+
+new Date(bt)
+
+-
+
+new Date(at)
+
+);
+
+
+});
+
+
+}
 
 
 
