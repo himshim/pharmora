@@ -1,32 +1,22 @@
 /*
- Pharmora Global Footer Component
+ Pharmora Global Footer Component v3
+ Ecosystem Footer
+ Uses Pharmora UI Engine
 */
-
 
 
 async function loadFooter(){
 
 
-
 const root =
 document.getElementById(
-
 "site-footer"
-
 );
 
 
-
-
 if(!root){
-
 return;
-
 }
-
-
-
-
 
 
 
@@ -34,44 +24,26 @@ let site={};
 
 
 
-
-
-
 try{
-
 
 
 site =
 await fetch(
-
-appPath(
-"config/site.json"
-)
-
+appPath("config/site.json")
 )
 .then(r=>r.json());
-
 
 
 }
 
 
-
-
-
 catch(error){
 
 
-
 console.error(
-
 "Footer config failed",
-
 error
-
 );
-
-
 
 
 site={
@@ -80,10 +52,9 @@ name:"Pharmora",
 
 logo:"",
 
-tagline:"Open Pharmacy Learning Network"
+tagline:"Open Pharmacy Knowledge Ecosystem"
 
 };
-
 
 
 }
@@ -91,44 +62,28 @@ tagline:"Open Pharmacy Learning Network"
 
 
 
-
-
-
-
-
-
 root.innerHTML = `
-
-
-
-
 
 
 <footer class="footer">
 
 
+<div class="container">
+
+
+<div class="grid">
 
 
 
 
 
+<div class="card glass">
 
 
 <a
-
 href="${appPath("")}"
-
 class="footer-brand"
-
-style="text-decoration:none;display:flex;justify-content:center;align-items:center;gap:10px;"
-
 >
-
-
-
-
-
-
 
 
 ${
@@ -140,14 +95,9 @@ site.logo
 `
 
 <img
-
 class="footer-logo"
-
 src="${appPath(site.logo)}"
-
-alt="${site.name} logo"
-
->
+alt="${site.name}">
 
 `
 
@@ -158,59 +108,61 @@ alt="${site.name} logo"
 }
 
 
-
-
-
-
-
 <span>
 
-
 ${site.name}
-
 
 </span>
 
 
-
-
-
-
-
-
 </a>
 
 
 
+<div class="badge">
+
+Open Source
+
+</div>
+
+
+
+<p>
+
+${site.tagline || "Open Pharmacy Knowledge Ecosystem"}
+
+</p>
+
+
+<p>
+
+Built for pharmacy students, educators,
+researchers and professionals.
+
+</p>
+
+
+</div>
 
 
 
 
 
 
+
+
+
+<div class="card">
+
+
+<h3>
+
+📚 Explore
+
+</h3>
 
 
 <div class="footer-links">
-
-
-
-
-
-
-
-
-
-<a href="${appPath("about/")}">
-
-About
-
-</a>
-
-
-
-
-
-
 
 
 <a href="${appPath("learn/")}">
@@ -220,12 +172,6 @@ Learn
 </a>
 
 
-
-
-
-
-
-
 <a href="${appPath("tools/")}">
 
 Tools
@@ -233,25 +179,21 @@ Tools
 </a>
 
 
+<a href="${appPath("library/")}">
 
-
-
-
-
-
-
-<a href="${appPath("contribute/")}">
-
-Contribute
+Library
 
 </a>
 
 
+<a href="${appPath("community/")}">
+
+Community
+
+</a>
 
 
-
-
-
+</div>
 
 
 </div>
@@ -260,6 +202,95 @@ Contribute
 
 
 
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+🌱 Community
+
+</h3>
+
+
+
+<div class="footer-links">
+
+
+<a href="${appPath("teach/")}">
+
+Teach
+
+</a>
+
+
+<a href="${appPath("community/")}">
+
+Contributors
+
+</a>
+
+
+<a href="${appPath("auth/login.html")}">
+
+Join Pharmora
+
+</a>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+⚙ Platform
+
+</h3>
+
+
+<p>
+
+🧬 Database Engine
+
+<br>
+
+🕘 Version System
+
+<br>
+
+🛡 Community Moderation
+
+<br>
+
+☁ Cloud Ready
+
+</p>
+
+
+</div>
+
+
+
+
+
+</div>
 
 
 
@@ -269,54 +300,25 @@ Contribute
 <div class="footer-text">
 
 
-
-
-
-
-
-
 © ${new Date().getFullYear()}
 
 ${site.name}
 
 
-
-
-
-
-
 <br>
 
 
-
-
-
-
-
-${site.tagline || ""}
-
-
-
-
-
-
+Built openly for the pharmacy community
 
 
 </div>
 
 
 
-
-
-
-
+</div>
 
 
 </footer>
-
-
-
-
 
 
 `;
@@ -324,12 +326,6 @@ ${site.tagline || ""}
 
 
 }
-
-
-
-
-
-
 
 
 
