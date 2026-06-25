@@ -6,7 +6,7 @@
 
 <meta charset="UTF-8">
 
-<meta 
+<meta
 name="viewport"
 content="width=device-width, initial-scale=1.0">
 
@@ -16,95 +16,24 @@ Concentration Calculator | Pharmora
 </title>
 
 
-<link rel="icon" href="../assets/branding/favicon.svg">
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
 
 
-<link rel="stylesheet" href="../css/variables.css">
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/components.css">
-
-
-<style>
-
-
-.calculator{
-
-max-width:600px;
-
-margin:auto;
-
-}
-
-
-
-input{
-
-width:100%;
-
-padding:15px;
-
-margin-bottom:15px;
-
-border-radius:15px;
-
-background:var(--surface);
-
-color:var(--text);
-
-border:1px solid var(--border);
-
-}
-
-
-
-.result{
-
-font-size:1.8rem;
-
-margin-top:20px;
-
-}
-
-
-
-</style>
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
 
 
 </head>
 
 
 
-
-
-
 <body>
 
 
-
-
-
-<header class="container">
-
-
-<nav class="navbar">
-
-
-<a href="../" class="logo">
-
-⚕ Pharmora
-
-</a>
-
-
-</nav>
-
-
-</header>
-
-
-
-
-
+<div id="site-header"></div>
 
 
 
@@ -113,22 +42,23 @@ margin-top:20px;
 
 
 
+<!-- HERO -->
+
 
 <section class="container section">
 
 
-
-<div class="calculator card">
-
+<div class="card glass">
 
 
-<div class="badge">
+<span class="badge">
 
-⚗ Calculator
+⚗ Analysis Tool
 
-</div>
+</span>
 
 
+<br><br>
 
 
 <h1>
@@ -138,17 +68,109 @@ Concentration Calculator
 </h1>
 
 
-
-
 <p>
 
-Calculate percentage strength (% w/v)
+Calculate pharmaceutical solution strength,
+percentage concentration and analytical
+preparation values.
 
 </p>
 
 
 
+</div>
 
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- TOOL -->
+
+
+<section class="container section">
+
+
+<div class="grid">
+
+
+
+<div class="card">
+
+
+<h2>
+
+🧮 Calculate Concentration
+
+</h2>
+
+
+<br>
+
+
+
+
+<label>
+
+Calculation Type
+
+</label>
+
+
+
+<select id="type">
+
+
+<option value="wv">
+
+% w/v (Weight / Volume)
+
+</option>
+
+
+
+<option value="vv">
+
+% v/v (Volume / Volume)
+
+</option>
+
+
+
+<option value="mgml">
+
+mg/mL
+
+</option>
+
+
+
+<option value="ppm">
+
+ppm
+
+</option>
+
+
+
+</select>
+
+
+
+
+
+
+<label>
+
+Amount of solute
+
+</label>
 
 
 <input
@@ -157,11 +179,22 @@ type="number"
 
 id="amount"
 
-placeholder="Amount of solute (grams)">
+step="0.001"
+
+placeholder="Example: 5"
+
+>
 
 
 
 
+
+
+<label>
+
+Final volume
+
+</label>
 
 
 <input
@@ -170,8 +203,11 @@ type="number"
 
 id="volume"
 
-placeholder="Final volume (mL)">
+step="0.001"
 
+placeholder="Example: 100"
+
+>
 
 
 
@@ -183,13 +219,26 @@ placeholder="Final volume (mL)">
 
 class="btn btn-primary"
 
-onclick="calculateConcentration()">
+onclick="calculateConcentration()"
 
-
+>
 
 Calculate
 
+</button>
 
+
+
+
+<button
+
+class="btn"
+
+onclick="resetCalc()"
+
+>
+
+Reset
 
 </button>
 
@@ -197,14 +246,104 @@ Calculate
 
 
 
+</div>
 
 
 
-<div
 
-id="result"
 
-class="result">
+
+
+
+
+<!-- RESULT -->
+
+
+<div class="card glass">
+
+
+<span class="badge badge-success">
+
+Result
+
+</span>
+
+
+<br><br>
+
+
+<h2 id="result">
+
+Awaiting input
+
+</h2>
+
+
+<p id="details">
+
+Enter values to calculate concentration.
+
+</p>
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- EDUCATION -->
+
+
+<section class="container section">
+
+
+<div class="grid">
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+📘 Formula Guide
+
+</h3>
+
+
+
+<p>
+
+% w/v =
+grams of solute ÷ volume (mL) × 100
+
+</p>
+
+
+
+<p>
+
+ppm =
+mg of solute ÷ litre of solution
+
+</p>
+
 
 
 </div>
@@ -213,12 +352,169 @@ class="result">
 
 
 
+
+
+<div class="card">
+
+
+<h3>
+
+🔬 Applications
+
+</h3>
+
+
+
+<p>
+
+✓ HPLC standard preparation
+
+<br>
+
+✓ UV analysis
+
+<br>
+
+✓ Assay calculations
+
+<br>
+
+✓ Pharmaceutical solutions
+
+</p>
+
+
+
 </div>
 
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+🧪 Common Units
+
+</h3>
+
+
+
+<p>
+
+% strength
+
+<br>
+
+mg/mL
+
+<br>
+
+ppm
+
+<br>
+
+Molarity
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- RELATED -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Related Tools
+
+</h2>
+
+
+
+<div class="grid">
+
+
+
+<a
+href="dilution.html"
+class="card">
+
+<h3>
+
+🧪 Dilution Calculator
+
+</h3>
+
+</a>
+
+
+
+
+
+<a
+href="laboratory.html"
+class="card">
+
+<h3>
+
+🔬 Laboratory Calculations
+
+</h3>
+
+</a>
+
+
+
+
+
+
+<a
+href="formulas.html"
+class="card">
+
+<h3>
+
+📚 Formula Sheet
+
+</h3>
+
+</a>
+
+
+
+</div>
 
 
 
 </section>
+
 
 
 
@@ -230,65 +526,259 @@ class="result">
 
 
 
+<div id="site-footer"></div>
+
+
+
+
+
+
+<script src="../js/pharmora.js"></script>
+
+
+
+
 
 
 
 <script>
 
 
-
 function calculateConcentration(){
+
+
+let type =
+document.getElementById("type").value;
 
 
 
 let amount =
-
-document.getElementById(
-"amount"
-).value;
-
+parseFloat(
+document.getElementById("amount").value
+);
 
 
 
 let volume =
-
-document.getElementById(
-"volume"
-).value;
-
+parseFloat(
+document.getElementById("volume").value
+);
 
 
 
 
-let percent =
+let output =
+document.getElementById("result");
 
+
+
+let details =
+document.getElementById("details");
+
+
+
+
+
+if(
+
+!amount ||
+
+!volume ||
+
+amount <=0 ||
+
+volume <=0
+
+){
+
+
+output.innerHTML =
+"Invalid input";
+
+
+details.innerHTML =
+"Please enter valid positive values.";
+
+
+return;
+
+
+}
+
+
+
+
+
+let value;
+
+
+
+if(type==="wv"){
+
+
+
+value =
 (amount / volume) * 100;
 
 
 
+output.innerHTML =
+
+value.toFixed(3)
+
++
+
+" % w/v";
+
+
+
+details.innerHTML =
+
+"Calculated as weight per volume percentage";
+
+
+
+}
+
+
+
+
+
+
+if(type==="vv"){
+
+
+
+value =
+(amount / volume) * 100;
+
+
+
+output.innerHTML =
+
+value.toFixed(3)
+
++
+
+" % v/v";
+
+
+
+details.innerHTML =
+
+"Calculated as volume per volume percentage";
+
+
+
+}
+
+
+
+
+
+
+
+
+if(type==="mgml"){
+
+
+
+value =
+(amount * 1000) / volume;
+
+
+
+output.innerHTML =
+
+value.toFixed(3)
+
++
+
+" mg/mL";
+
+
+
+details.innerHTML =
+
+"Converted concentration strength";
+
+
+
+}
+
+
+
+
+
+
+
+
+if(type==="ppm"){
+
+
+
+value =
+(amount * 1000) / (volume/1000);
+
+
+
+output.innerHTML =
+
+value.toFixed(2)
+
++
+
+" ppm";
+
+
+
+details.innerHTML =
+
+"Approximate aqueous solution ppm value";
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function resetCalc(){
+
+
+
+document.getElementById(
+"amount"
+).value="";
+
+
+
+document.getElementById(
+"volume"
+).value="";
 
 
 
 document.getElementById(
 "result"
 ).innerHTML =
+"Awaiting input";
 
 
 
-percent ?
-
-"Strength: "+
-
-percent.toFixed(2)
-
-+" % w/v"
-
-
-
-:
-
-"Enter values";
-
+document.getElementById(
+"details"
+).innerHTML =
+"Enter values to calculate concentration.";
 
 
 
@@ -301,7 +791,7 @@ percent.toFixed(2)
 
 
 
-
 </body>
+
 
 </html>
