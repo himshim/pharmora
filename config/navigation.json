@@ -39,11 +39,5 @@
     "title": "Books",
     "icon": "📚",
     "url": "/books/"
-  },
-
-  {
-    "title": "Login",
-    "icon": "👤",
-    "url": "/auth/login.html"
   }
 ]
