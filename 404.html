@@ -6,16 +6,13 @@
 
 <meta charset="UTF-8">
 
-
 <meta
 name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-
 <meta
 name="theme-color"
 content="#22d3ee">
-
 
 <meta
 name="robots"
@@ -23,126 +20,23 @@ content="noindex">
 
 
 <title>
-
-Page Not Found | Pharmora
-
+404 • Pharmora
 </title>
-
-
-
 
 
 <link
 rel="manifest"
-href="manifest.json">
+href="/manifest.json">
 
 
 <link
 rel="icon"
-href="assets/branding/favicon.svg">
+href="/assets/branding/favicon.svg">
 
 
-
-
-
-
-<link rel="stylesheet" href="css/variables.css">
-
-<link rel="stylesheet" href="css/base.css">
-
-<link rel="stylesheet" href="css/components.css">
-
-<link rel="stylesheet" href="css/responsive.css">
-
-
-
-
-
-
-
-
-<style>
-
-
-.error-page{
-
-min-height:100vh;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-text-align:center;
-
-padding:20px;
-
-}
-
-
-
-.error-box{
-
-max-width:650px;
-
-}
-
-
-
-.code{
-
-font-size:7rem;
-
-font-weight:900;
-
-
-background:
-
-linear-gradient(
-90deg,
-var(--primary),
-var(--secondary)
-);
-
-
--webkit-background-clip:text;
-
-background-clip:text;
-
-color:transparent;
-
-}
-
-
-
-.message{
-
-margin:25px 0;
-
-font-size:1.1rem;
-
-color:var(--text-muted);
-
-}
-
-
-
-.actions{
-
-display:flex;
-
-gap:15px;
-
-justify-content:center;
-
-flex-wrap:wrap;
-
-}
-
-
-
-</style>
+<link
+rel="stylesheet"
+href="/css/pharmora.css">
 
 
 </head>
@@ -150,55 +44,132 @@ flex-wrap:wrap;
 
 
 
-
-
-
-
 <body>
 
 
+<div id="site-header"></div>
 
 
 
-<main class="error-page">
+<main class="container section">
 
 
 
-<div class="card error-box">
+<div class="card glass">
 
 
 
+<span class="badge">
+
+⚕ Pharmora Explorer
+
+</span>
 
 
 
-<div class="code">
-
-404
-
-</div>
-
-
-
+<br><br>
 
 
 
 <h1>
 
-Lost in the Pharmacy Library?
+404
 
 </h1>
 
 
 
 
+<h2>
+
+This knowledge path is not available yet
+
+</h2>
 
 
 
-<div class="message">
+
+<p>
+
+The page you are looking for may have moved,
+been renamed, or is still being prepared by
+the Pharmora community.
+
+</p>
 
 
-This page is unavailable, moved,
-or still being prepared by the Pharmora community.
+
+
+<br>
+
+
+
+
+<div class="grid">
+
+
+
+<div class="card">
+
+
+<h3>
+
+📚 Learn
+
+</h3>
+
+
+<p>
+
+Continue exploring pharmacy courses,
+subjects and resources.
+
+</p>
+
+
+
+<a
+class="btn btn-primary"
+href="/learn/">
+
+Start Learning
+
+</a>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+🧪 Tools
+
+</h3>
+
+
+<p>
+
+Access calculators, utilities and
+pharmacy tools.
+
+</p>
+
+
+
+<a
+class="btn"
+href="/tools/">
+
+Open Tools
+
+</a>
+
 
 
 </div>
@@ -209,24 +180,58 @@ or still being prepared by the Pharmora community.
 
 
 
+<div class="card">
 
 
-<div class="actions">
+<h3>
+
+👥 Community
+
+</h3>
 
 
+
+<p>
+
+Connect with contributors and the
+Pharmora ecosystem.
+
+</p>
 
 
 
 
 <a
+class="btn"
+href="/community/">
 
-href="./"
+Join Community
 
+</a>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+<br>
+
+
+
+<a
+href="/"
 class="btn btn-primary">
 
-
-🏠 Home
-
+🏠 Return Home
 
 </a>
 
@@ -234,34 +239,8 @@ class="btn btn-primary">
 
 
 
-
-
-<a
-
-href="learn/"
-
-class="btn">
-
-
-📚 Continue Learning
-
-
-</a>
-
-
-
-
-
-
-
 </div>
 
-
-
-
-
-
-</div>
 
 
 
@@ -269,6 +248,15 @@ class="btn">
 
 
 
+
+
+<div id="site-footer"></div>
+
+
+
+
+
+<script src="/js/pharmora.js"></script>
 
 
 
