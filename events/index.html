@@ -6,66 +6,24 @@
 
 <meta charset="UTF-8">
 
-<meta 
+<meta
 name="viewport"
 content="width=device-width, initial-scale=1.0">
 
 
 <title>
-Events
+Events | Pharmora
 </title>
 
 
-<link 
+<link
 rel="icon"
 href="../assets/branding/favicon.svg">
 
 
-<link rel="stylesheet" href="../css/variables.css">
-
-<link rel="stylesheet" href="../css/base.css">
-
-<link rel="stylesheet" href="../css/components.css">
-
-<link rel="stylesheet" href="../css/responsive.css">
-
-
-<style>
-
-
-.hero{
-
-text-align:center;
-
-padding:70px 0;
-
-}
-
-
-
-.hero h1{
-
-font-size:3.5rem;
-
-}
-
-
-
-.event-info{
-
-display:flex;
-
-justify-content:space-between;
-
-margin-top:20px;
-
-color:var(--text-muted);
-
-}
-
-
-
-</style>
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
 
 
 </head>
@@ -86,14 +44,20 @@ color:var(--text-muted);
 
 
 
+
+
+<!-- HERO -->
+
+
 <section class="container hero">
 
 
 <div class="badge">
 
-📅 Events
+📅 Pharmora Events
 
 </div>
+
 
 
 <h1>
@@ -104,12 +68,46 @@ Learn Beyond Classroom
 
 
 
+
 <p>
 
-Discover pharmacy conferences, workshops,
-seminars and professional opportunities.
+Discover pharmacy conferences,
+workshops, webinars, competitions
+and professional opportunities.
 
 </p>
+
+
+
+
+
+<div class="search-box">
+
+
+<input
+
+placeholder="Search events, workshops, conferences..."
+
+oninput="pharmoraSearch(this.value)"
+
+>
+
+
+</div>
+
+
+
+
+
+<div
+
+id="search-results"
+
+class="grid">
+
+
+</div>
+
 
 
 
@@ -120,24 +118,471 @@ seminars and professional opportunities.
 
 
 
+
+
+
+
+<!-- EVENT TYPES -->
+
+
 <section class="container section">
+
 
 
 <h2 class="section-title">
 
-Upcoming Events
+Explore Opportunities
 
 </h2>
 
 
 
+
+
+<div class="grid">
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+
+<h2>
+
+🎓 Academic Events
+
+</h2>
+
+
+
+<p>
+
+Seminars, guest lectures,
+student programs and academic sessions.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+
+<h2>
+
+🔬 Research Events
+
+</h2>
+
+
+
+
+<p>
+
+Paper presentations,
+symposiums and scientific discussions.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+
+<h2>
+
+🧪 Workshops
+
+</h2>
+
+
+
+
+<p>
+
+Hands-on training,
+instrumentation and laboratory skills.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+<h2>
+
+💼 Career Events
+
+</h2>
+
+
+
+<p>
+
+Placement drives,
+industry talks and professional guidance.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+
+<h2>
+
+🏆 Competitions
+
+</h2>
+
+
+
+
+<p>
+
+Quizzes, posters,
+innovation and student challenges.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="card glass">
+
+
+
+<h2>
+
+🌐 Online Events
+
+</h2>
+
+
+
+<p>
+
+Webinars, virtual conferences
+and digital learning sessions.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- DATABASE EVENTS -->
+
+
+<section class="container section">
+
+
+
+<h2 class="section-title">
+
+📅 Upcoming Events
+
+</h2>
+
+
+
+
+
 <div
+
 class="grid"
+
 id="events-list"
+
 data-render="events">
 
 
 </div>
+
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+<!-- WHY EVENTS -->
+
+
+<section class="container section">
+
+
+
+<div class="grid">
+
+
+
+
+
+
+<div class="card">
+
+
+
+<h3>
+
+🎓 For Students
+
+</h3>
+
+
+
+<p>
+
+Find learning opportunities,
+competitions and academic programs.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+
+<h3>
+
+👨‍🏫 For Educators
+
+</h3>
+
+
+
+<p>
+
+Share conferences,
+seminars and institutional events.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+
+<h3>
+
+💊 For Professionals
+
+</h3>
+
+
+
+<p>
+
+Explore industry,
+research and development opportunities.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+<!-- CONTRIBUTE -->
+
+
+<section class="container section">
+
+
+
+<div class="card glass">
+
+
+
+<span class="badge">
+
+Community Powered
+
+</span>
+
+
+
+
+
+<h2>
+
+🌱 Share Pharmacy Events
+
+</h2>
+
+
+
+
+<p>
+
+Help the community discover
+workshops, conferences, webinars,
+training programs and opportunities.
+
+</p>
+
+
+
+
+
+<br>
+
+
+
+
+
+<a
+
+href="../contribute/"
+
+class="btn btn-primary">
+
+
+Add Event
+
+
+</a>
+
+
+
+
+
+</div>
+
 
 
 
@@ -154,21 +599,19 @@ data-render="events">
 
 
 
+
+
+
 <div id="site-footer"></div>
 
 
 
 
-<script src="/js/pharmora.js"></script>
 
 
 
 
-
-
-
-
-
+<script src="../js/pharmora.js"></script>
 
 
 
