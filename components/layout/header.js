@@ -1,5 +1,6 @@
 /*
- Pharmora Global Header Component v2.1
+ Pharmora Global Header Component v3
+ Responsive Ecosystem Shell
 */
 
 
@@ -7,7 +8,9 @@ async function loadHeader(){
 
 
 const root =
-document.getElementById("site-header");
+document.getElementById(
+"site-header"
+);
 
 
 if(!root){
@@ -42,18 +45,23 @@ appPath("config/navigation.json")
 }
 
 
-catch(e){
+catch(error){
 
 
 console.error(
 "Header config failed",
-e
+error
 );
 
 
 site={
+
 name:"Pharmora",
-logo:""
+
+logo:"",
+
+tagline:"Open Pharmacy Knowledge Ecosystem"
+
 };
 
 
@@ -67,7 +75,7 @@ nav=[];
 
 
 /*
- NAV LINKS
+ NAVIGATION
 */
 
 
@@ -115,7 +123,7 @@ ${item.title}
 
 
 /*
- USER
+ USER STATE
 */
 
 
@@ -128,19 +136,20 @@ null;
 
 
 
-let desktopAuth="";
-let mobileAuth="";
-
-let headerProfile=null;
+let profile=null;
 
 
-if(user && window.PharmoraProfile){
+
+if(
+user &&
+window.PharmoraProfile
+){
 
 
 try{
 
 
-headerProfile =
+profile =
 await PharmoraProfile.getProfile(
 user.id
 );
@@ -153,11 +162,21 @@ catch(e){}
 
 }
 
+
+
+
+
+let desktopAuth="";
+let mobileAuth="";
+
+
+
+
 if(user){
 
 
 
-let badge="";
+let unread="";
 
 
 
@@ -171,15 +190,17 @@ let count =
 (await PharmoraNotify.unread()).length;
 
 
-
 if(count){
 
 
-badge =
-`
+unread = `
+
 <span class="notification-dot">
+
 ${count}
+
 </span>
+
 `;
 
 
@@ -195,27 +216,59 @@ ${count}
 
 
 
+
+
 function authBlock(id){
+
+
+
+let name =
+
+profile?.displayName
+
+||
+
+user.name
+
+||
+
+"Profile";
+
+
+
+let initial =
+name.charAt(0).toUpperCase();
+
+
 
 
 return `
 
 
-<a href="${appPath("dashboard/")}">
-👤 ${
-headerProfile?.displayName
-||
-user.name
-||
-"Profile"
-}
+
+
+<a
+href="${appPath("dashboard/")}"
+class="user-chip"
+>
+
+
+<div class="avatar avatar-sm">
+
+${initial}
+
+</div>
+
+
+<span>
+
+${name}
+
+</span>
+
+
 </a>
 
-
-
-<a href="${appPath("settings/")}">
-⚙ Settings
-</a>
 
 
 
@@ -231,7 +284,9 @@ event.preventDefault();
 PharmoraNotification.toggle('${id}');
 ">
 
-🔔${badge}
+🔔
+
+${unread}
 
 </a>
 
@@ -244,7 +299,19 @@ class="notification-panel">
 </div>
 
 
+
 </div>
+
+
+
+
+
+<a href="${appPath("settings/")}">
+
+⚙ Settings
+
+</a>
+
 
 
 
@@ -261,7 +328,9 @@ logoutUser();
 </a>
 
 
+
 `;
+
 
 
 }
@@ -287,17 +356,25 @@ authBlock(
 
 
 
+
+
+
 else{
 
 
 
-let login = `
+let login=`
 
-<a href="${appPath("auth/login.html")}">
+
+<a
+href="${appPath("auth/login.html")}"
+class="btn btn-primary btn-small"
+>
 
 🔑 Login
 
 </a>
+
 
 `;
 
@@ -322,7 +399,11 @@ mobileAuth=login;
 root.innerHTML = `
 
 
-<header class="container">
+<header>
+
+
+
+<div class="container">
 
 
 
@@ -330,27 +411,43 @@ root.innerHTML = `
 
 
 
+
+
 <a
 href="${appPath("")}"
-class="logo">
+class="logo"
+>
 
 
 ${
+
 site.logo
+
 ?
+
 `
+
 <img
 class="site-logo"
-src="${appPath(site.logo)}">
+src="${appPath(site.logo)}"
+alt="${site.name}">
+
 `
+
 :
+
 "⚕"
+
 }
 
 
+
 <span>
+
 ${site.name}
+
 </span>
+
 
 
 </a>
@@ -359,13 +456,16 @@ ${site.name}
 
 
 
+
 <div
 class="menu-toggle"
-onclick="toggleMenu()">
+onclick="toggleMenu()"
+>
 
 ☰
 
 </div>
+
 
 
 
@@ -376,10 +476,13 @@ onclick="toggleMenu()">
 
 ${desktopLinks}
 
+
 ${desktopAuth}
 
 
 </div>
+
+
 
 
 
@@ -389,10 +492,13 @@ ${desktopAuth}
 
 
 
+
+
 <div class="mobile-menu">
 
 
 ${mobileLinks}
+
 
 ${mobileAuth}
 
@@ -405,17 +511,21 @@ ${mobileAuth}
 
 
 
+
+
 <div class="notice-bar">
 
 
 <span class="notice-title">
 
-🔔 Latest Updates
+🔔 Updates
 
 </span>
 
 
+
 <div class="notice-track">
+
 
 <span id="notice-text">
 
@@ -423,12 +533,17 @@ Loading updates...
 
 </span>
 
-</div>
-
 
 </div>
 
 
+</div>
+
+
+
+
+
+</div>
 
 
 </header>
@@ -439,7 +554,11 @@ Loading updates...
 
 
 
+
+
+
 loadNoticeTicker();
+
 
 
 
@@ -482,7 +601,9 @@ document.getElementById(
 
 
 if(!box){
+
 return;
+
 }
 
 
@@ -493,18 +614,28 @@ try{
 
 
 let data =
+
 typeof getRecords==="function"
+
 ?
-await getRecords("notifications")
+
+await getRecords(
+"notifications"
+)
+
 :
+
 [];
 
 
 
 
+
 data =
-data.filter(x=>
-x.active!==false
+data.filter(
+
+x=>x.active!==false
+
 );
 
 
@@ -515,7 +646,7 @@ if(!data.length){
 
 
 box.innerHTML =
-"No current updates";
+"Welcome to Pharmora Knowledge Ecosystem";
 
 
 return;
@@ -526,13 +657,23 @@ return;
 
 
 
+
 box.innerHTML =
+
 data
-.map(x=>
+
+.map(
+
+x=>
+
 `🔔 ${x.title || ""} : ${x.message || ""}`
+
 )
+
 .join(
+
 " &nbsp; • &nbsp; "
+
 );
 
 
@@ -544,15 +685,21 @@ data
 catch(e){
 
 
+
 box.innerHTML =
-"No current updates";
+"Open Pharmacy Knowledge Ecosystem";
+
+
+
+}
+
 
 
 }
 
 
 
-}
+
 
 
 
@@ -560,7 +707,12 @@ box.innerHTML =
 loadHeader();
 
 
+
+
 window.addEventListener(
+
 "profile-updated",
+
 loadHeader
+
 );
