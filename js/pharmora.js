@@ -244,12 +244,27 @@ const MODULES={
 
 ],
 
+
+
+"schema":[
+
+"/js/services/schema.engine.js",
+
+"/js/services/field.registry.js"
+
+],
+
+
+
 "editor":[
 
 "/js/services/content.service.js",
 
-"/js/services/entity.editor.service.js",
-"/js/services/field.registry.js"
+"/js/services/schema.engine.js",
+
+"/js/services/field.registry.js",
+
+"/js/services/entity.editor.service.js"
 
 ],
 
@@ -269,8 +284,13 @@ const MODULES={
 "content":[
 
 "/js/services/content.service.js",
-"/js/services/entity.editor.service.js",
+
+"/js/services/schema.engine.js",
+
 "/js/services/field.registry.js",
+
+"/js/services/entity.editor.service.js",
+
 "/js/services/content.component.js"
 
 ],

@@ -19,13 +19,7 @@ Contribute
 <link rel="icon" href="../assets/branding/favicon.svg">
 
 
-<link rel="stylesheet" href="../css/variables.css">
-
-<link rel="stylesheet" href="../css/base.css">
-
-<link rel="stylesheet" href="../css/components.css">
-
-<link rel="stylesheet" href="../css/responsive.css">
+<link rel="stylesheet" href="../css/pharmora.css">
 
 
 <style>
@@ -463,7 +457,8 @@ Checking contributor access...
 
 <section 
 class="container section"
-id="contributor-studio">
+id="contributor-studio"
+data-requires="schema">
 
 
 
@@ -524,135 +519,86 @@ placeholder="Title">
 
 
 <h3>
-
 Contribution Type
-
 </h3>
 
 
+<select
+id="contribution-type"
+onchange="loadDynamicSchema()">
 
 
-<label>
-
-<input
-
-type="radio"
-
-name="ctype"
-
-value="resources"
-
-checked>
-
+<option value="resources">
 📚 Resource
+</option>
 
 
-</label>
-
-
-
-
-
-<label>
-
-<input
-
-type="radio"
-
-name="ctype"
-
-value="books">
-
+<option value="books">
 📖 Book
+</option>
 
 
-</label>
+<option value="research">
+🔬 Research
+</option>
 
 
+<option value="practicals">
+🧪 Practical
+</option>
 
 
+<option value="drugs">
+💊 Drug Information
+</option>
 
-<label>
 
-<input
+<option value="questions">
+❓ Question
+</option>
 
-type="radio"
 
-name="ctype"
+<option value="tests">
+📝 Test
+</option>
 
-value="events">
 
+<option value="documents">
+📋 Document / SOP
+</option>
+
+
+<option value="industry">
+🏭 Industry
+</option>
+
+
+<option value="jobs">
+💼 Job
+</option>
+
+
+<option value="events">
 📅 Event
+</option>
 
 
-</label>
+<option value="roadmaps">
+🗺 Roadmap
+</option>
 
 
+<option value="certifications">
+🏅 Certification
+</option>
 
 
+<option value="news">
+📰 News
+</option>
 
 
-<label>
-
-<input
-
-type="radio"
-
-name="ctype"
-
-value="tools">
-
-🧰 Tool
-
-
-</label>
-
-<label>
-
-<input
-
-type="radio"
-
-name="ctype"
-
-value="teaching-materials">
-
-👨‍🏫 Teaching Material
-
-</label>
-
-
-
-<label>
-
-<input
-
-type="radio"
-
-name="ctype"
-
-value="question-bank">
-
-❓ Question Bank
-
-</label>
-
-
-
-<label>
-
-<input
-
-type="radio"
-
-name="ctype"
-
-value="assignments">
-
-📝 Assignment
-
-</label>
-
+</select>
 
 
 </div>
@@ -664,10 +610,40 @@ value="assignments">
 
 
 
-<div id="dynamic-fields">
+<div class="option-box">
+
+
+<h3>
+🔗 Connections
+</h3>
+
+
+<div id="relation-fields">
 
 
 Loading...
+
+
+</div>
+
+
+</div>
+
+
+
+
+<div class="option-box">
+
+
+<h3>
+🧩 Details
+</h3>
+
+
+<div id="schema-fields">
+
+
+</div>
 
 
 </div>
@@ -922,7 +898,7 @@ async function loadContributionOptions(){
 
 let box =
 document.getElementById(
-"dynamic-fields"
+"relation-fields"
 );
 
 
@@ -1080,13 +1056,44 @@ loadChildOptions(
 );
 
 
+loadDynamicSchema();
+
+
 
 }
 
 
 
 
+async function loadDynamicSchema(){
 
+
+let type =
+document.getElementById(
+"contribution-type"
+)
+.value;
+
+
+
+if(
+window.PharmoraSchema
+){
+
+
+await PharmoraSchema.render(
+
+type,
+
+"schema-fields"
+
+);
+
+
+}
+
+
+}
 
 
 
