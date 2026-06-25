@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -8,167 +7,318 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
 <title>
 Dilution Calculator | Pharmora
 </title>
 
-
 <link rel="icon" href="../assets/branding/favicon.svg">
 
-
-<link rel="stylesheet" href="../css/variables.css">
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/components.css">
-
-
-<style>
-
-.calculator{
-
-max-width:600px;
-
-margin:auto;
-
-}
-
-
-input{
-
-width:100%;
-
-padding:15px;
-
-margin-bottom:15px;
-
-border-radius:15px;
-
-background:var(--surface);
-
-color:var(--text);
-
-border:1px solid var(--border);
-
-}
-
-
-.result{
-
-font-size:1.8rem;
-
-margin-top:20px;
-
-}
-
-</style>
-
+<link rel="stylesheet" href="../css/pharmora.css">
 
 </head>
-
 
 
 <body>
 
 
-<header class="container">
-
-<nav class="navbar">
-
-<a href="../" class="logo">
-
-⚕ Pharmora
-
-</a>
-
-</nav>
-
-</header>
-
-
-
+<div id="site-header"></div>
 
 
 <main>
 
 
 
+<!-- HERO -->
+
+<section class="container section">
+
+<div class="card glass">
+
+<span class="badge">
+🧪 Laboratory Tool
+</span>
+
+<br><br>
+
+<h1>
+Dilution Calculator
+</h1>
+
+<p>
+Calculate pharmaceutical and laboratory dilutions using
+the standard C₁V₁ = C₂V₂ equation.
+</p>
+
+</div>
+
+</section>
+
+
+
+
+
+<!-- CALCULATOR -->
+
 <section class="container section">
 
 
-<div class="calculator card">
+<div class="grid">
 
 
-<div class="badge">
+<div class="card">
 
-🧪 Calculator
+
+<h2>
+⚗ Calculate Dilution
+</h2>
+
+
+<br>
+
+
+<label>
+Calculate
+</label>
+
+
+<select id="mode">
+
+<option value="v2">
+Final Volume (V₂)
+</option>
+
+<option value="v1">
+Initial Volume (V₁)
+</option>
+
+<option value="c1">
+Initial Concentration (C₁)
+</option>
+
+<option value="c2">
+Final Concentration (C₂)
+</option>
+
+</select>
+
+
+
+<label>
+Initial Concentration (C₁)
+</label>
+
+<input
+type="number"
+id="c1"
+step="0.01"
+placeholder="Example: 100">
+
+
+
+<label>
+Initial Volume (V₁)
+</label>
+
+<input
+type="number"
+id="v1"
+step="0.01"
+placeholder="Example: 10">
+
+
+
+<label>
+Final Concentration (C₂)
+</label>
+
+<input
+type="number"
+id="c2"
+step="0.01"
+placeholder="Example: 20">
+
+
+
+<label>
+Final Volume (V₂)
+</label>
+
+<input
+type="number"
+id="v2"
+step="0.01"
+placeholder="Leave blank if calculating">
+
+
+
+<label>
+Unit
+</label>
+
+
+<select id="unit">
+
+<option>
+mL
+</option>
+
+<option>
+L
+</option>
+
+<option>
+µL
+</option>
+
+</select>
+
+
+
+
+<button
+class="btn btn-primary"
+onclick="calculateDilution()">
+
+Calculate
+
+</button>
+
+
+<button
+class="btn"
+onclick="resetDilution()">
+
+Reset
+
+</button>
+
+
 
 </div>
 
 
-<h1>
 
-Dilution Calculator
 
-</h1>
 
+
+<!-- RESULT -->
+
+
+<div class="card glass">
+
+
+<span class="badge badge-success">
+
+Result
+
+</span>
+
+
+<br><br>
+
+
+<h2 id="answer">
+
+Awaiting input
+
+</h2>
+
+
+<p id="steps">
+
+Enter values to calculate dilution.
+
+</p>
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- FORMULA -->
+
+
+<section class="container section">
+
+
+<div class="grid">
+
+
+
+<div class="card">
+
+
+<h3>
+📘 Formula
+</h3>
 
 
 <p>
-
-Based on:
 
 C₁ × V₁ = C₂ × V₂
 
 </p>
 
 
+<p>
 
+C₁ = Stock concentration<br>
 
+V₁ = Stock volume<br>
 
-<input 
-type="number"
-id="c1"
-placeholder="Initial concentration (C1)">
+C₂ = Desired concentration<br>
 
+V₂ = Final volume
 
-
-<input 
-type="number"
-id="v1"
-placeholder="Initial volume (V1)">
-
-
-
-<input 
-type="number"
-id="c2"
-placeholder="Final concentration (C2)">
-
-
-
-
-
-
-<button 
-class="btn btn-primary"
-onclick="calculateDilution()">
-
-
-Calculate Final Volume
-
-
-</button>
-
-
-
-
-
-<div 
-id="result"
-class="result">
+</p>
 
 
 </div>
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+🔬 Applications
+
+</h3>
+
+
+<p>
+
+✓ HPLC standard preparation<br>
+
+✓ UV calibration solutions<br>
+
+✓ Serial dilution<br>
+
+✓ Laboratory sample preparation
+
+</p>
+
+
+</div>
+
 
 
 
@@ -179,7 +329,73 @@ class="result">
 </section>
 
 
+
+
+
+
+
+
+
+<!-- RELATED -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+Related Tools
+
+</h2>
+
+
+<div class="grid">
+
+
+<a class="card" href="concentration.html">
+
+<h3>
+⚗ Concentration Calculator
+</h3>
+
+</a>
+
+
+<a class="card" href="laboratory.html">
+
+<h3>
+🧪 Laboratory Calculations
+</h3>
+
+</a>
+
+
+<a class="card" href="formulas.html">
+
+<h3>
+📚 Formula Sheet
+</h3>
+
+</a>
+
+
+</div>
+
+
+
+</section>
+
+
+
 </main>
+
+
+
+<div id="site-footer"></div>
+
+
+
+<script src="../js/pharmora.js"></script>
 
 
 
@@ -191,41 +407,141 @@ class="result">
 function calculateDilution(){
 
 
-let c1 =
-document.getElementById("c1").value;
+let c1=parseFloat(
+document.getElementById("c1").value
+);
 
 
-let v1 =
-document.getElementById("v1").value;
+let v1=parseFloat(
+document.getElementById("v1").value
+);
 
 
-let c2 =
-document.getElementById("c2").value;
+let c2=parseFloat(
+document.getElementById("c2").value
+);
+
+
+let v2=parseFloat(
+document.getElementById("v2").value
+);
+
+
+let mode =
+document.getElementById("mode").value;
+
+
+let unit =
+document.getElementById("unit").value;
+
+
+let result;
 
 
 
-let v2 =
-(c1*v1)/c2;
+if(mode==="v2"){
+
+if(!c1||!v1||!c2)return error();
+
+result=(c1*v1)/c2;
+
+}
+
+
+if(mode==="v1"){
+
+if(!c2||!v2||!c1)return error();
+
+result=(c2*v2)/c1;
+
+}
+
+
+if(mode==="c1"){
+
+if(!c2||!v2||!v1)return error();
+
+result=(c2*v2)/v1;
+
+}
+
+
+if(mode==="c2"){
+
+if(!c1||!v1||!v2)return error();
+
+result=(c1*v1)/v2;
+
+}
+
+
+
+document.getElementById("answer").innerHTML =
+
+mode.toUpperCase()
++
+" = "
++
+result.toFixed(2)
++
+" "
++
+unit;
+
+
+
+document.getElementById("steps").innerHTML =
+
+"Calculated using C₁ × V₁ = C₂ × V₂";
+
+
+}
 
 
 
 
-document.getElementById("result").innerHTML =
+function error(){
 
-v2 ?
 
-"Final Volume: "+v2+" units"
+document.getElementById("answer").innerHTML =
+"Invalid input";
 
-:
 
-"Enter values";
+document.getElementById("steps").innerHTML =
+"Please enter all required positive values.";
+
+
+}
+
+
+
+
+
+function resetDilution(){
+
+
+[
+"c1",
+"v1",
+"c2",
+"v2"
+]
+
+.forEach(id=>{
+
+document.getElementById(id).value="";
+
+});
+
+
+document.getElementById("answer").innerHTML =
+"Awaiting input";
 
 
 }
 
 
 </script>
-
 
 
 </body>
