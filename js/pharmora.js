@@ -206,6 +206,8 @@ const CORE=[
 
 "/js/services/version.service.js",
 
+"/js/services/search.service.js",
+
 "/js/services/permission.service.js",
 
 "/js/services/access.service.js",
