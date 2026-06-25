@@ -904,7 +904,191 @@ limit
 
 
 
+/* ======================
+ PROFILE COMPLETION
+====================== */
 
+
+function profileCompletion(profile){
+
+
+if(!profile){
+
+return 0;
+
+}
+
+
+let fields=[
+
+"displayName",
+
+"headline",
+
+"bio"
+
+];
+
+
+let done=0;
+
+
+fields.forEach(x=>{
+
+if(profile[x]){
+
+done++;
+
+}
+
+});
+
+
+if(
+profile.avatar?.url
+){
+
+done++;
+
+}
+
+
+if(
+profile.education?.length
+){
+
+done++;
+
+}
+
+
+if(
+profile.positions?.length
+){
+
+done++;
+
+}
+
+
+if(
+profile.specializations?.length
+){
+
+done++;
+
+}
+
+
+
+return Math.round(
+
+(done / 7) * 100
+
+);
+
+
+}
+
+
+
+
+
+
+
+/* ======================
+ PROFILE BADGE
+====================== */
+
+
+function profileBadge(profile){
+
+
+if(!profile){
+
+return "";
+
+}
+
+
+
+if(
+profile.verification?.verified
+){
+
+return "verified";
+
+}
+
+
+
+if(
+profile.contributor?.enabled
+){
+
+return "contributor";
+
+}
+
+
+
+return "";
+
+
+}
+
+
+
+
+
+
+
+
+/* ======================
+ SENSITIVE CHANGE CHECK
+====================== */
+
+
+function verificationSensitiveChange(
+
+oldProfile={},
+
+newProfile={}
+
+){
+
+
+let fields=[
+
+"displayName",
+
+"types",
+
+"education",
+
+"positions",
+
+"specializations"
+
+];
+
+
+
+return fields.some(key=>{
+
+return JSON.stringify(
+oldProfile[key]
+)
+!==
+
+JSON.stringify(
+newProfile[key]
+);
+
+});
+
+
+}
 
 
 
@@ -940,7 +1124,16 @@ getUserContributions;
 window.getProfileActivity =
 getProfileActivity;
 
+window.profileCompletion =
+profileCompletion;
 
+
+window.profileBadge =
+profileBadge;
+
+
+window.verificationSensitiveChange =
+verificationSensitiveChange;
 
 /*
  Namespace export
@@ -959,8 +1152,13 @@ getPublicProfile,
 
 getUserContributions,
 
-getProfileActivity
+getProfileActivity,
 
+profileCompletion,
+
+profileBadge,
+
+verificationSensitiveChange
 
 };
 
