@@ -6,7 +6,9 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 
 <title>
@@ -14,17 +16,17 @@ Subject | Pharmora
 </title>
 
 
-<link rel="icon" href="../assets/branding/favicon.svg">
+<link
+rel="icon"
+href="../assets/branding/favicon.svg">
 
 
-<link rel="stylesheet" href="../css/variables.css">
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/components.css">
-<link rel="stylesheet" href="../css/responsive.css">
+<link
+rel="stylesheet"
+href="../css/pharmora.css">
 
 
 </head>
-
 
 
 <body>
@@ -35,35 +37,73 @@ Subject | Pharmora
 
 
 
+<main>
 
-<main class="container section">
+
+
+
+
+<!-- SUBJECT HERO -->
+
+
+<section class="container section">
 
 
 <div
-class="card"
+class="card glass"
 id="subject-info">
 
-Loading...
 
-</div>
+<h2>
 
-
-
-
-<br><br>
-
-
-
-<h2 class="section-title">
-
-📄 Units / Chapters
+Loading subject...
 
 </h2>
 
 
-<div
-class="grid"
-id="units-list">
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<!-- OVERVIEW -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+📊 Subject Overview
+
+</h2>
+
+
+
+<div class="grid">
+
+
+<div class="card">
+
+<h3>
+
+📄 Units
+
+</h3>
+
+
+<p id="unit-count">
+
+Loading...
+
+</p>
+
 
 </div>
 
@@ -71,9 +111,102 @@ id="units-list">
 
 
 
+<div class="card">
 
 
-<br><br>
+<h3>
+
+📚 Materials
+
+</h3>
+
+
+<p id="material-count">
+
+Loading...
+
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+🌱 Learning
+
+</h3>
+
+
+<p>
+
+Community powered resources
+
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- UNITS -->
+
+
+<section class="container section">
+
+
+<h2 class="section-title">
+
+📄 Units & Chapters
+
+</h2>
+
+
+
+<div
+
+class="grid"
+
+id="units-list">
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- MATERIALS -->
+
+
+<section class="container section">
 
 
 <h2 class="section-title">
@@ -83,16 +216,124 @@ id="units-list">
 </h2>
 
 
-<div
-class="grid"
-id="materials-list">
+
+
+<div class="grid">
+
+
+<div class="card">
+
+📘 Notes
 
 </div>
 
 
 
+<div class="card">
+
+📖 Books
+
+</div>
+
+
+
+<div class="card">
+
+❓ Questions
+
+</div>
+
+
+</div>
+
+
+
+<br>
+
+
+
+
+<div
+
+class="grid"
+
+id="materials-list">
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- CONTRIBUTE -->
+
+
+<section class="container section">
+
+
+<div class="card glass">
+
+
+<span class="badge">
+
+Open Learning
+
+</span>
+
+
+
+<h2>
+
+Improve this Subject
+
+</h2>
+
+
+
+<p>
+
+Help expand Pharmora by adding notes,
+questions and learning resources.
+
+</p>
+
+
+
+<br>
+
+
+
+<a
+
+class="btn btn-primary"
+
+href="../contribute/">
+
+Contribute
+
+</a>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
 
 </main>
+
 
 
 
@@ -105,10 +346,7 @@ id="materials-list">
 
 
 
-<script src="/js/pharmora.js"></script>
-
-
-
+<script src="../js/pharmora.js"></script>
 
 
 
@@ -121,13 +359,9 @@ id="materials-list">
 
 let subjectId =
 
-new URLSearchParams(
-location.search
-)
+new URLSearchParams(location.search)
 
 .get("id");
-
-
 
 
 
@@ -139,21 +373,27 @@ async function loadSubject(){
 
 
 
-
-
 let subjects =
-await getRecords(
-"subjects"
-);
 
-
+await getRecords("subjects");
 
 
 
 let subject =
+
 subjects.find(
 
-x=>x.id===subjectId
+x=>
+
+x.id===subjectId
+
+||
+
+x.refId===subjectId
+
+||
+
+x.publicId===subjectId
 
 );
 
@@ -166,15 +406,25 @@ if(!subject){
 
 
 document
+.getElementById("subject-info")
+.innerHTML = `
 
-.getElementById(
-"subject-info"
-)
 
-.innerHTML=
+<h1>
 
-"<h2>Subject not found</h2>";
+Subject not found
 
+</h1>
+
+
+<p>
+
+The requested subject could not be located.
+
+</p>
+
+
+`;
 
 
 return;
@@ -187,16 +437,24 @@ return;
 
 
 
-
-
-
 document
 
-.getElementById(
-"subject-info"
-)
+.getElementById("subject-info")
 
 .innerHTML = `
+
+
+
+<span class="badge">
+
+${subject.code || "Subject"}
+
+</span>
+
+
+
+<br><br>
+
 
 
 <h1>
@@ -207,19 +465,12 @@ document
 
 
 
-<h3>
-
-${subject.code || ""}
-
-</h3>
-
-
-
 <p>
 
 ${subject.description || ""}
 
 </p>
+
 
 
 `;
@@ -228,11 +479,7 @@ ${subject.description || ""}
 
 
 
-
-
-
 loadUnits();
-
 
 loadMaterials();
 
@@ -250,33 +497,35 @@ loadMaterials();
 
 
 
-
 async function loadUnits(){
 
 
 
 let box =
-document.getElementById(
-"units-list"
-);
 
-
+document.getElementById("units-list");
 
 
 
 let units =
-await getRecords(
-"units"
-);
+
+await getRecords("units");
 
 
 
 
 
 units =
+
 units.filter(
 
-x=>x.subject===subjectId
+x=>
+
+x.subject===subjectId
+
+||
+
+x.subjectId===subjectId
 
 );
 
@@ -284,14 +533,26 @@ x=>x.subject===subjectId
 
 
 
+document
+
+.getElementById("unit-count")
+
+.innerHTML =
+
+units.length + " Units";
 
 
-if(units.length===0){
 
 
-box.innerHTML=
 
-"<div class='card'>No units added</div>";
+
+
+if(!units.length){
+
+
+box.innerHTML =
+
+"<div class='card'>No units added yet</div>";
 
 
 return;
@@ -305,11 +566,9 @@ return;
 
 
 
-units.forEach(unit=>{
+box.innerHTML =
 
-
-
-box.innerHTML += `
+units.map(unit=>`
 
 
 <div class="card">
@@ -322,7 +581,6 @@ box.innerHTML += `
 </h2>
 
 
-
 <p>
 
 ${unit.description || ""}
@@ -333,15 +591,14 @@ ${unit.description || ""}
 </div>
 
 
-`;
+`)
 
-
-
-});
+.join("");
 
 
 
 }
+
 
 
 
@@ -356,30 +613,30 @@ async function loadMaterials(){
 
 
 let box =
-document.getElementById(
-"materials-list"
-);
+
+document.getElementById("materials-list");
+
+
+
+let total=0;
+
 
 
 
 
 let collections=[
 
+["resources","📚 Resource"],
 
-["resources","📚"],
+["books","📖 Book"],
 
-["books","📖"],
+["teaching-materials","🧑‍🏫 Teaching"],
 
-["teaching-materials","👨‍🏫"],
+["question-bank","❓ Question"],
 
-["question-bank","❓"],
-
-["assignments","📝"]
-
+["assignments","📝 Assignment"]
 
 ];
-
-
 
 
 
@@ -391,28 +648,48 @@ for(let col of collections){
 
 
 let data =
-await getRecords(
-col[0]
-);
+
+await getRecords(col[0]);
 
 
 
 
 
 data =
-data.filter(x=>
 
+data.filter(
+
+x=>
+
+(
 
 x.subject===subjectId
 
+||
+
+x.subjectId===subjectId
+
+)
+
 &&
+
+(
+
+!x.status
+
+||
 
 x.status==="approved"
 
+)
 
 );
 
 
+
+
+
+total += data.length;
 
 
 
@@ -428,21 +705,31 @@ box.innerHTML += `
 <div class="card">
 
 
-<h2>
+<span class="badge">
 
 ${col[1]}
 
+</span>
+
+
+
+<h3>
+
 ${
 
-item.title ||
+item.title
 
-item.question ||
+||
+
+item.question
+
+||
 
 "Untitled"
 
 }
 
-</h2>
+</h3>
 
 
 
@@ -454,19 +741,18 @@ ${item.description || ""}
 
 
 
-
-
 <a
 
 class="btn"
 
-href="${appPath(`library/view.html?id=${item.id}&type=${col[0]}`)}">
-
+href="${appPath(
+`library/view.html?id=${item.id}&type=${col[0]}`
+)}">
 
 Open
 
-
 </a>
+
 
 
 </div>
@@ -487,16 +773,26 @@ Open
 
 
 
+document
+
+.getElementById("material-count")
+
+.innerHTML =
+
+total + " Items";
 
 
-if(box.innerHTML===""){
 
 
 
-box.innerHTML=
 
-"<div class='card'>No materials yet</div>";
 
+if(!box.innerHTML){
+
+
+box.innerHTML =
+
+"<div class='card'>No learning materials yet</div>";
 
 
 }
@@ -513,12 +809,12 @@ box.innerHTML=
 
 
 window.addEventListener(
+
 "pharmora-ready",
-()=>{
 
-loadSubject();
+loadSubject
 
-});
+);
 
 
 </script>
