@@ -1,44 +1,30 @@
 /*
- Pharmora Version Service
- Content History System
+ Pharmora Version Service v2
+ Database Provider Based
 */
 
 
 
-function saveVersion(
+/* ======================
+ SAVE VERSION
+====================== */
+
+
+async function saveVersion(
 collection,
 id,
 oldData
 ){
 
 
+return await createRecord(
 
-let versions =
-JSON.parse(
+"versions",
 
-localStorage.getItem(
-"versions"
-)
-
-||
-
-"[]"
-
-);
+{
 
 
-
-
-
-versions.push({
-
-
-id:
-
-crypto.randomUUID(),
-
-
-collection:collection,
+collection,
 
 
 contentId:id,
@@ -50,13 +36,9 @@ data:oldData,
 user:
 
 typeof currentUser==="function"
-
 ?
-
 currentUser()
-
 :
-
 null,
 
 
@@ -66,31 +48,10 @@ new Date()
 .toISOString()
 
 
-});
+}
 
-
-
-
-
-
-
-versions =
-versions.slice(-500);
-
-
-
-
-
-
-
-localStorage.setItem(
-
-"versions",
-
-JSON.stringify(versions)
 
 );
-
 
 
 }
@@ -102,29 +63,27 @@ JSON.stringify(versions)
 
 
 
+/* ======================
+ GET VERSIONS
+====================== */
 
-function getVersions(
+
+async function getVersions(
 collection,
 id
 ){
 
 
-
-return JSON.parse(
-
-localStorage.getItem(
+let versions =
+await getRecords(
 "versions"
-)
+);
 
-||
 
-"[]"
 
-)
+return versions
 
-.filter(
-
-x=>
+.filter(x=>
 
 x.collection===collection
 
@@ -134,27 +93,95 @@ x.contentId===id
 
 )
 
-.reverse();
+.sort((a,b)=>
 
+new Date(
+b.time ||
+b.createdAt ||
+0
+)
 
+-
 
-}
+new Date(
+a.time ||
+a.createdAt ||
+0
+)
 
-
-
-
-
-
-
-
-
-
-function clearVersions(){
-
-
-localStorage.removeItem(
-"versions"
 );
 
 
 }
+
+
+
+
+
+
+
+
+/* ======================
+ CLEAR VERSIONS
+====================== */
+
+
+async function clearVersions(){
+
+
+let versions =
+await getRecords(
+"versions"
+);
+
+
+
+for(let v of versions){
+
+
+await deleteRecord(
+
+"versions",
+
+v.id
+
+);
+
+
+}
+
+
+
+return true;
+
+
+}
+
+
+
+
+
+
+
+
+/*
+ EXPORT
+*/
+
+
+window.saveVersion =
+saveVersion;
+
+
+window.getVersions =
+getVersions;
+
+
+window.clearVersions =
+clearVersions;
+
+
+
+console.log(
+"✓ PharmoraVersion service ready"
+);
