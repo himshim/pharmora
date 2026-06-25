@@ -1083,11 +1083,20 @@ return;
 
 if(!window.PharmoraSchema){
 
+
 console.warn(
 "Schema engine waiting"
 );
 
+
+setTimeout(
+loadDynamicSchema,
+100
+);
+
+
 return;
+
 
 }
 
@@ -2714,24 +2723,46 @@ loadContributorAccess();
 function startContributorPage(){
 
 
+
 if(
+
 typeof currentUser !== "function"
+
+||
+
+!window.PharmoraSchema
+
 ){
 
+
+
 setTimeout(
+
 startContributorPage,
+
 100
+
 );
+
+
 
 return;
 
+
+
 }
+
+
+
 
 
 loadContributorAccess();
 
 
+
 }
+
+
 
 
 startContributorPage();
