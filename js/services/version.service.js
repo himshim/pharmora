@@ -83,30 +83,46 @@ await getRecords(
 
 return versions
 
-.filter(x=>
+.filter(x=>{
 
-x.collection===collection
+
+let v =
+x.data || x;
+
+
+return (
+
+v.collection===collection
 
 &&
 
-x.contentId===id
+v.contentId===id
 
-)
+);
+
+
+})
 
 .sort((a,b)=>
 
 new Date(
+(
+b.data?.time ||
 b.time ||
 b.createdAt ||
 0
+)
 )
 
 -
 
 new Date(
+(
+a.data?.time ||    
 a.time ||
 a.createdAt ||
 0
+)
 )
 
 );
