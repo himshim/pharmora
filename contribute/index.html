@@ -1516,7 +1516,28 @@ await userPermissions()
 
 
 
+let roles = [
+
+user.role,
+user.type,
+user.accountType,
+user.position
+
+].map(x => String(x || "").toLowerCase());
+
+let isOwner =
+
+roles.includes("owner")
+||
+roles.includes("admin")
+||
+roles.includes("superadmin");
+
 if(
+
+!isOwner
+
+&&
 
 !submitPermissions.includes("*")
 
@@ -1526,21 +1547,14 @@ if(
 
 ){
 
-
 showToast(
-
 "Contributor approval required",
-
 "error"
-
 );
-
 
 unlockSubmit();
 
-
 return;
-
 
 }
 
@@ -1977,6 +1991,8 @@ moderation:{
 status:
 
 (
+isOwner
+||
 permissions.includes("*")
 ||
 permissions.includes("content.autoapprove")
@@ -2722,50 +2738,27 @@ loadContributorAccess();
 
 function startContributorPage(){
 
+loadContributorAccess();
 
+}
 
-if(
+if(window.PharmoraReady){
 
-typeof currentUser !== "function"
+startContributorPage();
 
-||
+}else{
 
-!window.PharmoraSchema
+document.addEventListener(
 
-){
-
-
-
-setTimeout(
+"pharmora-ready",
 
 startContributorPage,
 
-100
+{ once:true }
 
 );
 
-
-
-return;
-
-
-
 }
-
-
-
-
-
-loadContributorAccess();
-
-
-
-}
-
-
-
-
-startContributorPage();
 
 
 </script>
