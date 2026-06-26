@@ -1,7 +1,7 @@
 /*
  Pharmora Field Registry v2
  --------------------------
- Global field definitions and content schemas (v2).
+ Global field definitions and content schemas.
  This file defines all canonical fields (PharmoraFields) and content schemas,
  using window.PharmoraSchema.register() for each type.
 
@@ -10,9 +10,32 @@
   - subject, course, unit, drug, instrument, organization (common references)
 
  **Fallback**: fieldConfig() returns a default config if key is missing.
- **Helper**: build(keys) creates field entries from an array of keys.
+ **Helpers**:
+  - build(keys)               - field entries for an array of global field keys
+  - buildField(key, overrides) - a single global field, with per-schema overrides
+    (e.g. a different group/help/placeholder) without duplicating the whole
+    field object. Prefer this over copy-pasting a field definition.
 
  Schemas remove common fields; each type schema only lists its type-specific fields.
+
+ **Schema Engine v2 note**: any field object (in PharmoraFields or inline in a
+ schema's `fields` array) can also use the following optional properties,
+ understood by schema.engine.js. None of this requires changes here — it's
+ just plain JS object properties available the next time a field is defined
+ or edited:
+   default       - pre-filled value when no existing value is supplied
+   min / max     - numeric bounds (type:"number") or string length otherwise
+   pattern       - RegExp or regex string the value must match
+   email         - true to validate as an email address (or use type:"email")
+   url           - true to validate as a URL (or use type:"url")
+   validate      - (value, data) => true | false | "custom error message"
+   visibleIf     - (data) => boolean, hide/show this field based on the rest of the form
+   requiredIf    - (data) => boolean, dynamically require this field
+   disabledIf    - (data) => boolean, dynamically disable this field
+   description   - short helper text rendered above the input
+   help          - short hint text rendered below the input
+   placeholder   - input placeholder text
+   group/section - groups consecutive fields under a labeled fieldset
 */
 
 
@@ -92,9 +115,16 @@ window.fieldConfig = function(key) {
   );
 };
 
+// Helper: reuse a single global field, optionally overriding/adding
+// properties (e.g. group, help, placeholder) for this schema only —
+// without duplicating the whole field definition.
+function buildField(key, overrides) {
+  return Object.assign({ key: key }, window.fieldConfig(key), overrides || {});
+}
+
 // Helper: build schema fields list from an array of keys
 function build(keys) {
-  return keys.map(k => Object.assign({ key: k }, window.fieldConfig(k)));
+  return keys.map(k => buildField(k));
 }
 
 // Queue for schemas if PharmoraSchema is not loaded
@@ -161,7 +191,7 @@ defineSchema("jobs", {
 defineSchema("practicals", {
   version: 1,
   fields: [
-    { key: "subject", label: "Subject", type: "reference", collection: "subjects" },
+    ...build(["subject"]),
     { key: "aim", label: "Aim", type: "textarea", required: true },
     { key: "procedure", label: "Procedure", type: "textarea" },
     { key: "result", label: "Result", type: "textarea" }
@@ -171,7 +201,7 @@ defineSchema("practicals", {
 defineSchema("questions", {
   version: 1,
   fields: [
-    { key: "subject", label: "Subject", type: "reference", collection: "subjects" },
+    ...build(["subject"]),
     { key: "question", label: "Question Text", type: "textarea", required: true },
     { key: "answer", label: "Answer", type: "text" },
     { key: "explanation", label: "Explanation (optional)", type: "textarea" }
@@ -181,7 +211,7 @@ defineSchema("questions", {
 defineSchema("tests", {
   version: 1,
   fields: [
-    { key: "subject", label: "Subject", type: "reference", collection: "subjects" },
+    ...build(["subject"]),
     { key: "totalQuestions", label: "Total Questions", type: "number" },
     { key: "duration", label: "Duration (minutes)", type: "number" }
   ]
@@ -190,8 +220,7 @@ defineSchema("tests", {
 defineSchema("resources", {
   version: 1,
   fields: [
-    { key: "subject", label: "Subject", type: "reference", collection: "subjects" },
-    { key: "unit", label: "Unit", type: "reference", collection: "units" }
+    ...build(["subject", "unit"])
   ]
 });
 
@@ -259,3 +288,12 @@ console.log("✓ Field Registry Loaded");
 
 // Example: Define a new content schema below using defineSchema()
 // defineSchema("myType", { version: 1, fields: build(["field1","field2"]) });
+
+// Example: reuse a global field but add schema-only metadata via buildField()
+// defineSchema("myType", {
+//   version: 1,
+//   fields: [
+//     buildField("organization", { group: "Reference Info", help: "Pick the manufacturer" }),
+//     { key: "field1", label: "Field 1", type: "text", placeholder: "e.g. value" }
+//   ]
+// });
