@@ -1051,7 +1051,7 @@ modal.remove();
 
 
 
-async function showForm(id=null){
+async function showForm(id=null, prefill=null){
 
 
 
@@ -1123,13 +1123,17 @@ for(let field of activeSchema){
 
 
 
+let source =
+prefill || existing;
+
+
 let value =
 
-existing
+source
 
 ?
 
-(existing[field.name] ?? "")
+(source[field.name] ?? "")
 
 :
 
@@ -1620,7 +1624,7 @@ id="admin-save-btn"
 
 class="btn btn-primary"
 
-onclick="saveEntry('${id || ""}')"
+onclick="AdminWizard.toReview('${id || ""}')"
 
 >
 
@@ -1742,96 +1746,47 @@ btn.innerHTML=
 
 
 
-async function saveEntry(id){
 
-
-
-lockAdminSave();
-
-
-try{
-
-
+function collectFormData(){
 
 
 let data={};
 
 
-
-
-
-
 for(let field of activeSchema){
-
-
-
-
-
 
 
 if(field.type==="dynamic-multi"){
 
 
-
-
-
 let selected=[];
 
 
-
-
-
-
 document
-
 .querySelectorAll(
-
 ".field-"+field.name+":checked"
-
 )
-
 .forEach(box=>{
-
 
 selected.push(
 box.value
 );
 
-
 });
-
-
-
 
 
 data[field.name]=selected;
 
-
-
 continue;
-
 
 
 }
 
 
-
-
-
-
-
-
 let input =
 document.getElementById(
-
 "field-"+field.name
-
 );
-
-
-
-
-
 
 
 let value =
@@ -1847,11 +1802,6 @@ input.checked
 input.value;
 
 
-
-
-
-
-
 if(
 
 field.type==="tags"
@@ -1862,32 +1812,23 @@ field.type==="multi"
 
 ){
 
-
-
 value =
 
 value
-
 .split(",")
-
 .map(x=>x.trim())
-
 .filter(Boolean);
 
-
-
 }
-
-
-
-
-
 
 
 data[field.name]=value;
 
 
+}
 
+
+return data;
 
 
 }
@@ -1895,6 +1836,13 @@ data[field.name]=value;
 
 
 
+async function persistEntry(id,data){
+
+
+lockAdminSave();
+
+
+try{
 
 
 /*
@@ -1914,7 +1862,6 @@ id
 ){
 
 
-
 showToast(
 
 "Duplicate entry found",
@@ -1924,13 +1871,10 @@ showToast(
 );
 
 
-
 unlockAdminSave();
 
 
-
 return;
-
 
 
 }
@@ -1941,7 +1885,6 @@ return;
 AUTO CREATE SEMESTERS / YEARS
 
 */
-
 
 
 if(
@@ -1955,19 +1898,12 @@ activeCollection==="semesters"
 ){
 
 
-
-
-
 let old =
 await getRecords(
 
 "semesters"
 
 );
-
-
-
-
 
 
 if(
@@ -1981,7 +1917,6 @@ x=>x.curriculum===data.curriculum
 ){
 
 
-
 showToast(
 
 "Already generated",
@@ -1991,23 +1926,13 @@ showToast(
 );
 
 
-
 unlockAdminSave();
-
 
 
 return;
 
 
-
 }
-
-
-
-
-
-
-
 
 
 let total =
@@ -2016,12 +1941,6 @@ Number(
 data.count
 
 );
-
-
-
-
-
-
 
 
 for(
@@ -2033,9 +1952,6 @@ i<=total;
 i++
 
 ){
-
-
-
 
 
 await createRecord(
@@ -2061,14 +1977,7 @@ status:"active"
 );
 
 
-
 }
-
-
-
-
-
-
 
 
 showToast(
@@ -2080,11 +1989,7 @@ total+" "+data.system+"s created",
 );
 
 
-
-
 unlockAdminSave();
-
-
 
 
 loadManager(
@@ -2094,20 +1999,10 @@ activeCollection
 );
 
 
-
-
 return;
 
 
-
 }
-
-
-
-
-
-
-
 
 
 if(id){
@@ -2119,19 +2014,16 @@ typeof saveVersion==="function"
 ){
 
 
-
 let old =
 await getRecords(
 activeCollection
 );
 
 
-
 old =
 old.find(
 x=>x.id===id
 );
-
 
 
 if(old){
@@ -2151,7 +2043,6 @@ old
 }
 
 
-
 }
 
 await updateRecord(
@@ -2165,14 +2056,10 @@ data
 );
 
 
-
 }
 
 
-
-
 else{
-
 
 
 let moderatedCollections =
@@ -2206,7 +2093,6 @@ reviewCollections
 ];
 
 
-
 await createRecord(
 
 activeCollection,
@@ -2232,14 +2118,7 @@ moderatedCollections.includes(activeCollection)
 );
 
 
-
 }
-
-
-
-
-
-
 
 
 showToast(
@@ -2251,17 +2130,10 @@ showToast(
 );
 
 
-
-
 closeAdminModal();
 
 
-
-
 unlockAdminSave();
-
-
-
 
 
 loadManager(
@@ -2271,17 +2143,13 @@ activeCollection
 );
 
 
-
 }
-
 
 
 catch(error){
 
 
-
 console.error(error);
-
 
 
 showToast(
@@ -2293,16 +2161,29 @@ showToast(
 );
 
 
-
 unlockAdminSave();
 
 
+}
+
 
 }
 
 
 
+
+async function saveEntry(id){
+
+
+let data =
+collectFormData();
+
+
+return persistEntry(id,data);
+
+
 }
+
 
 
 

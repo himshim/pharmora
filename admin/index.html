@@ -1184,6 +1184,9 @@ document
 <!-- CORE SERVICES -->
 <script src="/js/pharmora.js"></script>
 
+<!-- Admin wizard service (Add/Review steps) -->
+<script src="/js/services/admin.wizard.js"></script>
+
 
 
 <script>
@@ -1292,17 +1295,18 @@ user.role
 
 
 
-document.addEventListener(
-"DOMContentLoaded",
-()=>{
-
-loadAdminUser();
-
-startAdmin();
-
+function initializeAdminPage() {
+    loadAdminUser();
+    startAdmin();
 }
 
-);
+if (window.PharmoraReady) {
+    initializeAdminPage();
+} else {
+    window.addEventListener("pharmora-ready", initializeAdminPage, {
+        once: true
+    });
+}
 
 
 </script>

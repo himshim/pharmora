@@ -101,6 +101,20 @@ return;
 
 box.innerHTML =
 
+`
+<button
+class="btn btn-primary"
+onclick="AdminWizard.startReviewWizard()">
+
+▶ Start Review Queue
+
+</button>
+
+<br><br>
+`
+
++
+
 pending.map(item=>`
 
 
