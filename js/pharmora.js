@@ -349,6 +349,14 @@ const MODULES={
 
 "/js/services/contribute.wizard.js"
 
+],
+
+"profile-wizard":[
+
+"/js/services/wizard.core.js",
+
+"/js/services/profile.wizard.js"
+
 ]
 
 
@@ -393,6 +401,12 @@ career:[
 contribute:[
 
 "/js/services/contribute.wizard.js"
+
+],
+
+"profile-wizard":[
+
+"/dist/pharmora.user.js"
 
 ]
 

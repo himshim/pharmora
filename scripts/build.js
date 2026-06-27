@@ -264,7 +264,11 @@ bundle(
 
 "js/services/reputation.service.js",
 
-"js/services/access.service.js"
+"js/services/access.service.js",
+
+"js/services/wizard.core.js",
+
+"js/services/profile.wizard.js"
 
 ],
 
