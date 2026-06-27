@@ -304,34 +304,33 @@ bundle(
 */
 
 
-bundle(
-[
+bundle([
 
+  "js/services/verification.service.js",
 
+  "js/services/admin.service.js",
 
-"js/services/verification.service.js",
+  "js/services/admin.dashboard.js",
 
-"js/services/admin.service.js",
+  "js/services/admin-crud.service.js",      // ← ADD
 
-"js/services/admin.dashboard.js",
+  "js/services/admin.review.js",
 
-"js/services/admin.users.js",
+  "js/services/admin.users.js",
 
-"js/services/admin.audit.js",
+  "js/services/admin.audit.js",
 
-"js/services/admin.review.js",
+  "js/services/admin.reports.js",
 
-"js/services/admin.reports.js",
+  "js/services/admin.trash.js",
 
-"js/services/admin.trash.js",
+  "js/services/admin.verification.js",
 
-"js/services/admin.verification.js"
+  "js/services/admin.wizard.js",            // ← if separate
 
-],
+  "js/services/admin.contributors.js"       // ← if separate
 
-"dist/pharmora.admin.js"
-
-);
+], "dist/pharmora.admin.js");
 
 /*
  ROUTER
