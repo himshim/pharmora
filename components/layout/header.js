@@ -6,39 +6,56 @@
 (function () {
   'use strict';
 
-  // Add layout responsiveness style block
+  // Add layout styling & animations block
   const styleEl = document.createElement("style");
   styleEl.textContent = `
+    .navbar-header {
+      position: relative;
+      z-index: 1000;
+    }
     .navbar-header .user-menu-wrapper {
       position: relative;
       display: inline-block;
     }
     .navbar-header .user-dropdown-panel {
       position: absolute;
-      top: 100%;
+      top: calc(100% + 8px);
       right: 0;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 0;
-      min-width: 160px;
+      border-radius: 12px;
+      padding: 8px 0;
+      min-width: 185px;
       box-shadow: var(--shadow-lg);
       display: none;
       flex-direction: column;
       z-index: 1001;
+      opacity: 0;
+      transform: translateY(-10px) scale(0.95);
+      pointer-events: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .navbar-header .user-menu-wrapper:hover .user-dropdown-panel {
+    .navbar-header .user-dropdown-panel.show {
       display: flex;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
     }
     .navbar-header .user-dropdown-panel a {
-      padding: 8px 16px;
+      padding: 10px 16px;
       color: var(--text);
       text-decoration: none;
       font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
       transition: background 0.2s;
     }
     .navbar-header .user-dropdown-panel a:hover {
       background: var(--surface-light);
+    }
+    .navbar-header .header-search-bar {
+      width: 100%;
     }
     .navbar-header .header-search-bar form {
       position: relative;
@@ -59,6 +76,7 @@
       background: var(--surface);
       border-color: var(--primary);
       outline: none;
+      box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.15);
     }
     .navbar-header .header-search-bar .search-icon {
       position: absolute;
@@ -66,11 +84,59 @@
       color: var(--text-muted);
       font-size: 0.9rem;
     }
+    .navbar-header .notification-panel {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 360px;
+      max-width: 90vw;
+      max-height: 450px;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      display: none;
+      flex-direction: column;
+      z-index: 1002;
+      opacity: 0;
+      transform: translateY(-10px) scale(0.95);
+      pointer-events: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 16px;
+    }
+    .navbar-header .notification-panel.show {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+    .navbar-header .notice-track {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      width: 100%;
+    }
+    .navbar-header .notice-track span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: ticker 30s linear infinite;
+    }
+    .navbar-header .notice-track:hover span {
+      animation-play-state: paused;
+    }
+    @keyframes ticker {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-100%, 0, 0); }
+    }
     @media (max-width: 768px) {
       #header-search-container, #header-nav-container, #header-usermenu-container {
         display: none !important;
       }
       .navbar-header .menu-toggle {
+        display: block !important;
+      }
+      .navbar-header .mobile-menu.active {
         display: block !important;
       }
     }
@@ -81,7 +147,7 @@
     const root = document.getElementById("site-header");
     if (!root) return;
 
-    // Fetch navigation configuration
+    // Fetch configs
     let navConfig = [];
     let siteConfig = { name: "Pharmora", logo: "", tagline: "Open Pharmacy Knowledge Ecosystem" };
 
@@ -89,10 +155,10 @@
       siteConfig = await fetch(appPath("config/site.json")).then(r => r.json());
       navConfig = await fetch(appPath("config/navigation.json")).then(r => r.json());
     } catch (e) {
-      console.warn("Failed loading configs, using fallbacks", e);
+      console.warn("Failed loading configs, using defaults", e);
     }
 
-    // Resolve user state
+    // Resolve user states
     const user = typeof currentUser === "function" ? currentUser() : null;
     let profile = null;
     if (user && window.PharmoraProfile) {
@@ -104,7 +170,7 @@
     const name = profile?.displayName || user?.name || "Profile";
     const initials = name.charAt(0).toUpperCase();
 
-    // Resolve unread notifications
+    // Resolve notifications count
     let unreadCount = 0;
     if (user && window.PharmoraNotify) {
       try {
@@ -112,7 +178,7 @@
       } catch (err) {}
     }
 
-    // Central Navigation Registry - permission based filtering
+    // Dynamic Permission Checks on navigation items
     const filteredLinks = [];
     for (const item of navConfig) {
       if (!item.permission) {
@@ -125,7 +191,7 @@
       }
     }
 
-    // Reusable render functions
+    // Exposed components render API
     window.renderLogo = function () {
       const logoSrc = siteConfig.logo ? appPath(siteConfig.logo) : "";
       return `
@@ -157,13 +223,13 @@
     };
 
     window.renderNotifications = function (id, count) {
-      const dot = count ? `<span class="notification-dot" style="background:var(--secondary); color:#fff; border-radius:50%; padding:2px 6px; font-size:0.75rem; margin-left:4px;">${count}</span>` : "";
+      const dot = count ? `<span class="notification-dot" style="background:var(--secondary); color:#fff; border-radius:50%; padding:2px 6px; font-size:0.75rem; margin-left:4px; font-weight:bold;">${count}</span>` : "";
       return `
         <div class="notification-wrapper" style="position:relative;">
-          <a href="#" class="notification-link" onclick="event.preventDefault(); PharmoraNotification.toggle('${id}');" style="text-decoration:none;">
+          <a href="#" class="notification-link" onclick="event.preventDefault(); PharmoraNotification.toggle('${id}');" style="text-decoration:none; font-size:1.1rem;">
             🔔${dot}
           </a>
-          <div id="${id}" class="notification-panel" style="position:absolute; top:100%; right:0; background:var(--surface); border:1px solid var(--border); border-radius:8px; width:300px; max-height:400px; overflow-y:auto; display:none; flex-direction:column; z-index:1002; padding:15px; box-shadow:var(--shadow-lg);"></div>
+          <div id="${id}" class="notification-panel"></div>
         </div>
       `;
     };
@@ -178,11 +244,11 @@
       }
       return `
         <div class="user-menu-wrapper">
-          <a href="${appPath("dashboard/")}" class="user-chip" style="display:flex; align-items:center; gap:8px; text-decoration:none; color:var(--text);">
+          <a href="#" onclick="event.preventDefault(); toggleUserMenu(event);" class="user-chip" style="display:flex; align-items:center; gap:8px; text-decoration:none; color:var(--text);">
             <div class="avatar avatar-sm" style="width:30px; height:30px; border-radius:50%; background:var(--primary); color:#000; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.85rem;">${initialsChar}</div>
-            <span class="user-name-text">${dispName}</span>
+            <span class="user-name-text" style="font-weight:600; font-size:0.9rem; cursor:pointer;">${dispName} ▾</span>
           </a>
-          <div class="user-dropdown-panel">
+          <div id="header-usermenu-panel" class="user-dropdown-panel">
             <a href="${appPath("dashboard/")}">📊 Dashboard</a>
             <a href="${appPath("settings/")}">⚙ Settings</a>
             <a href="#" onclick="event.preventDefault(); toggleTheme();">🌓 Switch Theme</a>
@@ -300,7 +366,7 @@
       `;
     };
 
-    // Render structure only once
+    // Render layout structure only once
     const navbarExists = root.querySelector(".navbar");
     if (!navbarExists) {
       root.innerHTML = `
@@ -321,16 +387,16 @@
           <div id="header-mobile-drawer-container"></div>
           
           <div class="notice-bar" style="background:var(--primary); color:#fff; font-size:0.85rem; padding:4px 0; overflow:hidden;">
-            <div class="container" style="display:flex; gap:10px;">
+            <div class="container" style="display:flex; gap:10px; align-items:center;">
               <span class="notice-title" style="font-weight:bold; white-space:nowrap;">🔔 Updates</span>
-              <div class="notice-track" style="overflow:hidden; white-space:nowrap;"><span id="notice-text">Loading updates...</span></div>
+              <div class="notice-track"><span id="notice-text">Loading updates...</span></div>
             </div>
           </div>
         </header>
       `;
     }
 
-    // Populate target containers
+    // Populate dynamic targets
     document.getElementById("header-logo-container").innerHTML = renderLogo();
     document.getElementById("header-search-container").innerHTML = renderSearch();
     document.getElementById("header-nav-container").innerHTML = renderNavigation(filteredLinks);
@@ -348,11 +414,49 @@
     }, 300);
   }
 
+  // Clicks management to close dynamic panels when clicking outside
+  window.toggleUserMenu = function (event) {
+    event.stopPropagation();
+    const panel = document.getElementById("header-usermenu-panel");
+    if (!panel) return;
+    const notifPanel = document.getElementById("notification-panel-desktop");
+    if (notifPanel) notifPanel.classList.remove("show");
+    panel.classList.toggle("show");
+  };
+
+  window.toggleNotifications = function (id) {
+    const panel = document.getElementById(id);
+    if (!panel) return;
+    const userPanel = document.getElementById("header-usermenu-panel");
+    if (userPanel) userPanel.classList.remove("show");
+    document.querySelectorAll(".notification-panel").forEach(item => {
+      if (item !== panel) item.classList.remove("show");
+    });
+    panel.classList.toggle("show");
+  };
+
+  if (!window.dropdownOutsideClickListenerAttached) {
+    document.addEventListener("click", (event) => {
+      const userWrapper = document.querySelector(".user-menu-wrapper");
+      if (userWrapper && !userWrapper.contains(event.target)) {
+        const userPanel = document.getElementById("header-usermenu-panel");
+        if (userPanel) userPanel.classList.remove("show");
+      }
+      const notifWrapper = document.querySelector(".notification-wrapper");
+      if (notifWrapper && !notifWrapper.contains(event.target)) {
+        const notifPanel = document.getElementById("notification-panel-desktop");
+        if (notifPanel) notifPanel.classList.remove("show");
+      }
+    });
+    window.dropdownOutsideClickListenerAttached = true;
+  }
+
   async function loadNoticeTicker() {
     let box = document.getElementById("notice-text");
     if (!box) return;
     try {
-      let data = typeof getRecords === "function" ? await getRecords("notifications") : [];
+      const response = await fetch(appPath("config/notices.json"));
+      let data = await response.json();
       data = data.filter(x => x.active !== false);
       if (!data.length) {
         box.innerHTML = "Welcome to Pharmora Knowledge Ecosystem";
@@ -362,6 +466,23 @@
     } catch (e) {
       box.innerHTML = "Open Pharmacy Knowledge Ecosystem";
     }
+  }
+
+  // Fix search bug: auto-fill local search box and submit search on library page load
+  if (!window.searchAutostartAttached) {
+    window.addEventListener("pharmora-ready", () => {
+      const queryVal = new URLSearchParams(window.location.search).get('q');
+      if (queryVal && window.location.pathname.includes('/library/')) {
+        const localSearchInput = document.querySelector('.search-box input');
+        if (localSearchInput) {
+          localSearchInput.value = queryVal;
+          if (typeof pharmoraSearch === "function") {
+            pharmoraSearch(queryVal);
+          }
+        }
+      }
+    });
+    window.searchAutostartAttached = true;
   }
 
   // Hook layout bootstrap
