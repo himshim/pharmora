@@ -704,11 +704,7 @@ root.innerHTML = `
 
       <div id="tab-achievements" class="profile-tab-panel" style="display: none;">
         <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 10px;">
-          \${(profile.badges || []).length ? profile.badges.map(b => `\\`<span class="badge" style="font-size: 0.9rem; padding: 6px 12px;">\\\${b}</span>\\``).join('') : `\\`
-            <div style="text-align: center; width: 100%; color: var(--text-muted); padding: 15px; font-size: 0.85rem;">
-              🏅 No badges earned yet. Contribute content to acquire reputation milestones!
-            </div>
-          \\``}
+          \${renderAchievementsTab(profile)}
         </div>
       </div>
     </div>
@@ -742,6 +738,18 @@ window.switchProfileTab = function(tabName) {
   
   document.getElementById('tab-' + tabName).style.display = 'block';
   event.target.classList.add('active');
+};
+
+window.renderAchievementsTab = function(profile) {
+  const badges = profile.badges || [];
+  if (badges.length > 0) {
+    return badges.map(b => `<span class="badge" style="font-size: 0.9rem; padding: 6px 12px;">${b}</span>`).join('');
+  }
+  return `
+    <div style="text-align: center; width: 100%; color: var(--text-muted); padding: 15px; font-size: 0.85rem;">
+      🏅 No badges earned yet. Contribute content to acquire reputation milestones!
+    </div>
+  `;
 };
 
 // Aliasing wrapper ids for backwards-compatibility compatibility
