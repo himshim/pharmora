@@ -44,47 +44,48 @@ file
 
 
 
-if(
-fs.existsSync(p)
-){
+    if(
+    fs.existsSync(p)
+    ){
 
 
-code +=
+    code +=
 
-`
+    `
 
-/* ===== ${file} ===== */
+    /* ===== ${file} ===== */
 
-`;
-
-
-code +=
-
-"\n;\n" +
-
-fs.readFileSync(
-p,
-"utf8"
-)
-
-+
-
-"\n;\n";
+    `;
 
 
-}
+    code +=
+
+    "\n;\n" +
+
+    fs.readFileSync(
+    p,
+    "utf8"
+    )
+
+    +
+
+    "\n;\n";
 
 
-else{
+    }
 
 
-console.warn(
-"Missing:",
-file
-);
+    else{
 
 
-}
+    console.error(
+    "Error: Missing required bundle file:",
+    file
+    );
+    process.exit(1);
+
+
+    }
 
 
 });

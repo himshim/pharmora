@@ -169,18 +169,8 @@ document.head.appendChild(s);
 
 
 
-async function loadMany(list){
-
-
-for(const file of list){
-
-
-await loadScript(file);
-
-
-}
-
-
+function loadMany(list){
+  return Promise.all(list.map(file => loadScript(file)));
 }
 
 
@@ -222,7 +212,7 @@ const CORE=[
 
 "/components/layout/footer.js"
 
-]
+];
 
 
 
@@ -755,155 +745,54 @@ el.id
 
 
 async function loadRequiredBundles(){
+  let needed = new Set();
+  document.querySelectorAll("[data-requires]").forEach(el=>{
+    el.dataset.requires.split(",").forEach(m=>needed.add(m.trim()));
+  });
 
-
-
-let needed =
-new Set();
-
-
-
-
-document
-
-.querySelectorAll("[data-requires]")
-
-.forEach(el=>{
-
-
-let modules =
-el.dataset.requires
-.split(",");
-
-
-
-modules.forEach(
-
-m=>needed.add(
-
-m.trim()
-
-)
-
-);
-
-
-});
-
-
-
-
-
-
-
-for(
-let module of needed
-){
-
-
-
-if(
-BUNDLES[module]
-){
-
-
-await loadMany(
-
-BUNDLES[module]
-
-);
-
-
-}
-
-
-
-}
-
-
-
+  let loadPromises = [];
+  for(let module of needed){
+    if(BUNDLES[module]){
+      loadPromises.push(loadMany(BUNDLES[module]));
+    }
+  }
+  await Promise.all(loadPromises);
 }
 
 
 async function start(){
+  console.log("⚕ Pharmora v2 starting...");
 
+  // Load CSS stylesheets in parallel
+  await Promise.all(UI.map(css => loadCSS(css)));
 
-console.log(
-"⚕ Pharmora v2 starting..."
-);
+  // Load CORE scripts in parallel
+  await loadMany(CORE);
 
+  if(window.PharmoraDatabaseReady){
+    await window.PharmoraDatabaseReady;
+  }
 
+  // Load modules & bundles concurrently
+  await Promise.all([
+    loadRequiredModules(),
+    loadRequiredBundles()
+  ]);
 
-for(
-let css of UI
-){
+  await loadMany(ROUTER);
+  await autoRender();
 
-await loadCSS(css);
+  window.PharmoraReady = true;
+  window.dispatchEvent(new Event("pharmora-ready"));
+  console.log("⚡ Pharmora Ready");
 
-}
-
-
-
-await loadMany(
-CORE
-);
-
-
-
-
-if(
-window.PharmoraDatabaseReady
-){
-
-await window.PharmoraDatabaseReady;
-
-}
-
-
-
-
-await loadRequiredModules();
-
-await loadRequiredBundles();
-
-await loadMany(
-ROUTER
-);
-
-
-await autoRender();
-
-
-
-
-window.PharmoraReady = true;
-
-window.dispatchEvent(
-    new Event("pharmora-ready")
-);
-
-console.log("⚡ Pharmora Ready");
-
-
-
-
-
-/*
- Background loading
-*/
-
-setTimeout(()=>{
-
-
-loadMany(
-BACKGROUND
-);
-
-
-},800);
-
-
-
+  // Defer non-critical background scripts to idle time
+  const deferBackground = () => loadMany(BACKGROUND);
+  if (typeof requestIdleCallback === "function") {
+    requestIdleCallback(() => deferBackground(), { timeout: 2000 });
+  } else {
+    setTimeout(deferBackground, 800);
+  }
 }
 
 
