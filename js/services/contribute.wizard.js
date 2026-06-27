@@ -927,31 +927,59 @@ const PharmoraContribute = (function () {
     }
   }
 
-  // ─── INIT ─────────────────────────────────────────────────────────────────
+// ─── INIT ─────────────────────────────────────────────────────────────────
 
-  function init() {
+function init() {
+  try {
+    console.log("=== init() started ===");
+
     const user = typeof currentUser === 'function' ? currentUser() : null;
+    console.log("User:", user);
+
     const authGate = el('auth-gate');
     const wizardSection = el('wizard-section');
 
+    console.log("authGate:", authGate);
+    console.log("wizardSection:", wizardSection);
+
     if (!user) {
-      // Show login prompt, hide wizard
+      console.log("No user detected");
+
       if (authGate) authGate.style.display = '';
       if (wizardSection) wizardSection.style.display = 'none';
+
       return;
     }
 
-    // Any logged-in user → show wizard directly (submissions go to moderation)
+    console.log("Logged in user");
+
     if (authGate) authGate.style.display = 'none';
     if (wizardSection) wizardSection.style.display = '';
 
+    console.log("wizard visible");
+
+    console.log("Calling renderTypePicker()");
     renderTypePicker();
+
+    console.log("renderTypePicker() finished");
+
+    console.log("Calling setStep()");
     setStep(1);
 
-    // Disable Continue until a type is selected
+    console.log("setStep() finished");
+
     const nextBtn = el('wizard-next');
+
+    console.log("nextBtn:", nextBtn);
+
     if (nextBtn) nextBtn.disabled = true;
+
+    console.log("=== init() finished ===");
+
+  } catch (err) {
+    console.error("Contribution init failed:", err);
   }
+}
 
   // ─── PUBLIC API ───────────────────────────────────────────────────────────
 
