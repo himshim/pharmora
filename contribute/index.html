@@ -656,15 +656,27 @@ select.form-input {
 <script src="/js/services/contribute.wizard.js"></script>
 
 <script>
+console.log("=== CONTRIBUTION INLINE START ===");
+
 function startContributePage() {
-  PharmoraContribute.init();
+    console.log("startContributePage()");
+    PharmoraContribute.init();
 }
 
+console.log("Ready:", window.PharmoraReady);
+
 if (window.PharmoraReady) {
-  startContributePage();
+    console.log("Immediate init");
+    startContributePage();
 } else {
-  document.addEventListener('pharmora-ready', startContributePage, { once: true });
+    console.log("Waiting...");
+    window.addEventListener("pharmora-ready", () => {
+        console.log("Received event");
+        startContributePage();
+    }, { once: true });
 }
+
+console.log("=== CONTRIBUTION INLINE END ===");
 </script>
 
 </body>
