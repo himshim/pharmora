@@ -252,19 +252,11 @@ bundle(
 bundle(
 [
 
-"js/services/auth.service.js",
-
 "js/services/storage.service.js",
-
-"js/services/profile.service.js",
-
-"js/services/notification.service.js",
 
 "js/services/user-notification.service.js",
 
 "js/services/reputation.service.js",
-
-"js/services/access.service.js",
 
 "js/services/wizard.core.js",
 
