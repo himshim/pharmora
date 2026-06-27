@@ -472,164 +472,63 @@ max="100">
 }
 
 async function loadSmartDashboard(){
-
-
-
-let box =
-document.getElementById(
-"smart-dashboard"
-);
-
-
-
-if(!box){
-
-return;
-
-}
-
-
-
-let user =
-currentUser();
-
-
-
-if(!user){
-
-return;
-
-}
-
-
-
-let profile =
-await getProfile(
-user.id
-);
-
-
-
-let types =
-profile?.types || [];
-
-
-
-
-
-let cards =
-
-dashboardCard(
-"My Profile",
-"View achievements, reputation and public profile.",
-"👤",
-"openMyProfile()"
-)
-
-+
-
-dashboardCard(
-"Learning Center",
-"Courses, notes and study resources.",
-"🎓",
-"location.href='../learn/'"
-)
-
-+
-
-dashboardCard(
-"Community Q&A",
-"Ask questions and help others.",
-"🌐",
-"location.href='../community/'"
-)
-
-+
-
-dashboardCard(
-"Library",
-"Books, notes and references.",
-"📚",
-"location.href='../library/'"
-)
-
-+
-
-dashboardCard(
-"Quick Tools",
-"Calculators and pharmacy utilities.",
-"🧪",
-"location.href='../tools/'"
-);
-
-
-
-
-
-
-if(
-
-types.includes("educator")
-
-){
-
-
-
-cards += dashboardCard(
-
-"Teaching Studio",
-
-"Create lectures and educational material.",
-
-"👨‍🏫",
-
-"location.href='../teach/'"
-
-);
-
-
-
-}
-
-
-
-
-
-
-
-if(
-
-types.includes("professional")
-
-){
-
-
-
-cards += dashboardCard(
-
-"Professional Corner",
-
-"Share experience and answer discussions.",
-
-"💊",
-
-"location.href='../community/'"
-
-);
-
-
-
-}
-
-
-
-
-
-box.innerHTML =
-cards;
-
-
-
+  let box = document.getElementById("smart-dashboard");
+  if(!box){
+    return;
+  }
+  let user = currentUser();
+  if(!user){
+    return;
+  }
+  let profile = await getProfile(user.id);
+  let types = profile?.types || [];
+
+  let cards = dashboardCard(
+    "My Workspace",
+    "View achievements, reputation and credentials.",
+    "👤",
+    "openMyProfile()"
+  ) + dashboardCard(
+    "Learning Track",
+    "Courses, subject notes and study resources.",
+    "🎓",
+    "location.href='../learn/'"
+  ) + dashboardCard(
+    "Discussions",
+    "Consult community questions and help others.",
+    "🌐",
+    "location.href='../community/'"
+  ) + dashboardCard(
+    "Knowledge Base",
+    "Reference books, notes and databases.",
+    "📚",
+    "location.href='../library/'"
+  ) + dashboardCard(
+    "Calculators",
+    "Calculators and clinical pharmacy utilities.",
+    "🧪",
+    "location.href='../tools/'"
+  );
+
+  if(types.includes("educator")){
+    cards += dashboardCard(
+      "Teaching Studio",
+      "Manage lectures and academic courses.",
+      "👨‍🏫",
+      "location.href='../teach/'"
+    );
+  }
+
+  if(types.includes("professional")){
+    cards += dashboardCard(
+      "Practice Hub",
+      "Share professional insights and verify cases.",
+      "💊",
+      "location.href='../community/'"
+    );
+  }
+
+  box.innerHTML = cards;
 }
 
 async function loadManagementPanel(){

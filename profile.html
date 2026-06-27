@@ -397,735 +397,367 @@ return;
 
 
 
-
-root.innerHTML=`
-
-
-
-<div class="card profile-header">
-
-
-
-<div class="avatar">
-
-
-${
-
-profile.avatar?.url
-
-?
-
-`
-
-<img src="${profile.avatar.url}">
-
-`
-
-:
-
-(
-
-profile.avatar?.initials ||
-
-"PH"
-
-)
-
+root.innerHTML = `
+<style>
+.profile-cover {
+  height: 180px;
+  background: linear-gradient(135deg, var(--primary-light, #2e1065) 0%, var(--surface-dark, #090514) 100%);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: -50px;
 }
+.profile-header-card {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 24px;
+}
+.profile-avatar-container {
+  position: relative;
+  display: inline-block;
+  margin-top: -30px;
+  margin-bottom: 12px;
+}
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 4px solid var(--surface-light);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  overflow: hidden;
+}
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.badge-verification {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  background: #22c55e;
+  color: #fff;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--surface-light);
+  font-size: 0.8rem;
+}
+.profile-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 768px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.profile-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.profile-main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.stat-pill {
+  padding: 10px;
+  border-radius: 10px;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+.stat-pill h3 {
+  font-size: 1.3rem;
+  margin: 0 0 2px 0;
+  color: var(--text);
+}
+.stat-pill p {
+  margin: 0;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.tab-nav {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.tab-btn {
+  padding: 8px 14px;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.active {
+  display: flex;
+}
+.modal-container {
+  width: 100%;
+  max-width: 800px;
+  max-height: 85vh;
+  overflow-y: auto;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  position: relative;
+}
+.modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+</style>
 
+<div class="profile-cover"></div>
 
+<div class="card profile-header-card">
+  <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
+    <div>
+      <div class="profile-avatar-container">
+        <div class="profile-avatar">
+          \${profile.avatar?.url ? \`<img src="\${profile.avatar.url}" alt="Avatar">\` : (profile.avatar?.initials || 'PH')}
+        </div>
+        \${profile.verification?.verified ? \`<div class="badge-verification" title="Verified Specialist">✔</div>\` : ''}
+      </div>
+      
+      <h1 style="margin: 0 0 2px 0; font-size: 1.6rem; display: flex; align-items: center; gap: 6px;">
+        \${profile.displayName || 'Pharmora User'}
+        \${platformBadge(profile) ? '👑' : ''}
+      </h1>
+      
+      <p style="margin: 0 0 8px 0; color: var(--text-muted); font-size: 0.9rem;">
+        \${profile.headline || 'Pharmora Community Member'}
+      </p>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px;">
+        <span class="badge" style="background: var(--primary-light, #2e1065); color: #fff;">@\${profile.username || 'user'}</span>
+        \${[...(profile.types || ['member']), ...(profile.specializations || [])].map(x => \`<span class="badge">\${x}</span>\`).join('')}
+      </div>
+    </div>
+
+    <div>
+      \${isMyProfile(profile) ? \`
+        <button class="btn btn-primary" onclick="openProfileWizardModal()">
+          ✏ Edit Workspace
+        </button>
+      \` : ''}
+    </div>
+  </div>
 </div>
-
-
-
-
-
-
-
-<div>
-
-
-<h1>
-
-
-${profile.displayName || "Pharmora User"}
-
-
-${
-
-platformBadge(profile)
-
-?
-
-" 👑"
-
-:
-
-profile.verification?.verified
-
-?
-
-" ✔"
-
-:
-
-""
-
-}
-
-
-</h1>
-
-
-
-
-
-<p>
-
-${profile.headline || "Pharmora Community Member"}
-
-</p>
-
-
-<p>
-
-@${profile.username || "user"}
-
-${
-
-canSeeUserCode(profile)
-
-?
-
-`
-
-<br>
-
-🔒 User Code:
-${profile.publicId || profile.refId || ""}
-
-`
-
-:
-
-""
-
-}
-
-</p>
-
-
-${
-
-platformBadge(profile)
-
-?
-
-`
-
-<div class="badge">
-
-${platformBadge(profile)}
-
-</div>
-
-`
-
-:
-
-""
-
-}
-
-
-
-<div>
-
-
-${
-
-[
-
-...(profile.types || ["member"]),
-
-...(profile.specializations || [])
-
-]
-
-.map(x=>`
-
-<span class="badge">
-
-${x}
-
-</span>
-
-`)
-
-.join(" ")
-
-
-}
-
-
-</div>
-
-
-
-
-
-
-${
-
-profile.contributor?.enabled
-
-?
-
-`
-
-<br><br>
-
-<div class="badge">
-
-🌱 Contributor
-
-</div>
-
-`
-
-:
-
-""
-
-}
-
-
-
-
-${
-
-isMyProfile(profile)
-
-?
-
-`
-
-<br><br>
-
-<button
-
-class="btn btn-primary"
-
-onclick="location.href='/profile-edit.html'">
-
-✏ Edit Profile
-
-</button>
-
-`
-
-:
-
-""
-
-}
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
 
 <div class="profile-grid">
+  <!-- Sidebar Panel -->
+  <div class="profile-sidebar">
+    <div class="card">
+      <h3 style="margin-top: 0; font-size: 1rem;">👋 About</h3>
+      <p style="font-size: 0.85rem; line-height: 1.4; color: var(--text-muted); margin-bottom: 0;">
+        \${profile.bio || 'No introduction added yet.'}
+      </p>
+    </div>
 
+    <!-- Reputation & Engagement Stats -->
+    <div class="card">
+      <h3 style="margin-top: 0; font-size: 1rem;">📊 Statistics</h3>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+        <div class="stat-pill">
+          <h3>\${profile.stats?.reputation || 0}</h3>
+          <p>Reputation</p>
+        </div>
+        <div class="stat-pill">
+          <h3>\${profile.stats?.articles || 0}</h3>
+          <p>Articles</p>
+        </div>
+        <div class="stat-pill">
+          <h3>\${profile.stats?.answers || 0}</h3>
+          <p>Answers</p>
+        </div>
+        <div class="stat-pill">
+          <h3>\${profile.stats?.notes || 0}</h3>
+          <p>Notes</p>
+        </div>
+      </div>
+    </div>
 
+    <!-- Social Contacts Panel -->
+    \${(profile.contact?.email?.visible || profile.contact?.linkedin?.value || profile.contact?.website?.value) ? \`
+      <div class="card">
+        <h3 style="margin-top: 0; font-size: 1rem;">🌐 Connections</h3>
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem;">
+          \${profile.contact?.email?.visible ? \`
+            <div>
+              <span style="color: var(--text-muted);">📧 Email:</span>
+              <a href="mailto:\${profile.contact.email.value}" style="word-break: break-all;">\${profile.contact.email.value}</a>
+            </div>
+          \` : ''}
+          \${profile.contact?.linkedin?.value ? \`
+            <div>
+              <span style="color: var(--text-muted);">🔗 LinkedIn:</span>
+              <a href="\${profile.contact.linkedin.value}" target="_blank" rel="noopener">Profile</a>
+            </div>
+          \` : ''}
+          \${profile.contact?.website?.value ? \`
+            <div>
+              <span style="color: var(--text-muted);">🖥 Website:</span>
+              <a href="\${profile.contact.website.value}" target="_blank" rel="noopener">Visit Site</a>
+            </div>
+          \` : ''}
+        </div>
+      </div>
+    \` : ''}
+  </div>
 
+  <!-- Main Content Tabs -->
+  <div class="profile-main-content">
+    <!-- Dynamic Panel (Role-Specific) -->
+    \${profile.types?.[0] === 'student' ? \`
+      <div class="card" style="border-left: 4px solid var(--primary);">
+        <h3 style="margin-top: 0; color: var(--primary); font-size: 1rem;">🎓 Academic Track</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 0.85rem;">
+          <div>
+            <span style="color: var(--text-muted);">Institution:</span>
+            <strong>\${profile.education?.[0]?.college || 'Not set'}</strong>
+          </div>
+          <div>
+            <span style="color: var(--text-muted);">Course:</span>
+            <strong>\${profile.education?.[0]?.course || 'Not set'}</strong>
+          </div>
+          <div>
+            <span style="color: var(--text-muted);">Graduation Year:</span>
+            <strong>\${profile.education?.[0]?.year || 'Not set'}</strong>
+          </div>
+        </div>
+      </div>
+    \` : \`
+      <div class="card" style="border-left: 4px solid var(--primary);">
+        <h3 style="margin-top: 0; color: var(--primary); font-size: 1rem;">💼 Practice & Experience</h3>
+        <div style="font-size: 0.85rem; line-height: 1.5;">
+          <div>
+            <span style="color: var(--text-muted);">Current Role:</span>
+            <strong>\${profile.positions?.[0]?.title || 'Member'}</strong>
+          </div>
+          <div>
+            <span style="color: var(--text-muted);">Organization:</span>
+            <strong>\${profile.positions?.[0]?.organization || 'Not set'}</strong>
+          </div>
+        </div>
+      </div>
+    \`}
 
+    <div class="card">
+      <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchProfileTab('contributions')">📚 Contributions</button>
+        <button class="tab-btn" onclick="switchProfileTab('activity')">⚡ Recent Activity</button>
+        <button class="tab-btn" onclick="switchProfileTab('achievements')">🏅 Badges & Achievements</button>
+      </div>
 
+      <div id="tab-contributions" class="profile-tab-panel">
+        <div id="contribution-list-wrapper"></div>
+      </div>
 
+      <div id="tab-activity" class="profile-tab-panel" style="display: none;">
+        <div id="activity-list-wrapper"></div>
+      </div>
 
-<div class="card">
+      <div id="tab-achievements" class="profile-tab-panel" style="display: none;">
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 10px;">
+          \${(profile.badges || []).length ? profile.badges.map(b => \`<span class="badge" style="font-size: 0.9rem; padding: 6px 12px;">\${b}</span>\`).join('') : \`
+            <div style="text-align: center; width: 100%; color: var(--text-muted); padding: 15px; font-size: 0.85rem;">
+              🏅 No badges earned yet. Contribute content to acquire reputation milestones!
+            </div>
+          \`}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!-- Edit Wizard Modal Overlay -->
+<div id="profile-wizard-modal" class="modal-overlay">
+  <div class="modal-container">
+    <button class="modal-close-btn" onclick="closeProfileWizardModal()" aria-label="Close Editor">✖</button>
+    <div style="padding: 20px;">
+      <h2 style="margin-top: 0; margin-bottom: 16px;">✏ Workspace Setup Wizard</h2>
+      <div id="profile-wizard-root">Loading Profile Wizard...</div>
+    </div>
+  </div>
+</div>
+\`;
 
-<h2>
+window.openProfileWizardModal = function() {
+  document.getElementById('profile-wizard-modal').classList.add('active');
+  PharmoraProfileWizard.initWizard(profile);
+};
 
-👋 About
+window.closeProfileWizardModal = function() {
+  document.getElementById('profile-wizard-modal').classList.remove('active');
+};
 
-</h2>
+window.switchProfileTab = function(tabName) {
+  document.querySelectorAll('.profile-tab-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  
+  document.getElementById('tab-' + tabName).style.display = 'block';
+  event.target.classList.add('active');
+};
 
-
-<p>
-
-${
-
-profile.bio ||
-
-"No introduction added yet."
-
+// Aliasing wrapper ids for backwards-compatibility compatibility
+const contBox = document.getElementById('contribution-list-wrapper');
+if (contBox) {
+  contBox.id = 'contribution-list';
 }
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h2>
-
-⭐ Reputation
-
-</h2>
-
-
-<div class="profile-grid">
-
-
-<div class="stat">
-
-<h2>${profile.stats?.reputation || 0}</h2>
-
-<p>Points</p>
-
-</div>
-
-
-
-<div class="stat">
-
-<h2>${profile.stats?.articles || 0}</h2>
-
-<p>Articles</p>
-
-</div>
-
-
-
-<div class="stat">
-
-<h2>${profile.stats?.answers || 0}</h2>
-
-<p>Answers</p>
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h2>
-
-💼 Experience
-
-</h2>
-
-
-${
-
-(profile.positions || []).length
-
-?
-
-profile.positions.map(job=>`
-
-<p>
-
-<b>${job.title || ""}</b>
-
-<br>
-
-${job.organization || ""}
-
-</p>
-
-`).join("")
-
-
-:
-
-"💼 No professional details shared yet."
-
-
+const actBox = document.getElementById('activity-list-wrapper');
+if (actBox) {
+  actBox.id = 'activity-list';
 }
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h2>
-
-🎓 Education
-
-</h2>
-
-
-
-${
-
-
-(profile.education || []).length
-
-
-?
-
-
-profile.education.map(e=>`
-
-<p>
-
-${e.course || e.degree || ""}
-
-${
-
-e.curriculum
-
-?
-
-" - "+e.curriculum
-
-:
-
-""
-
-}
-
-</p>
-
-
-`).join("")
-
-
-:
-
-"No education added yet."
-
-
-}
-
-
-
-<br>
-
-
-
-<p>
-
-
-${
-
-(profile.specializations || [])
-
-.join(", ")
-
-
-}
-
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h2>
-
-🏅 Badges
-
-</h2>
-
-
-${
-
-(profile.badges || []).length
-
-?
-
-profile.badges.join(" ")
-
-:
-
-`
-
-<div>
-
-🏅
-
-<br>
-
-No badges yet.
-
-<br>
-
-<small>
-
-Contribute to earn achievements.
-
-</small>
-
-</div>
-
-`
-
-}
-
-
-</div>
-
-
-
-
-
-
-
-
-
-${
-
-(
-profile.contact?.email?.value
-||
-profile.contact?.linkedin?.value
-||
-profile.contact?.website?.value
-)
-
-?
-
-`
-
-<div class="card">
-
-
-<h2>
-
-🌐 Contact
-
-</h2>
-
-
-
-${
-
-profile.contact?.email
-
-?
-
-`
-
-<p>
-
-Email:
-${profile.contact.email.value}
-
-</p>
-
-`
-
-:
-
-""
-
-}
-
-
-
-
-${
-
-profile.contact?.linkedin
-
-?
-
-`
-
-<p>
-
-LinkedIn:
-${profile.contact.linkedin.value}
-
-</p>
-
-`
-
-:
-
-""
-
-}
-
-
-
-${
-
-profile.contact?.website
-
-?
-
-`
-
-<p>
-
-Website:
-${profile.contact.website.value}
-
-</p>
-
-`
-
-:
-
-""
-
-}
-
-
-</div>
-
-
-
-`
-
-:
-
-""
-
-}
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h2>
-
-📚 Contributions
-
-</h2>
-
-
-<div id="contribution-list">
-
-Loading...
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h2>
-
-⚡ Recent Activity
-
-</h2>
-
-
-<div id="activity-list">
-
-Loading...
-
-</div>
-
-
-</div>
-
-
-
-`;
-
-
-
-
-
-
-
-
 
 loadContributions(id);
-
 loadActivity(id);
 
-
-
 }
-
-
-
-
 
 
 
