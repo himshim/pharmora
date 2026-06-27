@@ -553,162 +553,11 @@ root.innerHTML = `
 </style>
 
 <div class="profile-cover"></div>
-
-<div class="card profile-header-card">
-  <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
-    <div>
-      <div class="profile-avatar-container">
-        <div class="profile-avatar">
-          \${profile.avatar?.url ? \`<img src="\${profile.avatar.url}" alt="Avatar">\` : (profile.avatar?.initials || 'PH')}
-        </div>
-        \${profile.verification?.verified ? \`<div class="badge-verification" title="Verified Specialist">✔</div>\` : ''}
-      </div>
-      
-      <h1 style="margin: 0 0 2px 0; font-size: 1.6rem; display: flex; align-items: center; gap: 6px;">
-        \${profile.displayName || 'Pharmora User'}
-        \${platformBadge(profile) ? '👑' : ''}
-      </h1>
-      
-      <p style="margin: 0 0 8px 0; color: var(--text-muted); font-size: 0.9rem;">
-        \${profile.headline || 'Pharmora Community Member'}
-      </p>
-
-      <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px;">
-        <span class="badge" style="background: var(--primary-light, #2e1065); color: #fff;">@\${profile.username || 'user'}</span>
-        \${[...(profile.types || ['member']), ...(profile.specializations || [])].map(x => \`<span class="badge">\${x}</span>\`).join('')}
-      </div>
-    </div>
-
-    <div>
-      \${isMyProfile(profile) ? \`
-        <button class="btn btn-primary" onclick="openProfileWizardModal()">
-          ✏ Edit Workspace
-        </button>
-      \` : ''}
-    </div>
-  </div>
-</div>
+<div id="profile-header-target"></div>
 
 <div class="profile-grid">
-  <!-- Sidebar Panel -->
-  <div class="profile-sidebar">
-    <div class="card">
-      <h3 style="margin-top: 0; font-size: 1rem;">👋 About</h3>
-      <p style="font-size: 0.85rem; line-height: 1.4; color: var(--text-muted); margin-bottom: 0;">
-        \${profile.bio || 'No introduction added yet.'}
-      </p>
-    </div>
-
-    <!-- Reputation & Engagement Stats -->
-    <div class="card">
-      <h3 style="margin-top: 0; font-size: 1rem;">📊 Statistics</h3>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-        <div class="stat-pill">
-          <h3>\${profile.stats?.reputation || 0}</h3>
-          <p>Reputation</p>
-        </div>
-        <div class="stat-pill">
-          <h3>\${profile.stats?.articles || 0}</h3>
-          <p>Articles</p>
-        </div>
-        <div class="stat-pill">
-          <h3>\${profile.stats?.answers || 0}</h3>
-          <p>Answers</p>
-        </div>
-        <div class="stat-pill">
-          <h3>\${profile.stats?.notes || 0}</h3>
-          <p>Notes</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Social Contacts Panel -->
-    \${(profile.contact?.email?.visible || profile.contact?.linkedin?.value || profile.contact?.website?.value) ? \`
-      <div class="card">
-        <h3 style="margin-top: 0; font-size: 1rem;">🌐 Connections</h3>
-        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem;">
-          \${profile.contact?.email?.visible ? \`
-            <div>
-              <span style="color: var(--text-muted);">📧 Email:</span>
-              <a href="mailto:\${profile.contact.email.value}" style="word-break: break-all;">\${profile.contact.email.value}</a>
-            </div>
-          \` : ''}
-          \${profile.contact?.linkedin?.value ? \`
-            <div>
-              <span style="color: var(--text-muted);">🔗 LinkedIn:</span>
-              <a href="\${profile.contact.linkedin.value}" target="_blank" rel="noopener">Profile</a>
-            </div>
-          \` : ''}
-          \${profile.contact?.website?.value ? \`
-            <div>
-              <span style="color: var(--text-muted);">🖥 Website:</span>
-              <a href="\${profile.contact.website.value}" target="_blank" rel="noopener">Visit Site</a>
-            </div>
-          \` : ''}
-        </div>
-      </div>
-    \` : ''}
-  </div>
-
-  <!-- Main Content Tabs -->
-  <div class="profile-main-content">
-    <!-- Dynamic Panel (Role-Specific) -->
-    \${profile.types?.[0] === 'student' ? \`
-      <div class="card" style="border-left: 4px solid var(--primary);">
-        <h3 style="margin-top: 0; color: var(--primary); font-size: 1rem;">🎓 Academic Track</h3>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 0.85rem;">
-          <div>
-            <span style="color: var(--text-muted);">Institution:</span>
-            <strong>\${profile.education?.[0]?.college || 'Not set'}</strong>
-          </div>
-          <div>
-            <span style="color: var(--text-muted);">Course:</span>
-            <strong>\${profile.education?.[0]?.course || 'Not set'}</strong>
-          </div>
-          <div>
-            <span style="color: var(--text-muted);">Graduation Year:</span>
-            <strong>\${profile.education?.[0]?.year || 'Not set'}</strong>
-          </div>
-        </div>
-      </div>
-    \` : \`
-      <div class="card" style="border-left: 4px solid var(--primary);">
-        <h3 style="margin-top: 0; color: var(--primary); font-size: 1rem;">💼 Practice & Experience</h3>
-        <div style="font-size: 0.85rem; line-height: 1.5;">
-          <div>
-            <span style="color: var(--text-muted);">Current Role:</span>
-            <strong>\${profile.positions?.[0]?.title || 'Member'}</strong>
-          </div>
-          <div>
-            <span style="color: var(--text-muted);">Organization:</span>
-            <strong>\${profile.positions?.[0]?.organization || 'Not set'}</strong>
-          </div>
-        </div>
-      </div>
-    \`}
-
-    <div class="card">
-      <div class="tab-nav">
-        <button class="tab-btn active" onclick="switchProfileTab('contributions')">📚 Contributions</button>
-        <button class="tab-btn" onclick="switchProfileTab('activity')">⚡ Recent Activity</button>
-        <button class="tab-btn" onclick="switchProfileTab('achievements')">🏅 Badges & Achievements</button>
-      </div>
-
-      <div id="tab-contributions" class="profile-tab-panel">
-        <div id="contribution-list-wrapper"></div>
-      </div>
-
-      <div id="tab-activity" class="profile-tab-panel" style="display: none;">
-        <div id="activity-list-wrapper"></div>
-      </div>
-
-      <div id="tab-achievements" class="profile-tab-panel" style="display: none;">
-        <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 10px;">
-          \${renderAchievementsTab(profile)}
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="profile-sidebar" id="profile-sidebar-target"></div>
+  <div class="profile-main-content" id="profile-main-target"></div>
 </div>
 
 <!-- Edit Wizard Modal Overlay -->
@@ -721,7 +570,9 @@ root.innerHTML = `
     </div>
   </div>
 </div>
-\`;
+`;
+
+renderProfileComponents(profile);
 
 window.openProfileWizardModal = function() {
   document.getElementById('profile-wizard-modal').classList.add('active');
@@ -738,6 +589,169 @@ window.switchProfileTab = function(tabName) {
   
   document.getElementById('tab-' + tabName).style.display = 'block';
   event.target.classList.add('active');
+};
+
+// Aliasing wrapper ids for backwards-compatibility compatibility
+const contBox = document.getElementById('contribution-list-wrapper');
+if (contBox) {
+  contBox.id = 'contribution-list';
+}
+const actBox = document.getElementById('activity-list-wrapper');
+if (actBox) {
+  actBox.id = 'activity-list';
+}
+
+loadContributions(id);
+loadActivity(id);
+
+}
+
+function renderProfileComponents(profile) {
+  // 1. Render Header Card
+  const headerTarget = document.getElementById('profile-header-target');
+  if (headerTarget) {
+    const avatarImg = profile.avatar?.url ? `<img src="${profile.avatar.url}" alt="Avatar">` : (profile.avatar?.initials || 'PH');
+    const isOwnerBadge = platformBadge(profile) ? '👑' : '';
+    const verifyBadge = profile.verification?.verified ? `<div class="badge-verification" title="Verified Specialist">✔</div>` : '';
+    const typesBadge = [...(profile.types || ['member']), ...(profile.specializations || [])].map(x => `<span class="badge">${x}</span>`).join('');
+    const showEditBtn = isMyProfile(profile) ? `<button class="btn btn-primary" onclick="openProfileWizardModal()">✏ Edit Workspace</button>` : '';
+
+    headerTarget.innerHTML = `
+      <div class="card profile-header-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div class="profile-avatar-container">
+              <div class="profile-avatar">${avatarImg}</div>
+              ${verifyBadge}
+            </div>
+            <h1 style="margin: 0 0 2px 0; font-size: 1.6rem; display: flex; align-items: center; gap: 6px;">
+              ${profile.displayName || 'Pharmora User'} ${isOwnerBadge}
+            </h1>
+            <p style="margin: 0 0 8px 0; color: var(--text-muted); font-size: 0.9rem;">
+              ${profile.headline || 'Pharmora Community Member'}
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px;">
+              <span class="badge" style="background: var(--primary-light, #2e1065); color: #fff;">@${profile.username || 'user'}</span>
+              ${typesBadge}
+            </div>
+          </div>
+          <div>${showEditBtn}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  // 2. Render Sidebar
+  const sidebarTarget = document.getElementById('profile-sidebar-target');
+  if (sidebarTarget) {
+    let connectionsHTML = '';
+    const hasContact = profile.contact?.email?.visible || profile.contact?.linkedin?.value || profile.contact?.website?.value;
+    if (hasContact) {
+      connectionsHTML = `
+        <div class="card">
+          <h3 style="margin-top: 0; font-size: 1rem;">🌐 Connections</h3>
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem;">
+            ${profile.contact?.email?.visible ? `<div><span style="color: var(--text-muted);">📧 Email:</span> <a href="mailto:${profile.contact.email.value}" style="word-break: break-all;">${profile.contact.email.value}</a></div>` : ''}
+            ${profile.contact?.linkedin?.value ? `<div><span style="color: var(--text-muted);">🔗 LinkedIn:</span> <a href="${profile.contact.linkedin.value}" target="_blank" rel="noopener">Profile</a></div>` : ''}
+            ${profile.contact?.website?.value ? `<div><span style="color: var(--text-muted);">🖥 Website:</span> <a href="${profile.contact.website.value}" target="_blank" rel="noopener">Visit Site</a></div>` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    sidebarTarget.innerHTML = `
+      <div class="card">
+        <h3 style="margin-top: 0; font-size: 1rem;">👋 About</h3>
+        <p style="font-size: 0.85rem; line-height: 1.4; color: var(--text-muted); margin-bottom: 0;">
+          ${profile.bio || 'No introduction added yet.'}
+        </p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top: 0; font-size: 1rem;">📊 Statistics</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div class="stat-pill"><h3>${profile.stats?.reputation || 0}</h3><p>Reputation</p></div>
+          <div class="stat-pill"><h3>${profile.stats?.articles || 0}</h3><p>Articles</p></div>
+          <div class="stat-pill"><h3>${profile.stats?.answers || 0}</h3><p>Answers</p></div>
+          <div class="stat-pill"><h3>${profile.stats?.notes || 0}</h3><p>Notes</p></div>
+        </div>
+      </div>
+      ${connectionsHTML}
+    `;
+  }
+
+  // 3. Render Main Content & Achievements Tab
+  const mainTarget = document.getElementById('profile-main-target');
+  if (mainTarget) {
+    let rolePanelHTML = '';
+    if (profile.types?.[0] === 'student') {
+      rolePanelHTML = `
+        <div class="card" style="border-left: 4px solid var(--primary);">
+          <h3 style="margin-top: 0; color: var(--primary); font-size: 1rem;">🎓 Academic Track</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 0.85rem;">
+            <div><span style="color: var(--text-muted);">Institution:</span> <strong>${profile.education?.[0]?.college || 'Not set'}</strong></div>
+            <div><span style="color: var(--text-muted);">Course:</span> <strong>${profile.education?.[0]?.course || 'Not set'}</strong></div>
+            <div><span style="color: var(--text-muted);">Graduation Year:</span> <strong>${profile.education?.[0]?.year || 'Not set'}</strong></div>
+          </div>
+        </div>
+      `;
+    } else {
+      rolePanelHTML = `
+        <div class="card" style="border-left: 4px solid var(--primary);">
+          <h3 style="margin-top: 0; color: var(--primary); font-size: 1rem;">💼 Practice & Experience</h3>
+          <div style="font-size: 0.85rem; line-height: 1.5;">
+            <div><span style="color: var(--text-muted);">Current Role:</span> <strong>${profile.positions?.[0]?.title || 'Member'}</strong></div>
+            <div><span style="color: var(--text-muted);">Organization:</span> <strong>${profile.positions?.[0]?.organization || 'Not set'}</strong></div>
+          </div>
+        </div>
+      `;
+    }
+
+    const badges = profile.badges || [];
+    let badgesHTML = '';
+    if (badges.length > 0) {
+      badgesHTML = badges.map(b => `<span class="badge" style="font-size: 0.9rem; padding: 6px 12px;">${b}</span>`).join('');
+    } else {
+      badgesHTML = `
+        <div style="text-align: center; width: 100%; color: var(--text-muted); padding: 15px; font-size: 0.85rem;">
+          🏅 No badges earned yet. Contribute content to acquire reputation milestones!
+        </div>
+      `;
+    }
+
+    mainTarget.innerHTML = `
+      ${rolePanelHTML}
+      <div class="card">
+        <div class="tab-nav">
+          <button class="tab-btn active" onclick="switchProfileTab('contributions')">📚 Contributions</button>
+          <button class="tab-btn" onclick="switchProfileTab('activity')">⚡ Recent Activity</button>
+          <button class="tab-btn" onclick="switchProfileTab('achievements')">🏅 Badges & Achievements</button>
+        </div>
+        <div id="tab-contributions" class="profile-tab-panel">
+          <div id="contribution-list-wrapper"></div>
+        </div>
+        <div id="tab-activity" class="profile-tab-panel" style="display: none;">
+          <div id="activity-list-wrapper"></div>
+        </div>
+        <div id="tab-achievements" class="profile-tab-panel" style="display: none;">
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 10px;">
+            ${badgesHTML}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+}
+
+window.renderAchievementsTab = function(profile) {
+  const badges = profile.badges || [];
+  if (badges.length > 0) {
+    return badges.map(b => `<span class="badge" style="font-size: 0.9rem; padding: 6px 12px;">${b}</span>`).join('');
+  }
+  return `
+    <div style="text-align: center; width: 100%; color: var(--text-muted); padding: 15px; font-size: 0.85rem;">
+      🏅 No badges earned yet. Contribute content to acquire reputation milestones!
+    </div>
+  `;
 };
 
 window.renderAchievementsTab = function(profile) {
