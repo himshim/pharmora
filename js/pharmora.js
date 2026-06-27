@@ -862,20 +862,13 @@ await autoRender();
 
 
 
+window.PharmoraReady = true;
+
 window.dispatchEvent(
-
-new Event(
-"pharmora-ready"
-)
-
+    new Event("pharmora-ready")
 );
 
-
-
-
-console.log(
-"⚡ Pharmora Ready"
-);
+console.log("⚡ Pharmora Ready");
 
 
 
