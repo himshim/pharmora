@@ -47,3 +47,5 @@ tools:
 
 
 };
+
+window.PharmoraRoutes = PharmoraRoutes;

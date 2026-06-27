@@ -217,6 +217,27 @@ currentUser()?.id
 };
 
 
+  let user = currentUser();
+  let userRoles = [
+    user?.role,
+    user?.type,
+    user?.accountType
+  ].map(x => String(x || "").toLowerCase());
+  let isPrivileged = userRoles.includes("owner") || userRoles.includes("admin") || userRoles.includes("superadmin");
+
+  if (!isPrivileged) {
+    updated.moderation = {
+      ...(updated.moderation || {}),
+      status: "pending",
+      reason: "Edited by user, requires re-review"
+    };
+    updated.lifecycle = {
+      ...(updated.lifecycle || {}),
+      status: "draft"
+    };
+  }
+
+
 Object.keys(
 updated.data || {}
 )
@@ -519,3 +540,11 @@ return changes;
 
 
 }
+
+window.loadEditableEntity = loadEditableEntity;
+window.canEditEntity = canEditEntity;
+window.createEditHistory = createEditHistory;
+window.saveEntityEdit = saveEntityEdit;
+window.editableFields = editableFields;
+window.fieldType = fieldType;
+window.buildChangesFromFields = buildChangesFromFields;

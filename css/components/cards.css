@@ -86,9 +86,8 @@ gap:22px;
 .glass{
 
 background:rgba(15,23,42,.65);
-
+-webkit-backdrop-filter:blur(18px);
 backdrop-filter:blur(18px);
-
 border:1px solid var(--border);
 
 }

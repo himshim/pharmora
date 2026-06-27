@@ -302,9 +302,8 @@ min-width:0;
 .confirm-overlay{
 
 z-index:var(--z-modal);
-
+-webkit-backdrop-filter:blur(8px);
 backdrop-filter:blur(8px);
-
 }
 
 

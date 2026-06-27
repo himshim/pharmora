@@ -173,3 +173,5 @@ createURL
 
 
 })();
+
+window.PharmoraRouter = PharmoraRouter;

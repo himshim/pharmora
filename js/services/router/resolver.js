@@ -138,3 +138,5 @@ resolve
 
 
 })();
+
+window.RouteResolver = RouteResolver;

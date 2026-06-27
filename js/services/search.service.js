@@ -19,12 +19,12 @@ return;
 
 let results = await PharmoraSearchEngine.search(query);
 
-box.innerHTML = results.map(item=>`
-<div class="card">
-<h3>${item.title || item.name || "Untitled"}</h3>
+  box.innerHTML = results.map(item=>`
+<a href="${item.url || '#'}" class="card glass search-result" style="text-decoration: none; color: inherit;">
+<h3>${item.icon || ''} ${item.title || item.name || "Untitled"}</h3>
 <p>${item.description || item.summary || ""}</p>
-</div>
-`).join("");
+</a>
+  `).join("");
 
 }
 

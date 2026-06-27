@@ -15,71 +15,93 @@ Editor | Pharmora
 </title>
 
 
-<link rel="stylesheet" href="/css/variables.css">
-<link rel="stylesheet" href="/css/base.css">
-<link rel="stylesheet" href="/css/components.css">
-<link rel="stylesheet" href="/css/responsive.css">
+<link rel="stylesheet" href="/css/pharmora.css">
 
 
 <style>
 
-.editor-box{
-
-max-width:900px;
-margin:auto;
-
+.editor-box {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 40px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-medium);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
 }
 
+.editor-box h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 
 input,
-textarea{
-
-width:100%;
-padding:15px;
-
-margin-bottom:15px;
-
-border-radius:15px;
-
-background:var(--surface);
-
-color:var(--text);
-
-border:1px solid var(--border);
-
+textarea,
+select {
+  width: 100%;
+  padding: 16px;
+  margin-bottom: 18px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-light);
+  color: var(--text);
+  border: 1px solid var(--border);
+  outline: none;
+  font-size: 0.95rem;
+  transition: var(--transition);
 }
 
-input[type="checkbox"]{
-
-width:auto;
-margin-right:10px;
-
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--primary);
+  box-shadow: var(--focus);
+  background: var(--surface);
 }
 
-
-label{
-
-display:block;
-margin-top:15px;
-
+input[type="checkbox"] {
+  width: auto;
+  margin-right: 12px;
+  cursor: pointer;
 }
 
-
-textarea{
-
-min-height:160px;
-
+label {
+  display: block;
+  font-weight: 600;
+  color: var(--text-soft);
+  margin-top: 20px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-
-.history-item{
-
-padding:12px;
-
-border-bottom:1px solid var(--border);
-
+textarea {
+  min-height: 150px;
+  resize: vertical;
 }
 
+.history-item {
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  transition: var(--transition);
+}
+
+.history-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.history-item b {
+  color: var(--secondary);
+}
 
 </style>
 
@@ -303,9 +325,52 @@ field.value ?? "";
 
 
 
-/*
- TEXTAREA
-*/
+  /*
+   REFERENCE
+  */
+  if(
+  config.type==="reference"
+  ){
+    let selectId = "ref-" + field.key + "-" + Math.random().toString(36).substring(2,8);
+    setTimeout(async ()=>{
+      let selectEl = document.getElementById(selectId);
+      if(!selectEl){ return; }
+      try{
+        if(typeof getRecords === "function"){
+          let records = await getRecords(config.collection);
+          records.forEach(item=>{
+            let option = document.createElement("option");
+            option.value = item.id;
+            option.textContent = item.name || item.title || item.code || item.id;
+            if(item.id === value){
+              option.selected=true;
+            }
+            selectEl.appendChild(option);
+          });
+        }
+      }catch(e){
+        console.warn("Reference load failed:", config.collection, e);
+      }
+    }, 50);
+
+    return `
+    <label>
+    ${config.label}
+    </label>
+    <select
+    id="${selectId}"
+    data-field="${field.key}"
+    data-type="string"
+    >
+    <option value="">Select ${config.label}</option>
+    </select>
+    `;
+  }
+
+
+  /*
+   TEXTAREA
+  */
 
 if(
 config.type==="textarea"

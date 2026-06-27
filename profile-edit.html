@@ -9,10 +9,7 @@
 
 <title>Edit Profile | Pharmora</title>
 
-<link rel="stylesheet" href="/css/variables.css">
-<link rel="stylesheet" href="/css/base.css">
-<link rel="stylesheet" href="/css/components.css">
-<link rel="stylesheet" href="/css/responsive.css">
+<link rel="stylesheet" href="/css/pharmora.css">
 
 </head>
 
@@ -23,7 +20,7 @@
 <div id="site-header"></div>
 
 
-<main class="container section">
+<main class="container section" data-requires="admin">
 
 
 <div class="card">
@@ -179,6 +176,13 @@ Verification is only for:
 ⚠ Fake verification requests may block future applications.
 </p>
 
+<label style="display:block; margin: 15px 0 5px; font-weight: bold;">
+Verification Proof / Registration ID
+</label>
+<textarea 
+id="verificationProof" 
+placeholder="Enter license/registration number, college roll ID, or staff web directory link" 
+style="width: 100%; min-height: 80px; margin-bottom: 15px; border-radius: 8px; border: 1px solid var(--border); padding: 10px; background: var(--surface-light); color: var(--text);"></textarea>
 
 <button
 class="btn"
@@ -944,37 +948,54 @@ oldJob.organization
 async function applyVerification(){
 
 
-let verification =
-originalProfile.verification || {};
+  let verification =
+  originalProfile.verification || {};
+
+  let proofVal = $("verificationProof") ? $("verificationProof").value.trim() : "";
+
+  if(!proofVal){
+    notify("Please provide verification proof or a registration ID", "warning");
+    return;
+  }
+
+  if(typeof requestVerification === "function"){
+    let job = originalProfile.positions?.[0] || {};
+    await requestVerification({
+      types: originalProfile.types || ["member"],
+      title: job.title || "",
+      organization: $("organization") ? $("organization").value : (job.organization || ""),
+      description: originalProfile.bio || "",
+      proof: proofVal
+    });
+  }
 
 
-
-await updateUserProfile({
-
-
-verification:{
+  await updateUserProfile({
 
 
-...verification,
+    verification:{
 
 
-status:"pending",
+      ...verification,
 
 
-attempts:
-
-(verification.attempts || 0)+1,
+      status:"pending",
 
 
-requestedAt:
+      attempts:
 
-new Date().toISOString()
-
-
-}
+      (verification.attempts || 0)+1,
 
 
-});
+      requestedAt:
+
+      new Date().toISOString()
+
+
+    }
+
+
+  });
 
 
 

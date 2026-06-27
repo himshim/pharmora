@@ -22,24 +22,30 @@ const CORE_ASSETS = [
 OFFLINE_PAGE,
 
 
-"./css/variables.css",
-"./css/base.css",
-"./css/components.css",
-"./css/responsive.css",
+  "./css/pharmora.css",
+  "./css/variables.css",
+  "./css/base.css",
+  "./css/components.css",
+  "./css/responsive.css",
 
+  "./js/pharmora.js",
+  "./js/app.js",
+  "./js/search.js",
 
-"./js/app.js",
-"./js/search.js",
+  "./dist/pharmora.database.js",
+  "./dist/pharmora.user.js",
+  "./dist/pharmora.router.js",
+  "./dist/pharmora.platform.js",
+  "./dist/pharmora.search.js",
 
+  "./config/site.json",
+  "./config/navigation.json",
 
-"./config/site.json",
-"./config/navigation.json",
-
-
-"./assets/branding/logo.svg",
-
-
-"./manifest.json"
+  "./assets/branding/logo.svg",
+  "./assets/branding/icon-192.png",
+  "./assets/branding/icon-512.png",
+  "./assets/branding/favicon.svg",
+  "./manifest.json"
 
 ];
 

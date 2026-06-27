@@ -573,7 +573,7 @@ Select Course
 </h3>
 
 
-<div class="options">
+<div class="options" id="course-options">
 
 
 <div class="option" data-value="bpharm">
@@ -886,96 +886,57 @@ document.getElementById("auth-brand").innerHTML =
 
 
 
-document
-
-.querySelectorAll(".option")
-
-.forEach(item=>{
-
-
-
-item.onclick=()=>{
-
-
-
-let block =
-item.closest(".block");
-
-
-
-let field =
-block.dataset.field;
-
-
-
-
-
-if(
-
-field==="types"
-
-||
-
-field==="interest"
-
-){
-
-
-
-item.classList.toggle(
-
-"active"
-
-);
-
-
-
+function bindOptionClicks(){
+  document
+  .querySelectorAll(".option")
+  .forEach(item=>{
+    item.onclick=()=>{
+      let block = item.closest(".block");
+      let field = block.dataset.field;
+      if(
+        field==="types"
+        ||
+        field==="interest"
+      ){
+        item.classList.toggle("active");
+      }
+      else{
+        let group = item.parentElement;
+        group
+        .querySelectorAll(".option")
+        .forEach(x=>x.classList.remove("active"));
+        item.classList.add("active");
+      }
+    };
+  });
 }
 
+bindOptionClicks();
 
-
-
-else{
-
-
-
-let group =
-item.parentElement;
-
-
-
-group
-
-.querySelectorAll(".option")
-
-.forEach(
-
-x=>x.classList.remove(
-
-"active"
-
-)
-
-);
-
-
-
-item.classList.add(
-
-"active"
-
-);
-
-
-
+async function loadDynamicCourses(){
+  const courseBox = document.getElementById("course-options");
+  if(!courseBox){ return; }
+  let courses = [];
+  try {
+    if(typeof getRecords === "function"){
+      courses = await getRecords("courses");
+    }
+  } catch(e) {
+    console.warn("Could not load courses from DB, using fallback", e);
+  }
+  
+  if(courses && courses.length > 0){
+    courseBox.innerHTML = courses.map(c => `
+      <div class="option" data-value="${c.id || c.name.toLowerCase()}">
+        ${c.name}
+      </div>
+    `).join("");
+    bindOptionClicks();
+  }
 }
 
-
-
-};
-
-
-
+window.addEventListener("pharmora-ready", () => {
+  loadDynamicCourses();
 });
 
 

@@ -143,6 +143,19 @@ ${
 
 PharmoraUI.panel({
 
+left:"<b>Proof</b>",
+
+right:req.proof || "<i>No proof provided</i>"
+
+})
+
+}
+
+
+${
+
+PharmoraUI.panel({
+
 left:"<b>History</b>",
 
 right:

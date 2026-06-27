@@ -745,6 +745,10 @@ return await hasPermission(
 
 "content."+action+".any"
 
+) || await hasPermission(
+
+"content."+action
+
 );
 
 
@@ -812,3 +816,12 @@ return normalizeRoles(user)
 
 
 }
+
+window.userPermissions = userPermissions;
+window.hasPermission = hasPermission;
+window.applyPermissions = applyPermissions;
+window.requirePermission = requirePermission;
+window.canEntityAction = canEntityAction;
+window.clearPermissionCache = clearPermissionCache;
+window.normalizeRoles = normalizeRoles;
+window.isOwner = isOwner;

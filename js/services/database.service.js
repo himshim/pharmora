@@ -341,19 +341,24 @@ deletedAt:null
 ====================== */
 
 async function exportDatabase(){
-
-
-let data =
-await PharmoraDatabase.find();
-
-
-return PharmoraDatabase.backup({
-
-entities:data
-
-});
-
-
+  let collections = {};
+  if (typeof PharmoraRegistry !== "undefined") {
+    let types = Object.keys(PharmoraRegistry.all());
+    let additionalTypes = ["notifications", "reputation_logs", "verification-requests", "contributor-applications"];
+    let allTypes = Array.from(new Set([...types, ...additionalTypes]));
+    
+    for (let type of allTypes) {
+      let records = await getRecords(type);
+      if (records.length > 0) {
+        collections[type] = records;
+      }
+    }
+  } else {
+    let data = await PharmoraDatabase.find();
+    collections.entities = data;
+  }
+  
+  return PharmoraDatabase.backup(collections);
 }
 
 
@@ -361,57 +366,56 @@ entities:data
 
 /* ======================
  IMPORT
-====================== */
+===================== */
 
 async function importDatabase(
-backup
+  backup
 ){
+  if(
+    !backup ||
+    backup.engine!=="pharmora-data-v2" ||
+    !backup.collections
+  ){
+    throw new Error(
+      "Invalid Pharmora backup"
+    );
+  }
 
+  let totalRestored = 0;
 
-if(
-!backup ||
-backup.engine!=="pharmora-data-v2" ||
-!backup.collections ||
-!Array.isArray(
-backup.collections.entities
-)
-){
+  if (Array.isArray(backup.collections.entities)) {
+    // Legacy migration import format
+    let oldEntities = backup.collections.entities;
+    totalRestored = oldEntities.length;
+    let collections = {};
+    oldEntities.forEach(entity => {
+      let type = entity.type || "entities";
+      if (!collections[type]) collections[type] = [];
+      collections[type].push(entity);
+    });
+    
+    Object.keys(collections).forEach(type => {
+      localStorage.setItem("pharmora_db_" + type, JSON.stringify(collections[type]));
+    });
+    
+    localStorage.removeItem("pharmora_db_entities");
+  } else {
+    // Multi-collection split format
+    Object.keys(backup.collections).forEach(type => {
+      let records = backup.collections[type];
+      if (Array.isArray(records)) {
+        localStorage.setItem("pharmora_db_" + type, JSON.stringify(records));
+        totalRestored += records.length;
+      }
+    });
+  }
 
-
-throw new Error(
-"Invalid Pharmora backup"
-);
-
-
-}
-
-
-
-localStorage.setItem(
-
-"pharmora_db_entities",
-
-JSON.stringify(
-backup.collections.entities
-)
-
-);
-
-
-
-return {
-
-success:true,
-
-restored:
-backup.collections.entities.length,
-
-importedAt:
-new Date().toISOString()
-
-};
-
-
+  return {
+    success:true,
+    restored:totalRestored,
+    importedAt:
+    new Date().toISOString()
+  };
 }
 
 

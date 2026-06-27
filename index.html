@@ -170,13 +170,7 @@ href="/assets/branding/icon-192.png">
 <!-- Styles -->
 
 
-<link rel="stylesheet" href="css/variables.css">
-
-<link rel="stylesheet" href="css/base.css">
-
-<link rel="stylesheet" href="css/components.css">
-
-<link rel="stylesheet" href="css/responsive.css">
+<link rel="stylesheet" href="css/pharmora.css">
 
 
 </head>
@@ -892,6 +886,13 @@ Become Contributor
 
 
 <script src="/js/pharmora.js"></script>
+<script src="/js/services/test-accounts.js"></script>
+<script>
+  // Auto-create test accounts for development
+  if (typeof createTestAccounts === 'function') {
+    createTestAccounts();
+  }
+</script>
 
 
 

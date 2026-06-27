@@ -469,7 +469,38 @@
       "name": "questionType",
       "label": "Question Type",
       "type": "select",
-      "options": ["MCQ", "Short Answer", "Long Answer", "Numerical", "Viva"]
+      "options": ["MCQ", "Short Answer", "Long Answer", "Numerical", "Viva", "Match the Following"]
+    },
+
+    {
+      "name": "examType",
+      "label": "Exam Category",
+      "type": "select",
+      "options": ["University Exam", "GPAT", "State PET", "NIPER Entrance", "Viva Voce", "Internal Assessment", "Other"]
+    },
+
+    {
+      "name": "optionA",
+      "label": "Option A (MCQ)",
+      "type": "text"
+    },
+
+    {
+      "name": "optionB",
+      "label": "Option B (MCQ)",
+      "type": "text"
+    },
+
+    {
+      "name": "optionC",
+      "label": "Option C (MCQ)",
+      "type": "text"
+    },
+
+    {
+      "name": "optionD",
+      "label": "Option D (MCQ)",
+      "type": "text"
     },
 
     {
@@ -481,7 +512,13 @@
 
     {
       "name": "answer",
-      "label": "Answer",
+      "label": "Correct Answer / Answer Key",
+      "type": "textarea"
+    },
+
+    {
+      "name": "explanation",
+      "label": "Explanation (optional)",
       "type": "textarea"
     }
   ],
@@ -880,6 +917,299 @@
       "label": "Status",
       "type": "select",
       "options": ["pending", "reviewed", "dismissed"]
+    }
+  ],
+
+  "drugs": [
+    {
+      "name": "genericName",
+      "label": "Generic Name (INN)",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "brandNames",
+      "label": "Indian Brand Names",
+      "type": "tags"
+    },
+    {
+      "name": "drugClass",
+      "label": "Drug Class / Category",
+      "type": "text"
+    },
+    {
+      "name": "scheduleType",
+      "label": "CDSCO Drug Schedule",
+      "type": "select",
+      "options": ["Schedule H (Rx Only)", "Schedule H1 (Rx + Record)", "Schedule X (Narcotic/Psychotropic)", "Schedule G (Self-Medication)", "OTC (No Prescription)", "Not Scheduled"]
+    },
+    {
+      "name": "mechanism",
+      "label": "Mechanism of Action",
+      "type": "textarea"
+    },
+    {
+      "name": "indications",
+      "label": "Therapeutic Uses / Indications",
+      "type": "textarea"
+    },
+    {
+      "name": "dose",
+      "label": "Standard Dose & Route",
+      "type": "textarea"
+    },
+    {
+      "name": "sideEffects",
+      "label": "Adverse Drug Reactions (ADRs)",
+      "type": "textarea"
+    },
+    {
+      "name": "contraindications",
+      "label": "Contraindications / Precautions",
+      "type": "textarea"
+    },
+    {
+      "name": "interactions",
+      "label": "Important Drug Interactions",
+      "type": "textarea"
+    },
+    {
+      "name": "pharmacokinetics",
+      "label": "Pharmacokinetics (ADME)",
+      "type": "textarea"
+    },
+    {
+      "name": "ipStandard",
+      "label": "Pharmacopoeia Standard (IP/BP/USP)",
+      "type": "text"
+    },
+    {
+      "name": "dpco",
+      "label": "Under DPCO Price Control?",
+      "type": "boolean"
+    },
+    {
+      "name": "nlemListed",
+      "label": "Listed in NLEM 2022",
+      "type": "boolean"
+    },
+    {
+      "name": "janAushadhi",
+      "label": "Available under Jan Aushadhi",
+      "type": "boolean"
+    },
+    {
+      "name": "pharmacistVerified",
+      "label": "Verified by Pharmacist / Reviewer",
+      "type": "boolean"
+    },
+    {
+      "name": "verifiedBy",
+      "label": "Reviewer Name & Credentials",
+      "type": "text"
+    },
+    {
+      "name": "subject",
+      "label": "Related Subject",
+      "type": "relation",
+      "collection": "subjects"
+    },
+    {
+      "name": "tags",
+      "label": "Tags",
+      "type": "tags"
+    }
+  ],
+
+  "practicals": [
+    {
+      "name": "title",
+      "label": "Practical Title",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "aim",
+      "label": "Aim / Objective",
+      "type": "textarea"
+    },
+    {
+      "name": "principle",
+      "label": "Principle",
+      "type": "textarea"
+    },
+    {
+      "name": "materials",
+      "label": "Requirements / Apparatus / Chemicals",
+      "type": "textarea"
+    },
+    {
+      "name": "procedure",
+      "label": "Procedure",
+      "type": "textarea"
+    },
+    {
+      "name": "observations",
+      "label": "Observations / Results / Tabulation",
+      "type": "textarea"
+    },
+    {
+      "name": "calculations",
+      "label": "Calculations",
+      "type": "textarea"
+    },
+    {
+      "name": "conclusion",
+      "label": "Conclusion / Inference",
+      "type": "textarea"
+    },
+    {
+      "name": "subject",
+      "label": "Subject",
+      "type": "relation",
+      "collection": "subjects"
+    },
+    {
+      "name": "unit",
+      "label": "Practical Group / Unit",
+      "type": "relation",
+      "collection": "units"
+    },
+    {
+      "name": "tags",
+      "label": "Tags",
+      "type": "tags"
+    }
+  ],
+
+  "jobs": [
+    {
+      "name": "title",
+      "label": "Job Title",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "company",
+      "label": "Company / Hospital / Institution",
+      "type": "text"
+    },
+    {
+      "name": "location",
+      "label": "Location (City, State)",
+      "type": "text"
+    },
+    {
+      "name": "jobType",
+      "label": "Employment Type",
+      "type": "select",
+      "options": ["Full-time", "Part-time", "Internship", "Contract", "Government (UPSC/PSC)"]
+    },
+    {
+      "name": "sector",
+      "label": "Sector",
+      "type": "select",
+      "options": ["Pharmaceutical Industry", "Hospital / Clinical", "Community / Retail", "Academics / Teaching", "Research & Development", "Government / Regulatory", "Jan Aushadhi", "Other"]
+    },
+    {
+      "name": "description",
+      "label": "Job Description",
+      "type": "textarea"
+    },
+    {
+      "name": "applyLink",
+      "label": "Apply Link / Contact",
+      "type": "text"
+    },
+    {
+      "name": "deadline",
+      "label": "Last Date to Apply",
+      "type": "date"
+    },
+    {
+      "name": "tags",
+      "label": "Tags",
+      "type": "tags"
+    }
+  ],
+
+  "research": [
+    {
+      "name": "title",
+      "label": "Paper Title",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "authors",
+      "label": "Author(s)",
+      "type": "text"
+    },
+    {
+      "name": "journal",
+      "label": "Journal / Publication",
+      "type": "text"
+    },
+    {
+      "name": "year",
+      "label": "Year Published",
+      "type": "text"
+    },
+    {
+      "name": "doi",
+      "label": "DOI / PubMed ID",
+      "type": "text"
+    },
+    {
+      "name": "abstract",
+      "label": "Abstract / Summary",
+      "type": "textarea"
+    },
+    {
+      "name": "subject",
+      "label": "Related Subject",
+      "type": "relation",
+      "collection": "subjects"
+    },
+    {
+      "name": "tags",
+      "label": "Tags",
+      "type": "tags"
+    }
+  ],
+
+  "documents": [
+    {
+      "name": "title",
+      "label": "Document Title",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "documentType",
+      "label": "Document Type",
+      "type": "select",
+      "options": ["SOP", "Guideline", "Regulatory Document", "Formulary", "Schedule", "Protocol", "Policy", "Other"]
+    },
+    {
+      "name": "issuingAuthority",
+      "label": "Issuing Authority",
+      "type": "text"
+    },
+    {
+      "name": "documentRef",
+      "label": "Document Reference / Number",
+      "type": "text"
+    },
+    {
+      "name": "description",
+      "label": "Description / Summary",
+      "type": "textarea"
+    },
+    {
+      "name": "tags",
+      "label": "Tags",
+      "type": "tags"
     }
   ]
 }
