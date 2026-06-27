@@ -353,9 +353,7 @@ const MODULES={
 
 "profile-wizard":[
 
-"/js/services/wizard.core.js",
-
-"/js/services/profile.wizard.js"
+"/dist/pharmora.user.js"
 
 ]
 
