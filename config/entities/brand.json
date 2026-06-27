@@ -1,0 +1,13 @@
+{
+  "required": [],
+  "properties": {
+    "content": {
+      "required": ["brandName", "strength", "price"],
+      "properties": {
+        "brandName": { "type": "string" },
+        "strength": { "type": "string" },
+        "price": { "type": "number" }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "required": [],
+  "properties": {
+    "content": {
+      "required": ["conditionType", "rationale"],
+      "properties": {
+        "conditionType": { "type": "string" },
+        "rationale": { "type": "string" }
+      }
+    }
+  }
+}

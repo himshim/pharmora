@@ -1,0 +1,12 @@
+{
+  "required": [],
+  "properties": {
+    "content": {
+      "required": ["title", "description"],
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "required": [],
+  "properties": {
+    "content": {
+      "required": ["name", "code", "type", "durationYears"],
+      "properties": {
+        "name": { "type": "string" },
+        "code": { "type": "string" },
+        "type": { "type": "string" },
+        "durationYears": { "type": "number" }
+      }
+    }
+  }
+}

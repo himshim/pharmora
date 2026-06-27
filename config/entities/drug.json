@@ -1,0 +1,13 @@
+{
+  "required": [],
+  "properties": {
+    "content": {
+      "required": ["genericName", "chemicalClass", "description"],
+      "properties": {
+        "genericName": { "type": "string" },
+        "chemicalClass": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    }
+  }
+}

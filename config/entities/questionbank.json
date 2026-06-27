@@ -1,0 +1,13 @@
+{
+  "required": [],
+  "properties": {
+    "content": {
+      "required": ["title", "year", "exam"],
+      "properties": {
+        "title": { "type": "string" },
+        "year": { "type": "number" },
+        "exam": { "type": "string" }
+      }
+    }
+  }
+}

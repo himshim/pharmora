@@ -1,0 +1,14 @@
+{
+  "required": [],
+  "properties": {
+    "content": {
+      "required": ["name", "code", "department", "duration"],
+      "properties": {
+        "name": { "type": "string" },
+        "code": { "type": "string" },
+        "department": { "type": "string" },
+        "duration": { "type": "string" }
+      }
+    }
+  }
+}

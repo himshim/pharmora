@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entity Knowledge Viewer - Pharmora</title>
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --primary-light: #eff6ff;
+      --border: #e5e7eb;
+      --surface: #ffffff;
+      --text: #1f2937;
+      --text-secondary: #4b5563;
+      --text-muted: #9ca3af;
+      --bg-body: #f9fafb;
+    }
+    body {
+      background: var(--bg-body);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  
+  <div style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+    <!-- Render TARGET -->
+    <div id="entity-viewer-root"></div>
+  </div>
+
+  <!-- Load Database and API Services -->
+  <script src="/dist/pharmora.database.js"></script>
+  <script src="/js/services/database.service.js"></script>
+  
+  <!-- Load UES Services -->
+  <script src="/js/services/entity/entity.core.js"></script>
+  <script src="/js/services/entity/entity.registry.js"></script>
+  <script src="/js/services/entity/entity.schema.js"></script>
+  <script src="/js/services/entity/entity.events.js"></script>
+  <script src="/js/services/entity/entity.api.js"></script>
+  <script src="/js/services/entity/entity.relations.js"></script>
+  <script src="/js/services/entity/entity.graph.js"></script>
+  <script src="/js/services/entity/entity.renderer.js"></script>
+
+  <!-- Load UI Components -->
+  <script src="/components/entity/entity.card.js"></script>
+  <script src="/components/entity/entity.page.js"></script>
+  <script src="/components/entity/entity.relations.js"></script>
+  <script src="/components/entity/entity.timeline.js"></script>
+  <script src="/components/entity/entity.references.js"></script>
+  <script src="/components/entity/entity.attachments.js"></script>
+  <script src="/components/entity/entity.viewer.js"></script>
+
+  <script>
+    // Initialise on DOM content loaded
+    document.addEventListener("DOMContentLoaded", () => {
+      // Fetch UUID from URL search param or hash
+      const hash = window.location.hash || "";
+      const uuid = hash.split("/")[1] || "default-mock-uuid";
+      
+      if (typeof PharmoraEntityViewer !== "undefined") {
+        PharmoraEntityViewer.render("entity-viewer-root", uuid);
+      }
+    });
+  </script>
+</body>
+</html>

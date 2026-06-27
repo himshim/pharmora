@@ -1,0 +1,13 @@
+{
+  "required": [],
+  "properties": {
+    "content": {
+      "required": ["name", "functionalCategory", "safetyLimit"],
+      "properties": {
+        "name": { "type": "string" },
+        "functionalCategory": { "type": "string" },
+        "safetyLimit": { "type": "string" }
+      }
+    }
+  }
+}

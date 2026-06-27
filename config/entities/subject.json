@@ -1,0 +1,19 @@
+{
+  "required": [],
+  "properties": {
+    "content": {
+      "required": ["code", "title", "shortName", "semester", "course", "credits", "description", "objectives", "outcomes"],
+      "properties": {
+        "code": { "type": "string" },
+        "title": { "type": "string" },
+        "shortName": { "type": "string" },
+        "semester": { "type": "string" },
+        "course": { "type": "string" },
+        "credits": { "type": "number" },
+        "description": { "type": "string" },
+        "objectives": { "type": "array", "items": { "type": "string" } },
+        "outcomes": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

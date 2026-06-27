@@ -1,0 +1,12 @@
+{
+  "required": [],
+  "properties": {
+    "content": {
+      "required": ["description", "targetReceptor"],
+      "properties": {
+        "description": { "type": "string" },
+        "targetReceptor": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "required": [],
+  "properties": {
+    "content": {
+      "required": ["formName", "routeOfAdministration"],
+      "properties": {
+        "formName": { "type": "string" },
+        "routeOfAdministration": { "type": "string" }
+      }
+    }
+  }
+}

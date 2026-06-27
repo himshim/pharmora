@@ -1,0 +1,12 @@
+{
+  "required": [],
+  "properties": {
+    "content": {
+      "required": ["className", "clinicalFocus"],
+      "properties": {
+        "className": { "type": "string" },
+        "clinicalFocus": { "type": "string" }
+      }
+    }
+  }
+}

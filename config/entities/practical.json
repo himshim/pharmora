@@ -1,0 +1,14 @@
+{
+  "required": [],
+  "properties": {
+    "content": {
+      "required": ["title", "aim", "principle", "procedure"],
+      "properties": {
+        "title": { "type": "string" },
+        "aim": { "type": "string" },
+        "principle": { "type": "string" },
+        "procedure": { "type": "string" }
+      }
+    }
+  }
+}

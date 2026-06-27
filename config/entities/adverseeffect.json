@@ -1,0 +1,13 @@
+{
+  "required": [],
+  "properties": {
+    "content": {
+      "required": ["effectName", "severity", "frequency"],
+      "properties": {
+        "effectName": { "type": "string" },
+        "severity": { "type": "string", "enum": ["Mild", "Moderate", "Severe", "Life-threatening"] },
+        "frequency": { "type": "string" }
+      }
+    }
+  }
+}

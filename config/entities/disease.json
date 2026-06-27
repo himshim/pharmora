@@ -1,0 +1,13 @@
+{
+  "required": [],
+  "properties": {
+    "content": {
+      "required": ["name", "icd10Code", "symptoms"],
+      "properties": {
+        "name": { "type": "string" },
+        "icd10Code": { "type": "string" },
+        "symptoms": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

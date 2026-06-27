@@ -1,0 +1,12 @@
+{
+  "required": [],
+  "properties": {
+    "content": {
+      "required": ["number", "code"],
+      "properties": {
+        "number": { "type": "number" },
+        "code": { "type": "string" }
+      }
+    }
+  }
+}

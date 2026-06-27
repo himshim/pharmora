@@ -1,0 +1,12 @@
+{
+  "required": [],
+  "properties": {
+    "content": {
+      "required": ["severity", "description"],
+      "properties": {
+        "severity": { "type": "string", "enum": ["Minor", "Moderate", "Major", "Contraindicated"] },
+        "description": { "type": "string" }
+      }
+    }
+  }
+}

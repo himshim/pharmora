@@ -1,0 +1,13 @@
+{
+  "required": [],
+  "properties": {
+    "content": {
+      "required": ["name", "country", "licenseNumber"],
+      "properties": {
+        "name": { "type": "string" },
+        "country": { "type": "string" },
+        "licenseNumber": { "type": "string" }
+      }
+    }
+  }
+}
