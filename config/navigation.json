@@ -4,40 +4,41 @@
     "icon": "📚",
     "url": "/learn/"
   },
-
   {
     "title": "Teach",
     "icon": "👨‍🏫",
-    "url": "/teach/"
+    "url": "/teach/",
+    "permission": "verified.creator"
   },
-
   {
     "title": "Tools",
     "icon": "🧪",
     "url": "/tools/"
   },
-
   {
     "title": "Community",
     "icon": "🌐",
     "url": "/community/"
   },
-
   {
     "title": "Library",
     "icon": "📖",
     "url": "/library/"
   },
-
   {
     "title": "Events",
     "icon": "📅",
     "url": "/events/"
   },
-
   {
     "title": "Books",
     "icon": "📚",
     "url": "/books/"
+  },
+  {
+    "title": "Admin",
+    "icon": "🛡",
+    "url": "/admin/",
+    "permission": "settings.manage"
   }
 ]
