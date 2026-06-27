@@ -355,6 +355,14 @@ const MODULES={
 
 
 
+"contribute":[
+
+"/js/services/contribute.wizard.js"
+
+]
+
+
+
 };
 
 
@@ -389,6 +397,12 @@ research:[
 career:[
 
 "/dist/pharmora.career.js"
+
+],
+
+contribute:[
+
+"/js/services/contribute.wizard.js"
 
 ]
 

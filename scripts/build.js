@@ -261,7 +261,9 @@ bundle(
 
 "js/services/user-notification.service.js",
 
-"js/services/reputation.service.js"
+"js/services/reputation.service.js",
+
+"js/services/access.service.js"
 
 ],
 
@@ -328,7 +330,7 @@ bundle([
 
   "js/services/admin.wizard.js",            // ← if separate
 
-  "js/services/admin.contributors.js"       // ← if separate
+  "js/services/admin.contributor.service.js"       // ← corrected path
 
 ], "dist/pharmora.admin.js");
 
