@@ -348,6 +348,22 @@
     }, 300);
   }
 
+  async function loadNoticeTicker() {
+    let box = document.getElementById("notice-text");
+    if (!box) return;
+    try {
+      let data = typeof getRecords === "function" ? await getRecords("notifications") : [];
+      data = data.filter(x => x.active !== false);
+      if (!data.length) {
+        box.innerHTML = "Welcome to Pharmora Knowledge Ecosystem";
+        return;
+      }
+      box.innerHTML = data.map(x => `🔔 ${x.title || ""} : ${x.message || ""}`).join(" &nbsp; • &nbsp; ");
+    } catch (e) {
+      box.innerHTML = "Open Pharmacy Knowledge Ecosystem";
+    }
+  }
+
   // Hook layout bootstrap
   window.loadHeader = loadHeader;
   loadHeader();
