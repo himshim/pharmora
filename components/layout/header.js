@@ -130,6 +130,7 @@
       100% { transform: translate3d(-100%, 0, 0); }
     }
     @media (max-width: 768px) {
+      .header-container { flex-wrap: wrap; }
       #header-search-container, #header-nav-container, #header-usermenu-container {
         display: none !important;
       }
@@ -196,7 +197,7 @@
       const logoSrc = siteConfig.logo ? appPath(siteConfig.logo) : "";
       return `
         <a href="${appPath("")}" class="logo" style="display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit;">
-          ${logoSrc ? `<img class="site-logo" src="${logoSrc}" alt="${siteConfig.name}" style="height:36px;">` : "⚕"}
+          ${logoSrc ? `<img class="site-logo" src="${logoSrc}" alt="${siteConfig.name}" style="height:var(--logo-size);">` : "⚕"}
           <span>${siteConfig.name}</span>
         </a>
       `;
@@ -226,7 +227,7 @@
       const dot = count ? `<span class="notification-dot" style="background:var(--secondary); color:#fff; border-radius:50%; padding:2px 6px; font-size:0.75rem; margin-left:4px; font-weight:bold;">${count}</span>` : "";
       return `
         <div class="notification-wrapper" style="position:relative;">
-          <a href="#" class="notification-link" onclick="event.preventDefault(); PharmoraNotification.toggle('${id}');" style="text-decoration:none; font-size:1.1rem;">
+          <a href="#" class="notification-link" onclick="event.preventDefault(); PharmoraNotification.toggle('${id}');" style="text-decoration:none; font-size:var(--icon-size);">
             🔔${dot}
           </a>
           <div id="${id}" class="notification-panel"></div>
@@ -356,22 +357,25 @@
       }
 
       return `
-        <div class="mobile-menu" style="display:none; position:fixed; top:70px; left:0; right:0; bottom:0; background:var(--surface); z-index:999; padding:20px; border-top:1px solid var(--border); overflow-y:auto;">
-          <div style="padding: 15px 0;">
-            ${renderSearch()}
-          </div>
+        <div id="mobile-menu-drawer" class="mobile-menu" style="display:none; position:fixed; top:70px; left:0; right:0; bottom:0; background:var(--surface); z-index:999; padding:20px; border-top:1px solid var(--border); overflow-y:auto;">
+          <div id="mobile-search-container" style="padding: 15px 0;"></div>
           ${linksHtml}
           ${userBlock}
         </div>
       `;
     };
 
+    window.toggleMenu = function() {
+      const drawer = document.getElementById("mobile-menu-drawer");
+      if (drawer) drawer.classList.toggle("active");
+    };
+
     // Render layout structure only once
-    const navbarExists = root.querySelector(".navbar");
+    const navbarExists = root.querySelector(".navbar-header");
     if (!navbarExists) {
       root.innerHTML = `
         <header class="navbar-header" style="border-bottom: 1px solid var(--border); background: var(--surface);">
-          <div class="container header-container" style="display:flex; justify-content:space-between; align-items:center; height:70px;">
+          <div class="container header-container" style="display:flex; justify-content:space-between; align-items:center; height:var(--nav-height);">
             <div id="header-logo-container"></div>
             <div id="header-search-container" style="flex:1; max-width:400px; margin:0 20px;"></div>
             <nav class="nav-links" style="display:flex; align-items:center; gap:20px;">
@@ -404,6 +408,7 @@
     document.getElementById("header-usermenu-container").innerHTML = renderUserMenu(user, initials, name, unreadCount);
     document.getElementById("header-breadcrumbs-container").innerHTML = renderBreadcrumbs();
     document.getElementById("header-mobile-drawer-container").innerHTML = renderMobileDrawer(filteredLinks, user);
+    document.getElementById("mobile-search-container").innerHTML = renderSearch();
 
     loadNoticeTicker();
 
