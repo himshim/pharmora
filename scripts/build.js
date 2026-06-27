@@ -252,8 +252,6 @@ bundle(
 bundle(
 [
 
-"js/services/storage.service.js",
-
 "js/services/user-notification.service.js",
 
 "js/services/reputation.service.js",
