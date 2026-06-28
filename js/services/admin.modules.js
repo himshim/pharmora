@@ -174,16 +174,19 @@
             const action = btn.dataset.action;
             if (action === 'open') { ws.openViewer({ uuid }); return; }
             try {
-              if (typeof PharmoraEntityReview !== 'undefined') {
-                if (action === 'approve') await PharmoraEntityReview.approve(uuid, 'admin');
-                if (action === 'reject')  await PharmoraEntityReview.reject(uuid, prompt('Rejection reason:') || '—', 'admin');
-                if (action === 'changes') await PharmoraEntityReview.requestChanges(uuid, prompt('Change notes:') || '—', 'admin');
+              if (typeof window.PharmoraEntityReview !== 'undefined') {
+                if (action === 'approve') await window.PharmoraEntityReview.approve(uuid, 'admin');
+                if (action === 'reject')  await window.PharmoraEntityReview.reject(uuid, prompt('Rejection reason:') || '—', 'admin');
+                if (action === 'changes') await window.PharmoraEntityReview.requestChanges(uuid, prompt('Change notes:') || '—', 'admin');
               }
-              if (action === 'delete' && typeof PharmoraEntityManager !== 'undefined') {
-                await PharmoraEntityManager.bulkDelete([uuid], 'admin');
+              if (action === 'delete' && typeof window.PharmoraEntityManager !== 'undefined') {
+                await window.PharmoraEntityManager.bulkDelete([uuid], 'admin');
               }
               ws.refreshCurrentModule();
-            } catch(err) { alert(`Action failed: ${err.message}`); }
+            } catch(err) {
+              console.error('Review Action Error:', err);
+              alert(`Action failed: ${err.message}`);
+            }
           });
         });
         row.addEventListener('click', () => ws.openViewer({ uuid: ent.uuid }));
