@@ -163,6 +163,7 @@
           <button data-action="approve" data-uuid="${ent.uuid}" style="padding:5px 12px;border:none;background:var(--primary);color:#fff;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.78rem;">✓ Approve</button>
           <button data-action="reject"  data-uuid="${ent.uuid}" style="padding:5px 12px;border:none;background:#ef4444;color:#fff;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.78rem;">✗ Reject</button>
           <button data-action="changes" data-uuid="${ent.uuid}" style="padding:5px 12px;border:none;background:#f59e0b;color:#fff;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.78rem;">🔁 Changes</button>
+          <button data-action="delete"  data-uuid="${ent.uuid}" style="padding:5px 12px;border:none;background:#64748b;color:#fff;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.78rem;">🗑 Delete</button>
           <button data-action="open"    data-uuid="${ent.uuid}" style="padding:5px 12px;border:1px solid var(--border);background:none;color:var(--text);border-radius:6px;font-weight:600;cursor:pointer;font-size:0.78rem;">👁 View</button>
         `;
 
@@ -177,6 +178,9 @@
                 if (action === 'approve') await PharmoraEntityReview.approve(uuid, 'admin');
                 if (action === 'reject')  await PharmoraEntityReview.reject(uuid, prompt('Rejection reason:') || '—', 'admin');
                 if (action === 'changes') await PharmoraEntityReview.requestChanges(uuid, prompt('Change notes:') || '—', 'admin');
+              }
+              if (action === 'delete' && typeof PharmoraEntityManager !== 'undefined') {
+                await PharmoraEntityManager.bulkDelete([uuid], 'admin');
               }
               ws.refreshCurrentModule();
             } catch(err) { alert(`Action failed: ${err.message}`); }
