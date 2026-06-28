@@ -50,7 +50,7 @@ async function loadManager(collection){
   else if (collection === "question-bank") type = "QuestionBank";
 
   if (typeof PharmoraEntityManagerUI !== "undefined") {
-    PharmoraEntityManagerUI.render("admin-actions", type);
+    PharmoraEntityManagerUI.render("admin-content-root", type);
     return;
   }
   

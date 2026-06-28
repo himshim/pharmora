@@ -769,7 +769,7 @@ id="admin-brand">
 <div class="menu">
 
 
-<div onclick="PharmoraEntityManagerUI.render('admin-actions', '')">
+<div onclick="PharmoraEntityManagerUI.render('admin-content-root', '')">
 
 🏠 Overview
 
@@ -779,7 +779,7 @@ id="admin-brand">
 
 <div
 data-permission="content.review"
-onclick="PharmoraEntityManagerUI.render('admin-actions', ''); setTimeout(() => { const statusFilter = document.getElementById('filter-status'); if (statusFilter) { statusFilter.value = 'pending_review'; statusFilter.dispatchEvent(new Event('change')); } }, 50);">
+onclick="PharmoraEntityManagerUI.render('admin-content-root', ''); setTimeout(() => { const statusFilter = document.getElementById('filter-status'); if (statusFilter) { statusFilter.value = 'pending_review'; statusFilter.dispatchEvent(new Event('change')); } }, 50);">
 
 📊 Review Queue
 
@@ -1018,6 +1018,7 @@ onclick="renderAuditLogs()">
 
 
 <main
+id="admin-content-root"
 class="content"
 data-requires="admin">
 
@@ -1221,7 +1222,7 @@ await applyPermissions();
 
   // Disable legacy UI renderers and mount UES Workspace instead
   if (typeof PharmoraEntityManagerUI !== "undefined") {
-    PharmoraEntityManagerUI.render("admin-actions", "Subject");
+    PharmoraEntityManagerUI.render("admin-content-root", "Subject");
   }
 
 
