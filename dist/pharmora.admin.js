@@ -1268,6 +1268,10 @@ _renderCreationWizard(drawerEl);
         if (action === 'approve')        await PharmoraEntityReview.approve(uuid, 'admin');
         else if (action === 'publish')   await PharmoraEntityReview.publish(uuid, 'admin');
         else if (action === 'archive')   await PharmoraEntityReview.archive(uuid, 'admin');
+        else if (action === 'reject') {
+          const reason = prompt('Enter rejection reason:');
+          if (reason) await PharmoraEntityReview.reject(uuid, reason, 'admin');
+        }
         else if (action === 'requestChanges') {
           const c = prompt('Enter change request comments:');
           if (c) await PharmoraEntityReview.requestChanges(uuid, c, 'admin');
@@ -4160,47 +4164,15 @@ ${(item.tags || []).join(", ")}
 
 
 <div>
-
-
-<button onclick="viewContent('${item._collection}','${item.id}')">
-
-👁
-
-</button>
-
-
-
-<button onclick="commentContent('${item._collection}','${item.id}')">
-
-💬
-
-</button>
-
-
-
-<button onclick="approveContent('${item._collection}','${item.id}')">
-
-✅
-
-</button>
-
-
-
-<button onclick="rejectContent('${item._collection}','${item.id}')">
-
-❌
-
-</button>
-
-
-
-<button onclick="deleteContent('${item._collection}','${item.id}')">
-
-🗑
-
-</button>
-
-
+  <button onclick="PharmoraWorkbench._wb.openViewer({ uuid: '${item.uuid}' })" style="padding:5px 12px;border:1px solid var(--border);background:none;color:var(--text);border-radius:6px;font-weight:600;cursor:pointer;font-size:0.8rem;">
+    👁 View & Edit
+  </button>
+  <button onclick="PharmoraWorkbench._wb._drawerAction('approve','${item.uuid}')" style="padding:5px 12px;border:none;background:var(--primary);color:#fff;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.8rem;">
+    ✓ Approve
+  </button>
+  <button onclick="PharmoraWorkbench._wb._drawerAction('reject','${item.uuid}')" style="padding:5px 12px;border:none;background:#ef4444;color:#fff;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.8rem;">
+    ❌ Reject
+  </button>
 </div>
 
 

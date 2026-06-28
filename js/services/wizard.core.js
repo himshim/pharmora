@@ -1256,6 +1256,10 @@ _renderCreationWizard(drawerEl);
         if (action === 'approve')        await PharmoraEntityReview.approve(uuid, 'admin');
         else if (action === 'publish')   await PharmoraEntityReview.publish(uuid, 'admin');
         else if (action === 'archive')   await PharmoraEntityReview.archive(uuid, 'admin');
+        else if (action === 'reject') {
+          const reason = prompt('Enter rejection reason:');
+          if (reason) await PharmoraEntityReview.reject(uuid, reason, 'admin');
+        }
         else if (action === 'requestChanges') {
           const c = prompt('Enter change request comments:');
           if (c) await PharmoraEntityReview.requestChanges(uuid, c, 'admin');
