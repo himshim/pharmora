@@ -1297,6 +1297,8 @@ user.role
 function initializeAdminPage() {
     loadAdminUser();
     startAdmin();
+    if (typeof updateLiveCounters === "function") updateLiveCounters();
+    if (typeof renderActivityFeed === "function") renderActivityFeed();
 }
 
 if (window.PharmoraReady) {
@@ -1308,9 +1310,243 @@ if (window.PharmoraReady) {
 }
 
 
+<!-- Sliding Entity Drawer Workspace -->
+<div id="entity-drawer" style="position:fixed; top:0; right:-550px; width:550px; height:100vh; background:var(--surface); border-left:1px solid var(--border); z-index:10000; transition:right 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow:-10px 0 30px rgba(0,0,0,0.15); display:flex; flex-direction:column; padding:25px; box-sizing:border-box;">
+  <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:20px;">
+    <h3 style="margin:0; color:var(--text); font-size:1.25rem;">Entity Workspace</h3>
+    <button onclick="closeEntityDrawer()" style="border:none; background:none; font-size:1.5rem; cursor:pointer; color:var(--text); line-height:1; padding:4px;">✕</button>
+  </div>
+  <div id="entity-drawer-content" style="flex:1; overflow-y:auto; padding-right:5px;">
+    <!-- Rendered dynamically -->
+  </div>
+</div>
+
+<!-- Hover Quick Preview Container -->
+<div id="quick-preview-box" style="display:none; position:absolute; z-index:10005; background:var(--surface); border:1px solid var(--border); padding:15px; border-radius:6px; box-shadow:0 10px 25px rgba(0,0,0,0.15); width:320px; pointer-events:none; font-family:sans-serif;"></div>
+
+<script>
+let activeEntityUuid = null;
+
+async function updateLiveCounters() {
+  if (typeof PharmoraEntityAPI === "undefined") return;
+  try {
+    const list = await PharmoraEntityAPI.listEntities();
+    const statsBox = document.getElementById("admin-stats");
+    if (!statsBox) return;
+
+    const counts = { draft: 0, pending_review: 0, approved: 0, published: 0, archived: 0 };
+    list.forEach(ent => {
+      if (counts[ent.status] !== undefined) counts[ent.status]++;
+    });
+
+    statsBox.innerHTML = `
+      <div class="card" style="padding:15px; background:var(--surface); border:1px solid var(--border); border-radius:12px;">
+        <h3>${list.length}</h3><p style="margin:4px 0 0 0; font-size:0.85rem; color:var(--text-soft);">Total Entities</p>
+      </div>
+      <div class="card" style="padding:15px; background:var(--surface); border:1px solid var(--border); border-radius:12px;">
+        <h3>${counts.pending_review}</h3><p style="margin:4px 0 0 0; font-size:0.85rem; color:var(--text-soft);">Pending Review</p>
+      </div>
+      <div class="card" style="padding:15px; background:var(--surface); border:1px solid var(--border); border-radius:12px;">
+        <h3>${counts.published}</h3><p style="margin:4px 0 0 0; font-size:0.85rem; color:var(--text-soft);">Published</p>
+      </div>
+      <div class="card" style="padding:15px; background:var(--surface); border:1px solid var(--border); border-radius:12px;">
+        <h3>${counts.archived}</h3><p style="margin:4px 0 0 0; font-size:0.85rem; color:var(--text-soft);">Archived</p>
+      </div>
+    `;
+  } catch (e) {
+    console.error("Failed to load counters:", e);
+  }
+}
+
+async function renderActivityFeed() {
+  if (typeof PharmoraEntityAPI === "undefined") return;
+  try {
+    const list = await PharmoraEntityAPI.listEntities();
+    // Stream audit trails chronologically
+    const activities = [];
+    list.forEach(ent => {
+      (ent.auditTrail || []).forEach(log => {
+        activities.push({
+          type: ent.type,
+          title: ent.content?.title || ent.content?.name || ent.publicId,
+          ...log
+        });
+      });
+    });
+
+    // Sort by timestamp desc
+    activities.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+
+    const feedBox = document.getElementById("contributor-panel"); // re-use section area for activity feed
+    if (feedBox) {
+      feedBox.innerHTML = `
+        <h2 style="margin-bottom:15px;">Activity Feed & Stream</h2>
+        <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px; display:flex; flex-direction:column; gap:12px;">
+          ${activities.slice(0, 5).map(act => `
+            <div style="font-size:0.85rem; border-bottom:1px solid var(--border); padding-bottom:8px;">
+              <span style="color:var(--text-soft);">${new Date(act.timestamp).toLocaleTimeString()}</span> - 
+              <strong style="text-transform:capitalize;">${act.action}</strong> on 
+              <strong>${act.type} (${act.title})</strong> by <em>${act.actor}</em>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function openEntityDrawer(uuid) {
+  activeEntityUuid = uuid;
+  const drawer = document.getElementById("entity-drawer");
+  const content = document.getElementById("entity-drawer-content");
+  if (!drawer || !content) return;
+
+  drawer.style.right = "0px";
+  content.innerHTML = `<div style="color:var(--text-soft); font-size:0.95rem;">Loading entity details...</div>`;
+
+  try {
+    const entity = await PharmoraEntityAPI.getEntity(uuid);
+    if (!entity) {
+      content.innerHTML = `<div style="color:red; font-size:0.95rem;">Entity not found.</div>`;
+      return;
+    }
+
+    content.innerHTML = `
+      <div style="display:flex; flex-direction:column; gap:20px; font-family:sans-serif;">
+        <div id="drawer-main-info" style="background:var(--bg-body); padding:15px; border-radius:6px; border:1px solid var(--border);">
+          <h2 style="margin:0 0 10px 0; font-size:1.4rem; color:var(--text);">${entity.content?.title || entity.content?.name || entity.content?.genericName || entity.publicId}</h2>
+          <span style="font-size:0.75rem; text-transform:uppercase; background:var(--primary-light); color:var(--primary); padding:2.5px 7px; border-radius:4px; font-weight:bold;">${entity.type}</span>
+        </div>
+        
+        <!-- Workflow Panel -->
+        <div id="drawer-workflow-panel"></div>
+
+        <!-- Timeline -->
+        <div id="drawer-timeline-panel"></div>
+
+        <!-- Relations -->
+        <div id="drawer-relations-panel"></div>
+      </div>
+    `;
+
+    if (typeof PharmoraEntityAuditViewer !== "undefined") {
+      PharmoraEntityAuditViewer.render(entity, "drawer-workflow-panel");
+    }
+    if (typeof PharmoraEntityTimeline !== "undefined") {
+      const timelineBox = document.getElementById("drawer-timeline-panel");
+      if (timelineBox) timelineBox.innerHTML = PharmoraEntityTimeline.render(entity);
+    }
+    if (typeof PharmoraEntityRelationsComponent !== "undefined") {
+      const relBox = document.getElementById("drawer-relations-panel");
+      if (relBox) relBox.innerHTML = await PharmoraEntityRelationsComponent.render(entity);
+    }
+
+  } catch (err) {
+    console.error(err);
+    content.innerHTML = `<div style="color:red; font-size:0.95rem;">Failed to load entity.</div>`;
+  }
+}
+
+function closeEntityDrawer() {
+  const drawer = document.getElementById("entity-drawer");
+  if (drawer) drawer.style.right = "-550px";
+  activeEntityUuid = null;
+}
+
+// Global click listener to intercept view-card href navigations
+document.addEventListener("click", (e) => {
+  const card = e.target.closest(".universal-card, .search-result");
+  if (card) {
+    const href = card.getAttribute("href") || "";
+    const uuidMatch = href.match(/#entity\/([a-zA-Z0-9-]+)/);
+    if (uuidMatch && uuidMatch[1]) {
+      e.preventDefault();
+      openEntityDrawer(uuidMatch[1]);
+    }
+  }
+});
+
+// Keyboard shortcuts implementation
+document.addEventListener("keydown", async (e) => {
+  if (e.ctrlKey && e.key.toLowerCase() === "k") {
+    e.preventDefault();
+    const searchInput = document.querySelector("input[placeholder='Search knowledge...']");
+    if (searchInput) searchInput.focus();
+  }
+
+  if (e.key === "Escape") {
+    closeEntityDrawer();
+  }
+
+  if (["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) return;
+
+  if (activeEntityUuid) {
+    try {
+      if (e.key.toLowerCase() === "a") {
+        await PharmoraEntityReview.approve(activeEntityUuid, "admin");
+        openEntityDrawer(activeEntityUuid);
+        updateLiveCounters();
+        renderActivityFeed();
+        alert("Entity Approved!");
+      }
+      if (e.key.toLowerCase() === "r") {
+        const comments = prompt("Enter comments for changes:");
+        if (comments) {
+          await PharmoraEntityReview.requestChanges(activeEntityUuid, comments, "admin");
+          openEntityDrawer(activeEntityUuid);
+          updateLiveCounters();
+          renderActivityFeed();
+        }
+      }
+      if (e.key.toLowerCase() === "p") {
+        await PharmoraEntityReview.publish(activeEntityUuid, "admin");
+        openEntityDrawer(activeEntityUuid);
+        updateLiveCounters();
+        renderActivityFeed();
+        alert("Entity Published!");
+      }
+    } catch (err) {
+      console.warn("Shortcut action skipped:", err);
+    }
+  }
+});
+
+// Hover Quick Preview implementation
+document.addEventListener("mouseover", async (e) => {
+  const card = e.target.closest(".universal-card, .search-result");
+  if (card) {
+    const href = card.getAttribute("href") || "";
+    const uuidMatch = href.match(/#entity\/([a-zA-Z0-9-]+)/);
+    if (uuidMatch && uuidMatch[1]) {
+      const box = document.getElementById("quick-preview-box");
+      if (!box) return;
+
+      const ent = await PharmoraEntityAPI.getEntity(uuidMatch[1]);
+      if (ent) {
+        const rect = card.getBoundingClientRect();
+        box.style.display = "block";
+        box.style.top = `${window.scrollY + rect.top + 10}px`;
+        box.style.left = `${window.scrollX + rect.right + 15}px`;
+        box.innerHTML = `
+          <h4 style="margin:0 0 5px 0; color:var(--text);">${ent.content?.title || ent.content?.name || ent.publicId}</h4>
+          <span style="font-size:0.7rem; text-transform:uppercase; background:var(--border); padding:2px 5px; border-radius:3px;">${ent.type}</span>
+          <p style="margin:8px 0 0 0; font-size:0.8rem; color:var(--text-soft);">${ent.content?.description || "No description."}</p>
+        `;
+      }
+    }
+  }
+});
+
+document.addEventListener("mouseout", (e) => {
+  const card = e.target.closest(".universal-card, .search-result");
+  if (card) {
+    const box = document.getElementById("quick-preview-box");
+    if (box) box.style.display = "none";
+  }
+});
 </script>
 
 </body>
-
-
 </html>
