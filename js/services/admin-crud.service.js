@@ -49,8 +49,13 @@ async function loadManager(collection){
   else if (collection === "teaching-materials") type = "Resource";
   else if (collection === "question-bank") type = "QuestionBank";
 
-  if (typeof PharmoraEntityManagerUI !== "undefined") {
-    PharmoraEntityManagerUI.render("admin-content-root", type);
+  // Force render UES manager UI into admin-content-root if it exists
+  const targetId = document.getElementById("admin-content-root") ? "admin-content-root" : "admin-actions";
+  const area = document.getElementById(targetId);
+
+  if (typeof PharmoraEntityManagerUI !== "undefined" && area) {
+    area.innerHTML = '<div id="em-mount-sub"></div>';
+    PharmoraEntityManagerUI.render("em-mount-sub", type);
     return;
   }
   
