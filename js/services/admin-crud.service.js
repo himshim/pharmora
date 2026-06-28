@@ -1043,10 +1043,36 @@ modal.remove();
 
 
 async function showForm(id=null, prefill=null){
+  let uuid = null;
+  
+  // Find matching UES uuid
+  if (id && typeof PharmoraEntityAPI !== 'undefined') {
+    const list = await PharmoraEntityAPI.listEntities().catch(() => []);
+    const matching = list.find(e => e.id === id || e.content?.id === id || e.publicId === id);
+    if (matching) uuid = matching.uuid;
+  }
 
+  if (uuid && window.PharmoraWorkbench && window.PharmoraWorkbench._wb) {
+    window.PharmoraWorkbench._wb.openViewer({ uuid });
+    return;
+  } else if (!id && window.PharmoraWorkbench && window.PharmoraWorkbench._wb) {
+    let type = "";
+    if (activeCollection === "subjects") type = "Subject";
+    else if (activeCollection === "courses") type = "Course";
+    else if (activeCollection === "semesters") type = "Semester";
+    else if (activeCollection === "books") type = "Book";
+    else if (activeCollection === "events") type = "Event";
+    else if (activeCollection === "tools") type = "Tool";
+    else if (activeCollection === "teaching-materials") type = "Resource";
+    else if (activeCollection === "question-bank") type = "QuestionBank";
+    
+    if (type) {
+      window.PharmoraWorkbench._wb._setCreateType(type);
+      return;
+    }
+  }
 
-
-let existing=null;
+  let existing=null;
 
 
 
