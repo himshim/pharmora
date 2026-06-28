@@ -79,14 +79,14 @@ const PharmoraContribute = (function () {
   }
 
   function generateFieldHTML(name, prop) {
-    const isRequired = false; // Resolved at schema level
+    const isRequired = false;
     const label = name.charAt(0).toUpperCase() + name.slice(1).replace(/([A-Z])/g, ' $1');
 
     if (prop.type === "array") {
       return `
         <div class="form-group" style="margin-bottom:16px; display:flex; flex-direction:column; gap:6px;">
           <label style="font-weight:600; font-size:0.9rem; color:var(--text);">${label} <span style="font-weight:normal; color:var(--text-secondary); font-size:0.8rem;">(comma separated)</span></label>
-          <input type="text" id="sf-${name}" class="form-input" placeholder="e.g. Value 1, Value 2" style="padding:8px; border-radius:4px; border:1px solid var(--border);">
+          <input type="text" id="sf-${name}" class="form-input" placeholder="e.g. Value 1, Value 2" style="padding:8px; border-radius:4px; border:1px solid var(--border); background:var(--background); color:var(--text);">
         </div>
       `;
     }
@@ -95,7 +95,7 @@ const PharmoraContribute = (function () {
       return `
         <div class="form-group" style="margin-bottom:16px; display:flex; flex-direction:column; gap:6px;">
           <label style="font-weight:600; font-size:0.9rem; color:var(--text);">${label}</label>
-          <select id="sf-${name}" class="form-input" style="padding:8px; border-radius:4px; border:1px solid var(--border);">
+          <select id="sf-${name}" class="form-input" style="padding:8px; border-radius:4px; border:1px solid var(--border); background:var(--background); color:var(--text);">
             <option value="">Select option...</option>
             ${prop.enum.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
           </select>
@@ -107,7 +107,7 @@ const PharmoraContribute = (function () {
       return `
         <div class="form-group" style="margin-bottom:16px; display:flex; flex-direction:column; gap:6px;">
           <label style="font-weight:600; font-size:0.9rem; color:var(--text);">${label}</label>
-          <textarea id="sf-${name}" class="form-input" rows="4" style="padding:8px; border-radius:4px; border:1px solid var(--border);"></textarea>
+          <textarea id="sf-${name}" class="form-input" rows="4" style="padding:8px; border-radius:4px; border:1px solid var(--border); background:var(--background); color:var(--text);"></textarea>
         </div>
       `;
     }
@@ -115,7 +115,7 @@ const PharmoraContribute = (function () {
     return `
       <div class="form-group" style="margin-bottom:16px; display:flex; flex-direction:column; gap:6px;">
         <label style="font-weight:600; font-size:0.9rem; color:var(--text);">${label}</label>
-        <input type="${prop.type === 'number' ? 'number' : 'text'}" id="sf-${name}" class="form-input" style="padding:8px; border-radius:4px; border:1px solid var(--border);">
+        <input type="${prop.type === 'number' ? 'number' : 'text'}" id="sf-${name}" class="form-input" style="padding:8px; border-radius:4px; border:1px solid var(--border); background:var(--background); color:var(--text);">
       </div>
     `;
   }

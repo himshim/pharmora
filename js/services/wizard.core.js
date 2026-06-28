@@ -715,6 +715,26 @@ const PharmoraWizardCore = (function () {
           relationsHtml = await PharmoraEntityRelationsComponent.render(entity).catch(() => '');
         }
 
+        // Render schema field inputs
+        let schema = null;
+        if (typeof PharmoraEntityRegistry !== 'undefined') {
+          schema = PharmoraEntityRegistry.getSchema(entity.type);
+        }
+        const fieldsHtml = renderForm(schema || {}, entity.content || {});
+
+        // Workflow progress stepper representation
+        const stages = ['draft', 'pending_review', 'approved', 'published', 'archived'];
+        const workflowStepperHtml = `
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding:8px 0;border-bottom:1px solid var(--border);">
+            ${stages.map((st, i) => {
+              const isActive = entity.status === st;
+              const isPassed = stages.indexOf(entity.status) >= i;
+              const color = isActive ? 'var(--primary)' : isPassed ? '#22c55e' : 'var(--text-soft)';
+              return `<span style="font-size:0.75rem;font-weight:700;color:${color};text-transform:capitalize;">${st.replace('_',' ')}</span>`;
+            }).join('<span style="color:var(--border)">&rarr;</span>')}
+          </div>
+        `;
+
         drawerEl.innerHTML = `
           <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;
                       position:sticky;top:0;background:var(--surface);z-index:1;">
@@ -728,25 +748,40 @@ const PharmoraWizardCore = (function () {
             <button onclick="PharmoraWorkbench._wb.closeDrawer()"
               style="border:none;background:var(--surface-light);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--text);">✕</button>
           </div>
+
+          <!-- Navigation tabs header -->
+          <div style="display:flex;background:var(--surface-light);border-bottom:1px solid var(--border);padding:0 12px;gap:8px;">
+            <button onclick="document.querySelectorAll('.wb-tab-section').forEach(s => s.style.display='none');document.getElementById('wb-sec-overview').style.display='block';" style="padding:10px 14px;border:none;background:none;color:var(--text);font-size:0.8rem;font-weight:700;cursor:pointer;">Overview</button>
+            <button onclick="document.querySelectorAll('.wb-tab-section').forEach(s => s.style.display='none');document.getElementById('wb-sec-properties').style.display='block';" style="padding:10px 14px;border:none;background:none;color:var(--text);font-size:0.8rem;font-weight:700;cursor:pointer;">Properties</button>
+            <button onclick="document.querySelectorAll('.wb-tab-section').forEach(s => s.style.display='none');document.getElementById('wb-sec-relations').style.display='block';" style="padding:10px 14px;border:none;background:none;color:var(--text);font-size:0.8rem;font-weight:700;cursor:pointer;">Relations</button>
+            <button onclick="document.querySelectorAll('.wb-tab-section').forEach(s => s.style.display='none');document.getElementById('wb-sec-history').style.display='block';" style="padding:10px 14px;border:none;background:none;color:var(--text);font-size:0.8rem;font-weight:700;cursor:pointer;">History</button>
+          </div>
           
           <div style="padding:20px 24px;display:flex;flex-direction:column;gap:18px;overflow-y:auto;flex:1;">
             
-            <!-- Moderation / Workflow Actions -->
-            <div style="display:flex;gap:8px;flex-wrap:wrap;background:var(--surface);padding:10px;border-radius:8px;border:1px solid var(--border);">
-              <button onclick="PharmoraWorkbench._wb._drawerAction('approve','${entity.uuid}')" style="${_btnStyle('var(--primary)')}">✓ Approve</button>
-              <button onclick="PharmoraWorkbench._wb._drawerAction('publish','${entity.uuid}')" style="${_btnStyle('#22c55e')}">📢 Publish</button>
-              <button onclick="PharmoraWorkbench._wb._drawerAction('requestChanges','${entity.uuid}')" style="${_btnStyle('#f59e0b')}">🔁 Changes</button>
-              <button onclick="PharmoraWorkbench._wb._drawerAction('archive','${entity.uuid}')" style="${_btnStyle('#64748b')}">🗄 Archive</button>
-            </div>
-
-            <!-- Preview Card -->
-            <div style="margin-top:4px;">
+            <!-- SECTION 1: Overview -->
+            <div id="wb-sec-overview" class="wb-tab-section" style="display:block;">
+              <!-- Moderation / Workflow Actions -->
+              <div style="display:flex;gap:8px;flex-wrap:wrap;background:var(--surface);padding:10px;border-radius:8px;border:1px solid var(--border);margin-bottom:14px;">
+                <button onclick="PharmoraWorkbench._wb._drawerAction('approve','${entity.uuid}')" style="${_btnStyle('var(--primary)')}">✓ Approve</button>
+                <button onclick="PharmoraWorkbench._wb._drawerAction('publish','${entity.uuid}')" style="${_btnStyle('#22c55e')}">📢 Publish</button>
+                <button onclick="PharmoraWorkbench._wb._drawerAction('requestChanges','${entity.uuid}')" style="${_btnStyle('#f59e0b')}">🔁 Changes</button>
+                <button onclick="PharmoraWorkbench._wb._drawerAction('archive','${entity.uuid}')" style="${_btnStyle('#64748b')}">🗄 Archive</button>
+              </div>
               <h4 style="margin:0 0 8px 0;font-size:0.85rem;color:var(--text-soft);text-transform:uppercase;font-weight:700;">Entity Preview</h4>
               ${cardHtml}
             </div>
 
-            <!-- Relations Editor UI -->
-            <div style="border-top:1px solid var(--border);padding-top:16px;">
+            <!-- SECTION 2: Properties (Inline Schema editing) -->
+            <div id="wb-sec-properties" class="wb-tab-section" style="display:none;">
+              <h4 style="margin:0 0 8px 0;font-size:0.85rem;color:var(--text-soft);text-transform:uppercase;font-weight:700;">Schema Fields</h4>
+              <form id="wb-drawer-fields-form" onchange="PharmoraWorkbench._wb._saveInlineChanges('${entity.uuid}')">
+                ${fieldsHtml}
+              </form>
+            </div>
+
+            <!-- SECTION 3: Relations graph -->
+            <div id="wb-sec-relations" class="wb-tab-section" style="display:none;">
               <h4 style="margin:0 0 10px 0;font-size:0.85rem;color:var(--text-soft);text-transform:uppercase;font-weight:700;">🔗 Link Relations</h4>
               <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
                 <button onclick="PharmoraWorkbench._wb._openLinkEditor('${entity.uuid}', 'belongsTo')" style="padding:5px 10px;font-size:0.75rem;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:6px;cursor:pointer;font-weight:600;">+ Add Parent</button>
@@ -756,47 +791,26 @@ const PharmoraWizardCore = (function () {
               <div id="wb-drawer-relations">${relationsHtml}</div>
             </div>
 
-            <!-- Audit Trail & Timeline mounts -->
-            <div style="border-top:1px solid var(--border);padding-top:16px;">
+            <!-- SECTION 4: History & Timeline -->
+            <div id="wb-sec-history" class="wb-tab-section" style="display:none;">
               <h4 style="margin:0 0 8px 0;font-size:0.85rem;color:var(--text-soft);text-transform:uppercase;font-weight:700;">📋 Audit Log & History</h4>
+              ${workflowStepperHtml}
               <div id="wb-drawer-workflow"></div>
               <div id="wb-drawer-timeline" style="margin-top:10px;"></div>
             </div>
             
             ${isDev ? `
-<div style="border-top:1px solid var(--border);padding-top:16px;">
-    <details>
-        <summary style="font-size:0.8rem;font-weight:700;color:var(--text-soft);cursor:pointer;">
-            🛠 Developer JSON Payload
-        </summary>
-        <pre style="margin-top:10px;font-size:0.72rem;color:var(--text-soft);background:var(--background);padding:10px;border-radius:8px;overflow-x:auto;">${JSON.stringify(entity,null,2)}</pre>
-    </details>
-</div>
-` : ''}
-</div>
-
-<div style="
-padding:16px 24px;
-border-top:1px solid var(--border);
-background:var(--surface);
-display:flex;
-justify-content:flex-end;
-">
-
-<button
-onclick="PharmoraWorkbench._wb.closeDrawer()"
-style="padding:8px 16px;
-border:1px solid var(--border);
-background:none;
-color:var(--text);
-border-radius:8px;
-cursor:pointer;
-font-weight:700;
-font-size:0.82rem;">
-Close
-</button>
-
-</div>
+              <div style="border-top:1px solid var(--border);padding-top:16px;">
+                <details>
+                  <summary style="font-size:0.8rem;font-weight:700;color:var(--text-soft);cursor:pointer;user-select:none;">🛠 Developer JSON Payload</summary>
+                  <pre style="margin-top:10px;font-size:0.72rem;color:var(--text-soft);background:var(--background);padding:10px;border-radius:8px;overflow-x:auto;">${JSON.stringify(entity, null, 2)}</pre>
+                </details>
+              </div>
+            ` : ''}
+          </div>
+          <div style="padding:16px 24px;border-top:1px solid var(--border);background:var(--surface);display:flex;justify-content:flex-end;">
+            <button onclick="PharmoraWorkbench._wb.closeDrawer()" style="padding:8px 16px;border:1px solid var(--border);background:none;color:var(--text);border-radius:8px;cursor:pointer;font-weight:700;font-size:0.82rem;">Close</button>
+          </div>
         `;
 
         if (typeof PharmoraEntityAuditViewer !== 'undefined')
@@ -902,18 +916,51 @@ Close
       `;
     }
 
-    // Direct confirmation helpers exposed on workbench
+    // Non-destructive unlink confirm with Undo support
+    let pendingUnlink = null;
+
     async function _unlinkConfirm(uuid, relType, targetUuid) {
+      if (pendingUnlink) {
+        clearTimeout(pendingUnlink.timer);
+        await commitUnlink(pendingUnlink);
+      }
+
+      pendingUnlink = {
+        uuid,
+        relType,
+        targetUuid,
+        timer: setTimeout(async () => {
+          await commitUnlink(pendingUnlink);
+          pendingUnlink = null;
+        }, 3000)
+      };
+
+      // Instantly refresh UI locally for preview feedback
+      openViewer({ uuid });
+
+      // Trigger standard non-blocking Undo toast message
+      if (typeof showToast === 'function') {
+        showToast(`Relation removed. <a href="javascript:void(0)" onclick="PharmoraWorkbench._wb._restoreRelation()" style="color:#22d3ee;font-weight:700;margin-left:8px;text-decoration:underline;">Undo</a>`, 'info');
+      }
+    }
+
+    async function commitUnlink(job) {
       try {
         if (typeof PharmoraRelations !== 'undefined') {
-          await PharmoraRelations.unlinkEntities(uuid, relType, targetUuid, 'admin');
-          if (typeof showToast === 'function') showToast('Relation unlinked.', 'success');
-          openViewer({ uuid });
+          await PharmoraRelations.unlinkEntities(job.uuid, job.relType, job.targetUuid, 'admin');
         }
       } catch(e) {
-    workbench._submitCreate = originalSubmit;
-    alert('Creation failed: ' + e.message);
-}
+        console.warn('Unlink failed', e);
+      }
+    }
+
+    async function _restoreRelation() {
+      if (!pendingUnlink) return;
+      clearTimeout(pendingUnlink.timer);
+      pendingUnlink = null;
+      if (typeof showToast === 'function') showToast('Restored relationship.', 'success');
+      // Refresh UI view
+      openViewer({ uuid: document.getElementById('wb-drawer-fields-form') ? document.getElementById('wb-drawer-fields-form').parentElement.parentElement.querySelector('h4').nextElementSibling.querySelector('input')?.dataset?.uuid || '' : '' });
     }
 
     async function _linkExistingSubmit(uuid) {
@@ -1006,7 +1053,46 @@ Close
 _renderCreationWizard(drawerEl);
 }
 
-async function _renderUserDrawer(drawerEl, user) {
+    async function _saveInlineChanges(uuid) {
+      const form = document.getElementById('wb-drawer-fields-form');
+      if (!form) return;
+
+      const content = {};
+      const inputs = form.querySelectorAll('input, select, textarea');
+      inputs.forEach(input => {
+        const name = input.id.replace('wz-field-', '');
+        if (input.type === 'checkbox') {
+          content[name] = input.checked;
+        } else if (input.type === 'number') {
+          content[name] = input.value !== '' ? Number(input.value) : 0;
+        } else if (input.id.includes('comma-separated') || input.placeholder.includes('comma-separated')) {
+          content[name] = input.value.split(',').map(s => s.trim()).filter(Boolean);
+        } else {
+          content[name] = input.value;
+        }
+      });
+
+      const actor = (typeof currentUser === 'function' ? currentUser()?.id : 'admin') || 'admin';
+      try {
+        if (typeof PharmoraEntityAPI !== 'undefined') {
+          const entity = await PharmoraEntityAPI.getEntity(uuid);
+          if (entity) {
+            entity.content = Object.assign(entity.content || {}, content);
+            await PharmoraEntityAPI.updateEntity(uuid, entity, actor);
+            if (typeof showToast === 'function') showToast('Changes autosaved.', 'success');
+            // Rebuild index
+            if (typeof PharmoraSearchIndex !== 'undefined') {
+              await PharmoraSearchIndex.buildIndex();
+            }
+            refreshCurrentModule();
+          }
+        }
+      } catch(e) {
+        console.warn('Inline save failed', e);
+      }
+    }
+
+    async function _renderUserDrawer(drawerEl, user) {
       const name  = user.name || user.displayName || user.email || user.id || 'User';
       const email = user.email || '';
       const role  = user.role || '';
@@ -1141,7 +1227,9 @@ async function _renderUserDrawer(drawerEl, user) {
       _unlinkConfirm,
       _linkExistingSubmit,
       _triggerCreateAndLink,
-      _startCreationLink
+      _startCreationLink,
+      _saveInlineChanges,
+      _restoreRelation
     };
 
     // Store global reference so onclick="PharmoraWorkbench._wb.closeDrawer()" works
