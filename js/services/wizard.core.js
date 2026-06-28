@@ -453,6 +453,109 @@ const PharmoraWizardCore = (function () {
       return 'unknown';
     }
 
+    // ── Reusable Drawer Sub-components ──
+    function renderDrawerHeader(title, subtitle = '', onCloseClick = 'PharmoraWorkbench._wb.closeDrawer()') {
+      return `
+        <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;
+                    position:sticky;top:0;background:var(--surface);z-index:1;">
+          <div>
+            <div style="font-size:1.15rem;font-weight:800;color:var(--text);">${title}</div>
+            ${subtitle ? `<span style="font-size:0.7rem;text-transform:uppercase;background:rgba(34,211,238,.12);color:var(--primary);
+                         padding:2px 8px;border-radius:6px;font-weight:700;">${subtitle}</span>` : ''}
+          </div>
+          <button onclick="${onCloseClick}"
+            style="border:none;background:var(--surface-light);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--text);">✕</button>
+        </div>
+      `;
+    }
+
+    function renderDrawerBody(contentHtml) {
+      return `
+        <div style="padding:20px 24px;display:flex;flex-direction:column;gap:18px;overflow-y:auto;flex:1;">
+          ${contentHtml}
+        </div>
+      `;
+    }
+
+    function renderDrawerFooter(buttonsHtml) {
+      return `
+        <div style="padding:16px 24px;border-top:1px solid var(--border);background:var(--surface);display:flex;justify-content:flex-end;gap:10px;">
+          ${buttonsHtml}
+        </div>
+      `;
+    }
+
+    function renderDrawer(title, subtitle, bodyHtml, footerHtml, onCloseClick) {
+      return `
+        ${renderDrawerHeader(title, subtitle, onCloseClick)}
+        ${renderDrawerBody(bodyHtml)}
+        ${renderDrawerFooter(footerHtml)}
+      `;
+    }
+
+    // ── Schema Form Fields Renderers ──
+    function renderField(name, prop, requiredFields, formData) {
+      const label = name.charAt(0).toUpperCase() + name.slice(1).replace(/([A-Z])/g, ' $1');
+      const isRequired = requiredFields.includes(name);
+      const requiredStar = isRequired ? '<span style="color:#ef4444;margin-left:4px;">*</span>' : '';
+      const val = formData[name] !== undefined ? formData[name] : '';
+
+      if (prop.type === 'array') {
+        const arrayVal = Array.isArray(val) ? val.join(', ') : val;
+        return `
+          <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+            <label style="font-size:0.82rem;font-weight:700;">${label}${requiredStar} <span style="font-weight:normal;color:var(--text-soft);font-size:0.75rem;">(comma-separated)</span></label>
+            <input type="text" id="wz-field-${name}" value="${arrayVal}" placeholder="e.g. value1, value2" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);" ${isRequired ? 'required' : ''}>
+          </div>
+        `;
+      } else if (prop.enum) {
+        return `
+          <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+            <label style="font-size:0.82rem;font-weight:700;">${label}${requiredStar}</label>
+            <select id="wz-field-${name}" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);" ${isRequired ? 'required' : ''}>
+              <option value="">Select...</option>
+              ${prop.enum.map(opt => `<option value="${opt}" ${opt === val ? 'selected' : ''}>${opt}</option>`).join('')}
+            </select>
+          </div>
+        `;
+      } else if (prop.type === 'boolean') {
+        return `
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:6px 0;">
+            <input type="checkbox" id="wz-field-${name}" ${val ? 'checked' : ''} style="transform:scale(1.2);">
+            <label style="font-size:0.82rem;font-weight:700;cursor:pointer;" for="wz-field-${name}">${label}${requiredStar}</label>
+          </div>
+        `;
+      } else if (name === 'description' || name === 'objectives' || name === 'outcomes' || (prop.type === 'string' && prop.maxLength > 100)) {
+        return `
+          <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+            <label style="font-size:0.82rem;font-weight:700;">${label}${requiredStar}</label>
+            <textarea id="wz-field-${name}" rows="4" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);" ${isRequired ? 'required' : ''}>${val}</textarea>
+          </div>
+        `;
+      } else if (prop.type === 'number') {
+        return `
+          <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+            <label style="font-size:0.82rem;font-weight:700;">${label}${requiredStar}</label>
+            <input type="number" id="wz-field-${name}" value="${val}" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);" ${isRequired ? 'required' : ''}>
+          </div>
+        `;
+      }
+      return `
+        <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+          <label style="font-size:0.82rem;font-weight:700;">${label}${requiredStar}</label>
+          <input type="text" id="wz-field-${name}" value="${val}" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);" ${isRequired ? 'required' : ''}>
+        </div>
+      `;
+    }
+
+    function renderForm(schema, formData) {
+      const contentProps = schema?.properties?.content?.properties || {};
+      const requiredFields = schema?.properties?.content?.required || [];
+      return Object.entries(contentProps)
+        .map(([name, prop]) => renderField(name, prop, requiredFields, formData))
+        .join('');
+    }
+
     // ── Entity Creation Wizard Rendering ─────────────────
     function _renderCreationWizard(drawerEl) {
       if (createWizardState.step === 1 && !createWizardState.type) {
@@ -463,23 +566,18 @@ const PharmoraWizardCore = (function () {
         }
         if (registeredTypes.length === 0) registeredTypes = ['Subject', 'Drug'];
 
-        drawerEl.innerHTML = `
-          <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-            <div style="font-size:1.1rem;font-weight:800;color:var(--text);">Create New Entity</div>
-            <button onclick="PharmoraWorkbench._wb.closeDrawer()" style="border:none;background:var(--surface-light);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--text);">✕</button>
-          </div>
-          <div style="padding:24px;display:flex;flex-direction:column;gap:16px;">
-            <p style="margin:0;font-size:0.88rem;color:var(--text-soft);">Select the type of entity you want to create:</p>
-            <div style="display:flex;flex-direction:column;gap:8px;">
-              ${registeredTypes.map(t => `
-                <button onclick="PharmoraWorkbench._wb._setCreateType('${t}')"
-                  style="padding:12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-weight:700;text-align:left;cursor:pointer;">
-                  📋 ${t} Monograph
-                </button>
-              `).join('')}
-            </div>
+        const bodyHtml = `
+          <p style="margin:0;font-size:0.88rem;color:var(--text-soft);">Select the type of entity you want to create:</p>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            ${registeredTypes.map(t => `
+              <button onclick="PharmoraWorkbench._wb._setCreateType('${t}')"
+                style="padding:12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-weight:700;text-align:left;cursor:pointer;">
+                📋 ${t} Monograph
+              </button>
+            `).join('')}
           </div>
         `;
+        drawerEl.innerHTML = renderDrawer('Create New Entity', '', bodyHtml, `<button onclick="PharmoraWorkbench._wb.closeDrawer()" style="padding:8px 14px;border:1px solid var(--border);background:none;color:var(--text);border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;">Cancel</button>`);
       } else {
         // Form step
         const type = createWizardState.type;
@@ -487,80 +585,14 @@ const PharmoraWizardCore = (function () {
         if (typeof PharmoraEntityRegistry !== 'undefined') {
           schema = PharmoraEntityRegistry.getSchema(type);
         }
-        const contentProps = schema?.properties?.content?.properties || {};
-        const requiredFields = schema?.properties?.content?.required || [];
 
-        const fieldsHtml = Object.entries(contentProps).map(([name, prop]) => {
-          const label = name.charAt(0).toUpperCase() + name.slice(1).replace(/([A-Z])/g, ' $1');
-          const isRequired = requiredFields.includes(name);
-          const requiredStar = isRequired ? '<span style="color:#ef4444;margin-left:4px;">*</span>' : '';
-          const val = createWizardState.formData[name] !== undefined ? createWizardState.formData[name] : '';
-
-          if (prop.type === 'array') {
-            const arrayVal = Array.isArray(val) ? val.join(', ') : val;
-            return `
-              <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
-                <label style="font-size:0.82rem;font-weight:700;">${label}${requiredStar} <span style="font-weight:normal;color:var(--text-soft);font-size:0.75rem;">(comma-separated)</span></label>
-                <input type="text" id="wz-field-${name}" value="${arrayVal}" placeholder="e.g. value1, value2" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);" ${isRequired ? 'required' : ''}>
-              </div>
-            `;
-          } else if (prop.enum) {
-            return `
-              <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
-                <label style="font-size:0.82rem;font-weight:700;">${label}${requiredStar}</label>
-                <select id="wz-field-${name}" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);" ${isRequired ? 'required' : ''}>
-                  <option value="">Select...</option>
-                  ${prop.enum.map(opt => `<option value="${opt}" ${opt === val ? 'selected' : ''}>${opt}</option>`).join('')}
-                </select>
-              </div>
-            `;
-          } else if (prop.type === 'boolean') {
-            return `
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:6px 0;">
-                <input type="checkbox" id="wz-field-${name}" ${val ? 'checked' : ''} style="transform:scale(1.2);">
-                <label style="font-size:0.82rem;font-weight:700;cursor:pointer;" for="wz-field-${name}">${label}${requiredStar}</label>
-              </div>
-            `;
-          } else if (name === 'description' || name === 'objectives' || name === 'outcomes' || prop.type === 'string' && prop.maxLength > 100) {
-            return `
-              <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
-                <label style="font-size:0.82rem;font-weight:700;">${label}${requiredStar}</label>
-                <textarea id="wz-field-${name}" rows="4" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);" ${isRequired ? 'required' : ''}>${val}</textarea>
-              </div>
-            `;
-          } else if (prop.type === 'number') {
-            return `
-              <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
-                <label style="font-size:0.82rem;font-weight:700;">${label}${requiredStar}</label>
-                <input type="number" id="wz-field-${name}" value="${val}" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);" ${isRequired ? 'required' : ''}>
-              </div>
-            `;
-          }
-          return `
-            <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
-              <label style="font-size:0.82rem;font-weight:700;">${label}${requiredStar}</label>
-              <input type="text" id="wz-field-${name}" value="${val}" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);" ${isRequired ? 'required' : ''}>
-            </div>
-          `;
-        }).join('');
-
-        drawerEl.innerHTML = `
-          <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-            <div>
-              <div style="font-size:1.1rem;font-weight:800;color:var(--text);">New ${type}</div>
-              <span style="font-size:0.7rem;background:var(--surface-light);color:var(--text-soft);padding:1px 6px;border-radius:4px;">Draft</span>
-            </div>
-            <button onclick="PharmoraWorkbench._wb.closeDrawer()" style="border:none;background:var(--surface-light);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--text);">✕</button>
-          </div>
-          <div style="padding:20px 24px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;flex:1;">
-            ${fieldsHtml}
-          </div>
-          <div style="padding:16px 24px;border-top:1px solid var(--border);background:var(--surface);display:flex;gap:10px;">
-            <button onclick="PharmoraWorkbench._wb.closeDrawer()" style="padding:8px 14px;border:1px solid var(--border);background:none;color:var(--text);border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;">Cancel</button>
-            <button onclick="PharmoraWorkbench._wb._saveCreateDraft()" style="padding:8px 14px;border:1px solid var(--border);background:none;color:var(--text);border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;">Save Draft</button>
-            <button onclick="PharmoraWorkbench._wb._submitCreate()" style="flex:1;padding:8px 14px;border:none;background:var(--primary);color:#fff;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.85rem;">Create Entity</button>
-          </div>
+        const bodyHtml = renderForm(schema, createWizardState.formData);
+        const footerHtml = `
+          <button onclick="PharmoraWorkbench._wb.closeDrawer()" style="padding:8px 14px;border:1px solid var(--border);background:none;color:var(--text);border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;">Cancel</button>
+          <button onclick="PharmoraWorkbench._wb._saveCreateDraft()" style="padding:8px 14px;border:1px solid var(--border);background:none;color:var(--text);border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;">Save Draft</button>
+          <button onclick="PharmoraWorkbench._wb._submitCreate()" style="flex:1;padding:8px 14px;border:none;background:var(--primary);color:#fff;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.85rem;">Create Entity</button>
         `;
+        drawerEl.innerHTML = renderDrawer(`New ${type}`, 'Draft', bodyHtml, footerHtml);
       }
     }
 
