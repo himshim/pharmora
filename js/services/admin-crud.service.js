@@ -63,7 +63,6 @@ async function loadManager(collection){
   let schemas = await loadSchema();
   activeSchema = schemas[collection] || [];
   let data = await getRecords(collection);
-  let area = document.getElementById("admin-actions");
   if(!area){ return; }
 
 
