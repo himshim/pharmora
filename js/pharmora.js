@@ -210,7 +210,38 @@ const CORE=[
 
 "/components/layout/header.js",
 
-"/components/layout/footer.js"
+"/components/layout/footer.js",
+
+"/js/services/entity/entity.core.js",
+"/js/services/entity/entity.registry.js",
+"/js/services/entity/entity.schema.js",
+"/js/services/entity/entity.events.js",
+"/js/services/entity/entity.api.js",
+"/js/services/entity/entity.relations.js",
+"/js/services/entity/entity.graph.js",
+"/js/services/entity/entity.renderer.js",
+"/js/services/entity/entity.academic.js",
+"/js/services/entity/entity.pharmaceutical.js",
+"/js/services/entity/entity.discovery.js",
+"/js/services/entity/entity.workflow.js",
+"/js/services/entity/entity.review.js",
+"/js/services/entity/entity.version.js",
+
+"/js/services/search/search.index.js",
+"/js/services/search/search.ranking.js",
+"/js/services/search/search.filters.js",
+"/js/services/search/search.facets.js",
+"/js/services/search/search.history.js",
+"/js/services/search/search.universal.js",
+
+"/components/entity/entity.card.js",
+"/components/entity/entity.page.js",
+"/components/entity/entity.relations.js",
+"/components/entity/entity.timeline.js",
+"/components/entity/entity.references.js",
+"/components/entity/entity.attachments.js",
+"/components/entity/entity.viewer.js",
+"/components/entity/entity.audit.viewer.js"
 
 ];
 
