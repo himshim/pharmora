@@ -273,7 +273,7 @@ const PharmoraWizardCore = (function () {
             onmouseout="if(!this.classList.contains('wb-active'))this.style.background='transparent'">
             <span>${mod.icon}</span>
             <span class="wb-nav-label">${mod.title}</span>
-            ${mod.badgeProvider ? `<span class="wb-badge" data-module="${mod.id}" style="margin-left:auto;background:var(--primary);color:#fff;border-radius:20px;padding:1px 7px;font-size:0.7rem;font-weight:700;display:none;"></span>` : ''}
+            ${mod.badgeProvider ? `<span class="wb-badge" data-badge="${mod.id}" style="margin-left:auto;background:var(--primary);color:#fff;border-radius:20px;padding:1px 7px;font-size:0.7rem;font-weight:700;display:none;"></span>` : ''}
           </a>`;
       }).join('');
 
@@ -398,7 +398,9 @@ const PharmoraWizardCore = (function () {
       if (_activeId) navigate(_activeId);
     }
 
-    // ── Universal Viewer (openViewer) ────────────────────
+    // ── Universal Viewer & Creator Wizard (openViewer) ───
+    let createWizardState = { step: 1, type: null, formData: {} };
+
     async function openViewer(item) {
       const drawerEl = document.getElementById(drawerContainerId);
       if (!drawerEl) return;
@@ -407,8 +409,14 @@ const PharmoraWizardCore = (function () {
       drawerEl.classList.add('open');
       drawerEl.innerHTML = `<div style="padding:24px;color:var(--text-soft);">Loading…</div>`;
 
+      // ── Handle Entity Creation Wizard ──
+      if (item && (item._create || item.uuid === null)) {
+        createWizardState = { step: 1, type: item.type || null, formData: {} };
+        _renderCreationWizard(drawerEl);
+        return;
+      }
+
       // Detect item type and delegate to the right viewer
-      // 1) If a module registers a viewer for this type, use it
       const kind = _detectItemKind(item);
       const modWithViewer = _registry.find(m => m.viewer && m.viewer.handles && m.viewer.handles(item, kind));
 
@@ -420,15 +428,18 @@ const PharmoraWizardCore = (function () {
         return;
       }
 
-      // 2) Default entity viewer
+      // Default entity or user viewer
       if (kind === 'entity') {
         await _renderEntityDrawer(drawerEl, item);
       } else if (kind === 'user') {
         await _renderUserDrawer(drawerEl, item);
       } else {
         drawerEl.innerHTML = `
+          <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <h3 style="margin:0;color:var(--text);">${item.title || item.name || item.id || 'Item'}</h3>
+            <button onclick="PharmoraWorkbench._wb.closeDrawer()" style="border:none;background:var(--surface-light);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--text);">✕</button>
+          </div>
           <div style="padding:24px;">
-            <h3 style="margin:0 0 12px;color:var(--text);">${item.title || item.name || item.id || 'Item'}</h3>
             <pre style="font-size:0.75rem;color:var(--text-soft);white-space:pre-wrap;">${JSON.stringify(item, null, 2)}</pre>
           </div>`;
       }
@@ -442,6 +453,156 @@ const PharmoraWizardCore = (function () {
       return 'unknown';
     }
 
+    // ── Entity Creation Wizard Rendering ─────────────────
+    function _renderCreationWizard(drawerEl) {
+      if (createWizardState.step === 1 && !createWizardState.type) {
+        // Step 1: Selection
+        let registeredTypes = [];
+        if (typeof PharmoraEntityRegistry !== 'undefined') {
+          registeredTypes = PharmoraEntityRegistry.getRegisteredTypes();
+        }
+        if (registeredTypes.length === 0) registeredTypes = ['Subject', 'Drug'];
+
+        drawerEl.innerHTML = `
+          <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:1.1rem;font-weight:800;color:var(--text);">Create New Entity</div>
+            <button onclick="PharmoraWorkbench._wb.closeDrawer()" style="border:none;background:var(--surface-light);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--text);">✕</button>
+          </div>
+          <div style="padding:24px;display:flex;flex-direction:column;gap:16px;">
+            <p style="margin:0;font-size:0.88rem;color:var(--text-soft);">Select the type of entity you want to create:</p>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              ${registeredTypes.map(t => `
+                <button onclick="PharmoraWorkbench._wb._setCreateType('${t}')"
+                  style="padding:12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-weight:700;text-align:left;cursor:pointer;">
+                  📋 ${t} Monograph
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else {
+        // Form step
+        const type = createWizardState.type;
+        let schema = null;
+        if (typeof PharmoraEntityRegistry !== 'undefined') {
+          schema = PharmoraEntityRegistry.getSchema(type);
+        }
+        const contentProps = schema?.properties?.content?.properties || {};
+
+        const fieldsHtml = Object.entries(contentProps).map(([name, prop]) => {
+          const label = name.charAt(0).toUpperCase() + name.slice(1).replace(/([A-Z])/g, ' $1');
+          const val = createWizardState.formData[name] || '';
+          if (prop.type === 'array') {
+            return `
+              <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+                <label style="font-size:0.82rem;font-weight:700;">${label} <span style="font-weight:normal;color:var(--text-soft);font-size:0.75rem;">(comma-separated)</span></label>
+                <input type="text" id="wz-field-${name}" value="${Array.isArray(val) ? val.join(', ') : val}" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);">
+              </div>
+            `;
+          } else if (prop.enum) {
+            return `
+              <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+                <label style="font-size:0.82rem;font-weight:700;">${label}</label>
+                <select id="wz-field-${name}" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);">
+                  <option value="">Select...</option>
+                  ${prop.enum.map(opt => `<option value="${opt}" ${opt === val ? 'selected' : ''}>${opt}</option>`).join('')}
+                </select>
+              </div>
+            `;
+          } else if (name === 'description') {
+            return `
+              <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+                <label style="font-size:0.82rem;font-weight:700;">${label}</label>
+                <textarea id="wz-field-${name}" rows="3" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);">${val}</textarea>
+              </div>
+            `;
+          }
+          return `
+            <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+              <label style="font-size:0.82rem;font-weight:700;">${label}</label>
+              <input type="text" id="wz-field-${name}" value="${val}" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);">
+            </div>
+          `;
+        }).join('');
+
+        drawerEl.innerHTML = `
+          <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:1.1rem;font-weight:800;color:var(--text);">New ${type}</div>
+              <span style="font-size:0.7rem;background:var(--surface-light);color:var(--text-soft);padding:1px 6px;border-radius:4px;">Draft</span>
+            </div>
+            <button onclick="PharmoraWorkbench._wb.closeDrawer()" style="border:none;background:var(--surface-light);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--text);">✕</button>
+          </div>
+          <div style="padding:20px 24px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;flex:1;">
+            ${fieldsHtml}
+          </div>
+          <div style="padding:16px 24px;border-top:1px solid var(--border);background:var(--surface);display:flex;gap:10px;">
+            <button onclick="PharmoraWorkbench._wb.closeDrawer()" style="padding:8px 14px;border:1px solid var(--border);background:none;color:var(--text);border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;">Cancel</button>
+            <button onclick="PharmoraWorkbench._wb._saveCreateDraft()" style="padding:8px 14px;border:1px solid var(--border);background:none;color:var(--text);border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;">Save Draft</button>
+            <button onclick="PharmoraWorkbench._wb._submitCreate()" style="flex:1;padding:8px 14px;border:none;background:var(--primary);color:#fff;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.85rem;">Create Entity</button>
+          </div>
+        `;
+      }
+    }
+
+    // Wizard Action Handlers
+    function _setCreateType(type) {
+      createWizardState.type = type;
+      createWizardState.step = 2;
+      const drawerEl = document.getElementById(drawerContainerId);
+      if (drawerEl) _renderCreationWizard(drawerEl);
+    }
+
+    function _gatherWzFormData() {
+      const type = createWizardState.type;
+      let schema = null;
+      if (typeof PharmoraEntityRegistry !== 'undefined') {
+        schema = PharmoraEntityRegistry.getSchema(type);
+      }
+      const contentProps = schema?.properties?.content?.properties || {};
+      const content = {};
+
+      Object.entries(contentProps).forEach(([name, prop]) => {
+        const input = document.getElementById(`wz-field-${name}`);
+        if (!input) return;
+        let val = input.value.trim();
+        if (prop.type === 'array') {
+          content[name] = val ? val.split(',').map(s => s.trim()).filter(Boolean) : [];
+        } else {
+          content[name] = val;
+        }
+      });
+      return content;
+    }
+
+    function _saveCreateDraft() {
+      const content = _gatherWzFormData();
+      createWizardState.formData = content;
+      if (typeof showToast === 'function') showToast('Draft saved successfully.', 'success');
+    }
+
+    async function _submitCreate() {
+      const content = _gatherWzFormData();
+      const type = createWizardState.type;
+      const actor = (typeof currentUser === 'function' ? currentUser()?.id : 'admin') || 'admin';
+
+      try {
+        const created = await PharmoraEntityAPI.createEntity({
+          type,
+          content,
+          status: 'pending_review'
+        }, actor);
+
+        if (typeof showToast === 'function') showToast('Entity created successfully!', 'success');
+        // Refresh module to display new entity
+        refreshCurrentModule();
+        // Immediately view new entity in drawer
+        openViewer(created);
+      } catch(e) {
+        if (typeof showToast === 'function') showToast(`Creation failed: ${e.message}`, 'error');
+      }
+    }
+
     async function _renderEntityDrawer(drawerEl, item) {
       try {
         const entity = item.uuid
@@ -451,6 +612,10 @@ const PharmoraWizardCore = (function () {
         if (!entity) { drawerEl.innerHTML = `<div style="padding:24px;color:#ef4444;">Entity not found.</div>`; return; }
 
         const title = entity.content?.title || entity.content?.name || entity.content?.genericName || entity.publicId || '—';
+
+        // Check developer mode/admin check
+        const user = typeof currentUser === 'function' ? currentUser() : null;
+        const isDev = user && (user.role === 'admin' || user.role === 'owner');
 
         drawerEl.innerHTML = `
           <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;
@@ -465,7 +630,7 @@ const PharmoraWizardCore = (function () {
             <button onclick="PharmoraWorkbench._wb.closeDrawer()"
               style="border:none;background:var(--surface-light);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--text);">✕</button>
           </div>
-          <div style="padding:20px 24px;display:flex;flex-direction:column;gap:18px;">
+          <div style="padding:20px 24px;display:flex;flex-direction:column;gap:18px;overflow-y:auto;flex:1;">
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
               <button onclick="PharmoraWorkbench._wb._drawerAction('approve','${entity.uuid}')" style="${_btnStyle('var(--primary)')}">✓ Approve</button>
               <button onclick="PharmoraWorkbench._wb._drawerAction('publish','${entity.uuid}')" style="${_btnStyle('#22c55e')}">📢 Publish</button>
@@ -475,7 +640,20 @@ const PharmoraWizardCore = (function () {
             <div id="wb-drawer-workflow"></div>
             <div id="wb-drawer-timeline"></div>
             <div id="wb-drawer-relations"></div>
-          </div>`;
+            
+            ${isDev ? `
+              <div style="border-top:1px solid var(--border);padding-top:16px;">
+                <details>
+                  <summary style="font-size:0.8rem;font-weight:700;color:var(--text-soft);cursor:pointer;user-select:none;">🛠 Developer JSON Payload</summary>
+                  <pre style="margin-top:10px;font-size:0.72rem;color:var(--text-soft);background:var(--background);padding:10px;border-radius:8px;overflow-x:auto;">${JSON.stringify(entity, null, 2)}</pre>
+                </details>
+              </div>
+            ` : ''}
+          </div>
+          <div style="padding:16px 24px;border-top:1px solid var(--border);background:var(--surface);display:flex;justify-content:flex-end;">
+            <button onclick="PharmoraWorkbench._wb.closeDrawer()" style="padding:8px 16px;border:1px solid var(--border);background:none;color:var(--text);border-radius:8px;cursor:pointer;font-weight:700;font-size:0.82rem;">Close</button>
+          </div>
+        `;
 
         if (typeof PharmoraEntityAuditViewer !== 'undefined')
           PharmoraEntityAuditViewer.render(entity, 'wb-drawer-workflow');
@@ -506,7 +684,7 @@ const PharmoraWizardCore = (function () {
           <button onclick="PharmoraWorkbench._wb.closeDrawer()"
             style="border:none;background:var(--surface-light);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--text);">✕</button>
         </div>
-        <div style="padding:20px 24px;display:flex;flex-direction:column;gap:14px;font-size:0.88rem;">
+        <div style="padding:20px 24px;display:flex;flex-direction:column;gap:14px;font-size:0.88rem;flex:1;overflow-y:auto;">
           <div><strong>Email:</strong> ${email}</div>
           <div><strong>ID:</strong> <code>${user.id || user.uid || '—'}</code></div>
           <div><strong>Status:</strong> ${user.disabled ? '🚫 Disabled' : '✅ Active'}</div>
@@ -614,6 +792,9 @@ const PharmoraWizardCore = (function () {
       restoreWorkspaceState,
       // Expose internals for drawer action buttons wired via onclick strings
       _drawerAction,
+      _setCreateType,
+      _saveCreateDraft,
+      _submitCreate
     };
 
     // Store global reference so onclick="PharmoraWorkbench._wb.closeDrawer()" works
