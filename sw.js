@@ -5,7 +5,7 @@
 
 
 const CACHE_NAME =
-"pharmora-v3";
+"pharmora-v4";
 
 
 const OFFLINE_PAGE =
