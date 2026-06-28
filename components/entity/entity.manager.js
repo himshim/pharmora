@@ -1,173 +1,313 @@
 /*
   Pharmora Universal Entity Manager UI Component
-  v2.0.0
+  v3.0.0 — Extended render() API: render(containerId, typeOrFilter, optionalFilter)
+  Backwards compatible: render(containerId, "Subject") still works.
 */
 (function() {
-  function renderManagerUI(containerId, initialType = "") {
+  'use strict';
+
+  const ALL_TYPES = [
+    'Subject','Course','Semester','Unit','Topic','Practical','QuestionBank','MCQ','Resource',
+    'Book','Drug','Brand','Manufacturer','Disease','Mechanism','TherapeuticClass',
+    'PharmacologicalClass','DosageForm','Excipient','AdverseEffect','Interaction','Contraindication',
+    'Research','Event','Tool'
+  ];
+
+  /**
+   * Normalise the arguments to a single filter object.
+   * Supports:
+   *   render(id, "Subject")
+   *   render(id, "Subject", { status, query, sort })
+   *   render(id, { type, status, query, sort, tags, owner, reviewer, layout, page, pageSize })
+   */
+  function _normaliseFilter(typeOrFilter, optionalFilter) {
+    let filter = {};
+    if (typeof typeOrFilter === 'string') {
+      filter.type = typeOrFilter;
+      if (optionalFilter && typeof optionalFilter === 'object') {
+        Object.assign(filter, optionalFilter);
+      }
+    } else if (typeOrFilter && typeof typeOrFilter === 'object') {
+      filter = Object.assign({}, typeOrFilter);
+    }
+    filter.layout   = filter.layout   || 'list';
+    filter.sort     = filter.sort     || 'created';
+    filter.page     = filter.page     || 1;
+    filter.pageSize = filter.pageSize || 30;
+    return filter;
+  }
+
+  function renderManagerUI(containerId, typeOrFilter, optionalFilter) {
     const root = document.getElementById(containerId);
     if (!root) return;
 
-    // Define UI wrapper
+    const initFilter = _normaliseFilter(typeOrFilter, optionalFilter);
+
+    // Build type options
+    const typeOptions = ['', ...ALL_TYPES].map(t =>
+      `<option value="${t}" ${t === (initFilter.type || '') ? 'selected' : ''}>${t || 'All Types'}</option>`
+    ).join('');
+
+    const statusOptions = [
+      { v: '', l: 'All Statuses' },
+      { v: 'draft',          l: 'Draft' },
+      { v: 'pending_review', l: 'Pending Review' },
+      { v: 'approved',       l: 'Approved' },
+      { v: 'published',      l: 'Published' },
+      { v: 'archived',       l: 'Archived' },
+    ].map(s =>
+      `<option value="${s.v}" ${s.v === (initFilter.status || '') ? 'selected' : ''}>${s.l}</option>`
+    ).join('');
+
     root.innerHTML = `
-      <div class="entity-manager-ui" style="display:flex; flex-direction:column; gap:20px; padding:20px; font-family:sans-serif; background:var(--surface); border:1px solid var(--border); border-radius:8px;">
-        <!-- Header -->
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
-          <h2 style="margin:0; color:var(--text);">Universal Entity Manager</h2>
-          <div style="display:flex; gap:10px;">
-            <button id="btn-create-entity" class="btn btn-primary" style="padding:8px 16px; background:var(--primary); color:white; border:none; border-radius:4px; cursor:pointer;">+ Create Entity</button>
-          </div>
+      <div class="entity-manager-ui" style="display:flex;flex-direction:column;gap:18px;">
+
+        <!-- Toolbar row -->
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px;
+                    background:var(--surface);border:1px solid var(--border);border-radius:14px;">
+          <input id="em-search" type="text" placeholder="🔍 Search…" value="${initFilter.query || ''}"
+            style="flex:1;min-width:150px;padding:8px 12px;border-radius:10px;border:1px solid var(--border);
+                   background:var(--background);color:var(--text);font-size:0.85rem;" />
+
+          <select id="em-type" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--background);color:var(--text);font-size:0.82rem;">
+            ${typeOptions}
+          </select>
+
+          <select id="em-status" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--background);color:var(--text);font-size:0.82rem;">
+            ${statusOptions}
+          </select>
+
+          <select id="em-sort" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--background);color:var(--text);font-size:0.82rem;">
+            <option value="created" ${initFilter.sort==='created' ? 'selected' : ''}>Newest</option>
+            <option value="updated" ${initFilter.sort==='updated' ? 'selected' : ''}>Updated</option>
+            <option value="title"   ${initFilter.sort==='title'   ? 'selected' : ''}>Title A–Z</option>
+            <option value="popular" ${initFilter.sort==='popular' ? 'selected' : ''}>Popular</option>
+          </select>
+
+          <select id="em-layout" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--background);color:var(--text);font-size:0.82rem;">
+            <option value="list"    ${initFilter.layout==='list'    ? 'selected' : ''}>Grid Cards</option>
+            <option value="table"   ${initFilter.layout==='table'   ? 'selected' : ''}>Table</option>
+            <option value="compact" ${initFilter.layout==='compact' ? 'selected' : ''}>Compact</option>
+          </select>
+
+          <button id="em-create-btn" style="padding:8px 16px;border:none;background:var(--primary);color:#fff;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.82rem;">+ Create</button>
+          <span id="em-count" style="font-size:0.78rem;color:var(--text-soft);font-weight:600;white-space:nowrap;"></span>
         </div>
 
-        <!-- Filters Bar -->
-        <div class="filters-bar" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; background:var(--bg-body); padding:12px; border-radius:6px; border:1px solid var(--border);">
-          <div style="display:flex; flex-direction:column; gap:4px;">
-            <label style="font-size:0.75rem; color:var(--text-secondary); font-weight:bold;">Type</label>
-            <select id="filter-type" style="padding:6px; border-radius:4px; border:1px solid var(--border);">
-              <option value="">All Types</option>
-              <option value="Subject" ${initialType === "Subject" ? "selected" : ""}>Subject</option>
-              <option value="Drug">Drug</option>
-            </select>
-          </div>
-
-          <div style="display:flex; flex-direction:column; gap:4px;">
-            <label style="font-size:0.75rem; color:var(--text-secondary); font-weight:bold;">Status</label>
-            <select id="filter-status" style="padding:6px; border-radius:4px; border:1px solid var(--border);">
-              <option value="">All Statuses</option>
-              <option value="draft">Draft</option>
-              <option value="pending_review">Pending Review</option>
-              <option value="approved">Approved</option>
-              <option value="archived">Archived</option>
-            </select>
-          </div>
-
-          <div style="display:flex; flex-direction:column; gap:4px;">
-            <label style="font-size:0.75rem; color:var(--text-secondary); font-weight:bold;">Sort By</label>
-            <select id="sort-by" style="padding:6px; border-radius:4px; border:1px solid var(--border);">
-              <option value="created">Date Created</option>
-              <option value="title">Title/Name</option>
-              <option value="updated">Date Updated</option>
-              <option value="popularity">Popularity</option>
-            </select>
-          </div>
-
-          <div style="display:flex; flex-direction:column; gap:4px;">
-            <label style="font-size:0.75rem; color:var(--text-secondary); font-weight:bold;">Layout</label>
-            <select id="layout-mode" style="padding:6px; border-radius:4px; border:1px solid var(--border);">
-              <option value="list">Grid Cards</option>
-              <option value="table">Table View</option>
-            </select>
-          </div>
+        <!-- Bulk actions bar -->
+        <div id="em-bulk-bar" style="display:none;align-items:center;gap:8px;flex-wrap:wrap;
+                                     padding:10px 14px;background:rgba(34,211,238,.08);
+                                     border:1px solid var(--primary);border-radius:10px;">
+          <span id="em-bulk-count" style="font-weight:700;font-size:0.85rem;color:var(--primary);"></span>
+          <button data-em-bulk="publish" style="padding:5px 12px;border:none;background:var(--primary);color:#fff;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.8rem;">📢 Publish</button>
+          <button data-em-bulk="approve" style="padding:5px 12px;border:none;background:#22c55e;color:#fff;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.8rem;">✓ Approve</button>
+          <button data-em-bulk="archive" style="padding:5px 12px;border:none;background:#64748b;color:#fff;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.8rem;">🗄 Archive</button>
+          <button data-em-bulk="delete"  style="padding:5px 12px;border:none;background:#ef4444;color:#fff;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.8rem;">🗑 Delete</button>
+          <button id="em-bulk-clear" style="padding:5px 12px;border:1px solid var(--border);background:none;color:var(--text-soft);border-radius:6px;font-weight:600;cursor:pointer;font-size:0.8rem;margin-left:auto;">Clear</button>
         </div>
 
-        <!-- Bulk Actions Bar -->
-        <div id="bulk-actions-bar" style="display:none; align-items:center; gap:12px; background:var(--primary-light); padding:10px; border-radius:6px; border:1px solid var(--primary);">
-          <span id="selected-count" style="font-size:0.9rem; font-weight:bold; color:var(--primary);">0 items selected</span>
-          <button id="bulk-btn-publish" style="padding:4px 8px; border:none; background:var(--primary); color:white; border-radius:4px; cursor:pointer;">Publish</button>
-          <button id="bulk-btn-archive" style="padding:4px 8px; border:none; background:var(--primary); color:white; border-radius:4px; cursor:pointer;">Archive</button>
-          <button id="bulk-btn-delete" style="padding:4px 8px; border:none; background:red; color:white; border-radius:4px; cursor:pointer;">Delete</button>
-        </div>
+        <!-- Content area -->
+        <div id="em-content" style="min-height:200px;"></div>
 
-        <!-- Content Container -->
-        <div id="manager-entities-container" style="min-height:200px;">
-          <!-- Loaded via JS -->
-        </div>
+        <!-- Pagination -->
+        <div id="em-pagination" style="display:flex;justify-content:center;gap:8px;padding:12px 0;"></div>
       </div>
     `;
 
-    // Fetch and render list
+    let selectedUuids = new Set();
+    let currentPage   = initFilter.page;
+
+    function _currentFilter() {
+      return {
+        type:     document.getElementById('em-type')?.value     || '',
+        status:   document.getElementById('em-status')?.value   || '',
+        query:    document.getElementById('em-search')?.value   || '',
+        sort:     document.getElementById('em-sort')?.value     || 'created',
+        layout:   document.getElementById('em-layout')?.value   || 'list',
+        owner:    initFilter.owner     || '',
+        reviewer: initFilter.reviewer  || '',
+        tags:     initFilter.tags      || [],
+        page:     currentPage,
+        pageSize: initFilter.pageSize  || 30,
+      };
+    }
+
+    function _updateBulkBar() {
+      const bar = document.getElementById('em-bulk-bar');
+      const cnt = document.getElementById('em-bulk-count');
+      if (bar) bar.style.display = selectedUuids.size > 0 ? 'flex' : 'none';
+      if (cnt) cnt.textContent = `${selectedUuids.size} selected`;
+    }
+
     async function loadData() {
-      const type = document.getElementById("filter-type").value;
-      const status = document.getElementById("filter-status").value;
-      const sortBy = document.getElementById("sort-by").value;
-      const layout = document.getElementById("layout-mode").value;
+      const f   = _currentFilter();
+      const cnt = document.getElementById('em-content');
+      if (cnt) cnt.innerHTML = `<div style="padding:40px;text-align:center;color:var(--text-soft);">Loading…</div>`;
 
-      const entities = await PharmoraEntityManager.getFilteredEntities({
-        type,
-        status,
-        sortBy
-      });
-
-      const container = document.getElementById("manager-entities-container");
-      if (layout === "list") {
-        let cardsHtml = "";
-        if (entities.length === 0) {
-          cardsHtml = `<div style="padding:20px; color:var(--text-muted);">No entities match the filters.</div>`;
-        } else {
-          cardsHtml = entities.map(ent => {
-            const config = typeof PharmoraSubjectRenderer !== "undefined" && ent.type === "Subject" 
-              ? PharmoraSubjectRenderer.config 
-              : PharmoraUniversalRenderer.getAutoConfig(ent);
-            
-            return `
-              <div style="position:relative;">
-                <input type="checkbox" class="entity-select-checkbox" data-uuid="${ent.uuid}" style="position:absolute; top:12px; right:12px; z-index:10; transform:scale(1.2);">
-                ${PharmoraUniversalRenderer.render(ent, "card", config)}
-              </div>
-            `;
-          }).join("");
+      let entities = [];
+      try {
+        if (typeof PharmoraEntityManager !== 'undefined') {
+          entities = await PharmoraEntityManager.getFilteredEntities({
+            type:     f.type,
+            status:   f.status,
+            sortBy:   f.sort,
+            owner:    f.owner,
+            reviewer: f.reviewer,
+            tags:     f.tags,
+          });
+        } else if (typeof PharmoraEntityAPI !== 'undefined') {
+          entities = await PharmoraEntityAPI.listEntities();
         }
-        container.innerHTML = `
-          <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:20px;">
-            ${cardsHtml}
-          </div>
-        `;
-      } else {
-        // Table layout
-        const autoConfig = entities.length > 0 ? PharmoraUniversalRenderer.getAutoConfig(entities[0]) : {};
-        container.innerHTML = PharmoraUniversalRenderer.render(entities, "table", autoConfig);
+      } catch(e) {
+        console.warn('[EntityManager] Data load error', e);
       }
 
-      attachCheckboxListeners();
-    }
+      // Client-side query filter
+      if (f.query) {
+        const q = f.query.toLowerCase();
+        entities = entities.filter(e => {
+          const hay = [
+            e.content?.title, e.content?.name, e.content?.genericName,
+            e.type, e.publicId
+          ].filter(Boolean).join(' ').toLowerCase();
+          return hay.includes(q);
+        });
+      }
 
-    function attachCheckboxListeners() {
-      const checkboxes = document.querySelectorAll(".entity-select-checkbox");
-      const bulkBar = document.getElementById("bulk-actions-bar");
-      const selectedCount = document.getElementById("selected-count");
+      // Pagination
+      const total    = entities.length;
+      const start    = (f.page - 1) * f.pageSize;
+      const page_ents = entities.slice(start, start + f.pageSize);
 
-      checkboxes.forEach(cb => {
-        cb.addEventListener("change", () => {
-          const selected = Array.from(checkboxes).filter(c => c.checked);
-          if (selected.length > 0) {
-            bulkBar.style.display = "flex";
-            selectedCount.textContent = `${selected.length} items selected`;
-          } else {
-            bulkBar.style.display = "none";
-          }
+      const countEl = document.getElementById('em-count');
+      if (countEl) countEl.textContent = `${total} entities`;
+
+      if (!cnt) return;
+
+      if (page_ents.length === 0) {
+        cnt.innerHTML = `<div style="padding:40px;text-align:center;color:var(--text-soft);">No entities match the current filters.</div>`;
+        return;
+      }
+
+      if (f.layout === 'table') {
+        const autoConfig = typeof PharmoraUniversalRenderer !== 'undefined'
+          ? PharmoraUniversalRenderer.getAutoConfig(page_ents[0])
+          : {};
+        cnt.innerHTML = typeof PharmoraUniversalRenderer !== 'undefined'
+          ? PharmoraUniversalRenderer.render(page_ents, 'table', autoConfig)
+          : `<div style="padding:20px;color:var(--text-soft);">Renderer not available.</div>`;
+      } else if (f.layout === 'compact') {
+        cnt.innerHTML = `<div style="display:flex;flex-direction:column;gap:6px;">
+          ${page_ents.map(ent => {
+            const title = ent.content?.title || ent.content?.name || ent.publicId || ent.type;
+            return `<div data-uuid="${ent.uuid}" style="display:flex;align-items:center;gap:10px;padding:10px 14px;
+                         background:var(--surface);border:1px solid var(--border);border-radius:10px;cursor:pointer;">
+              <input type="checkbox" class="em-cb" data-uuid="${ent.uuid}" onclick="event.stopPropagation()">
+              <span style="font-size:0.75rem;background:var(--border);padding:1px 6px;border-radius:4px;">${ent.type}</span>
+              <span style="flex:1;font-weight:600;font-size:0.85rem;">${title}</span>
+              <span style="font-size:0.72rem;color:var(--text-soft);">${ent.status}</span>
+            </div>`;
+          }).join('')}
+        </div>`;
+      } else {
+        // Grid cards
+        cnt.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;">
+          ${page_ents.map(ent => {
+            const config = typeof PharmoraUniversalRenderer !== 'undefined'
+              ? PharmoraUniversalRenderer.getAutoConfig(ent)
+              : {};
+            const cardHtml = typeof PharmoraUniversalRenderer !== 'undefined'
+              ? PharmoraUniversalRenderer.render(ent, 'card', config)
+              : `<div style="padding:14px;">${ent.content?.title || ent.publicId}</div>`;
+            return `<div style="position:relative;" data-uuid="${ent.uuid}">
+              <input type="checkbox" class="em-cb" data-uuid="${ent.uuid}"
+                style="position:absolute;top:10px;right:10px;z-index:10;transform:scale(1.2);" onclick="event.stopPropagation()">
+              ${cardHtml}
+            </div>`;
+          }).join('')}
+        </div>`;
+      }
+
+      // Attach checkbox listeners
+      cnt.querySelectorAll('.em-cb').forEach(cb => {
+        cb.checked = selectedUuids.has(cb.dataset.uuid);
+        cb.addEventListener('change', () => {
+          if (cb.checked) selectedUuids.add(cb.dataset.uuid);
+          else selectedUuids.delete(cb.dataset.uuid);
+          _updateBulkBar();
         });
       });
+
+      // Render pagination
+      _renderPagination(total, f.page, f.pageSize);
     }
 
-    // Attach filters listeners
-    document.getElementById("filter-type").addEventListener("change", loadData);
-    document.getElementById("filter-status").addEventListener("change", loadData);
-    document.getElementById("sort-by").addEventListener("change", loadData);
-    document.getElementById("layout-mode").addEventListener("change", loadData);
+    function _renderPagination(total, page, pageSize) {
+      const pages = Math.ceil(total / pageSize);
+      const pg    = document.getElementById('em-pagination');
+      if (!pg || pages <= 1) { if (pg) pg.innerHTML = ''; return; }
+      const btnStyle = (active) =>
+        `padding:6px 12px;border-radius:8px;border:1px solid var(--border);cursor:pointer;font-weight:600;font-size:0.8rem;
+         background:${active ? 'var(--primary)' : 'var(--surface)'};color:${active ? '#fff' : 'var(--text)'};`;
+      const nums = Array.from({ length: Math.min(pages, 7) }, (_, i) => i + 1);
+      pg.innerHTML = nums.map(n =>
+        `<button style="${btnStyle(n === page)}" onclick="window.__emGoPage(${n})">${n}</button>`
+      ).join('');
+      window.__emGoPage = (n) => { currentPage = n; loadData(); };
+    }
 
-    // Attach bulk action buttons
-    document.getElementById("bulk-btn-publish").addEventListener("click", async () => {
-      const uuids = Array.from(document.querySelectorAll(".entity-select-checkbox:checked")).map(cb => cb.dataset.uuid);
-      await PharmoraEntityManager.bulkPublish(uuids, "admin");
-      loadData();
+    // Wire filter controls
+    const deb = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+    const reload = deb(loadData, 280);
+    ['em-type','em-status','em-sort','em-layout'].forEach(id => {
+      document.getElementById(id)?.addEventListener('change', () => { currentPage = 1; reload(); });
+    });
+    document.getElementById('em-search')?.addEventListener('input', () => { currentPage = 1; reload(); });
+
+    // Bulk actions
+    document.querySelectorAll('[data-em-bulk]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const action = btn.dataset.emBulk;
+        const uuids  = [...selectedUuids];
+        if (!uuids.length) return;
+        for (const uuid of uuids) {
+          try {
+            if (typeof PharmoraEntityManager !== 'undefined') {
+              if (action === 'publish') await PharmoraEntityManager.bulkPublish([uuid], 'admin');
+              if (action === 'archive') await PharmoraEntityManager.bulkArchive([uuid], 'admin');
+              if (action === 'delete')  await PharmoraEntityManager.bulkDelete([uuid], 'admin');
+            }
+            if (action === 'approve' && typeof PharmoraEntityReview !== 'undefined') {
+              await PharmoraEntityReview.approve(uuid, 'admin');
+            }
+          } catch(e) { console.warn('Bulk', action, uuid, e); }
+        }
+        selectedUuids.clear();
+        _updateBulkBar();
+        loadData();
+      });
+    });
+    document.getElementById('em-bulk-clear')?.addEventListener('click', () => {
+      selectedUuids.clear();
+      document.querySelectorAll('.em-cb').forEach(cb => cb.checked = false);
+      _updateBulkBar();
     });
 
-    document.getElementById("bulk-btn-archive").addEventListener("click", async () => {
-      const uuids = Array.from(document.querySelectorAll(".entity-select-checkbox:checked")).map(cb => cb.dataset.uuid);
-      await PharmoraEntityManager.bulkArchive(uuids, "admin");
-      loadData();
+    // Create button
+    document.getElementById('em-create-btn')?.addEventListener('click', () => {
+      const type = document.getElementById('em-type')?.value || '';
+      if (typeof PharmoraWorkbench !== 'undefined' && PharmoraWorkbench._wb) {
+        PharmoraWorkbench._wb.openViewer({ uuid: null, type, _create: true });
+      } else {
+        alert(`Create new ${type || 'entity'} — wire to Entity Editor.`);
+      }
     });
 
-    document.getElementById("bulk-btn-delete").addEventListener("click", async () => {
-      const uuids = Array.from(document.querySelectorAll(".entity-select-checkbox:checked")).map(cb => cb.dataset.uuid);
-      await PharmoraEntityManager.bulkDelete(uuids, "admin");
-      loadData();
-    });
-
-    // Initial load
     loadData();
   }
 
   window.PharmoraEntityManagerUI = {
     render: renderManagerUI
   };
+
 })();

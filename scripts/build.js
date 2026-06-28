@@ -301,29 +301,25 @@ bundle(
 
 bundle([
 
+  // ── Wizard Core (provides createWorkbench) ──
+  "js/services/wizard.core.js",
+
+  // ── Entity Manager UI (extended API) ──
+  "components/entity/entity.manager.js",
+
+  // ── Legacy admin services (kept for bridge functions) ──
   "js/services/verification.service.js",
-
   "js/services/admin.service.js",
-
-  "js/services/admin.dashboard.js",
-
-  "js/services/admin-crud.service.js",      // ← ADD
-
   "js/services/admin.review.js",
-
   "js/services/admin.users.js",
-
   "js/services/admin.audit.js",
-
   "js/services/admin.reports.js",
-
   "js/services/admin.trash.js",
-
   "js/services/admin.verification.js",
+  "js/services/admin.contributor.service.js",
 
-  "js/services/admin.wizard.js",            // ← if separate
-
-  "js/services/admin.contributor.service.js"       // ← corrected path
+  // ── Workbench Modules (must come last) ──
+  "js/services/admin.modules.js"
 
 ], "dist/pharmora.admin.js");
 
