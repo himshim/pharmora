@@ -462,66 +462,43 @@ html
 
 
 window.PharmoraReview = {
-
-
-getAllReviewItems:function(){
-
-return getAllReviewItems();
-
-},
-
-
-
-renderAdminActions:function(){
-
-return renderAdminActions();
-
-},
-
-
-
-approveContent:function(
-collection,
-id
-){
-
-return approveContent(
-collection,
-id
-);
-
-},
-
-
-
-rejectContent:function(
-collection,
-id,
-reason
-){
-
-return rejectContent(
-collection,
-id,
-reason
-);
-
-},
-
-
-
-viewContent:function(
-collection,
-id
-){
-
-return viewContent(
-collection,id
-);
-
-}
-
-
+  getAllReviewItems: function() {
+    return getAllReviewItems();
+  },
+  renderAdminActions: function() {
+    return renderAdminActions();
+  },
+  approveContent: async function(collection, id) {
+    const items = await getAllReviewItems();
+    const item = items.find(x => x.id === id && x._collection === collection);
+    if (item && item.uuid) {
+      await PharmoraEntityReview.approve(item.uuid, 'admin');
+      showToast("Approved successfully", "success");
+      renderAdminActions();
+    }
+  },
+  rejectContent: async function(collection, id, reason) {
+    const items = await getAllReviewItems();
+    const item = items.find(x => x.id === id && x._collection === collection);
+    if (item && item.uuid) {
+      const msg = reason || prompt('Enter rejection reason:');
+      if (msg) {
+        await PharmoraEntityReview.reject(item.uuid, msg, 'admin');
+        showToast("Rejected successfully", "info");
+        renderAdminActions();
+      }
+    }
+  },
+  viewContent: async function(collection, id) {
+    const items = await getAllReviewItems();
+    const item = items.find(x => x.id === id && x._collection === collection);
+    if (item && item.uuid && window.PharmoraWorkbench && window.PharmoraWorkbench._wb) {
+      window.PharmoraWorkbench._wb.openViewer({ uuid: item.uuid });
+    } else {
+      // Fallback to legacy preview if uuid is missing
+      return viewContent(collection, id);
+    }
+  }
 };
 
 
