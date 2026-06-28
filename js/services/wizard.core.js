@@ -663,9 +663,25 @@ const PharmoraWizardCore = (function () {
 
         const title = entity.content?.title || entity.content?.name || entity.content?.genericName || entity.publicId || '—';
 
+        // Render card preview using universal renderer
+        let cardHtml = '';
+        if (typeof PharmoraUniversalRenderer !== 'undefined') {
+          cardHtml = PharmoraUniversalRenderer.render(entity, 'card');
+        } else {
+          cardHtml = `<div style="padding:14px;border:1px solid var(--border);border-radius:8px;background:var(--surface);">
+            <strong>${title}</strong><br><span style="color:var(--text-soft);font-size:0.8rem;">${entity.type}</span>
+          </div>`;
+        }
+
         // Check developer mode/admin check
         const user = typeof currentUser === 'function' ? currentUser() : null;
         const isDev = user && (user.role === 'admin' || user.role === 'owner');
+
+        // Render outgoing / incoming relations list
+        let relationsHtml = '';
+        if (typeof PharmoraEntityRelationsComponent !== 'undefined') {
+          relationsHtml = await PharmoraEntityRelationsComponent.render(entity).catch(() => '');
+        }
 
         drawerEl.innerHTML = `
           <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;
@@ -680,16 +696,40 @@ const PharmoraWizardCore = (function () {
             <button onclick="PharmoraWorkbench._wb.closeDrawer()"
               style="border:none;background:var(--surface-light);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--text);">✕</button>
           </div>
+          
           <div style="padding:20px 24px;display:flex;flex-direction:column;gap:18px;overflow-y:auto;flex:1;">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            
+            <!-- Moderation / Workflow Actions -->
+            <div style="display:flex;gap:8px;flex-wrap:wrap;background:var(--surface);padding:10px;border-radius:8px;border:1px solid var(--border);">
               <button onclick="PharmoraWorkbench._wb._drawerAction('approve','${entity.uuid}')" style="${_btnStyle('var(--primary)')}">✓ Approve</button>
               <button onclick="PharmoraWorkbench._wb._drawerAction('publish','${entity.uuid}')" style="${_btnStyle('#22c55e')}">📢 Publish</button>
               <button onclick="PharmoraWorkbench._wb._drawerAction('requestChanges','${entity.uuid}')" style="${_btnStyle('#f59e0b')}">🔁 Changes</button>
               <button onclick="PharmoraWorkbench._wb._drawerAction('archive','${entity.uuid}')" style="${_btnStyle('#64748b')}">🗄 Archive</button>
             </div>
-            <div id="wb-drawer-workflow"></div>
-            <div id="wb-drawer-timeline"></div>
-            <div id="wb-drawer-relations"></div>
+
+            <!-- Preview Card -->
+            <div style="margin-top:4px;">
+              <h4 style="margin:0 0 8px 0;font-size:0.85rem;color:var(--text-soft);text-transform:uppercase;font-weight:700;">Entity Preview</h4>
+              ${cardHtml}
+            </div>
+
+            <!-- Relations Editor UI -->
+            <div style="border-top:1px solid var(--border);padding-top:16px;">
+              <h4 style="margin:0 0 10px 0;font-size:0.85rem;color:var(--text-soft);text-transform:uppercase;font-weight:700;">🔗 Link Relations</h4>
+              <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+                <button onclick="PharmoraWorkbench._wb._openLinkEditor('${entity.uuid}', 'belongsTo')" style="padding:5px 10px;font-size:0.75rem;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:6px;cursor:pointer;font-weight:600;">+ Add Parent</button>
+                <button onclick="PharmoraWorkbench._wb._openLinkEditor('${entity.uuid}', 'hasMany')" style="padding:5px 10px;font-size:0.75rem;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:6px;cursor:pointer;font-weight:600;">+ Add Child</button>
+                <button onclick="PharmoraWorkbench._wb._openLinkEditor('${entity.uuid}', 'unlink')" style="padding:5px 10px;font-size:0.75rem;border:1px solid #ef4444;background:none;color:#ef4444;border-radius:6px;cursor:pointer;font-weight:600;">Remove Link</button>
+              </div>
+              <div id="wb-drawer-relations">${relationsHtml}</div>
+            </div>
+
+            <!-- Audit Trail & Timeline mounts -->
+            <div style="border-top:1px solid var(--border);padding-top:16px;">
+              <h4 style="margin:0 0 8px 0;font-size:0.85rem;color:var(--text-soft);text-transform:uppercase;font-weight:700;">📋 Audit Log & History</h4>
+              <div id="wb-drawer-workflow"></div>
+              <div id="wb-drawer-timeline" style="margin-top:10px;"></div>
+            </div>
             
             ${isDev ? `
               <div style="border-top:1px solid var(--border);padding-top:16px;">
@@ -711,12 +751,45 @@ const PharmoraWizardCore = (function () {
           const tb = document.getElementById('wb-drawer-timeline');
           if (tb) tb.innerHTML = PharmoraEntityTimeline.render(entity);
         }
-        if (typeof PharmoraEntityRelationsComponent !== 'undefined') {
-          const rb = document.getElementById('wb-drawer-relations');
-          if (rb) rb.innerHTML = await PharmoraEntityRelationsComponent.render(entity).catch(() => '');
-        }
       } catch(err) {
         drawerEl.innerHTML = `<div style="padding:24px;color:#ef4444;">Failed to load entity: ${err.message}</div>`;
+      }
+    }
+
+    // Relation Linking Dialog Helper
+    async function _openLinkEditor(uuid, action) {
+      if (action === 'unlink') {
+        const target = prompt('Enter target Entity UUID to unlink:');
+        if (!target) return;
+        const type = prompt('Enter relation type to remove (e.g. belongsTo, hasMany, part_of_semester, contains_subject):', 'belongsTo');
+        if (!type) return;
+        try {
+          if (typeof PharmoraRelations !== 'undefined') {
+            await PharmoraRelations.unlinkEntities(uuid, type, target, 'admin');
+            if (typeof showToast === 'function') showToast('Relation unlinked successfully.', 'success');
+            // Refresh drawer
+            const drawerEl = document.getElementById(drawerContainerId);
+            if (drawerEl) await _renderEntityDrawer(drawerEl, { uuid });
+          }
+        } catch(e) {
+          alert('Error: ' + e.message);
+        }
+        return;
+      }
+
+      const target = prompt(`Enter target Entity UUID to link as ${action}:`);
+      if (!target) return;
+
+      try {
+        if (typeof PharmoraRelations !== 'undefined') {
+          await PharmoraRelations.linkEntities(uuid, action, target, {}, 'admin');
+          if (typeof showToast === 'function') showToast('Relation linked successfully.', 'success');
+          // Refresh drawer
+          const drawerEl = document.getElementById(drawerContainerId);
+          if (drawerEl) await _renderEntityDrawer(drawerEl, { uuid });
+        }
+      } catch(e) {
+        alert('Error: ' + e.message);
       }
     }
 
@@ -724,6 +797,7 @@ const PharmoraWizardCore = (function () {
       const name  = user.name || user.displayName || user.email || user.id || 'User';
       const email = user.email || '';
       const role  = user.role || '';
+      const code  = user.code || user.userCode || '—';
       drawerEl.innerHTML = `
         <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;
                     position:sticky;top:0;background:var(--surface);z-index:1;">
@@ -737,11 +811,16 @@ const PharmoraWizardCore = (function () {
         <div style="padding:20px 24px;display:flex;flex-direction:column;gap:14px;font-size:0.88rem;flex:1;overflow-y:auto;">
           <div><strong>Email:</strong> ${email}</div>
           <div><strong>ID:</strong> <code>${user.id || user.uid || '—'}</code></div>
+          <div><strong>User Code:</strong> <code>${code}</code></div>
           <div><strong>Status:</strong> ${user.disabled ? '🚫 Disabled' : '✅ Active'}</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
             <button onclick="location.href='../profile.html?id=${user.id || user.uid}'" style="${_btnStyle('var(--primary)')}">👤 View Profile</button>
           </div>
-        </div>`;
+        </div>
+        <div style="padding:16px 24px;border-top:1px solid var(--border);background:var(--surface);display:flex;justify-content:flex-end;">
+          <button onclick="PharmoraWorkbench._wb.closeDrawer()" style="padding:8px 16px;border:1px solid var(--border);background:none;color:var(--text);border-radius:8px;cursor:pointer;font-weight:700;font-size:0.82rem;">Close</button>
+        </div>
+      `;
     }
 
     function _btnStyle(bg) {
@@ -844,7 +923,8 @@ const PharmoraWizardCore = (function () {
       _drawerAction,
       _setCreateType,
       _saveCreateDraft,
-      _submitCreate
+      _submitCreate,
+      _openLinkEditor
     };
 
     // Store global reference so onclick="PharmoraWorkbench._wb.closeDrawer()" works

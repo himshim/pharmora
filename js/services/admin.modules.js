@@ -596,14 +596,15 @@
       let users = [];
       try { users = await getRecords('users'); } catch(e) { return []; }
       const q = query.toLowerCase();
-      return users.filter(u => [u.name, u.email, u.id].filter(Boolean).join(' ').toLowerCase().includes(q))
-        .slice(0, 10)
-        .map(u => ({
-          label: u.name || u.email,
-          sub:   u.role || 'user',
-          _kind: 'user',
-          ...u,
-        }));
+      return users.filter(u => {
+        const fields = [u.name, u.displayName, u.username, u.email, u.id, u.uid, u.code, u.userCode];
+        return fields.filter(Boolean).join(' ').toLowerCase().includes(q);
+      }).slice(0, 10).map(u => ({
+        label: u.name || u.displayName || u.email || u.username,
+        sub:   `${u.role || 'user'} — ${u.code || u.userCode || ''}`,
+        _kind: 'user',
+        ...u,
+      }));
     },
   };
 
@@ -664,15 +665,19 @@
           resultsEl.style.display = 'block';
           resultsEl.innerHTML = groups.map(g => `
             <div style="padding:8px 12px;font-size:0.72rem;font-weight:700;color:var(--text-soft);text-transform:uppercase;">${g.label}</div>
-            ${g.items.map(item => `
-              <div data-uuid="${item.uuid || ''}" data-wb-user="${item._kind === 'user' ? (item.id || item.uid || '') : ''}"
-                   data-wb-user-name="${item.label || ''}"
-                   style="padding:10px 14px;cursor:pointer;font-size:0.85rem;border-bottom:1px solid var(--border);"
-                   onmouseover="this.style.background='var(--surface-light)'" onmouseout="this.style.background=''">
-                <strong>${item.label}</strong>
-                <span style="margin-left:6px;font-size:0.75rem;color:var(--text-soft);">${item.sub || ''}</span>
-              </div>
-            `).join('')}
+            ${g.items.map(item => {
+              const clickAction = item._kind === 'user'
+                ? `PharmoraWorkbench._wb.openViewer(${JSON.stringify({ _kind: 'user', id: item.id || item.uid, name: item.label, email: item.email || '', role: item.role || '', code: item.code || item.userCode || '' }).replace(/"/g, '&quot;')})`
+                : `PharmoraWorkbench._wb.openViewer({ uuid: '${item.uuid}' })`;
+              return `
+                <div onclick="${clickAction}"
+                     style="padding:10px 14px;cursor:pointer;font-size:0.85rem;border-bottom:1px solid var(--border);"
+                     onmouseover="this.style.background='var(--surface-light)'" onmouseout="this.style.background=''">
+                  <strong>${item.label}</strong>
+                  <span style="margin-left:6px;font-size:0.75rem;color:var(--text-soft);">${item.sub || ''}</span>
+                </div>
+              `;
+            }).join('')}
           `).join('') || '<div style="padding:12px;color:var(--text-soft);font-size:0.85rem;">No results.</div>';
         }, 300));
         document.addEventListener('click', e => {

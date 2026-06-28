@@ -65,11 +65,26 @@
     }
 
     addAuditLog(action, actor, changes = null) {
+      let safeChanges = null;
+      if (changes) {
+        try {
+          // De-circularize: extract only flat diff or specific key changes
+          safeChanges = JSON.parse(JSON.stringify(changes, (key, value) => {
+            if (value && typeof value === 'object' && value.constructor && value.constructor.name === 'BaseEntity') {
+              return { uuid: value.uuid, type: value.type, publicId: value.publicId };
+            }
+            if (key === 'auditTrail' || key === 'versions') return undefined;
+            return value;
+          }));
+        } catch (e) {
+          safeChanges = { serializationError: e.message };
+        }
+      }
       this.auditTrail.push({
         action,
         actor,
         timestamp: new Date().toISOString(),
-        changes
+        changes: safeChanges
       });
       this.timestamps.updated = new Date().toISOString();
     }
