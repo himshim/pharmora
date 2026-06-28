@@ -745,7 +745,7 @@ const PharmoraWizardCore = (function () {
     }
 
     // ── Entity Creation Wizard Rendering ─────────────────
-    function _renderCreationWizard(drawerEl) {
+    async function _renderCreationWizard(drawerEl) {
       if (createWizardState.step === 1 && !createWizardState.type) {
         // Step 1: Selection
         let registeredTypes = [];
@@ -766,6 +766,96 @@ const PharmoraWizardCore = (function () {
           </div>
         `;
         drawerEl.innerHTML = renderDrawer('Create New Entity', '', bodyHtml, `<button onclick="PharmoraWorkbench._wb.closeDrawer()" style="padding:8px 14px;border:1px solid var(--border);background:none;color:var(--text);border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;">Cancel</button>`);
+      } else if (createWizardState.step === 1.5) {
+        // Step 1.5: Hierarchical Parent Selection Step
+        const type = createWizardState.type;
+        let allList = [];
+        if (typeof PharmoraEntityAPI !== 'undefined') {
+          allList = await PharmoraEntityAPI.listEntities().catch(() => []);
+        }
+
+        let selectHtml = '';
+        if (type === 'Program') {
+          const unis = allList.filter(e => e.type === 'University');
+          selectHtml = `
+            <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+              <label style="font-size:0.82rem;font-weight:700;">Select University (Parent)</label>
+              <select id="wz-parent-uni" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);">
+                <option value="">Select...</option>
+                ${unis.map(u => `<option value="${u.uuid}">${u.content?.name || u.publicId}</option>`).join('')}
+              </select>
+            </div>
+          `;
+        } else if (type === 'Course') {
+          const unis = allList.filter(e => e.type === 'University');
+          const progs = allList.filter(e => e.type === 'Program');
+          selectHtml = `
+            <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+              <label style="font-size:0.82rem;font-weight:700;">Select University</label>
+              <select id="wz-parent-uni" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);">
+                <option value="">Select...</option>
+                ${unis.map(u => `<option value="${u.uuid}">${u.content?.name || u.publicId}</option>`).join('')}
+              </select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+              <label style="font-size:0.82rem;font-weight:700;">Select Program (Parent)</label>
+              <select id="wz-parent-prog" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);">
+                <option value="">Select...</option>
+                ${progs.map(p => `<option value="${p.uuid}">${p.content?.name || p.publicId}</option>`).join('')}
+              </select>
+            </div>
+          `;
+        } else if (type === 'Semester') {
+          const progs = allList.filter(e => e.type === 'Program');
+          const courses = allList.filter(e => e.type === 'Course');
+          selectHtml = `
+            <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+              <label style="font-size:0.82rem;font-weight:700;">Select Program</label>
+              <select id="wz-parent-prog" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);">
+                <option value="">Select...</option>
+                ${progs.map(p => `<option value="${p.uuid}">${p.content?.name || p.publicId}</option>`).join('')}
+              </select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+              <label style="font-size:0.82rem;font-weight:700;">Select Course (Parent)</label>
+              <select id="wz-parent-course" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);">
+                <option value="">Select...</option>
+                ${courses.map(c => `<option value="${c.uuid}">${c.content?.name || c.publicId}</option>`).join('')}
+              </select>
+            </div>
+          `;
+        } else if (type === 'Subject') {
+          const courses = allList.filter(e => e.type === 'Course');
+          const sems = allList.filter(e => e.type === 'Semester');
+          selectHtml = `
+            <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+              <label style="font-size:0.82rem;font-weight:700;">Select Course</label>
+              <select id="wz-parent-course" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);">
+                <option value="">Select...</option>
+                ${courses.map(c => `<option value="${c.uuid}">${c.content?.name || c.publicId}</option>`).join('')}
+              </select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+              <label style="font-size:0.82rem;font-weight:700;">Select Semester (Parent)</label>
+              <select id="wz-parent-semester" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);">
+                <option value="">Select...</option>
+                ${sems.map(s => `<option value="${s.uuid}">Semester ${s.content?.number || s.publicId}</option>`).join('')}
+              </select>
+            </div>
+          `;
+        }
+
+        const bodyHtml = `
+          <p style="margin:0 0 14px 0;font-size:0.85rem;color:var(--text-soft);">Choose the parent hierarchy path for this new ${type}:</p>
+          ${selectHtml || '<p style="color:var(--text-soft);">No parent selection needed for University.</p>'}
+        `;
+
+        const footerHtml = `
+          <button onclick="PharmoraWorkbench._wb.closeDrawer()" style="padding:8px 14px;border:1px solid var(--border);background:none;color:var(--text);border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;">Cancel</button>
+          <button onclick="PharmoraWorkbench._wb._confirmHierarchyPath()" style="flex:1;padding:8px 14px;border:none;background:var(--primary);color:#fff;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.85rem;">Continue to Form</button>
+        `;
+
+        drawerEl.innerHTML = renderDrawer(`Link Hierarchy: ${type}`, '', bodyHtml, footerHtml);
       } else {
         // Form step
         const type = createWizardState.type;
@@ -787,6 +877,32 @@ const PharmoraWizardCore = (function () {
     // Wizard Action Handlers
     function _setCreateType(type) {
       createWizardState.type = type;
+      // If it's a type that requires parent hierarchy pathing, route to step 1.5 first
+      if (['Program', 'Course', 'Semester', 'Subject'].includes(type)) {
+        createWizardState.step = 1.5;
+      } else {
+        createWizardState.step = 2;
+      }
+      createWizardState.formData = {};
+      createWizardState.selectedParentUuid = null;
+      const drawerEl = document.getElementById(drawerContainerId);
+      if (drawerEl) _renderCreationWizard(drawerEl);
+    }
+
+    function _confirmHierarchyPath() {
+      const type = createWizardState.type;
+      let parentUuid = null;
+      if (type === 'Program') parentUuid = document.getElementById('wz-parent-uni')?.value;
+      else if (type === 'Course') parentUuid = document.getElementById('wz-parent-prog')?.value;
+      else if (type === 'Semester') parentUuid = document.getElementById('wz-parent-course')?.value;
+      else if (type === 'Subject') parentUuid = document.getElementById('wz-parent-semester')?.value;
+
+      if (['Program', 'Course', 'Semester', 'Subject'].includes(type) && !parentUuid) {
+        alert('Please select a parent entity to build the hierarchy path.');
+        return;
+      }
+
+      createWizardState.selectedParentUuid = parentUuid;
       createWizardState.step = 2;
       const drawerEl = document.getElementById(drawerContainerId);
       if (drawerEl) _renderCreationWizard(drawerEl);
@@ -856,6 +972,14 @@ const PharmoraWizardCore = (function () {
           content,
           status: 'pending_review'
         }, actor);
+
+        // Automatically build parent hierarchy link if selected
+        if (createWizardState.selectedParentUuid && typeof PharmoraRelations !== 'undefined') {
+          // If parent is Semester and child is Subject, use contain relation; otherwise hasMany
+          const rel = (type === 'Subject') ? 'contains_subject' : 'hasMany';
+          const invRel = (type === 'Subject') ? 'part_of_semester' : 'belongsTo';
+          await PharmoraRelations.linkEntities(createWizardState.selectedParentUuid, rel, created.uuid, {}, actor);
+        }
 
         // Immediately rebuild UES Search Index so it's searchable
         if (typeof PharmoraSearchIndex !== 'undefined') {
@@ -1417,7 +1541,8 @@ _renderCreationWizard(drawerEl);
       _triggerCreateAndLink,
       _startCreationLink,
       _saveInlineChanges,
-      _restoreRelation
+      _restoreRelation,
+      _confirmHierarchyPath
     };
 
     // Store global reference so onclick="PharmoraWorkbench._wb.closeDrawer()" works
