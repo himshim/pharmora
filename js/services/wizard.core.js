@@ -741,58 +741,200 @@ const PharmoraWizardCore = (function () {
             ` : ''}
           </div>
           <div style="padding:16px 24px;border-top:1px solid var(--border);background:var(--surface);display:flex;justify-content:flex-end;">
-            <button onclick="PharmoraWorkbench._wb.closeDrawer()" style="padding:8px 16px;border:1px solid var(--border);background:none;color:var(--text);border-radius:8px;cursor:pointer;font-weight:700;font-size:0.82rem;">Close</button>
+            <button onclick="PharmoraWorkbench._wb.closeDrawer()" style="padding:8px 16px;border:1px solid var(--b    // Relation Linking Picker & Creation Dialog Helper
+    async function _openLinkEditor(uuid, action) {
+      const drawerEl = document.getElementById(drawerContainerId);
+      if (!drawerEl) return;
+
+      // Unlink mode
+      if (action === 'unlink') {
+        const entity = await PharmoraEntityAPI.getEntity(uuid).catch(() => null);
+        if (!entity || !entity.relations || entity.relations.length === 0) {
+          if (typeof showToast === 'function') showToast('No relationships to remove.', 'info');
+          return;
+        }
+        
+        drawerEl.innerHTML = `
+          <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:1.1rem;font-weight:800;color:var(--text);">Remove Relationship</div>
+            <button onclick="PharmoraWorkbench._wb.openViewer({ uuid: '${uuid}' })" style="border:none;background:var(--surface-light);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--text);">✕</button>
+          </div>
+          <div style="padding:24px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;flex:1;">
+            <p style="margin:0;font-size:0.85rem;color:var(--text-soft);">Select a relationship to remove:</p>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              ${entity.relations.map(rel => `
+                <button onclick="PharmoraWorkbench._wb._unlinkConfirm('${uuid}', '${rel.relationType}', '${rel.targetUuid}')"
+                  style="padding:10px;border-radius:8px;border:1px solid #ef4444;background:none;color:#ef4444;cursor:pointer;text-align:left;font-weight:600;font-size:0.85rem;">
+                  🗑 Remove: [${rel.relationType}] &rarr; ${rel.targetType} (${rel.targetUuid.substring(0, 8)})
+                </button>
+              `).join('')}
+            </div>
           </div>
         `;
-
-        if (typeof PharmoraEntityAuditViewer !== 'undefined')
-          PharmoraEntityAuditViewer.render(entity, 'wb-drawer-workflow');
-        if (typeof PharmoraEntityTimeline !== 'undefined') {
-          const tb = document.getElementById('wb-drawer-timeline');
-          if (tb) tb.innerHTML = PharmoraEntityTimeline.render(entity);
-        }
-      } catch(err) {
-        drawerEl.innerHTML = `<div style="padding:24px;color:#ef4444;">Failed to load entity: ${err.message}</div>`;
-      }
-    }
-
-    // Relation Linking Dialog Helper
-    async function _openLinkEditor(uuid, action) {
-      if (action === 'unlink') {
-        const target = prompt('Enter target Entity UUID to unlink:');
-        if (!target) return;
-        const type = prompt('Enter relation type to remove (e.g. belongsTo, hasMany, part_of_semester, contains_subject):', 'belongsTo');
-        if (!type) return;
-        try {
-          if (typeof PharmoraRelations !== 'undefined') {
-            await PharmoraRelations.unlinkEntities(uuid, type, target, 'admin');
-            if (typeof showToast === 'function') showToast('Relation unlinked successfully.', 'success');
-            // Refresh drawer
-            const drawerEl = document.getElementById(drawerContainerId);
-            if (drawerEl) await _renderEntityDrawer(drawerEl, { uuid });
-          }
-        } catch(e) {
-          alert('Error: ' + e.message);
-        }
         return;
       }
 
-      const target = prompt(`Enter target Entity UUID to link as ${action}:`);
-      if (!target) return;
+      // Link Existing or Create & Link Mode
+      let list = [];
+      if (typeof PharmoraEntityAPI !== 'undefined') {
+        list = await PharmoraEntityAPI.listEntities().catch(() => []);
+      }
+      
+      const relationTypes = ['belongsTo', 'hasMany', 'hasOne', 'manyToMany', 'part_of_semester', 'contains_subject'];
+      
+      drawerEl.innerHTML = `
+        <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:1.1rem;font-weight:800;color:var(--text);">Universal Entity Linker</div>
+          <button onclick="PharmoraWorkbench._wb.openViewer({ uuid: '${uuid}' })" style="border:none;background:var(--surface-light);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--text);">✕</button>
+        </div>
+        <div style="padding:24px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;flex:1;">
+          
+          <!-- Section A: Link Existing -->
+          <div>
+            <h4 style="margin:0 0 10px 0;font-size:0.85rem;color:var(--text-soft);text-transform:uppercase;font-weight:700;">Link Existing Entity</h4>
+            
+            <div style="display:flex;flex-direction:column;gap:10px;background:var(--surface);padding:14px;border-radius:8px;border:1px solid var(--border);">
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:0.8rem;font-weight:700;">Relation Type</label>
+                <select id="link-rel-type" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);">
+                  ${relationTypes.map(r => `<option value="${r}" ${r === action ? 'selected' : ''}>${r}</option>`).join('')}
+                </select>
+              </div>
 
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:0.8rem;font-weight:700;">Select Target Entity</label>
+                <select id="link-target-uuid" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);">
+                  <option value="">Choose entity...</option>
+                  ${list.filter(e => e.uuid !== uuid).map(e => `
+                    <option value="${e.uuid}">${e.type}: ${e.content?.title || e.content?.name || e.publicId} (${e.uuid.substring(0,8)})</option>
+                  `).join('')}
+                </select>
+              </div>
+
+              <button onclick="PharmoraWorkbench._wb._linkExistingSubmit('${uuid}')"
+                style="padding:8px;border:none;background:var(--primary);color:#fff;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.85rem;margin-top:6px;">
+                🔗 Link Entities
+              </button>
+            </div>
+          </div>
+
+          <!-- Section B: Create & Link -->
+          <div style="border-top:1px solid var(--border);padding-top:16px;">
+            <h4 style="margin:0 0 10px 0;font-size:0.85rem;color:var(--text-soft);text-transform:uppercase;font-weight:700;">Create & Link New Entity</h4>
+            <p style="margin:0 0 10px 0;font-size:0.8rem;color:var(--text-soft);">Instantly spawn a child or parent node and bind it to this entity.</p>
+            
+            <button onclick="PharmoraWorkbench._wb._triggerCreateAndLink('${uuid}', '${action}')"
+              style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--primary);background:none;color:var(--primary);font-weight:700;cursor:pointer;font-size:0.85rem;">
+              ➕ Create New & Link Bidirectionally
+            </button>
+          </div>
+
+        </div>
+      `;
+    }
+
+    // Direct confirmation helpers exposed on workbench
+    async function _unlinkConfirm(uuid, relType, targetUuid) {
       try {
         if (typeof PharmoraRelations !== 'undefined') {
-          await PharmoraRelations.linkEntities(uuid, action, target, {}, 'admin');
-          if (typeof showToast === 'function') showToast('Relation linked successfully.', 'success');
-          // Refresh drawer
-          const drawerEl = document.getElementById(drawerContainerId);
-          if (drawerEl) await _renderEntityDrawer(drawerEl, { uuid });
+          await PharmoraRelations.unlinkEntities(uuid, relType, targetUuid, 'admin');
+          if (typeof showToast === 'function') showToast('Relation unlinked.', 'success');
+          openViewer({ uuid });
         }
       } catch(e) {
         alert('Error: ' + e.message);
       }
     }
 
+    async function _linkExistingSubmit(uuid) {
+      const relType = document.getElementById('link-rel-type')?.value;
+      const targetUuid = document.getElementById('link-target-uuid')?.value;
+      if (!relType || !targetUuid) {
+        alert('Please select both relation type and target entity.');
+        return;
+      }
+      try {
+        if (typeof PharmoraRelations !== 'undefined') {
+          await PharmoraRelations.linkEntities(uuid, relType, targetUuid, {}, 'admin');
+          if (typeof showToast === 'function') showToast('Linked successfully.', 'success');
+          openViewer({ uuid });
+        }
+      } catch(e) {
+        alert('Error: ' + e.message);
+      }
+    }
+
+    async function _triggerCreateAndLink(uuid, action) {
+      // Prompt for entity type first
+      let registeredTypes = [];
+      if (typeof PharmoraEntityRegistry !== 'undefined') {
+        registeredTypes = PharmoraEntityRegistry.getRegisteredTypes();
+      }
+      if (registeredTypes.length === 0) registeredTypes = ['Subject', 'Drug'];
+
+      const typeHtml = registeredTypes.map(t => `
+        <button onclick="PharmoraWorkbench._wb._startCreationLink('${uuid}', '${action}', '${t}')"
+          style="padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-weight:700;text-align:left;cursor:pointer;font-size:0.85rem;">
+          📋 ${t} Monograph
+        </button>
+      `).join('');
+
+      const drawerEl = document.getElementById(drawerContainerId);
+      if (drawerEl) {
+        drawerEl.innerHTML = `
+          <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:1.1rem;font-weight:800;color:var(--text);">Create Target Entity</div>
+            <button onclick="PharmoraWorkbench._wb.openViewer({ uuid: '${uuid}' })" style="border:none;background:var(--surface-light);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--text);">✕</button>
+          </div>
+          <div style="padding:24px;display:flex;flex-direction:column;gap:14px;">
+            <p style="margin:0;font-size:0.85rem;color:var(--text-soft);">Select target entity type to create:</p>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              ${typeHtml}
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    async function _startCreationLink(uuid, action, type) {
+      createWizardState = { step: 2, type, formData: {} };
+      const drawerEl = document.getElementById(drawerContainerId);
+      if (!drawerEl) return;
+
+      // Temporarily hijack _submitCreate to perform link after creation
+      const originalSubmit = workbench._submitCreate;
+      workbench._submitCreate = async () => {
+        const content = _gatherWzFormData();
+        const actor = (typeof currentUser === 'function' ? currentUser()?.id : 'admin') || 'admin';
+        
+        try {
+          const created = await PharmoraEntityAPI.createEntity({
+            type,
+            content,
+            status: 'pending_review'
+          }, actor);
+
+          // Build relation
+          if (typeof PharmoraRelations !== 'undefined') {
+            await PharmoraRelations.linkEntities(uuid, action, created.uuid, {}, actor);
+          }
+
+          // Immediately rebuild index
+          if (typeof PharmoraSearchIndex !== 'undefined') {
+            await PharmoraSearchIndex.buildIndex();
+          }
+
+          if (typeof showToast === 'function') showToast('Linked entity created!', 'success');
+          // Restore original submit reference
+          workbench._submitCreate = originalSubmit;
+          refreshCurrentModule();
+          openViewer({ uuid });
+        } catch(e) {
+          alert('Creation failed: ' + e.message);
+        }
+      };
+
+      _renderCreationWizard(drawerEl);
     async function _renderUserDrawer(drawerEl, user) {
       const name  = user.name || user.displayName || user.email || user.id || 'User';
       const email = user.email || '';
@@ -924,7 +1066,11 @@ const PharmoraWizardCore = (function () {
       _setCreateType,
       _saveCreateDraft,
       _submitCreate,
-      _openLinkEditor
+      _openLinkEditor,
+      _unlinkConfirm,
+      _linkExistingSubmit,
+      _triggerCreateAndLink,
+      _startCreationLink
     };
 
     // Store global reference so onclick="PharmoraWorkbench._wb.closeDrawer()" works
