@@ -37,13 +37,7 @@
     return filter;
   }
 
-  function renderManagerUI(containerId, typeOrFilter, optionalFilter) {
-    const root = document.getElementById(containerId);
-    if (!root) return;
-
-    const initFilter = _normaliseFilter(typeOrFilter, optionalFilter);
-
-    // Build type options
+  function renderFilters(initFilter) {
     const typeOptions = ['', ...ALL_TYPES].map(t =>
       `<option value="${t}" ${t === (initFilter.type || '') ? 'selected' : ''}>${t || 'All Types'}</option>`
     ).join('');
@@ -59,40 +53,156 @@
       `<option value="${s.v}" ${s.v === (initFilter.status || '') ? 'selected' : ''}>${s.l}</option>`
     ).join('');
 
+    return { typeOptions, statusOptions };
+  }
+
+  function renderToolbar(initFilter, typeOptions, statusOptions) {
+    return `
+      <!-- Toolbar row -->
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px;
+                  background:var(--surface);border:1px solid var(--border);border-radius:14px;">
+        <input id="em-search" type="text" placeholder="🔍 Search…" value="${initFilter.query || ''}"
+          style="flex:1;min-width:150px;padding:8px 12px;border-radius:10px;border:1px solid var(--border);
+                 background:var(--background);color:var(--text);font-size:0.85rem;" />
+
+        <select id="em-type" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--background);color:var(--text);font-size:0.82rem;">
+          ${typeOptions}
+        </select>
+
+        <select id="em-status" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--background);color:var(--text);font-size:0.82rem;">
+          ${statusOptions}
+        </select>
+
+        <select id="em-sort" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--background);color:var(--text);font-size:0.82rem;">
+          <option value="created" ${initFilter.sort==='created' ? 'selected' : ''}>Newest</option>
+          <option value="updated" ${initFilter.sort==='updated' ? 'selected' : ''}>Updated</option>
+          <option value="title"   ${initFilter.sort==='title'   ? 'selected' : ''}>Title A–Z</option>
+          <option value="popular" ${initFilter.sort==='popular' ? 'selected' : ''}>Popular</option>
+        </select>
+
+        <select id="em-layout" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--background);color:var(--text);font-size:0.82rem;">
+          <option value="list"    ${initFilter.layout==='list'    ? 'selected' : ''}>Grid Cards</option>
+          <option value="table"   ${initFilter.layout==='table'   ? 'selected' : ''}>Table</option>
+          <option value="compact" ${initFilter.layout==='compact' ? 'selected' : ''}>Compact</option>
+        </select>
+
+        <button id="em-create-btn" style="padding:8px 16px;border:none;background:var(--primary);color:#fff;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.82rem;">+ Create</button>
+        <span id="em-count" style="font-size:0.78rem;color:var(--text-soft);font-weight:600;white-space:nowrap;"></span>
+      </div>
+    `;
+  }
+
+  function renderResults(layout, page_ents) {
+    if (layout === 'table') {
+      const autoConfig = typeof PharmoraUniversalRenderer !== 'undefined'
+        ? PharmoraUniversalRenderer.getAutoConfig(page_ents[0])
+        : {};
+      return typeof PharmoraUniversalRenderer !== 'undefined'
+        ? PharmoraUniversalRenderer.render(page_ents, 'table', autoConfig)
+        : `<div style="padding:20px;color:var(--text-soft);">Renderer not available.</div>`;
+    } else if (layout === 'compact') {
+      return `<div style="display:flex;flex-direction:column;gap:6px;">
+        ${page_ents.map(ent => {
+          const title = ent.content?.title || ent.content?.name || ent.publicId || ent.type;
+          return `<div data-uuid="${ent.uuid}" style="display:flex;align-items:center;gap:10px;padding:10px 14px;
+                       background:var(--surface);border:1px solid var(--border);border-radius:10px;cursor:pointer;">
+            <input type="checkbox" class="em-cb" data-uuid="${ent.uuid}" onclick="event.stopPropagation()">
+            <span style="font-size:0.75rem;background:var(--border);padding:1px 6px;border-radius:4px;">${ent.type}</span>
+            <span style="flex:1;font-weight:600;font-size:0.85rem;">${title}</span>
+            <span style="font-size:0.72rem;color:var(--text-soft);">${ent.status}</span>
+          </div>`;
+        }).join('')}
+      </div>`;
+    } else {
+      return `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;">
+        ${page_ents.map(ent => {
+          const config = typeof PharmoraUniversalRenderer !== 'undefined'
+            ? PharmoraUniversalRenderer.getAutoConfig(ent)
+            : {};
+          const cardHtml = typeof PharmoraUniversalRenderer !== 'undefined'
+            ? PharmoraUniversalRenderer.render(ent, 'card', config)
+            : `<div style="padding:14px;">${ent.content?.title || ent.publicId}</div>`;
+          return `<div style="position:relative;" data-uuid="${ent.uuid}">
+            <input type="checkbox" class="em-cb" data-uuid="${ent.uuid}"
+              style="position:absolute;top:10px;right:10px;z-index:10;transform:scale(1.2);" onclick="event.stopPropagation()">
+            ${cardHtml}
+          </div>`;
+        }).join('')}
+      </div>`;
+    }
+  }
+
+  function renderPagination(total, page, pageSize) {
+    const pages = Math.ceil(total / pageSize);
+    const pg    = document.getElementById('em-pagination');
+    if (!pg || pages <= 1) { if (pg) pg.innerHTML = ''; return; }
+    const btnStyle = (active) =>
+      `padding:6px 12px;border-radius:8px;border:1px solid var(--border);cursor:pointer;font-weight:600;font-size:0.8rem;
+       background:${active ? 'var(--primary)' : 'var(--surface)'};color:${active ? '#fff' : 'var(--text)'};`;
+    const nums = Array.from({ length: Math.min(pages, 7) }, (_, i) => i + 1);
+    pg.innerHTML = nums.map(n =>
+      `<button style="${btnStyle(n === page)}" onclick="window.__emGoPage(${n})">${n}</button>`
+    ).join('');
+  }
+
+  function bindManagerEvents(loadData, selectedUuids, _updateBulkBar, initFilter) {
+    const deb = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+    const reload = deb(loadData, 280);
+    ['em-type','em-status','em-sort','em-layout'].forEach(id => {
+      document.getElementById(id)?.addEventListener('change', () => { reload(); });
+    });
+    document.getElementById('em-search')?.addEventListener('input', () => { reload(); });
+
+    // Bulk actions
+    document.querySelectorAll('[data-em-bulk]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const action = btn.dataset.emBulk;
+        const uuids  = [...selectedUuids];
+        if (!uuids.length) return;
+        for (const uuid of uuids) {
+          try {
+            if (typeof PharmoraEntityManager !== 'undefined') {
+              if (action === 'publish') await PharmoraEntityManager.bulkPublish([uuid], 'admin');
+              if (action === 'archive') await PharmoraEntityManager.bulkArchive([uuid], 'admin');
+              if (action === 'delete')  await PharmoraEntityManager.bulkDelete([uuid], 'admin');
+            }
+            if (action === 'approve' && typeof PharmoraEntityReview !== 'undefined') {
+              await PharmoraEntityReview.approve(uuid, 'admin');
+            }
+          } catch(e) { console.warn('Bulk', action, uuid, e); }
+        }
+        selectedUuids.clear();
+        _updateBulkBar();
+        loadData();
+      });
+    });
+    document.getElementById('em-bulk-clear')?.addEventListener('click', () => {
+      selectedUuids.clear();
+      document.querySelectorAll('.em-cb').forEach(cb => cb.checked = false);
+      _updateBulkBar();
+    });
+
+    // Create button
+    document.getElementById('em-create-btn')?.addEventListener('click', () => {
+      const type = document.getElementById('em-type')?.value || '';
+      if (typeof PharmoraWorkbench !== 'undefined' && PharmoraWorkbench._wb) {
+        PharmoraWorkbench._wb.openViewer({ uuid: null, type, _create: true });
+      } else {
+        alert(`Create new ${type || 'entity'} — wire to Entity Editor.`);
+      }
+    });
+  }
+
+  function renderManagerUI(containerId, typeOrFilter, optionalFilter) {
+    const root = document.getElementById(containerId);
+    if (!root) return;
+
+    const initFilter = _normaliseFilter(typeOrFilter, optionalFilter);
+    const { typeOptions, statusOptions } = renderFilters(initFilter);
+
     root.innerHTML = `
       <div class="entity-manager-ui" style="display:flex;flex-direction:column;gap:18px;">
-
-        <!-- Toolbar row -->
-        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px;
-                    background:var(--surface);border:1px solid var(--border);border-radius:14px;">
-          <input id="em-search" type="text" placeholder="🔍 Search…" value="${initFilter.query || ''}"
-            style="flex:1;min-width:150px;padding:8px 12px;border-radius:10px;border:1px solid var(--border);
-                   background:var(--background);color:var(--text);font-size:0.85rem;" />
-
-          <select id="em-type" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--background);color:var(--text);font-size:0.82rem;">
-            ${typeOptions}
-          </select>
-
-          <select id="em-status" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--background);color:var(--text);font-size:0.82rem;">
-            ${statusOptions}
-          </select>
-
-          <select id="em-sort" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--background);color:var(--text);font-size:0.82rem;">
-            <option value="created" ${initFilter.sort==='created' ? 'selected' : ''}>Newest</option>
-            <option value="updated" ${initFilter.sort==='updated' ? 'selected' : ''}>Updated</option>
-            <option value="title"   ${initFilter.sort==='title'   ? 'selected' : ''}>Title A–Z</option>
-            <option value="popular" ${initFilter.sort==='popular' ? 'selected' : ''}>Popular</option>
-          </select>
-
-          <select id="em-layout" style="padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--background);color:var(--text);font-size:0.82rem;">
-            <option value="list"    ${initFilter.layout==='list'    ? 'selected' : ''}>Grid Cards</option>
-            <option value="table"   ${initFilter.layout==='table'   ? 'selected' : ''}>Table</option>
-            <option value="compact" ${initFilter.layout==='compact' ? 'selected' : ''}>Compact</option>
-          </select>
-
-          <button id="em-create-btn" style="padding:8px 16px;border:none;background:var(--primary);color:#fff;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.82rem;">+ Create</button>
-          <span id="em-count" style="font-size:0.78rem;color:var(--text-soft);font-weight:600;white-space:nowrap;"></span>
-        </div>
+        ${renderToolbar(initFilter, typeOptions, statusOptions)}
 
         <!-- Bulk actions bar -->
         <div id="em-bulk-bar" style="display:none;align-items:center;gap:8px;flex-wrap:wrap;
@@ -162,7 +272,6 @@
         console.warn('[EntityManager] Data load error', e);
       }
 
-      // Client-side query filter
       if (f.query) {
         const q = f.query.toLowerCase();
         entities = entities.filter(e => {
@@ -174,7 +283,6 @@
         });
       }
 
-      // Pagination
       const total    = entities.length;
       const start    = (f.page - 1) * f.pageSize;
       const page_ents = entities.slice(start, start + f.pageSize);
@@ -189,46 +297,8 @@
         return;
       }
 
-      if (f.layout === 'table') {
-        const autoConfig = typeof PharmoraUniversalRenderer !== 'undefined'
-          ? PharmoraUniversalRenderer.getAutoConfig(page_ents[0])
-          : {};
-        cnt.innerHTML = typeof PharmoraUniversalRenderer !== 'undefined'
-          ? PharmoraUniversalRenderer.render(page_ents, 'table', autoConfig)
-          : `<div style="padding:20px;color:var(--text-soft);">Renderer not available.</div>`;
-      } else if (f.layout === 'compact') {
-        cnt.innerHTML = `<div style="display:flex;flex-direction:column;gap:6px;">
-          ${page_ents.map(ent => {
-            const title = ent.content?.title || ent.content?.name || ent.publicId || ent.type;
-            return `<div data-uuid="${ent.uuid}" style="display:flex;align-items:center;gap:10px;padding:10px 14px;
-                         background:var(--surface);border:1px solid var(--border);border-radius:10px;cursor:pointer;">
-              <input type="checkbox" class="em-cb" data-uuid="${ent.uuid}" onclick="event.stopPropagation()">
-              <span style="font-size:0.75rem;background:var(--border);padding:1px 6px;border-radius:4px;">${ent.type}</span>
-              <span style="flex:1;font-weight:600;font-size:0.85rem;">${title}</span>
-              <span style="font-size:0.72rem;color:var(--text-soft);">${ent.status}</span>
-            </div>`;
-          }).join('')}
-        </div>`;
-      } else {
-        // Grid cards
-        cnt.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;">
-          ${page_ents.map(ent => {
-            const config = typeof PharmoraUniversalRenderer !== 'undefined'
-              ? PharmoraUniversalRenderer.getAutoConfig(ent)
-              : {};
-            const cardHtml = typeof PharmoraUniversalRenderer !== 'undefined'
-              ? PharmoraUniversalRenderer.render(ent, 'card', config)
-              : `<div style="padding:14px;">${ent.content?.title || ent.publicId}</div>`;
-            return `<div style="position:relative;" data-uuid="${ent.uuid}">
-              <input type="checkbox" class="em-cb" data-uuid="${ent.uuid}"
-                style="position:absolute;top:10px;right:10px;z-index:10;transform:scale(1.2);" onclick="event.stopPropagation()">
-              ${cardHtml}
-            </div>`;
-          }).join('')}
-        </div>`;
-      }
+      cnt.innerHTML = renderResults(f.layout, page_ents);
 
-      // Attach checkbox listeners
       cnt.querySelectorAll('.em-cb').forEach(cb => {
         cb.checked = selectedUuids.has(cb.dataset.uuid);
         cb.addEventListener('change', () => {
@@ -238,71 +308,12 @@
         });
       });
 
-      // Render pagination
-      _renderPagination(total, f.page, f.pageSize);
+      renderPagination(total, f.page, f.pageSize);
     }
 
-    function _renderPagination(total, page, pageSize) {
-      const pages = Math.ceil(total / pageSize);
-      const pg    = document.getElementById('em-pagination');
-      if (!pg || pages <= 1) { if (pg) pg.innerHTML = ''; return; }
-      const btnStyle = (active) =>
-        `padding:6px 12px;border-radius:8px;border:1px solid var(--border);cursor:pointer;font-weight:600;font-size:0.8rem;
-         background:${active ? 'var(--primary)' : 'var(--surface)'};color:${active ? '#fff' : 'var(--text)'};`;
-      const nums = Array.from({ length: Math.min(pages, 7) }, (_, i) => i + 1);
-      pg.innerHTML = nums.map(n =>
-        `<button style="${btnStyle(n === page)}" onclick="window.__emGoPage(${n})">${n}</button>`
-      ).join('');
-      window.__emGoPage = (n) => { currentPage = n; loadData(); };
-    }
+    window.__emGoPage = (n) => { currentPage = n; loadData(); };
 
-    // Wire filter controls
-    const deb = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
-    const reload = deb(loadData, 280);
-    ['em-type','em-status','em-sort','em-layout'].forEach(id => {
-      document.getElementById(id)?.addEventListener('change', () => { currentPage = 1; reload(); });
-    });
-    document.getElementById('em-search')?.addEventListener('input', () => { currentPage = 1; reload(); });
-
-    // Bulk actions
-    document.querySelectorAll('[data-em-bulk]').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const action = btn.dataset.emBulk;
-        const uuids  = [...selectedUuids];
-        if (!uuids.length) return;
-        for (const uuid of uuids) {
-          try {
-            if (typeof PharmoraEntityManager !== 'undefined') {
-              if (action === 'publish') await PharmoraEntityManager.bulkPublish([uuid], 'admin');
-              if (action === 'archive') await PharmoraEntityManager.bulkArchive([uuid], 'admin');
-              if (action === 'delete')  await PharmoraEntityManager.bulkDelete([uuid], 'admin');
-            }
-            if (action === 'approve' && typeof PharmoraEntityReview !== 'undefined') {
-              await PharmoraEntityReview.approve(uuid, 'admin');
-            }
-          } catch(e) { console.warn('Bulk', action, uuid, e); }
-        }
-        selectedUuids.clear();
-        _updateBulkBar();
-        loadData();
-      });
-    });
-    document.getElementById('em-bulk-clear')?.addEventListener('click', () => {
-      selectedUuids.clear();
-      document.querySelectorAll('.em-cb').forEach(cb => cb.checked = false);
-      _updateBulkBar();
-    });
-
-    // Create button
-    document.getElementById('em-create-btn')?.addEventListener('click', () => {
-      const type = document.getElementById('em-type')?.value || '';
-      if (typeof PharmoraWorkbench !== 'undefined' && PharmoraWorkbench._wb) {
-        PharmoraWorkbench._wb.openViewer({ uuid: null, type, _create: true });
-      } else {
-        alert(`Create new ${type || 'entity'} — wire to Entity Editor.`);
-      }
-    });
-
+    bindManagerEvents(loadData, selectedUuids, _updateBulkBar, initFilter);
     loadData();
   }
 

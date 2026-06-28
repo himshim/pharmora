@@ -35,9 +35,33 @@
       throw new Error("One or both entities for linking not found");
     }
 
-    // Cycle check: Avoid linking an entity to itself
+    // Cycle check: Avoid linking an entity to itself or creating circular loops
     if (fromId === toId) {
       throw new Error("Cannot link entity to itself");
+    }
+
+    async function checkPathExists(startId, searchTargetId, visited = new Set()) {
+      if (startId === searchTargetId) return true;
+      if (visited.has(startId)) return false;
+      visited.add(startId);
+      
+      const node = await PharmoraEntityAPI.getEntity(startId).catch(() => null);
+      if (!node || !node.relations) return false;
+      
+      // Follow all outgoing children links
+      const children = node.relations.filter(r => r.relationType === "hasMany" || r.relationType === "hasOne" || r.relationType === "contains_subject");
+      for (const child of children) {
+        if (await checkPathExists(child.targetUuid, searchTargetId, visited)) return true;
+      }
+      return false;
+    }
+
+    // If we are linking 'fromId' -> 'toId' as a child (hasMany), check if 'toId' is already an ancestor of 'fromId'
+    if (relationType === 'hasMany' || relationType === 'hasOne' || relationType === 'contains_subject') {
+      const isAncestor = await checkPathExists(toId, fromId);
+      if (isAncestor) {
+        throw new Error("Circular relationship detected: target is already an ancestor of the source");
+      }
     }
 
     // Check if relation already exists to prevent duplicate links
