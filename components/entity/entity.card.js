@@ -5,10 +5,10 @@
 (function() {
   function renderCard(entity, config) {
     const resolve = PharmoraUniversalRenderer.resolveField;
-    const title = resolve(entity, config.titleField) || "Untitled Entity";
-    const subtitle = resolve(entity, config.subtitleField) || "";
-    const badge = resolve(entity, config.badgeField) || "";
-    const description = resolve(entity, config.descriptionField) || "";
+    const title = resolve(entity, config.titleField) || entity.content?.title || entity.content?.name || entity.content?.genericName || "Untitled Entity";
+    const subtitle = resolve(entity, config.subtitleField) || entity.content?.subtitle || entity.content?.chemicalClass || entity.content?.course || "";
+    const badge = resolve(entity, config.badgeField) || entity.content?.code || entity.content?.shortName || entity.content?.icd10Code || "";
+    const description = resolve(entity, config.descriptionField) || entity.content?.description || entity.content?.rationale || "";
     const tags = entity.tags || [];
     
     // Custom extra subtitle logic if passed in config

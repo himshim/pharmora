@@ -27,11 +27,20 @@
           return path.split(".").reduce((acc, part) => acc && acc[part] !== undefined ? acc[part] : "", ent);
         };
 
-        const title = resolve(config.titleField) || ent.content?.title || ent.content?.name || "Untitled";
-        const subtitle = resolve(config.subtitleField) || ent.content?.subtitle || "";
-        const badge = resolve(config.badgeField) || ent.content?.code || "";
-        const description = resolve(config.descriptionField) || ent.content?.description || "";
+        const title = resolve(config.titleField) || ent.content?.title || ent.content?.name || ent.content?.genericName || "Untitled";
+        const subtitle = resolve(config.subtitleField) || ent.content?.subtitle || ent.content?.chemicalClass || ent.content?.course || "";
+        const badge = resolve(config.badgeField) || ent.content?.code || ent.content?.shortName || ent.content?.icd10Code || "";
+        const description = resolve(config.descriptionField) || ent.content?.description || ent.content?.rationale || "";
         
+        // Compile all content object values for deep text indexing
+        const contentValues = [];
+        if (ent.content && typeof ent.content === 'object') {
+          Object.values(ent.content).forEach(v => {
+            if (Array.isArray(v)) contentValues.push(...v);
+            else if (v !== null && v !== undefined) contentValues.push(v);
+          });
+        }
+
         // Compile search keywords for matching
         const keywords = [
           title,
@@ -40,9 +49,9 @@
           description,
           ent.type,
           ent.slug,
+          ent.publicId,
           ...(ent.tags || []),
-          ...(ent.content?.aliases || []),
-          ent.publicId
+          ...contentValues
         ].filter(Boolean).map(s => s.toString().toLowerCase());
 
         compiled.push({

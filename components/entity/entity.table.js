@@ -25,8 +25,13 @@
     const rowsHtml = entities.map(entity => {
       const cellsHtml = columns.map(c => {
         let val = resolve(entity, c.value);
+        if (!val) {
+          if (c.label === "Code/ID") val = entity.content?.code || entity.content?.shortName || entity.content?.icd10Code || entity.publicId;
+          else if (c.label === "Title/Name") val = entity.content?.title || entity.content?.name || entity.content?.genericName;
+          else if (c.label === "Category/Sub") val = entity.content?.subtitle || entity.content?.chemicalClass || entity.content?.course;
+        }
         if (c.value === "status") {
-          val = `<span style="background:var(--border); font-size:0.75rem; padding:2px 6px; border-radius:4px; text-transform:capitalize;">${val}</span>`;
+          val = `<span style="background:var(--border); font-size:0.75rem; padding:2px 6px; border-radius:4px; text-transform:capitalize;">${entity.status}</span>`;
         }
         return `<td style="padding: 12px; border-bottom: 1px solid var(--border); color: var(--text);">${val || "—"}</td>`;
       }).join("");

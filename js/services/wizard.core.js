@@ -488,39 +488,58 @@ const PharmoraWizardCore = (function () {
           schema = PharmoraEntityRegistry.getSchema(type);
         }
         const contentProps = schema?.properties?.content?.properties || {};
+        const requiredFields = schema?.properties?.content?.required || [];
 
         const fieldsHtml = Object.entries(contentProps).map(([name, prop]) => {
           const label = name.charAt(0).toUpperCase() + name.slice(1).replace(/([A-Z])/g, ' $1');
-          const val = createWizardState.formData[name] || '';
+          const isRequired = requiredFields.includes(name);
+          const requiredStar = isRequired ? '<span style="color:#ef4444;margin-left:4px;">*</span>' : '';
+          const val = createWizardState.formData[name] !== undefined ? createWizardState.formData[name] : '';
+
           if (prop.type === 'array') {
+            const arrayVal = Array.isArray(val) ? val.join(', ') : val;
             return `
               <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
-                <label style="font-size:0.82rem;font-weight:700;">${label} <span style="font-weight:normal;color:var(--text-soft);font-size:0.75rem;">(comma-separated)</span></label>
-                <input type="text" id="wz-field-${name}" value="${Array.isArray(val) ? val.join(', ') : val}" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);">
+                <label style="font-size:0.82rem;font-weight:700;">${label}${requiredStar} <span style="font-weight:normal;color:var(--text-soft);font-size:0.75rem;">(comma-separated)</span></label>
+                <input type="text" id="wz-field-${name}" value="${arrayVal}" placeholder="e.g. value1, value2" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);" ${isRequired ? 'required' : ''}>
               </div>
             `;
           } else if (prop.enum) {
             return `
               <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
-                <label style="font-size:0.82rem;font-weight:700;">${label}</label>
-                <select id="wz-field-${name}" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);">
+                <label style="font-size:0.82rem;font-weight:700;">${label}${requiredStar}</label>
+                <select id="wz-field-${name}" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);" ${isRequired ? 'required' : ''}>
                   <option value="">Select...</option>
                   ${prop.enum.map(opt => `<option value="${opt}" ${opt === val ? 'selected' : ''}>${opt}</option>`).join('')}
                 </select>
               </div>
             `;
-          } else if (name === 'description') {
+          } else if (prop.type === 'boolean') {
+            return `
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:6px 0;">
+                <input type="checkbox" id="wz-field-${name}" ${val ? 'checked' : ''} style="transform:scale(1.2);">
+                <label style="font-size:0.82rem;font-weight:700;cursor:pointer;" for="wz-field-${name}">${label}${requiredStar}</label>
+              </div>
+            `;
+          } else if (name === 'description' || name === 'objectives' || name === 'outcomes' || prop.type === 'string' && prop.maxLength > 100) {
             return `
               <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
-                <label style="font-size:0.82rem;font-weight:700;">${label}</label>
-                <textarea id="wz-field-${name}" rows="3" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);">${val}</textarea>
+                <label style="font-size:0.82rem;font-weight:700;">${label}${requiredStar}</label>
+                <textarea id="wz-field-${name}" rows="4" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);" ${isRequired ? 'required' : ''}>${val}</textarea>
+              </div>
+            `;
+          } else if (prop.type === 'number') {
+            return `
+              <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+                <label style="font-size:0.82rem;font-weight:700;">${label}${requiredStar}</label>
+                <input type="number" id="wz-field-${name}" value="${val}" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);" ${isRequired ? 'required' : ''}>
               </div>
             `;
           }
           return `
             <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
-              <label style="font-size:0.82rem;font-weight:700;">${label}</label>
-              <input type="text" id="wz-field-${name}" value="${val}" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);">
+              <label style="font-size:0.82rem;font-weight:700;">${label}${requiredStar}</label>
+              <input type="text" id="wz-field-${name}" value="${val}" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--background);color:var(--text);" ${isRequired ? 'required' : ''}>
             </div>
           `;
         }).join('');
@@ -565,11 +584,16 @@ const PharmoraWizardCore = (function () {
       Object.entries(contentProps).forEach(([name, prop]) => {
         const input = document.getElementById(`wz-field-${name}`);
         if (!input) return;
-        let val = input.value.trim();
-        if (prop.type === 'array') {
+
+        if (prop.type === 'boolean') {
+          content[name] = input.checked;
+        } else if (prop.type === 'number') {
+          content[name] = input.value !== '' ? Number(input.value) : 0;
+        } else if (prop.type === 'array') {
+          const val = input.value.trim();
           content[name] = val ? val.split(',').map(s => s.trim()).filter(Boolean) : [];
         } else {
-          content[name] = val;
+          content[name] = input.value.trim();
         }
       });
       return content;
@@ -586,6 +610,26 @@ const PharmoraWizardCore = (function () {
       const type = createWizardState.type;
       const actor = (typeof currentUser === 'function' ? currentUser()?.id : 'admin') || 'admin';
 
+      // Required fields validation check
+      let schema = null;
+      if (typeof PharmoraEntityRegistry !== 'undefined') {
+        schema = PharmoraEntityRegistry.getSchema(type);
+      }
+      const requiredFields = schema?.properties?.content?.required || [];
+      const missing = requiredFields.filter(f => {
+        const val = content[f];
+        return val === undefined || val === null || val === '' || (Array.isArray(val) && val.length === 0);
+      });
+
+      if (missing.length > 0) {
+        if (typeof showToast === 'function') {
+          showToast(`Please fill required fields: ${missing.join(', ')}`, 'error');
+        } else {
+          alert(`Please fill required fields: ${missing.join(', ')}`);
+        }
+        return;
+      }
+
       try {
         const created = await PharmoraEntityAPI.createEntity({
           type,
@@ -593,7 +637,13 @@ const PharmoraWizardCore = (function () {
           status: 'pending_review'
         }, actor);
 
+        // Immediately rebuild UES Search Index so it's searchable
+        if (typeof PharmoraSearchIndex !== 'undefined') {
+          await PharmoraSearchIndex.buildIndex();
+        }
+
         if (typeof showToast === 'function') showToast('Entity created successfully!', 'success');
+        
         // Refresh module to display new entity
         refreshCurrentModule();
         // Immediately view new entity in drawer
