@@ -309,6 +309,7 @@ bundle([
 
   // ── Legacy admin services (kept for bridge functions) ──
   "js/services/verification.service.js",
+  "js/services/admin-crud.service.js",
   "js/services/admin.service.js",
   "js/services/admin.review.js",
   "js/services/admin.users.js",
