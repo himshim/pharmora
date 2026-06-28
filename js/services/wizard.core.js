@@ -732,16 +732,39 @@ const PharmoraWizardCore = (function () {
             </div>
             
             ${isDev ? `
-              <div style="border-top:1px solid var(--border);padding-top:16px;">
-                <details>
-                  <summary style="font-size:0.8rem;font-weight:700;color:var(--text-soft);cursor:pointer;user-select:none;">🛠 Developer JSON Payload</summary>
-                  <pre style="margin-top:10px;font-size:0.72rem;color:var(--text-soft);background:var(--background);padding:10px;border-radius:8px;overflow-x:auto;">${JSON.stringify(entity, null, 2)}</pre>
-                </details>
-              </div>
-            ` : ''}
-          </div>
-            <button onclick="PharmoraWorkbench._wb.closeDrawer()" style="padding:8px 16px;border:1px solid var(--border);background:none;color:var(--text);border-radius:8px;cursor:pointer;font-weight:700;font-size:0.82rem;">Close</button>
-          </div>
+<div style="border-top:1px solid var(--border);padding-top:16px;">
+    <details>
+        <summary style="font-size:0.8rem;font-weight:700;color:var(--text-soft);cursor:pointer;">
+            🛠 Developer JSON Payload
+        </summary>
+        <pre style="margin-top:10px;font-size:0.72rem;color:var(--text-soft);background:var(--background);padding:10px;border-radius:8px;overflow-x:auto;">${JSON.stringify(entity,null,2)}</pre>
+    </details>
+</div>
+` : ''}
+</div>
+
+<div style="
+padding:16px 24px;
+border-top:1px solid var(--border);
+background:var(--surface);
+display:flex;
+justify-content:flex-end;
+">
+
+<button
+onclick="PharmoraWorkbench._wb.closeDrawer()"
+style="padding:8px 16px;
+border:1px solid var(--border);
+background:none;
+color:var(--text);
+border-radius:8px;
+cursor:pointer;
+font-weight:700;
+font-size:0.82rem;">
+Close
+</button>
+
+</div>
         `;
 
         if (typeof PharmoraEntityAuditViewer !== 'undefined')
@@ -856,8 +879,9 @@ const PharmoraWizardCore = (function () {
           openViewer({ uuid });
         }
       } catch(e) {
-        alert('Error: ' + e.message);
-      }
+    workbench._submitCreate = originalSubmit;
+    alert('Creation failed: ' + e.message);
+}
     }
 
     async function _linkExistingSubmit(uuid) {
@@ -947,9 +971,10 @@ const PharmoraWizardCore = (function () {
           alert('Creation failed: ' + e.message);
         }
       };
+_renderCreationWizard(drawerEl);
+}
 
-      _renderCreationWizard(drawerEl);
-    async function _renderUserDrawer(drawerEl, user) {
+async function _renderUserDrawer(drawerEl, user) {
       const name  = user.name || user.displayName || user.email || user.id || 'User';
       const email = user.email || '';
       const role  = user.role || '';
