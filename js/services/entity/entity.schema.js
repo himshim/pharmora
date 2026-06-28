@@ -11,7 +11,7 @@
       publicId: { type: "string" },
       type: { type: "string" },
       slug: { type: "string" },
-      status: { type: "string", enum: ["draft", "pending_review", "approved", "rejected", "archived"] },
+      status: { type: "string", enum: ["draft", "pending_review", "approved", "rejected", "archived", "needs_changes"] },
       version: { type: "integer" },
       owner: { type: ["string", "null"] },
       contributors: { type: "array", items: { type: "string" } },
