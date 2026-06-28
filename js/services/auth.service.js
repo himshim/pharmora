@@ -1170,6 +1170,36 @@ owner.id
 
 
 return true;
-
-
 }
+
+// ── Test Accounts Seeding Helper ─────────────────────
+window.createTestAccounts = async function() {
+  const accounts = [
+    { name: "Owner User", email: "owner@example.com", password: "owner123", role: "owner" },
+    { name: "Maintainer User", email: "maintainer@example.com", password: "maint123", role: "maintainer" },
+    { name: "Admin User", email: "admin@example.com", password: "admin123", role: "admin" },
+    { name: "Contributor User", email: "contributor@example.com", password: "contrib123", role: "contributor" },
+    { name: "Member User", email: "member@example.com", password: "member123", role: "member" },
+    { name: "Student User", email: "student@example.com", password: "student123", role: "student" }
+  ];
+
+  async function ensureAccount(acc) {
+    if (typeof window.getRecords !== 'function') return;
+    const records = await window.getRecords("users").catch(() => []);
+    const existing = records.find(u => u.email === acc.email || u.data?.email === acc.email);
+    if (!existing) {
+      await window.createRecord("users", {
+        name: acc.name,
+        email: acc.email,
+        password: acc.password,
+        role: acc.role,
+        permissions: []
+      });
+    }
+  }
+
+  for (const acc of accounts) {
+    await ensureAccount(acc);
+  }
+  console.log("✅ Test accounts ensured in local storage.");
+};

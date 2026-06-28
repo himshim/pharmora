@@ -300,9 +300,14 @@ bundle(
 
 
 bundle([
-
-  // ── Wizard Core (provides createWorkbench) ──
+  // ── Wizard Core ──
   "js/services/wizard.core.js",
+
+  // ── Workbench Core & Plugins ──
+  "js/services/workbench/workbench.form.js",
+  "js/services/workbench/workbench.relations.js",
+  "js/services/workbench/workbench.drawer.js",
+  "js/services/workbench/workbench.core.js",
 
   // ── Entity Manager UI (extended API) ──
   "components/entity/entity.manager.js",
