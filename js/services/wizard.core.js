@@ -740,8 +740,22 @@ const PharmoraWizardCore = (function () {
               </div>
             ` : ''}
           </div>
-          <div style="padding:16px 24px;border-top:1px solid var(--border);background:var(--surface);display:flex;justify-content:flex-end;">
-            <button onclick="PharmoraWorkbench._wb.closeDrawer()" style="padding:8px 16px;border:1px solid var(--b    // Relation Linking Picker & Creation Dialog Helper
+            <button onclick="PharmoraWorkbench._wb.closeDrawer()" style="padding:8px 16px;border:1px solid var(--border);background:none;color:var(--text);border-radius:8px;cursor:pointer;font-weight:700;font-size:0.82rem;">Close</button>
+          </div>
+        `;
+
+        if (typeof PharmoraEntityAuditViewer !== 'undefined')
+          PharmoraEntityAuditViewer.render(entity, 'wb-drawer-workflow');
+        if (typeof PharmoraEntityTimeline !== 'undefined') {
+          const tb = document.getElementById('wb-drawer-timeline');
+          if (tb) tb.innerHTML = PharmoraEntityTimeline.render(entity);
+        }
+      } catch(err) {
+        drawerEl.innerHTML = `<div style="padding:24px;color:#ef4444;">Failed to load entity: ${err.message}</div>`;
+      }
+    }
+
+    // Relation Linking Picker & Creation Dialog Helper
     async function _openLinkEditor(uuid, action) {
       const drawerEl = document.getElementById(drawerContainerId);
       if (!drawerEl) return;
