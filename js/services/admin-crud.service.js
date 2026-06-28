@@ -2934,3 +2934,10 @@ activeCollection
 
 
 }
+
+// Expose legacy service functions to global scope for HTML inline onclick event handler triggers
+window.loadManager   = loadManager;
+window.showForm      = showForm;
+window.removeEntry   = removeEntry;
+window.showVersions  = showVersions;
+window.restoreVersion = restoreVersion;
