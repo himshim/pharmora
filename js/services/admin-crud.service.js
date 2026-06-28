@@ -37,43 +37,29 @@ appPath(
 
 
 async function loadManager(collection){
+  activeCollection = collection;
 
+  let type = "";
+  if (collection === "subjects") type = "Subject";
+  else if (collection === "courses") type = "Course";
+  else if (collection === "semesters") type = "Semester";
+  else if (collection === "books") type = "Book";
+  else if (collection === "events") type = "Event";
+  else if (collection === "tools") type = "Tool";
+  else if (collection === "teaching-materials") type = "Resource";
+  else if (collection === "question-bank") type = "QuestionBank";
 
-
-activeCollection=collection;
-
-
-
-let schemas =
-await loadSchema();
-
-
-
-activeSchema =
-schemas[collection] || [];
-
-
-
-
-let data =
-await getRecords(
-collection
-);
-
-
-
-
-let area =
-document.getElementById(
-"admin-actions"
-);
-
-
-if(!area){
-
-return;
-
-}
+  if (typeof PharmoraEntityManagerUI !== "undefined") {
+    PharmoraEntityManagerUI.render("admin-actions", type);
+    return;
+  }
+  
+  // Legacy fallback if components not loaded
+  let schemas = await loadSchema();
+  activeSchema = schemas[collection] || [];
+  let data = await getRecords(collection);
+  let area = document.getElementById("admin-actions");
+  if(!area){ return; }
 
 
 
