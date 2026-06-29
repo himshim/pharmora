@@ -6,7 +6,13 @@
   const collectionName = "entities";
 
   async function createEntity(entityData, actor = "system") {
-    // 1. Get Schema if any
+    // 1. Assign creator as owner if not present
+    if (!entityData.owner) {
+      const user = typeof currentUser === "function" ? currentUser() : null;
+      entityData.owner = user ? user.id : actor;
+    }
+
+    // Get Schema if any
     const typeSchema = typeof PharmoraEntityRegistry !== "undefined" 
       ? PharmoraEntityRegistry.getSchema(entityData.type) 
       : null;

@@ -28,6 +28,8 @@
       let capAction = "edit";
       if ([WorkflowStates.APPROVED, WorkflowStates.PUBLISHED].includes(targetStatus)) {
         capAction = "publish";
+      } else if ([WorkflowStates.REJECTED, WorkflowStates.NEEDS_CHANGES, WorkflowStates.PENDING_REVIEW].includes(targetStatus)) {
+        capAction = "review";
       } else if (targetStatus === WorkflowStates.DELETED) {
         capAction = "delete";
       } else if (targetStatus === WorkflowStates.ARCHIVED) {
