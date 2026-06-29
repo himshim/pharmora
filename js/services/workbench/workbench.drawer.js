@@ -228,27 +228,38 @@
     }
 
     try {
-      const created = await PharmoraEntityAPI.createEntity({
-        type,
-        content,
-        status: 'pending_review'
-      }, actor);
+      const state = workbench._createWizardState;
+      if (state.uuid) {
+        const updated = await PharmoraEntityAPI.updateEntity(state.uuid, { content }, actor);
+        if (typeof PharmoraSearchIndex !== 'undefined') {
+          await PharmoraSearchIndex.buildIndex();
+        }
+        if (typeof showToast === 'function') showToast('Entity updated successfully!', 'success');
+        workbench.refreshCurrentModule();
+        workbench.openViewer(updated);
+      } else {
+        const created = await PharmoraEntityAPI.createEntity({
+          type,
+          content,
+          status: 'pending_review'
+        }, actor);
 
-      if (workbench._createWizardState.selectedParentUuid && typeof PharmoraRelations !== 'undefined') {
-        const rel = (type === 'Subject') ? 'contains_subject' : 'hasMany';
-        await PharmoraRelations.linkEntities(workbench._createWizardState.selectedParentUuid, rel, created.uuid, {}, actor);
+        if (state.selectedParentUuid && typeof PharmoraRelations !== 'undefined') {
+          const rel = (type === 'Subject') ? 'contains_subject' : 'hasMany';
+          await PharmoraRelations.linkEntities(state.selectedParentUuid, rel, created.uuid, {}, actor);
+        }
+
+        if (typeof PharmoraSearchIndex !== 'undefined') {
+          await PharmoraSearchIndex.buildIndex();
+        }
+
+        if (typeof showToast === 'function') showToast('Entity created successfully!', 'success');
+        
+        workbench.refreshCurrentModule();
+        workbench.openViewer(created);
       }
-
-      if (typeof PharmoraSearchIndex !== 'undefined') {
-        await PharmoraSearchIndex.buildIndex();
-      }
-
-      if (typeof showToast === 'function') showToast('Entity created successfully!', 'success');
-      
-      workbench.refreshCurrentModule();
-      workbench.openViewer(created);
     } catch(e) {
-      if (typeof showToast === 'function') showToast(`Creation failed: ${e.message}`, 'error');
+      if (typeof showToast === 'function') showToast(`Operation failed: ${e.message}`, 'error');
     }
   }
 
@@ -326,6 +337,7 @@
               <button onclick="PharmoraWorkbench._wb._drawerAction('publish','${entity.uuid}')" style="${btnStyle('var(--success)')}">📢 Publish</button>
               <button onclick="PharmoraWorkbench._wb._drawerAction('requestChanges','${entity.uuid}')" style="${btnStyle('var(--warning)')}">🔁 Changes</button>
               <button onclick="PharmoraWorkbench._wb._drawerAction('archive','${entity.uuid}')" style="${btnStyle('var(--text-muted)')}">🗄 Archive</button>
+              <button onclick="PharmoraWorkbench._wb._editEntity('${entity.uuid}')" style="${btnStyle('var(--surface)')};border:1px solid var(--border);color:var(--text);">✏️ Edit Info</button>
             </div>
             <h4 style="margin:0 0 8px 0;font-size:var(--font-sm);color:var(--text-soft);text-transform:uppercase;font-weight:700;">Entity Preview</h4>
             ${cardHtml}
@@ -413,28 +425,105 @@
   async function _drawerAction(action, uuid, workbench) {
     if (!uuid || typeof PharmoraEntityReview === 'undefined') return;
     try {
-      if (action === 'approve')        await PharmoraEntityReview.approve(uuid, 'admin');
-      else if (action === 'publish')   await PharmoraEntityReview.publish(uuid, 'admin');
-      else if (action === 'archive')   await PharmoraEntityReview.archive(uuid, 'admin');
-      else if (action === 'reject') {
-        const reason = prompt('Enter rejection reason:');
-        if (reason) await PharmoraEntityReview.reject(uuid, reason, 'admin');
+      const reloadAndRefresh = async () => {
+        if (typeof showToast === 'function') showToast(`${action} applied.`, 'success');
+        const entity = await PharmoraEntityAPI.getEntity(uuid);
+        if (entity) {
+          const drawerEl = document.getElementById(workbench._config.drawerContainerId);
+          if (drawerEl) await _renderEntityDrawer(drawerEl, entity, workbench);
+        }
+        workbench.refreshCurrentModule();
+      };
+
+      if (action === 'approve') {
+        await PharmoraEntityReview.approve(uuid, 'admin');
+        await reloadAndRefresh();
+      } else if (action === 'publish') {
+        await PharmoraEntityReview.publish(uuid, 'admin');
+        await reloadAndRefresh();
+      } else if (action === 'archive') {
+        await PharmoraEntityReview.archive(uuid, 'admin');
+        await reloadAndRefresh();
+      } else if (action === 'reject') {
+        if (typeof PharmoraUI !== 'undefined' && typeof PharmoraUI.modal === 'function') {
+          PharmoraUI.modal({
+            title: 'Reject Entity',
+            body: `
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <label style="font-size:var(--font-sm);font-weight:700;color:var(--text);">Enter rejection reason:</label>
+                <input type="text" id="drawer-prompt-input" value="—" style="padding:10px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--background);color:var(--text);width:100%;box-sizing:border-box;">
+              </div>
+            `,
+            actions: `
+              <button onclick="PharmoraUI.closeModal()" style="padding:8px 14px;border:1px solid var(--border);background:none;color:var(--text);border-radius:var(--radius-sm);cursor:pointer;font-weight:600;font-size:var(--font-sm);">Cancel</button>
+              <button id="drawer-prompt-submit" style="padding:8px 14px;border:none;background:var(--primary);color:#000;border-radius:var(--radius-sm);cursor:pointer;font-weight:700;font-size:var(--font-sm);">Submit</button>
+            `
+          });
+          document.getElementById('drawer-prompt-submit').onclick = async () => {
+            const val = document.getElementById('drawer-prompt-input')?.value || '';
+            PharmoraUI.closeModal();
+            if (val) {
+              await PharmoraEntityReview.reject(uuid, val, 'admin');
+              await reloadAndRefresh();
+            }
+          };
+        } else {
+          const reason = prompt('Enter rejection reason:');
+          if (reason) {
+            await PharmoraEntityReview.reject(uuid, reason, 'admin');
+            await reloadAndRefresh();
+          }
+        }
+      } else if (action === 'requestChanges') {
+        if (typeof PharmoraUI !== 'undefined' && typeof PharmoraUI.modal === 'function') {
+          PharmoraUI.modal({
+            title: 'Request Changes',
+            body: `
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <label style="font-size:var(--font-sm);font-weight:700;color:var(--text);">Enter change request comments:</label>
+                <input type="text" id="drawer-prompt-input" value="—" style="padding:10px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--background);color:var(--text);width:100%;box-sizing:border-box;">
+              </div>
+            `,
+            actions: `
+              <button onclick="PharmoraUI.closeModal()" style="padding:8px 14px;border:1px solid var(--border);background:none;color:var(--text);border-radius:var(--radius-sm);cursor:pointer;font-weight:600;font-size:var(--font-sm);">Cancel</button>
+              <button id="drawer-prompt-submit" style="padding:8px 14px;border:none;background:var(--primary);color:#000;border-radius:var(--radius-sm);cursor:pointer;font-weight:700;font-size:var(--font-sm);">Submit</button>
+            `
+          });
+          document.getElementById('drawer-prompt-submit').onclick = async () => {
+            const val = document.getElementById('drawer-prompt-input')?.value || '';
+            PharmoraUI.closeModal();
+            if (val) {
+              await PharmoraEntityReview.requestChanges(uuid, val, 'admin');
+              await reloadAndRefresh();
+            }
+          };
+        } else {
+          const c = prompt('Enter change request comments:');
+          if (c) {
+            await PharmoraEntityReview.requestChanges(uuid, c, 'admin');
+            await reloadAndRefresh();
+          }
+        }
       }
-      else if (action === 'requestChanges') {
-        const c = prompt('Enter change request comments:');
-        if (c) await PharmoraEntityReview.requestChanges(uuid, c, 'admin');
-      }
-      if (typeof showToast === 'function') showToast(`${action} applied.`, 'success');
-      
-      const entity = await PharmoraEntityAPI.getEntity(uuid);
-      if (entity) {
-        const drawerEl = document.getElementById(workbench._config.drawerContainerId);
-        if (drawerEl) await _renderEntityDrawer(drawerEl, entity, workbench);
-      }
-      workbench.refreshCurrentModule();
     } catch(err) {
       if (typeof showToast === 'function') showToast(`Action failed: ${err.message}`, 'error');
     }
+  }
+
+  async function _editEntity(uuid, workbench) {
+    if (typeof PharmoraEntityAPI === 'undefined') return;
+    const entity = await PharmoraEntityAPI.getEntity(uuid);
+    if (!entity) return;
+
+    workbench._createWizardState = {
+      step: 2,
+      type: entity.type,
+      uuid: entity.uuid,
+      formData: entity.content || {}
+    };
+
+    const drawerEl = document.getElementById(workbench._config.drawerContainerId);
+    if (drawerEl) _renderCreationWizard(drawerEl, workbench);
   }
 
   function init(workbench, config) {
@@ -489,6 +578,7 @@
     };
 
     workbench._drawerAction = (action, uuid) => _drawerAction(action, uuid, workbench);
+    workbench._editEntity = (uuid) => _editEntity(uuid, workbench);
     workbench._setCreateType = (type) => _setCreateType(type, workbench);
     workbench._confirmHierarchyPath = () => _confirmHierarchyPath(workbench);
     workbench._submitCreate = () => _submitCreate(workbench);
