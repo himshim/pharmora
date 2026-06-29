@@ -107,6 +107,54 @@
   function init(workbench, config) {
     workbench._gatherWzFormData = () => gatherWzFormData(workbench);
     workbench._saveCreateDraft = () => _saveCreateDraft(workbench);
+
+    // Attach event listeners for dynamic similar-name checking
+    document.addEventListener('input', async (e) => {
+      const target = e.target;
+      if (target.id && (target.id === 'wz-field-name' || target.id === 'wz-field-title')) {
+        const query = target.value.trim().toLowerCase();
+        
+        let container = target.parentElement.querySelector('.wz-similar-suggestions');
+        if (!container) {
+          container = document.createElement('div');
+          container.className = 'wz-similar-suggestions';
+          container.style.cssText = 'margin-top:8px;padding:10px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface-light);font-size:var(--font-xs);display:none;';
+          target.parentNode.appendChild(container);
+        }
+        
+        if (query.length < 3 || typeof PharmoraEntityAPI === 'undefined') {
+          container.style.display = 'none';
+          return;
+        }
+        
+        const list = await PharmoraEntityAPI.listEntities().catch(() => []);
+        const matches = list.filter(ent => {
+          const name = (ent.content?.name || ent.content?.title || ent.publicId || '').toLowerCase();
+          return name === query || (name.includes(query) && Math.abs(name.length - query.length) < 5);
+        }).slice(0, 3);
+        
+        if (matches.length > 0) {
+          container.style.display = 'block';
+          container.innerHTML = `
+            <div style="font-weight:700;margin-bottom:6px;color:var(--text);">&#9888;&#65039; Similar entities found:</div>
+            ${matches.map(m => {
+              const title = m.content?.name || m.content?.title || m.publicId;
+              return `
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border);">
+                  <span><strong>${title}</strong> (${m.type} &bull; ${m.status})</span>
+                  <button type="button" onclick="PharmoraWorkbench._wb._linkExistingToWizard('${m.uuid}', '${m.type}')" 
+                          style="padding:3px 8px;border:none;background:var(--primary);color:#000;border-radius:4px;font-size:0.7rem;font-weight:700;cursor:pointer;">
+                    Link Instead
+                  </button>
+                </div>
+              `;
+            }).join('')}
+          `;
+        } else {
+          container.style.display = 'none';
+        }
+      }
+    });
   }
 
   window.PharmoraWorkbenchForm.renderForm = renderForm;

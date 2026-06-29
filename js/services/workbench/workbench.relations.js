@@ -239,6 +239,33 @@
     `;
   }
 
+  async function _linkExistingToWizard(childUuid, childType, workbench) {
+    const parentUuid = workbench._createWizardState?.selectedParentUuid;
+    if (!parentUuid) {
+      alert("Error: No parent entity context found to link this to.");
+      return;
+    }
+    const actor = (typeof currentUser === 'function' ? currentUser()?.id : 'admin') || 'admin';
+    try {
+      if (typeof PharmoraRelations !== 'undefined') {
+        const rel = (childType === 'Subject') ? 'contains_subject' : 'hasMany';
+        await PharmoraRelations.linkEntities(parentUuid, rel, childUuid, {}, actor);
+        if (typeof showToast === 'function') {
+          showToast('Existing entity linked successfully to the parent!', 'success');
+        }
+        
+        if (typeof PharmoraSearchIndex !== 'undefined') {
+          await PharmoraSearchIndex.buildIndex();
+        }
+        
+        workbench.closeDrawer();
+        workbench.refreshCurrentModule();
+      }
+    } catch(e) {
+      alert('Linking failed: ' + e.message);
+    }
+  }
+
   function init(workbench, config) {
     workbench._unlinkConfirm = (uuid, relType, targetUuid) => _unlinkConfirm(uuid, relType, targetUuid, workbench);
     workbench._restoreRelation = () => _restoreRelation(workbench);
@@ -246,6 +273,7 @@
     workbench._triggerCreateAndLink = (uuid, action) => _triggerCreateAndLink(uuid, action, workbench);
     workbench._startCreationLink = (uuid, action, type) => _startCreationLink(uuid, action, type, workbench);
     workbench._openLinkEditor = (uuid, action) => _openLinkEditor(uuid, action, workbench);
+    workbench._linkExistingToWizard = (childUuid, childType) => _linkExistingToWizard(childUuid, childType, workbench);
   }
 
   window.PharmoraWorkbenchRelations.init = init;

@@ -13,7 +13,14 @@
     "Practical",
     "QuestionBank",
     "MCQ",
-    "Resource"
+    "Resource",
+    "Regulation",
+    "Exam",
+    "Job",
+    "Drug",
+    "Event",
+    "Certification",
+    "Research"
   ];
 
   const defaultSchemas = {
@@ -49,12 +56,14 @@
       required: [],
       properties: {
         content: {
-          required: ["name", "code", "type", "durationYears"],
+          required: ["name", "code", "type", "durationYears", "termType"],
           properties: {
             name: { type: "string" },
             code: { type: "string" },
             type: { type: "string" },
-            durationYears: { type: "number" }
+            durationYears: { type: "number" },
+            termType: { type: "string", enum: ["semester", "year"] },
+            regulationTag: { type: "string" }
           }
         }
       }
@@ -148,6 +157,99 @@
           }
         }
       }
+    },
+    "Regulation": {
+      required: [],
+      properties: {
+        content: {
+          required: ["name", "code", "year", "authority"],
+          properties: {
+            name: { type: "string" },
+            code: { type: "string" },
+            year: { type: "number" },
+            authority: { type: "string" }
+          }
+        }
+      }
+    },
+    "Exam": {
+      required: [],
+      properties: {
+        content: {
+          required: ["title", "code", "description"],
+          properties: {
+            title: { type: "string" },
+            code: { type: "string" },
+            description: { type: "string" }
+          }
+        }
+      }
+    },
+    "Job": {
+      required: [],
+      properties: {
+        content: {
+          required: ["title", "company", "location", "description"],
+          properties: {
+            title: { type: "string" },
+            company: { type: "string" },
+            location: { type: "string" },
+            description: { type: "string" }
+          }
+        }
+      }
+    },
+    "Drug": {
+      required: [],
+      properties: {
+        content: {
+          required: ["name", "indications", "dosage"],
+          properties: {
+            name: { type: "string" },
+            indications: { type: "string" },
+            dosage: { type: "string" }
+          }
+        }
+      }
+    },
+    "Event": {
+      required: [],
+      properties: {
+        content: {
+          required: ["title", "date", "speaker"],
+          properties: {
+            title: { type: "string" },
+            date: { type: "string" },
+            speaker: { type: "string" }
+          }
+        }
+      }
+    },
+    "Certification": {
+      required: [],
+      properties: {
+        content: {
+          required: ["title", "provider", "duration"],
+          properties: {
+            title: { type: "string" },
+            provider: { type: "string" },
+            duration: { type: "string" }
+          }
+        }
+      }
+    },
+    "Research": {
+      required: [],
+      properties: {
+        content: {
+          required: ["title", "investigator", "abstract"],
+          properties: {
+            title: { type: "string" },
+            investigator: { type: "string" },
+            abstract: { type: "string" }
+          }
+        }
+      }
     }
   };
 
@@ -208,6 +310,43 @@
       titleField: "content.title",
       subtitleField: "content.type",
       metadataFields: [{ label: "URL", value: "content.url" }]
+    },
+    "Regulation": {
+      titleField: "content.name",
+      subtitleField: "content.code",
+      badgeField: "content.authority",
+      metadataFields: [{ label: "Year", value: "content.year" }]
+    },
+    "Exam": {
+      titleField: "content.title",
+      subtitleField: "content.code",
+      descriptionField: "content.description"
+    },
+    "Job": {
+      titleField: "content.title",
+      subtitleField: "content.company",
+      badgeField: "content.location",
+      descriptionField: "content.description"
+    },
+    "Drug": {
+      titleField: "content.name",
+      subtitleField: "content.dosage",
+      descriptionField: "content.indications"
+    },
+    "Event": {
+      titleField: "content.title",
+      subtitleField: "content.date",
+      badgeField: "content.speaker"
+    },
+    "Certification": {
+      titleField: "content.title",
+      subtitleField: "content.provider",
+      badgeField: "content.duration"
+    },
+    "Research": {
+      titleField: "content.title",
+      subtitleField: "content.investigator",
+      descriptionField: "content.abstract"
     }
   };
 

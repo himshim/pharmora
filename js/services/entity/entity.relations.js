@@ -136,9 +136,40 @@
     return relations.filter(r => r.relationType === "hasMany" || r.relationType === "hasOne" || r.relationType === "contains_subject" || r.relationType === "manufacturer_of");
   }
 
-  async function getRelated(entityId, relationType) {
+  async function getRelated(entityId, relationTypeOrTargetType) {
     const relations = await getRelations(entityId);
-    return relations.filter(r => r.relationType === relationType);
+    return relations.filter(r => r.relationType === relationTypeOrTargetType || r.targetType === relationTypeOrTargetType);
+  }
+
+  async function getDeepRelated(entityId, targetType, visited = new Set()) {
+    if (visited.has(entityId)) return [];
+    visited.add(entityId);
+
+    const relations = await getRelations(entityId).catch(() => []);
+    let results = [];
+
+    // Direct matches
+    const direct = relations.filter(r => r.targetType === targetType);
+    for (const r of direct) {
+      const ent = await PharmoraEntityAPI.getEntity(r.targetUuid).catch(() => null);
+      if (ent) results.push(ent);
+    }
+
+    // Traverse adjacent nodes recursively
+    for (const r of relations) {
+      if (r.targetType !== targetType) {
+        const subResults = await getDeepRelated(r.targetUuid, targetType, visited);
+        results.push(...subResults);
+      }
+    }
+
+    // De-duplicate results by UUID
+    const seen = new Set();
+    return results.filter(e => {
+      if (seen.has(e.uuid)) return false;
+      seen.add(e.uuid);
+      return true;
+    });
   }
 
   window.PharmoraRelations = {
@@ -148,6 +179,7 @@
     getParents,
     getChildren,
     getRelated,
+    getDeepRelated,
     getInverseRelation
   };
 })();
