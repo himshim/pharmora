@@ -324,9 +324,19 @@ bundle([
   "js/services/admin.verification.js",
   "js/services/admin.contributor.service.js",
 
-  // ── Workbench Modules (must come last) ──
+  // ── Workbench Modules ──
+  "js/services/admin/admin.utils.js",
+  "js/services/admin/modules/overview.js",
+  "js/services/admin/modules/review.js",
+  "js/services/admin/modules/manager.js",
+  "js/services/admin/modules/verification.js",
+  "js/services/admin/modules/users.js",
+  "js/services/admin/modules/reports.js",
+  "js/services/admin/modules/audit.js",
+  "js/services/admin/modules/analytics.js",
+  "js/services/admin/modules/settings.js",
+  "js/services/admin/modules/extensions.js",
   "js/services/admin.modules.js"
-
 ], "dist/pharmora.admin.js");
 
 /*
