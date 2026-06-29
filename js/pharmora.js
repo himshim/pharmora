@@ -189,17 +189,10 @@ const CORE=[
 "/dist/pharmora.database.js",
 
 "/js/services/auth.service.js",
-
 "/js/services/profile.service.js",
-
 "/js/services/audit.service.js",
-
-"/js/services/version.service.js",
-
 "/js/services/search.service.js",
-
 "/js/services/permission.service.js",
-
 "/js/services/access.service.js",
 
 "/js/services/entity.component.js",
@@ -253,192 +246,72 @@ const CORE=[
 
 const MODULES={
 
-
-
-
 "home-content":[
-
-"/js/services/content.service.js",
-"/js/services/entity.editor.service.js",
-"/js/services/home.service.js",
-"/js/services/home.component.js"
-
+  "/js/services/home.service.js",
+  "/js/services/home.component.js"
 ],
-
-
 
 "schema":[
-
-"/js/services/schema.engine.js",
-
-"/js/services/field.registry.js"
-
+  "/js/services/field.registry.js"
 ],
-
-
 
 "editor":[
-
-"/js/services/content.service.js",
-
-"/js/services/schema.engine.js",
-
-"/js/services/field.registry.js",
-
-"/js/services/entity.editor.service.js"
-
+  "/js/services/field.registry.js"
 ],
-
 
 "stats":[
-
-"/js/services/home.service.js",
-"/js/services/home.component.js"
-
+  "/js/services/home.service.js",
+  "/js/services/home.component.js"
 ],
-
-
-
-
-
 
 "content":[
-
-"/js/services/content.service.js",
-
-"/js/services/schema.engine.js",
-
-"/js/services/field.registry.js",
-
-"/js/services/entity.editor.service.js",
-
-"/js/services/content.component.js"
-
+  "/js/services/field.registry.js",
+  "/js/services/content.component.js"
 ],
-
-
 
 "learn":[
-
-"/js/services/learn.service.js"
-
+  "/js/services/learn.service.js"
 ],
 
-
-
-"books":[
-
-"/js/services/books.service.js"
-
-],
-
-
-"teach":[
-
-"/js/services/teach.service.js"
-
-],
-
-"dashboard":[
-
-"/js/services/dashboard.service.js"
-
-],
-
-"settings":[
-
-"/js/services/settings.service.js"
-
-],
-
-"events":[
-
-"/js/services/events.service.js"
-
-],
-
-
-
-"resources":[
-
-"/js/services/resources.service.js"
-
-],
-
-
+"books":[],
+"teach":[],
+"events":[],
+"resources":[],
 
 "forum":[
-
-"/js/services/forum.service.js",
-"/js/services/forum.component.js"
-
+  "/js/services/forum.service.js",
+  "/js/services/forum.component.js"
 ],
 
-
-
-"contribute":[
-
-"/js/services/contribute.wizard.js"
-
-],
-
+"contribute":[],
 "profile-wizard":[
-
-"/dist/pharmora.user.js"
-
+  "/dist/pharmora.user.js"
 ]
-
-
 
 };
 
-
-
 const BUNDLES={
 
-
 user:[
-
-"/dist/pharmora.user.js"
-
+  "/dist/pharmora.user.js"
 ],
-
 
 admin:[
-
-"/dist/pharmora.admin.js"
-
+  "/dist/pharmora.admin.js"
 ],
-
-
-
-
 
 research:[
-
-"/dist/pharmora.research.js"
-
+  "/dist/pharmora.research.js"
 ],
-
 
 career:[
-
-"/dist/pharmora.career.js"
-
+  "/dist/pharmora.career.js"
 ],
 
-contribute:[
-
-"/js/services/contribute.wizard.js"
-
-],
-
+contribute:[],
 "profile-wizard":[
-
-"/dist/pharmora.user.js"
-
+  "/dist/pharmora.user.js"
 ]
-
 
 };
 
