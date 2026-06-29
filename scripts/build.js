@@ -251,13 +251,8 @@ bundle(
 
 bundle(
 [
-
-"js/services/user-notification.service.js",
-
-"js/services/wizard.core.js",
-
-"js/services/profile.wizard.js"
-
+  "js/services/user-notification.service.js",
+  "js/services/wizard.core.js"
 ],
 
 "dist/pharmora.user.js"
