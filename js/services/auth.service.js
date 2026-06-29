@@ -482,15 +482,14 @@ latest
 
 
 async function getDemoUsers(){
-
-
-
-return await getRecords(
-"users"
-);
-
-
-
+  let list = await getRecords("users");
+  if (!list || list.length === 0) {
+    if (typeof window.createTestAccounts === 'function') {
+      await window.createTestAccounts();
+      list = await getRecords("users");
+    }
+  }
+  return list;
 }
 
 
