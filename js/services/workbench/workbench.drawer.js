@@ -83,7 +83,7 @@
       }
 
       let selectHtml = '';
-      if (type === 'Program') {
+      if (type === 'Program' || type === 'Regulation') {
         const unis = allList.filter(e => e.type === 'University');
         selectHtml = `
           <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
@@ -94,19 +94,11 @@
             </select>
           </div>
         `;
-      } else if (type === 'Course') {
-        const unis = allList.filter(e => e.type === 'University');
+      } else if (type === 'Course' || type === 'Job' || type === 'Certification') {
         const progs = allList.filter(e => e.type === 'Program');
         selectHtml = `
           <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
-            <label style="font-size:var(--font-xs);font-weight:700;">Select University</label>
-            <select id="wz-parent-uni" style="padding:8px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--background);color:var(--text);">
-              <option value="">Select...</option>
-              ${unis.map(u => `<option value="${u.uuid}">${u.content?.name || u.publicId}</option>`).join('')}
-            </select>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
-            <label style="font-size:var(--font-xs);font-weight:700;">Select Program (Parent)</label>
+            <label style="font-size:var(--font-xs);font-weight:700;">Select Program/Course (Parent)</label>
             <select id="wz-parent-prog" style="padding:8px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--background);color:var(--text);">
               <option value="">Select...</option>
               ${progs.map(p => `<option value="${p.uuid}">${p.content?.name || p.publicId}</option>`).join('')}
@@ -114,16 +106,8 @@
           </div>
         `;
       } else if (type === 'Semester') {
-        const progs = allList.filter(e => e.type === 'Program');
         const courses = allList.filter(e => e.type === 'Course');
         selectHtml = `
-          <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
-            <label style="font-size:var(--font-xs);font-weight:700;">Select Program</label>
-            <select id="wz-parent-prog" style="padding:8px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--background);color:var(--text);">
-              <option value="">Select...</option>
-              ${progs.map(p => `<option value="${p.uuid}">${p.content?.name || p.publicId}</option>`).join('')}
-            </select>
-          </div>
           <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
             <label style="font-size:var(--font-xs);font-weight:700;">Select Course (Parent)</label>
             <select id="wz-parent-course" style="padding:8px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--background);color:var(--text);">
@@ -132,22 +116,25 @@
             </select>
           </div>
         `;
-      } else if (type === 'Subject') {
-        const courses = allList.filter(e => e.type === 'Course');
+      } else if (type === 'Subject' || type === 'Drug' || type === 'Research') {
         const sems = allList.filter(e => e.type === 'Semester');
         selectHtml = `
           <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
-            <label style="font-size:var(--font-xs);font-weight:700;">Select Course</label>
-            <select id="wz-parent-course" style="padding:8px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--background);color:var(--text);">
-              <option value="">Select...</option>
-              ${courses.map(c => `<option value="${c.uuid}">${c.content?.name || c.publicId}</option>`).join('')}
-            </select>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
-            <label style="font-size:var(--font-xs);font-weight:700;">Select Semester (Parent)</label>
+            <label style="font-size:var(--font-xs);font-weight:700;">Select Academic Term/Semester (Parent)</label>
             <select id="wz-parent-semester" style="padding:8px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--background);color:var(--text);">
               <option value="">Select...</option>
               ${sems.map(s => `<option value="${s.uuid}">Semester ${s.content?.number || s.publicId}</option>`).join('')}
+            </select>
+          </div>
+        `;
+      } else if (type === 'Exam' || type === 'Event') {
+        const subjects = allList.filter(e => e.type === 'Subject');
+        selectHtml = `
+          <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+            <label style="font-size:var(--font-xs);font-weight:700;">Select Subject Context (Parent)</label>
+            <select id="wz-parent-subject" style="padding:8px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--background);color:var(--text);">
+              <option value="">Select...</option>
+              ${subjects.map(s => `<option value="${s.uuid}">${s.content?.title || s.publicId}</option>`).join('')}
             </select>
           </div>
         `;
@@ -198,12 +185,14 @@
     const state = workbench._createWizardState;
     const type = state.type;
     let parentUuid = null;
-    if (type === 'Program') parentUuid = document.getElementById('wz-parent-uni')?.value;
-    else if (type === 'Course') parentUuid = document.getElementById('wz-parent-prog')?.value;
+    if (type === 'Program' || type === 'Regulation') parentUuid = document.getElementById('wz-parent-uni')?.value;
+    else if (type === 'Course' || type === 'Job' || type === 'Certification') parentUuid = document.getElementById('wz-parent-prog')?.value;
     else if (type === 'Semester') parentUuid = document.getElementById('wz-parent-course')?.value;
-    else if (type === 'Subject') parentUuid = document.getElementById('wz-parent-semester')?.value;
+    else if (type === 'Subject' || type === 'Drug' || type === 'Research') parentUuid = document.getElementById('wz-parent-semester')?.value;
+    else if (type === 'Exam' || type === 'Event') parentUuid = document.getElementById('wz-parent-subject')?.value;
 
-    if (['Program', 'Course', 'Semester', 'Subject'].includes(type) && !parentUuid) {
+    const needsParent = ['Program', 'Regulation', 'Course', 'Job', 'Certification', 'Semester', 'Subject', 'Drug', 'Research', 'Exam', 'Event'].includes(type);
+    if (needsParent && !parentUuid) {
       alert('Please select a parent entity to build the hierarchy path.');
       return;
     }
