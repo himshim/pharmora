@@ -149,11 +149,16 @@
     return records.map(r => new PharmoraEntityCore.BaseEntity(r));
   }
 
-  window.PharmoraEntityAPI = {
+  const PharmoraEntityAPI = {
     createEntity,
     getEntity,
     updateEntity,
     deleteEntity,
     listEntities
   };
+
+  window.PharmoraEntityAPI = PharmoraEntityAPI;
 })();
+
+export const PharmoraEntityAPI = window.PharmoraEntityAPI;
+

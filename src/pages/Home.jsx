@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardBody, Input, Button, Link } from '@heroui/react';
 import { BookOpen, FileText, Layers, Search, Award, HelpCircle } from 'lucide-react';
+import { PharmoraEntityAPI } from '../../js/services/entity/entity.api.js';
 
 export default function Home() {
   const [stats, setStats] = useState({ courses: 0, resources: 0, mcqs: 0 });
@@ -8,8 +9,8 @@ export default function Home() {
 
   useEffect(() => {
     async function loadStats() {
-      if (typeof window.PharmoraEntityAPI !== 'undefined') {
-        const list = await window.PharmoraEntityAPI.listEntities().catch(() => []);
+      if (typeof PharmoraEntityAPI !== 'undefined') {
+        const list = await PharmoraEntityAPI.listEntities().catch(() => []);
         setStats({
           courses: list.filter(e => e.type === 'Course').length,
           resources: list.filter(e => e.type === 'Resource').length,
