@@ -377,10 +377,7 @@ function copyStaticToDist() {
   if (!fs.existsSync(reactDist)) fs.mkdirSync(reactDist, { recursive: true });
 
   const dirsToCopy = [
-    'about', 'auth', 'books', 'certifications', 'community', 'config', 'contribute', 
-    'css', 'dashboard', 'data', 'docs', 'documents', 'drugs', 'editor', 'events', 
-    'exams', 'industry', 'jobs', 'js', 'learn', 'library', 'news', 'pages', 
-    'practicals', 'questions', 'research', 'roadmaps', 'settings', 'tools', 'components'
+    'css', 'js', 'components'
   ];
 
   dirsToCopy.forEach(dir => {
