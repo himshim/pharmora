@@ -31,7 +31,7 @@ export default function Header() {
           <Link href="/learn/" className="text-text-soft hover:text-primary font-semibold text-sm">Syllabus</Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="/library/" className="text-text-soft hover:text-primary font-semibold text-sm">Library</Link>
+          <Link href="/library" className="text-text-soft hover:text-primary font-semibold text-sm">Library</Link>
         </NavbarItem>
         <NavbarItem>
           <Link href="/community/" className="text-text-soft hover:text-primary font-semibold text-sm">Community</Link>
@@ -56,7 +56,7 @@ export default function Header() {
                 <p className="font-semibold text-text-soft text-xs">Signed in as</p>
                 <p className="font-bold text-text text-sm">{user.name || user.email}</p>
               </DropdownItem>
-              <DropdownItem key="dashboard" href="/dashboard/">My Dashboard</DropdownItem>
+              <DropdownItem key="dashboard" href="/profile">My Profile</DropdownItem>
               {['admin', 'owner'].includes(user.role) && (
                 <DropdownItem key="admin" href="/admin/">Admin Workbench</DropdownItem>
               )}

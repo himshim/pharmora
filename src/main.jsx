@@ -5,6 +5,8 @@ import { HeroUIProvider } from '@heroui/react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
+import Profile from './pages/Profile';
+import Library from './pages/Library';
 import './index.css';
 
 function AdminPlaceholder() {
@@ -24,6 +26,8 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/library" element={<Library />} />
             <Route path="/admin/*" element={<AdminPlaceholder />} />
           </Routes>
         </div>
