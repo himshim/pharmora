@@ -1,2 +1,7 @@
 dist/
 node_modules/
+assets/*.js
+assets/*.css
+assets/*.svg
+assets/*.png
+assets/*.json

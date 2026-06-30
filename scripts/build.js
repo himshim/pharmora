@@ -353,3 +353,38 @@ bundle(
 "dist/pharmora.router.js"
 
 );
+
+// Copy Vite build outputs to the root directory for serving
+function copyViteOutputs() {
+  const reactDist = path.join(process.cwd(), 'dist', 'react');
+  if (!fs.existsSync(reactDist)) return;
+
+  // 1. Copy index.html
+  const mainHtml = path.join(reactDist, 'index.html');
+  if (fs.existsSync(mainHtml)) {
+    fs.copyFileSync(mainHtml, path.join(process.cwd(), 'index.html'));
+    console.log("Copied Vite index.html to root");
+  }
+
+  // 2. Copy admin/index.html
+  const adminHtml = path.join(reactDist, 'admin', 'index.html');
+  if (fs.existsSync(adminHtml)) {
+    const adminDestDir = path.join(process.cwd(), 'admin');
+    if (!fs.existsSync(adminDestDir)) fs.mkdirSync(adminDestDir, { recursive: true });
+    fs.copyFileSync(adminHtml, path.join(adminDestDir, 'index.html'));
+    console.log("Copied Vite admin/index.html to root/admin/");
+  }
+
+  // 3. Copy assets
+  const assetsSrc = path.join(reactDist, 'assets');
+  const assetsDest = path.join(process.cwd(), 'assets');
+  if (fs.existsSync(assetsSrc)) {
+    if (!fs.existsSync(assetsDest)) fs.mkdirSync(assetsDest, { recursive: true });
+    fs.readdirSync(assetsSrc).forEach(file => {
+      fs.copyFileSync(path.join(assetsSrc, file), path.join(assetsDest, file));
+    });
+    console.log("Copied Vite assets to root/assets/");
+  }
+}
+
+copyViteOutputs();
