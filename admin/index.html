@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pharmora Workbench — Admin</title>
+  <title>Pharmora Workbench — Admin</title>
+  <link rel="stylesheet" href="../css/pharmora.css">
   <style>
     /* ─── Workbench Shell ───────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; }
@@ -173,13 +174,10 @@
       to   { opacity: 1; transform: none; }
     }
   </style>
-  <script type="module" crossorigin src="/assets/admin-BPlHw6aC.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/index-8tSMc_YZ.js">
-  <link rel="stylesheet" crossorigin href="/assets/index-DoQZfCZe.css">
 </head>
 
 <body data-requires="admin">
-<div id="root">
+
 <!-- ══════════════════════════════════════════════════
      PHARMORA WORKBENCH SHELL
      No business UI. All content mounted by JS.
@@ -228,11 +226,12 @@
 <div id="admin-modals"></div>
 <div id="admin-toast"></div>
 <div id="admin-loading"><span>⏳</span> Loading…</div>
-</div>
+
 <!-- ══════════════════════════════════════════════════
      CORE SERVICES
 ══════════════════════════════════════════════════ -->
-<script src="/js/pharmora.js"></script>
+<script src="/js/pharmora.js"></script>
+<script type="module" src="/src/admin.jsx"></script>
 
 <!-- ══════════════════════════════════════════════════
      WORKBENCH BOOT

@@ -62,7 +62,7 @@ href="https://pharmora.netlify.app/">
 
 <link
 rel="manifest"
-href="/assets/manifest-B3h2Kno6.json">
+href="manifest.json">
 
 
 <meta
@@ -153,12 +153,12 @@ content="Learn, teach and contribute pharmacy knowledge openly.">
 
 <link
 rel="icon"
-href="/assets/favicon-jinHk157.svg">
+href="assets/branding/favicon.svg">
 
 
 <link
 rel="apple-touch-icon"
-href="/assets/icon-192-D3BTjOAD.png">
+href="/assets/branding/icon-192.png">
 
 
 
@@ -169,12 +169,23 @@ href="/assets/icon-192-D3BTjOAD.png">
 
 <!-- Styles -->
 
-
+
+<link rel="stylesheet" href="css/pharmora.css">
 
 
-  <script type="module" crossorigin src="/assets/main-BB8c1mvJ.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/index-8tSMc_YZ.js">
-  <link rel="stylesheet" crossorigin href="/assets/index-DoQZfCZe.css">
+</head>
+
+
+
+
+<body>
+
+
+<div id="site-header"></div>
+
+
+
+<main data-requires="notifications">
 
 
 
@@ -869,9 +880,14 @@ Become Contributor
 
 
 <div id="site-footer"></div>
-</div>
+
+
+
+
+
 <script src="/js/pharmora.js"></script>
-<script src="/js/services/test-accounts.js"></script>
+<script src="/js/services/test-accounts.js"></script>
+<script type="module" src="/src/main.jsx"></script>
 <script>
   // Auto-create test accounts for development
   if (typeof createTestAccounts === 'function') {

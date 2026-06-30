@@ -354,37 +354,56 @@ bundle(
 
 );
 
-// Copy Vite build outputs to the root directory for serving
-function copyViteOutputs() {
-  const reactDist = path.join(process.cwd(), 'dist', 'react');
-  if (!fs.existsSync(reactDist)) return;
+function copyDirRecursive(src, dest) {
+  if (!fs.existsSync(src)) return;
+  if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
 
-  // 1. Copy index.html
-  const mainHtml = path.join(reactDist, 'index.html');
-  if (fs.existsSync(mainHtml)) {
-    fs.copyFileSync(mainHtml, path.join(process.cwd(), 'index.html'));
-    console.log("Copied Vite index.html to root");
-  }
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
 
-  // 2. Copy admin/index.html
-  const adminHtml = path.join(reactDist, 'admin', 'index.html');
-  if (fs.existsSync(adminHtml)) {
-    const adminDestDir = path.join(process.cwd(), 'admin');
-    if (!fs.existsSync(adminDestDir)) fs.mkdirSync(adminDestDir, { recursive: true });
-    fs.copyFileSync(adminHtml, path.join(adminDestDir, 'index.html'));
-    console.log("Copied Vite admin/index.html to root/admin/");
-  }
-
-  // 3. Copy assets
-  const assetsSrc = path.join(reactDist, 'assets');
-  const assetsDest = path.join(process.cwd(), 'assets');
-  if (fs.existsSync(assetsSrc)) {
-    if (!fs.existsSync(assetsDest)) fs.mkdirSync(assetsDest, { recursive: true });
-    fs.readdirSync(assetsSrc).forEach(file => {
-      fs.copyFileSync(path.join(assetsSrc, file), path.join(assetsDest, file));
-    });
-    console.log("Copied Vite assets to root/assets/");
+    if (entry.isDirectory()) {
+      copyDirRecursive(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
   }
 }
 
-copyViteOutputs();
+// Copy all static assets and legacy pages to the dist/react folder for unified serving
+function copyStaticToDist() {
+  const reactDist = path.join(process.cwd(), 'dist', 'react');
+  if (!fs.existsSync(reactDist)) fs.mkdirSync(reactDist, { recursive: true });
+
+  const dirsToCopy = [
+    'about', 'auth', 'books', 'certifications', 'community', 'config', 'contribute', 
+    'css', 'dashboard', 'data', 'docs', 'documents', 'drugs', 'editor', 'events', 
+    'exams', 'industry', 'jobs', 'js', 'learn', 'library', 'news', 'pages', 
+    'practicals', 'questions', 'research', 'roadmaps', 'settings', 'tools', 'components'
+  ];
+
+  dirsToCopy.forEach(dir => {
+    const srcDir = path.join(process.cwd(), dir);
+    const destDir = path.join(reactDist, dir);
+    if (fs.existsSync(srcDir)) {
+      copyDirRecursive(srcDir, destDir);
+      console.log(`Copied directory: ${dir} -> dist/react/${dir}`);
+    }
+  });
+
+  const filesToCopy = [
+    'manifest.json', 'sitemap.xml', 'sw.js', 'favicon.ico', 'offline.html', '404.html'
+  ];
+
+  filesToCopy.forEach(file => {
+    const srcFile = path.join(process.cwd(), file);
+    const destFile = path.join(reactDist, file);
+    if (fs.existsSync(srcFile)) {
+      fs.copyFileSync(srcFile, destFile);
+      console.log(`Copied file: ${file} -> dist/react/${file}`);
+    }
+  });
+}
+
+copyStaticToDist();
