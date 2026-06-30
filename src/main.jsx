@@ -7,16 +7,8 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Library from './pages/Library';
+import Admin from './pages/Admin';
 import './index.css';
-
-function AdminPlaceholder() {
-  return (
-    <div className="max-w-7xl mx-auto px-6 py-12 text-center text-text-soft">
-      <h2 className="text-2xl font-black text-primary">Admin Workbench React Migration in Progress</h2>
-      <p className="mt-2 text-sm">We are moving admin modules here in the next phase!</p>
-    </div>
-  );
-}
 
 function App() {
   return (
@@ -28,7 +20,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/library" element={<Library />} />
-            <Route path="/admin/*" element={<AdminPlaceholder />} />
+            <Route path="/admin/*" element={<Admin />} />
           </Routes>
         </div>
         <Footer />
